@@ -1,0 +1,290 @@
+/* ============================================ */
+/* AVATAR SYSTEM - Universal                     */
+/* ============================================ */
+
+.nav-avatar-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Default avatar size - NORMAL (36px) */
+.avatar-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #fe67ea, #63dbee);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.avatar-wrapper:hover {
+    border-color: #fe67ea;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(254, 103, 234, 0.3);
+}
+
+.avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-wrapper .avatar-initials {
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Avatar sizes */
+.avatar-sm {
+    width: 28px;
+    height: 28px;
+}
+.avatar-sm .avatar-initials {
+    font-size: 0.65rem;
+}
+
+.avatar-md {
+    width: 36px;
+    height: 36px;
+}
+.avatar-md .avatar-initials {
+    font-size: 0.85rem;
+}
+
+.avatar-lg {
+    width: 44px;
+    height: 44px;
+}
+.avatar-lg .avatar-initials {
+    font-size: 1rem;
+}
+
+.avatar-xl {
+    width: 56px;
+    height: 56px;
+    border-width: 3px;
+}
+.avatar-xl .avatar-initials {
+    font-size: 1.3rem;
+}
+
+.avatar-xxl {
+    width: 80px;
+    height: 80px;
+    border-width: 4px;
+}
+.avatar-xxl .avatar-initials {
+    font-size: 2rem;
+}
+
+/* Profile page avatar section */
+
+
+.profile-avatar-section .avatar-wrapper {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+}
+
+.profile-avatar-section .avatar-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.profile-avatar-section .avatar-info h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.profile-avatar-section .avatar-info p {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.btn-change-avatar {
+    padding: 4px 14px;
+    border-radius: 20px;
+    background: rgba(254, 103, 234, 0.15);
+    border: 1px solid rgba(254, 103, 234, 0.2);
+    color: #fe67ea;
+    font-size: 0.7rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    margin-top: 4px;
+}
+
+.btn-change-avatar:hover {
+    background: rgba(254, 103, 234, 0.25);
+    transform: translateY(-2px);
+}
+
+/* Avatar dropdown menu */
+.avatar-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    min-width: 200px;
+    padding: 8px 0;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+    display: none;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.avatar-dropdown.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.avatar-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+}
+
+.avatar-dropdown .dropdown-item:hover {
+    background: rgba(254, 103, 234, 0.15);
+    color: #d1d1d1;
+}
+
+.avatar-dropdown .dropdown-item i {
+    width: 20px;
+    font-size: 0.9rem;
+}
+
+.avatar-dropdown .dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 4px 12px;
+}
+
+.avatar-dropdown .dropdown-username {
+    padding: 8px 16px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Profile page avatar */
+.profile-avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.profile-avatar-section .avatar-wrapper {
+    width: 60px;
+    height: 60px;
+}
+
+.profile-avatar-section .avatar-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.profile-avatar-section .avatar-info h3 {
+    color: white;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.profile-avatar-section .avatar-info p {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.btn-change-avatar {
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: rgba(254, 103, 234, 0.15);
+    border: 1px solid rgba(245, 237, 244, 0.2);
+    color: #ebebeb;
+    font-size: 0.60rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-change-avatar:hover {
+    background: rgba(254, 103, 234, 0.25);
+    transform: translateY(-2px);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .avatar-wrapper {
+        width: 30px;
+        height: 30px;
+    }
+    .avatar-wrapper .avatar-initials {
+        font-size: 0.75rem;
+    }
+    .profile-avatar-section .avatar-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+    .avatar-dropdown {
+        min-width: 160px;
+        right: -10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .avatar-wrapper {
+        width: 26px;
+        height: 26px;
+        border-width: 1.5px;
+    }
+    .avatar-wrapper .avatar-initials {
+        font-size: 0.65rem;
+    }
+}

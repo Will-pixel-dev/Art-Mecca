@@ -1,0 +1,1637 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skin Rendering Techniques | Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ============================================
+           SKIN RENDERING TUTORIAL - PINK THEME
+           Colors: #ff69b4, #ff1493, #ff85c1, #ffb6c1, #ffc0cb
+           ============================================ */
+
+      :root {
+        --tutorial-primary: #ff69b4;
+        --tutorial-primary-dark: #ff1493;
+        --tutorial-primary-light: #ff85c1;
+        --tutorial-primary-lighter: #ffb6c1;
+        --tutorial-primary-lightest: #ffc0cb;
+      }
+
+      /* ============================================
+           CUSTOM PINK THEME NAVBAR
+           ============================================ */
+
+      .main-header {
+        background: white;
+        box-shadow:
+          0 8px 32px rgba(255, 105, 180, 0.15),
+          0 2px 8px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+      }
+
+      .main-header .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+      }
+
+      .main-header .logo-icon {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #ff69b4, #ff1493, #ff85c1);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: logoPulse 3s ease-in-out infinite;
+      }
+
+      @keyframes logoPulse {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 0px rgba(255, 105, 180, 0.3));
+        }
+        50% {
+          filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.6));
+        }
+      }
+
+      .main-header .logo-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ff69b4, #ff1493, #ff85c1, #ffb6c1);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        background-size: 200% auto;
+        animation: shimmer 3s linear infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 0% center;
+        }
+        100% {
+          background-position: 200% center;
+        }
+      }
+
+      .main-header .nav-link {
+        color: #4a5568;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .main-header .nav-link:hover {
+        background: linear-gradient(135deg, #ff69b4, #ff1493);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        transform: translateY(-2px);
+      }
+
+      .main-header .nav-link.active {
+        background: linear-gradient(135deg, #ff69b4, #ff1493);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 600;
+      }
+
+      .main-header .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background: linear-gradient(90deg, #ff69b4, #ff1493);
+        border-radius: 3px;
+        animation: underlineGlow 2s ease-in-out infinite;
+      }
+
+      @keyframes underlineGlow {
+        0%,
+        100% {
+          opacity: 0.6;
+          width: 60%;
+        }
+        50% {
+          opacity: 1;
+          width: 80%;
+          box-shadow: 0 0 6px #ff69b4;
+        }
+      }
+
+      .main-header .dropdown-arrow {
+        font-size: 0.7rem;
+        transition: transform 0.3s ease;
+        color: #ff1493;
+      }
+
+      .nav-dropdown:hover .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+
+      .main-header .dropdown-menu {
+        background: white;
+        border: none;
+        border-radius: 12px;
+        box-shadow:
+          0 12px 32px rgba(255, 105, 180, 0.2),
+          0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+
+      .main-header .dropdown-menu::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #ff69b4, #ff1493, #ff85c1, #ffb6c1);
+      }
+
+      .main-header .dropdown-item {
+        padding: 0.75rem 1.5rem;
+        color: #4a5568;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .main-header .dropdown-item:hover {
+        background: linear-gradient(90deg, #ffc0cb, white);
+        color: #ff1493;
+        padding-left: 1.8rem;
+      }
+
+      .main-header .search-btn {
+        color: #4a5568;
+        transition: all 0.3s ease;
+      }
+
+      .main-header .search-btn:hover {
+        color: #ff69b4;
+        transform: scale(1.05);
+      }
+
+      .main-header .user-btn {
+        color: #4a5568;
+        transition: all 0.3s ease;
+      }
+
+      .main-header .user-btn:hover {
+        color: #ff69b4;
+        transform: scale(1.05);
+      }
+
+      .main-header .signup-btn {
+        background: linear-gradient(135deg, #ff69b4, #ff1493);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(255, 105, 180, 0.3);
+      }
+
+      .main-header .signup-btn:hover {
+        background: linear-gradient(135deg, #ff1493, #ff69b4);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 105, 180, 0.4);
+      }
+
+      .user-dropdown {
+        border-top: 3px solid #ff69b4;
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(255, 105, 180, 0.2);
+      }
+
+      .user-dropdown .dropdown-item:hover {
+        background: #ffc0cb;
+        color: #ff1493;
+      }
+
+      .mobile-menu-btn span {
+        background: #ff1493;
+      }
+
+      /* ============================================
+           TUTORIAL CONTENT STYLES
+           ============================================ */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8f8f8;
+        color: #1a1a1a;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      /* Tutorial Hero Section */
+      .tutorial-hero {
+        background: linear-gradient(135deg, #ffc0cb, white);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin: 2rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+
+      .tutorial-info {
+        flex: 1;
+        min-width: 280px;
+      }
+
+      .breadcrumb {
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .breadcrumb a {
+        color: #ff1493;
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        color: #ff1493;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+
+      .tutorial-description {
+        font-size: 1.1rem;
+        margin: 1rem 0;
+        color: #333;
+      }
+
+      .tutorial-meta {
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        color: #ff69b4;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .difficulty {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+
+      .advanced {
+        background: #ff69b4;
+        color: white;
+      }
+
+      .tools-required {
+        margin-top: 1.5rem;
+      }
+
+      .tools-required h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .tools-required ul {
+        margin-left: 1.5rem;
+        color: #555;
+      }
+
+      .tutorial-image {
+        flex: 1;
+        min-width: 280px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .tutorial-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .tutorial-image:hover img {
+        transform: scale(1.02);
+      }
+
+      .image-caption {
+        padding: 0.5rem;
+        text-align: center;
+        font-style: italic;
+        font-size: 0.8rem;
+        background: #f5f5f5;
+        color: #666;
+      }
+
+      /* Progress Bar */
+      .progress-container {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        background: linear-gradient(90deg, #ff69b4, #ff1493);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .progress-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      /* Tutorial Content */
+      .tutorial-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+        color: #ff1493;
+        margin: 2rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+        color: #333;
+        margin: 1rem 0 0.5rem;
+      }
+
+      .step {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .step:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: #ff69b4;
+        color: white;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      .step-content {
+        margin-left: 0.5rem;
+      }
+
+      .step-content p {
+        line-height: 1.7;
+        color: #444;
+      }
+
+      /* Tutorial Visual Aid - Full Width (800px x 300px) */
+      .tutorial-visual {
+        margin: 1.5rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f8f8f8;
+        border: 1px solid #e5e5e5;
+      }
+
+      .visual-placeholder {
+        width: 100%;
+        height: 300px;
+        background: linear-gradient(135deg, #f8f8f8, #e0e0e0);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .visual-placeholder i {
+        font-size: 3rem;
+        color: #ff69b4;
+        margin-bottom: 1rem;
+        opacity: 0.6;
+      }
+
+      .visual-placeholder p {
+        color: #888;
+        font-size: 0.9rem;
+      }
+
+      .visual-placeholder .placeholder-note {
+        font-size: 0.7rem;
+        color: #aaa;
+        margin-top: 0.5rem;
+      }
+
+      .tutorial-visual img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .visual-caption {
+        padding: 0.5rem 1rem;
+        text-align: center;
+        font-style: italic;
+        font-size: 0.8rem;
+        background: #f5f5f5;
+        color: #666;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .tips {
+        background: #ffc0cb;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        border-left: 4px solid #ff69b4;
+      }
+
+      .tips h4 {
+        color: #ff1493;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Video Section */
+      .video-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .video-section h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-placeholder {
+        width: 100%;
+        height: 400px;
+        background: linear-gradient(135deg, #ff85c1, #ff1493);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        cursor: pointer;
+      }
+
+      .video-placeholder i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .video-placeholder p {
+        font-size: 1.1rem;
+      }
+
+      /* Tutorial Navigation */
+      .tutorial-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin: 2rem 0;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        background: white;
+        border: 2px solid #ff69b4;
+        border-radius: 50px;
+        color: #ff1493;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background: #ff69b4;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .completion-message {
+        background: linear-gradient(135deg, #ff69b4, #ff1493);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .completion-message h3 {
+        color: white;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      /* Related Tutorials */
+      .related-tutorials {
+        margin: 3rem 0;
+        padding: 2rem;
+        background: #f8f8f8;
+        border-radius: 16px;
+      }
+
+      .related-tutorials h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .tutorial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .tutorial-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+      }
+
+      .tutorial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      }
+
+      .tutorial-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .card-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+
+      .card-link {
+        display: inline-block;
+        margin-top: 0.8rem;
+        color: #ff69b4;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .card-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer */
+      .tutorial-footer {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        color: white;
+        padding: 3rem 0 1rem 0;
+        margin-top: 3rem;
+      }
+
+      .tutorial-footer .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .footer-section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #ff69b4, #ff1493);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .footer-section h4 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #a0aec0;
+      }
+
+      .footer-section p {
+        color: #cbd5e0;
+        line-height: 1.6;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-section ul li a {
+        color: #cbd5e0;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .footer-section ul li a:hover {
+        color: #ff69b4;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background: #ff69b4;
+        transform: translateY(-3px);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #a0aec0;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .tutorial-hero {
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: 1.6rem;
+        }
+
+        h2 {
+          font-size: 1.3rem;
+        }
+
+        .tutorial-navigation {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .nav-btn {
+          justify-content: center;
+        }
+
+        .video-placeholder {
+          height: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header with Reverse Pink Theme -->
+    <header class="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/index.html" class="nav-link">Home</a></li>
+            <li class="nav-dropdown">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/digital-painting.html"
+                    >Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/character-design.html"
+                    >Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/eye-render-tutorial.html"
+                    >Eye render</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >Facial Anatomy</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/lip-rendering.html"
+                    >Lip Rendering</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/nose-rendering.html"
+                    >Nose Rendering</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/skin-render-tutorial.html"
+                    >Skin Rendering</a
+                  >
+                </li>
+                <li><a href="/pages/tutorials/tutorials.html">Catalogue</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >Character Prompt Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >Software Comparison</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">Gallery</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">CV Template</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link"
+                >Truly Yours</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i
+              ><input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <!-- Tutorial Content -->
+    <main>
+      <div class="container">
+        <!-- Tutorial Header -->
+        <section class="tutorial-hero">
+          <div class="tutorial-info">
+            <div class="breadcrumb">
+              <a href="/index.html">Home</a> &gt;
+              <a href="/pages/tutorials/tutorials.html">Tutorials</a> &gt;
+              <a href="/pages/tutorials/tutorials.html#facial-features"
+                >Facial Features</a
+              >
+              &gt;
+              <span>Skin Rendering</span>
+            </div>
+            <h1>How to Render Realistic Skin in 10 Steps</h1>
+            <p class="tutorial-description">
+              Master the art of creating lifelike, dimensional skin with this
+              comprehensive digital painting tutorial covering texture,
+              subsurface scattering, and color variation.
+            </p>
+
+            <div class="tutorial-meta">
+              <div class="meta-item">
+                <i class="fas fa-clock"></i> 35 min read
+              </div>
+              <div class="meta-item"><i class="fas fa-user"></i> Alex Chen</div>
+              <div class="meta-item">
+                <i class="fas fa-calendar"></i> April 15, 2024
+              </div>
+            </div>
+
+            <div class="difficulty advanced">Advanced</div>
+
+            <div class="tools-required">
+              <h3>Tools Required</h3>
+              <ul>
+                <li>Digital painting software (Photoshop, Procreate, etc.)</li>
+                <li>Graphics tablet with pressure sensitivity</li>
+                <li>Custom skin texture brushes</li>
+                <li>Soft round and airbrush tools</li>
+                <li>Color picker/palette tool</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tutorial-image">
+            <img
+              src="/images/tutorials/skin-hero.jpg"
+              alt="Skin Rendering Process"
+            />
+            <div class="image-caption">
+              From flat base to realistic skin texture
+            </div>
+          </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <section class="progress-container">
+          <div class="progress-bar">
+            <div class="progress" id="reading-progress"></div>
+          </div>
+          <div class="progress-stats">
+            <span>0% complete</span
+            ><span id="time-remaining">~12 min remaining</span>
+          </div>
+        </section>
+
+        <!-- Tutorial Content -->
+        <section class="tutorial-content">
+          <!-- Step 1 -->
+          <div class="step" id="step-1">
+            <h2>
+              <span class="step-number">1</span>Establish Base Skin Tone and
+              Values
+            </h2>
+            <div class="step-content">
+              <p>
+                Start with a mid-tone base color that represents the overall
+                skin tone. Block in the basic value structure, identifying the
+                lightest and darkest areas based on your light source.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Work in grayscale initially to focus on values without color
+                  distraction. This helps create a strong foundation for
+                  realistic lighting.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-fill-drip"></i>
+                <p>📷 Base Skin Tone & Values</p>
+                <div class="placeholder-note">
+                  Replace with your base tone demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 1.1 - Establishing the foundation with base color and value
+                structure
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step" id="step-2">
+            <h2>
+              <span class="step-number">2</span>Define Major Forms and Planes
+            </h2>
+            <div class="step-content">
+              <p>
+                Identify and define the major anatomical planes of the face or
+                body. Focus on how light interacts with different surfaces -
+                bony areas, muscular areas, and soft tissue.
+              </p>
+              <h3>Key Anatomical Planes</h3>
+              <ul>
+                <li>Forehead plane (often brightest)</li>
+                <li>Cheek planes (rounded, soft transitions)</li>
+                <li>Nose and chin (defined edges)</li>
+                <li>Neck and jawline (softer, subtle forms)</li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-cube"></i>
+                <p>📷 Facial Planes & Forms</p>
+                <div class="placeholder-note">
+                  Replace with your planes demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 2.1 - Mapping out the anatomical planes and how light
+                affects each surface
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step" id="step-3">
+            <h2><span class="step-number">3</span>Add Subsurface Scattering</h2>
+            <div class="step-content">
+              <p>
+                Introduce the subtle glow of light passing through skin, known
+                as subsurface scattering. This effect is most visible in thinner
+                skin areas like ears, nose, and areas with strong backlighting.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Use a soft brush with warm, saturated colors at low opacity to
+                  build up subsurface scattering gradually. Focus on ear rims,
+                  nostrils, and thin eyelid skin.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-lightbulb"></i>
+                <p>📷 Subsurface Scattering</p>
+                <div class="placeholder-note">
+                  Replace with your SSS demonstration (recommended: 800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 3.1 - Creating the translucent quality of skin with
+                subsurface scattering
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step" id="step-4">
+            <h2><span class="step-number">4</span>Develop Color Variation</h2>
+            <div class="step-content">
+              <p>
+                Skin is never a single flat color. Introduce subtle color
+                variations - warmer reds and yellows in flushed areas, cooler
+                blues in shadow areas, and greens in transitional zones.
+              </p>
+              <h3>Common Color Zones</h3>
+              <ul>
+                <li>Cheeks and nose (warmer, redder tones)</li>
+                <li>Forehead (slightly yellower)</li>
+                <li>Jawline and neck (cooler, bluer tones)</li>
+                <li>Around eyes (slightly purple/gray)</li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-palette"></i>
+                <p>📷 Skin Color Zones</p>
+                <div class="placeholder-note">
+                  Replace with your color variation demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 4.1 - Adding natural color variation to break up monotony
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="step" id="step-5">
+            <h2>
+              <span class="step-number">5</span>Create Pore and Texture Base
+            </h2>
+            <div class="step-content">
+              <p>
+                Establish the foundation for skin texture using a custom brush
+                or noise overlay. Vary the intensity based on facial zones -
+                more prominent on nose and forehead, subtler on cheeks.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Create a custom texture brush by photographing real skin or
+                  using high-quality texture images. Adjust brush spacing and
+                  scatter for natural variation.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-waveform"></i>
+                <p>📷 Skin Texture Base</p>
+                <div class="placeholder-note">
+                  Replace with your texture demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 5.1 - Laying the groundwork for realistic skin texture
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="step" id="step-6">
+            <h2>
+              <span class="step-number">6</span>Refine Texture with Directional
+              Strokes
+            </h2>
+            <div class="step-content">
+              <p>
+                Enhance the texture by painting with directional strokes that
+                follow facial contours. This creates a more organic, less
+                repetitive look than using only texture brushes.
+              </p>
+              <h3>Stroke Direction Guidelines</h3>
+              <ul>
+                <li>Forehead: horizontal and slightly curved</li>
+                <li>Cheeks: outward and downward from nose</li>
+                <li>Nose: vertical along bridge, circular at tip</li>
+                <li>Chin: curved following jawline</li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-arrows-alt"></i>
+                <p>📷 Directional Strokes</p>
+                <div class="placeholder-note">
+                  Replace with your stroke direction demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 6.1 - Building organic texture that follows facial anatomy
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 7 -->
+          <div class="step" id="step-7">
+            <h2>
+              <span class="step-number">7</span>Add Imperfections and Character
+            </h2>
+            <div class="step-content">
+              <p>
+                Introduce subtle imperfections that make skin look real -
+                freckles, moles, fine lines, and variations in pore size. Be
+                strategic - less is often more.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Vary the size, color, and opacity of imperfections. Freckles
+                  are often concentrated on nose and cheeks, while fine lines
+                  appear around eyes and mouth.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-dot-circle"></i>
+                <p>📷 Skin Imperfections</p>
+                <div class="placeholder-note">
+                  Replace with your imperfections demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 7.1 - Strategic imperfections that enhance realism without
+                distraction
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 8 -->
+          <div class="step" id="step-8">
+            <h2>
+              <span class="step-number">8</span>Enhance Specular Highlights
+            </h2>
+            <div class="step-content">
+              <p>
+                Add sharp, bright highlights to areas where skin is oily or
+                moist - forehead, nose, cheeks, and chin. These highlights
+                define the surface quality and bring skin to life.
+              </p>
+              <h3>Highlight Placement Areas</h3>
+              <ul>
+                <li>Bridge and tip of nose</li>
+                <li>High points of cheekbones</li>
+                <li>Center of forehead</li>
+                <li>Chin and cupid's bow</li>
+                <li>Eyelid creases</li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-star"></i>
+                <p>📷 Specular Highlights</p>
+                <div class="placeholder-note">
+                  Replace with your highlights demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 8.1 - Strategic highlights that define skin's surface
+                quality
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 9 -->
+          <div class="step" id="step-9">
+            <h2><span class="step-number">9</span>Refine Edge Transitions</h2>
+            <div class="step-content">
+              <p>
+                Polish the transitions between different values and colors.
+                Soften harsh edges in rounded areas while maintaining crisp
+                edges on bony structures for anatomical accuracy.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Use a combination of soft and hard brushes. Lost edges (where
+                  values merge) can create beautiful atmospheric effects,
+                  especially in shadow areas.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-blender"></i>
+                <p>📷 Edge Transitions</p>
+                <div class="placeholder-note">
+                  Replace with your edge control demonstration (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 9.1 - Mastering edge control for realistic form definition
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 10 -->
+          <div class="step" id="step-10">
+            <h2>
+              <span class="step-number">10</span>Final Polish and Color Harmony
+            </h2>
+            <div class="step-content">
+              <p>
+                Make final adjustments to ensure color harmony and value
+                balance. Check that all elements work together cohesively and
+                the skin looks integrated with the surrounding features.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Flip your canvas horizontally frequently to spot
+                  inconsistencies. Add a subtle color adjustment layer to unify
+                  the overall skin tone if needed.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-magic"></i>
+                <p>📷 Final Rendered Skin</p>
+                <div class="placeholder-note">
+                  Replace with your completed skin rendering (recommended:
+                  800x300px)
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 10.1 - Completed realistic skin rendering with all elements
+                harmonized
+              </div>
+            </div>
+          </div>
+
+          <!-- Completion Message -->
+          <div class="completion-message">
+            <h3><i class="fas fa-trophy"></i> Masterful Work!</h3>
+            <p>
+              You've created realistic, lifelike skin with depth, texture, and
+              natural color variation. Practice with different skin tones and
+              lighting conditions to master this essential skill.
+            </p>
+          </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="video-section">
+          <h2>Watch the Process</h2>
+          <p>
+            See these skin rendering techniques in action with our comprehensive
+            video guide.
+          </p>
+          <div class="video-container">
+            <div class="video-placeholder">
+              <i class="fab fa-youtube"></i>
+              <p>Skin Rendering Tutorial Video</p>
+              <p><small>Click to watch the demonstration</small></p>
+            </div>
+          </div>
+          <p style="margin-top: 1rem">
+            <a href="#" style="color: #ff69b4; text-decoration: none"
+              >View more texture and rendering tutorials on our YouTube channel
+              →</a
+            >
+          </p>
+        </section>
+
+        <!-- Tutorial Navigation -->
+        <section class="tutorial-navigation">
+          <a href="/pages/tutorials/nose-rendering.html" class="nav-btn"
+            ><i class="fas fa-arrow-left"></i> Previous Tutorial</a
+          >
+          <a href="/pages/tutorials/tutorials.html" class="nav-btn"
+            >Back to Tutorials <i class="fas fa-arrow-right"></i
+          ></a>
+        </section>
+
+        <!-- Related Tutorials -->
+        <section class="related-tutorials">
+          <h2>Continue Learning</h2>
+          <div class="tutorial-grid">
+            <div class="tutorial-card">
+              <img src="/images/tutorials/eye-render.jpg" alt="Eye Render" />
+              <div class="card-content">
+                <h3>Realistic Eye Rendering</h3>
+                <p>Master the art of painting realistic eyes step by step.</p>
+                <a
+                  href="/pages/tutorials/eye-render-tutorial.html"
+                  class="card-link"
+                  >Read Tutorial →</a
+                >
+              </div>
+            </div>
+            <div class="tutorial-card">
+              <img
+                src="/images/tutorials/lip-rendering.jpg"
+                alt="Lip Rendering"
+              />
+              <div class="card-content">
+                <h3>Lip Rendering Techniques</h3>
+                <p>Learn to paint soft, dimensional lips.</p>
+                <a href="/pages/tutorials/lip-rendering.html" class="card-link"
+                  >Read Tutorial →</a
+                >
+              </div>
+            </div>
+            <div class="tutorial-card">
+              <img
+                src="/images/tutorials/portrait-techniques.jpg"
+                alt="Portrait Techniques"
+              />
+              <div class="card-content">
+                <h3>Digital Portrait Techniques</h3>
+                <p>Master the art of painting realistic faces.</p>
+                <a
+                  href="/pages/tutorials/portrait-techniques.html"
+                  class="card-link"
+                  >Read Tutorial →</a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i></a
+              ><a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i></a
+              ><a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i></a
+              ><a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i></a
+              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
+              ><a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Auth Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Progress tracking
+        const progressBar = document.getElementById("reading-progress");
+        const progressStats = document.querySelector(
+          ".progress-stats span:first-child",
+        );
+        const timeRemaining = document.getElementById("time-remaining");
+
+        // Video placeholder
+        const videoPlaceholder = document.querySelector(".video-placeholder");
+
+        function updateProgress() {
+          const windowHeight = window.innerHeight;
+          const documentHeight =
+            document.documentElement.scrollHeight - windowHeight;
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+          const scrollPercent = (scrollTop / documentHeight) * 100;
+
+          if (progressBar) progressBar.style.width = scrollPercent + "%";
+          if (progressStats)
+            progressStats.textContent =
+              Math.round(scrollPercent) + "% complete";
+
+          if (timeRemaining) {
+            const estimatedTotalTime = 12;
+            const timeRemainingValue = Math.max(
+              0,
+              Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100),
+            );
+            timeRemaining.textContent = `~${timeRemainingValue} min remaining`;
+          }
+        }
+
+        window.addEventListener("scroll", updateProgress);
+        updateProgress();
+
+        // Video placeholder click
+        if (videoPlaceholder) {
+          videoPlaceholder.addEventListener("click", function () {
+            alert(
+              "🎬 This would open a YouTube video demonstrating skin rendering techniques",
+            );
+          });
+        }
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 100,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

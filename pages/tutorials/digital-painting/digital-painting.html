@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Digital Painting Tutorial - Art Mecca</title>
+    <meta
+      name="description"
+      content="Learn digital painting fundamentals from scratch. Master brushes, layers, color theory, and rendering techniques in this comprehensive beginner's guide."
+    />
+    <meta
+      name="keywords"
+      content="digital painting, digital art beginner, painting tutorial, digital painting fundamentals, art basics"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Digital Painting Fundamentals - Complete Beginner's Guide"
+    />
+    <meta
+      property="og:description"
+      content="Learn digital painting fundamentals from scratch. Master brushes, layers, color theory, and rendering techniques."
+    />
+    <meta
+      property="og:image"
+      content="/images/tutorials/digital-painting-hero.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/tutorials/digital-painting/digital-painting.html"
+    />
+    <meta property="og:type" content="article" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Digital Painting Fundamentals - Complete Beginner's Guide"
+    />
+    <meta
+      name="twitter:description"
+      content="Learn digital painting fundamentals from scratch."
+    />
+    <meta
+      name="twitter:image"
+      content="/images/tutorials/digital-painting-hero.jpg"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ============================================
+           DIGITAL PAINTING TUTORIAL - GREEN THEME
+           Colors: #05f5ad, #119c72, #19e1a5, #5aedc1, #9ff4db
+           ============================================ */
+
+      :root {
+        --tutorial-primary: #05f5ad;
+        --tutorial-primary-dark: #119c72;
+        --tutorial-primary-light: #19e1a5;
+        --tutorial-primary-lighter: #5aedc1;
+        --tutorial-primary-lightest: #9ff4db;
+      }
+
+      /* ============================================
+           CUSTOM GREEN THEME NAVBAR
+           ============================================ */
+
+      /* Header Container with Shadow */
+      .main-header {
+        background: white;
+        box-shadow:
+          0 8px 32px rgba(5, 245, 173, 0.15),
+          0 2px 8px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(5, 245, 173, 0.2);
+      }
+
+      /* Logo with Green Gradient */
+      .main-header .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+      }
+
+      .main-header .logo-icon {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #05f5ad, #119c72, #19e1a5);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: logoPulse 3s ease-in-out infinite;
+      }
+
+      @keyframes logoPulse {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 0px rgba(5, 245, 173, 0.3));
+        }
+        50% {
+          filter: drop-shadow(0 0 8px rgba(5, 245, 173, 0.6));
+        }
+      }
+
+      .main-header .logo-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #05f5ad, #119c72, #19e1a5, #5aedc1);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        background-size: 200% auto;
+        animation: shimmer 3s linear infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 0% center;
+        }
+        100% {
+          background-position: 200% center;
+        }
+      }
+
+      /* Nav Links with Green Gradient Text */
+      .main-header .nav-link {
+        color: #4a5568;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .main-header .nav-link:hover {
+        background: linear-gradient(135deg, #05f5ad, #119c72);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        transform: translateY(-2px);
+      }
+
+      .main-header .nav-link.active {
+        background: linear-gradient(135deg, #05f5ad, #119c72);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 600;
+      }
+
+      .main-header .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background: linear-gradient(90deg, #05f5ad, #119c72);
+        border-radius: 3px;
+        animation: underlineGlow 2s ease-in-out infinite;
+      }
+
+      @keyframes underlineGlow {
+        0%,
+        100% {
+          opacity: 0.6;
+          width: 60%;
+        }
+        50% {
+          opacity: 1;
+          width: 80%;
+          box-shadow: 0 0 6px #05f5ad;
+        }
+      }
+
+      /* Dropdown Arrow */
+      .main-header .dropdown-arrow {
+        font-size: 0.7rem;
+        transition: transform 0.3s ease;
+        color: #119c72;
+      }
+
+      .nav-dropdown:hover .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+
+      /* Dropdown Menu - Green Themed */
+      .main-header .dropdown-menu {
+        background: white;
+        border: none;
+        border-radius: 12px;
+        box-shadow:
+          0 12px 32px rgba(5, 245, 173, 0.2),
+          0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+
+      .main-header .dropdown-menu::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #05f5ad, #119c72, #19e1a5, #5aedc1);
+      }
+
+      .main-header .dropdown-item {
+        padding: 0.75rem 1.5rem;
+        color: #4a5568;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .main-header .dropdown-item:hover {
+        background: linear-gradient(90deg, #9ff4db, white);
+        color: #119c72;
+        padding-left: 1.8rem;
+      }
+
+      /* Search Button */
+      .main-header .search-btn {
+        color: #4a5568;
+        transition: all 0.3s ease;
+      }
+
+      .main-header .search-btn:hover {
+        color: #05f5ad;
+        transform: scale(1.05);
+      }
+
+      /* Auth Buttons - User Icon */
+      .main-header .user-btn {
+        color: #4a5568;
+        transition: all 0.3s ease;
+      }
+
+      .main-header .user-btn:hover {
+        color: #05f5ad;
+        transform: scale(1.05);
+      }
+
+      /* Sign Up Button - Green Gradient */
+      .main-header .signup-btn {
+        background: linear-gradient(135deg, #05f5ad, #119c72);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(5, 245, 173, 0.3);
+      }
+
+      .main-header .signup-btn:hover {
+        background: linear-gradient(135deg, #119c72, #05f5ad);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(5, 245, 173, 0.4);
+      }
+
+      /* User Dropdown Menu */
+      .user-dropdown {
+        border-top: 3px solid #05f5ad;
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(5, 245, 173, 0.2);
+      }
+
+      .user-dropdown .dropdown-item {
+        transition: all 0.3s ease;
+      }
+
+      .user-dropdown .dropdown-item:hover {
+        background: #9ff4db;
+        color: #119c72;
+      }
+
+      /* Mobile Menu Button */
+      .mobile-menu-btn span {
+        background: #119c72;
+      }
+
+      /* Tutorial Container */
+      .tutorial-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 20px;
+      }
+
+      /* Breadcrumb */
+      .breadcrumb {
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .breadcrumb a {
+        color: var(--tutorial-primary-dark);
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      /* Tutorial Hero Section */
+      .tutorial-hero {
+        background: linear-gradient(
+          135deg,
+          var(--tutorial-primary-lightest),
+          white
+        );
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+
+      .tutorial-info {
+        flex: 1;
+        min-width: 280px;
+      }
+
+      .tutorial-info h1 {
+        font-size: 2.2rem;
+        color: var(--tutorial-primary-dark);
+        margin-bottom: 1rem;
+      }
+
+      .tutorial-description {
+        font-size: 1.1rem;
+        color: #333;
+        margin: 1rem 0;
+        line-height: 1.6;
+      }
+
+      .tutorial-meta {
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        color: var(--tutorial-primary-dark);
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .difficulty {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+
+      .intermediate {
+        background: var(--tutorial-primary);
+        color: #1a1a1a;
+      }
+
+      .tools-required {
+        margin-top: 1.5rem;
+      }
+
+      .tools-required h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: var(--tutorial-primary-dark);
+      }
+
+      .tools-required ul {
+        margin-left: 1.5rem;
+        color: #555;
+      }
+
+      .tutorial-image {
+        flex: 1;
+        min-width: 280px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .tutorial-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .tutorial-image:hover img {
+        transform: scale(1.02);
+      }
+
+      .image-caption {
+        padding: 0.5rem;
+        text-align: center;
+        font-style: italic;
+        font-size: 0.8rem;
+        background: #f5f5f5;
+        color: #666;
+      }
+
+      /* Progress Bar */
+      .progress-container {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          var(--tutorial-primary),
+          var(--tutorial-primary-dark)
+        );
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .progress-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      /* Tutorial Content */
+      .tutorial-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      .step {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .step:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .step h2 {
+        font-size: 1.6rem;
+        color: var(--tutorial-primary-dark);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: var(--tutorial-primary);
+        color: #1a1a1a;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      .step-content {
+        margin-left: 0.5rem;
+      }
+
+      .step-content p {
+        line-height: 1.7;
+        color: #444;
+      }
+
+      .step-image {
+        margin: 1.5rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .step-image img {
+        width: 100%;
+        display: block;
+      }
+
+      .tips {
+        background: var(--tutorial-primary-lightest);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        border-left: 4px solid var(--tutorial-primary);
+      }
+
+      .tips h4 {
+        color: var(--tutorial-primary-dark);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .settings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+
+      .setting-item {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 3px solid var(--tutorial-primary);
+      }
+
+      .setting-item h4 {
+        color: var(--tutorial-primary-dark);
+        margin-bottom: 0.5rem;
+      }
+
+      .interactive-demo {
+        background: var(--tutorial-primary-lightest);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+
+      .color-scheme-preview {
+        display: flex;
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .color-box {
+        flex: 1;
+        height: 50px;
+      }
+
+      .generate-btn {
+        background: var(--tutorial-primary);
+        color: #1a1a1a;
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .generate-btn:hover {
+        background: var(--tutorial-primary-dark);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .completion-message {
+        background: linear-gradient(
+          135deg,
+          var(--tutorial-primary),
+          var(--tutorial-primary-dark)
+        );
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .completion-message h3 {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .cta-button {
+        background: white;
+        color: var(--tutorial-primary-dark);
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        margin-top: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Tutorial Navigation */
+      .tutorial-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 3rem;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        background: white;
+        border: 2px solid var(--tutorial-primary);
+        border-radius: 50px;
+        color: var(--tutorial-primary-dark);
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background: var(--tutorial-primary);
+        color: #1a1a1a;
+        transform: translateY(-2px);
+      }
+
+      /* Related Tutorials */
+      .related-tutorials h2 {
+        font-size: 1.8rem;
+        color: var(--tutorial-primary-dark);
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .tutorial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .tutorial-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+      }
+
+      .tutorial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      }
+
+      .tutorial-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .card-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+
+      .card-link {
+        display: inline-block;
+        margin-top: 0.8rem;
+        color: var(--tutorial-primary-dark);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .card-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .tutorial-hero {
+          flex-direction: column;
+        }
+
+        .tutorial-info h1 {
+          font-size: 1.6rem;
+        }
+
+        .step h2 {
+          font-size: 1.3rem;
+        }
+
+        .tutorial-navigation {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .nav-btn {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header with Green Theme - Updated Navbar -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-anatomy/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main>
+      <div class="tutorial-container">
+        <!-- Tutorial Hero -->
+        <section class="tutorial-hero">
+          <div class="tutorial-info">
+            <div class="breadcrumb">
+              <a href="/pages/tutorials/tutorials.html">Tutorials</a> &gt;
+              <a
+                href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                >Digital Painting</a
+              >
+              &gt;
+              <span>Digital Painting Fundamentals</span>
+            </div>
+            <h1>Digital Painting Fundamentals</h1>
+            <p class="tutorial-description">
+              Learn the essential techniques for creating stunning digital
+              artwork from scratch.
+            </p>
+            <div class="tutorial-meta">
+              <div class="meta-item">
+                <i class="fas fa-clock"></i> 45 min read
+              </div>
+              <div class="meta-item">
+                <i class="fas fa-user"></i> Sarah Johnson
+              </div>
+              <div class="meta-item">
+                <i class="fas fa-calendar"></i> March 15, 2023
+              </div>
+            </div>
+            <div class="difficulty intermediate">Intermediate</div>
+            <div class="tools-required">
+              <h3>Tools Required</h3>
+              <ul>
+                <li>Digital painting software (Photoshop, Procreate, Krita)</li>
+                <li>Graphics tablet or iPad</li>
+                <li>Basic brush set</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tutorial-image">
+            <img
+              src="/images/tutorials/digital-painting-hero.jpg"
+              alt="Digital Painting Process"
+            />
+            <div class="image-caption">
+              Step-by-step digital painting process
+            </div>
+          </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <section class="progress-container">
+          <div class="progress-bar">
+            <div class="progress" id="reading-progress"></div>
+          </div>
+          <div class="progress-stats">
+            <span>0% complete</span
+            ><span id="time-remaining">~10 min remaining</span>
+          </div>
+        </section>
+
+        <!-- Tutorial Content -->
+        <section class="tutorial-content">
+          <div class="step" id="step-1">
+            <h2>
+              <span class="step-number">1</span>Introduction to Digital Painting
+            </h2>
+            <div class="step-content">
+              <p>
+                Digital painting combines traditional painting techniques with
+                digital tools, offering artists unlimited possibilities for
+                creativity. In this tutorial, we'll cover the fundamental
+                techniques that every digital artist should master.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Always work with a high-resolution canvas (at least 300 DPI)
+                  to ensure your artwork looks crisp when printed.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="step" id="step-2">
+            <h2><span class="step-number">2</span>Setting Up Your Workspace</h2>
+            <div class="step-content">
+              <p>
+                An organized workspace is crucial for efficient digital
+                painting. Customize your interface to have quick access to the
+                tools you use most frequently.
+              </p>
+              <h3>Essential Panels</h3>
+              <ul>
+                <li>
+                  <strong>Layers Panel:</strong> Keep your artwork organized
+                  with separate layers
+                </li>
+                <li>
+                  <strong>Brushes Panel:</strong> Quick access to your favorite
+                  brushes
+                </li>
+                <li>
+                  <strong>Color Picker:</strong> Easily select and save custom
+                  colors
+                </li>
+                <li>
+                  <strong>History:</strong> Track your progress and undo
+                  mistakes
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="step" id="step-3">
+            <h2>
+              <span class="step-number">3</span>Brush Techniques and Settings
+            </h2>
+            <div class="step-content">
+              <p>
+                Mastering brushes is key to creating realistic digital
+                paintings. Understand how different brush settings affect your
+                strokes.
+              </p>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <h4>Opacity</h4>
+                  <p>Controls transparency of your strokes</p>
+                </div>
+                <div class="setting-item">
+                  <h4>Flow</h4>
+                  <p>Determines how quickly paint is applied</p>
+                </div>
+                <div class="setting-item">
+                  <h4>Hardness</h4>
+                  <p>Controls edge softness</p>
+                </div>
+                <div class="setting-item">
+                  <h4>Spacing</h4>
+                  <p>Affects stroke continuity</p>
+                </div>
+              </div>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Create custom brushes for specific textures like hair,
+                  foliage, or skin to speed up your workflow.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="step" id="step-4">
+            <h2>
+              <span class="step-number">4</span>Color Theory and Application
+            </h2>
+            <div class="step-content">
+              <p>
+                Understanding color relationships will dramatically improve your
+                digital paintings. Learn how to create harmonious color schemes.
+              </p>
+              <div class="interactive-demo">
+                <h4>Try It: Color Scheme Generator</h4>
+                <div class="color-scheme-preview">
+                  <div class="color-box" style="background: #05f5ad"></div>
+                  <div class="color-box" style="background: #119c72"></div>
+                  <div class="color-box" style="background: #19e1a5"></div>
+                  <div class="color-box" style="background: #5aedc1"></div>
+                  <div class="color-box" style="background: #9ff4db"></div>
+                </div>
+                <button class="generate-btn" id="generate-colors">
+                  Generate New Scheme
+                </button>
+              </div>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Use overlay or soft light layers to add lighting effects
+                  without permanently altering your base painting.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="step" id="step-5">
+            <h2><span class="step-number">5</span>Lighting and Shadow</h2>
+            <div class="step-content">
+              <p>
+                Proper lighting gives your paintings depth and dimension. Learn
+                how to create realistic light sources and shadows.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Use overlay or soft light layers to add lighting effects
+                  without permanently altering your base painting.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="step" id="step-6">
+            <h2><span class="step-number">6</span>Putting It All Together</h2>
+            <div class="step-content">
+              <p>
+                Now let's apply all the techniques we've learned to create a
+                complete digital painting from start to finish.
+              </p>
+              <div class="completion-message">
+                <h3><i class="fas fa-trophy"></i> Congratulations!</h3>
+                <p>
+                  You've completed the Digital Painting Fundamentals tutorial.
+                  Practice these techniques regularly to develop your skills.
+                </p>
+                <button class="cta-button" id="download-exercises">
+                  Download Practice Exercises
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tutorial Navigation -->
+        <section class="tutorial-navigation">
+          <a
+            href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+            class="nav-btn"
+            ><i class="fas fa-arrow-left"></i> Previous Tutorial</a
+          >
+          <a
+            href="/pages/tutorials/character-design/character-design-tutorials.html"
+            class="nav-btn"
+            >Next Tutorial <i class="fas fa-arrow-right"></i
+          ></a>
+        </section>
+
+        <!-- Related Tutorials -->
+        <section class="related-tutorials">
+          <h2>Related Tutorials</h2>
+          <div class="tutorial-grid">
+            <div class="tutorial-card">
+              <img
+                src="/images/tutorials/character-design.jpg"
+                alt="Character Design"
+              />
+              <div class="card-content">
+                <h3>Character Design Basics</h3>
+                <p>Learn to create memorable and unique characters</p>
+                <a
+                  href="/pages/tutorials/character-design/character-design-tutorials.html"
+                  class="card-link"
+                  >Read Tutorial →</a
+                >
+              </div>
+            </div>
+            <div class="tutorial-card">
+              <img src="/images/tutorials/eye-render.jpg" alt="Eye Render" />
+              <div class="card-content">
+                <h3>Realistic Eye Rendering</h3>
+                <p>Master the art of painting realistic eyes</p>
+                <a
+                  href="/pages/tutorials/facial-features/eye-render-tutorial.html"
+                  class="card-link"
+                  >Read Tutorial →</a
+                >
+              </div>
+            </div>
+            <div class="tutorial-card">
+              <img
+                src="/images/tutorials/portrait-techniques.jpg"
+                alt="Portrait Techniques"
+              />
+              <div class="card-content">
+                <h3>Digital Portrait Techniques</h3>
+                <p>Master the art of painting realistic faces</p>
+                <a
+                  href="/pages/tutorials/facial-features/facial-anatomy-basics.html"
+                  class="card-link"
+                  >Read Tutorial →</a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i></a
+              ><a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i></a
+              ><a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i></a
+              ><a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i></a
+              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
+              ><a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection -->
+    <script src="/js/navbar-active.js"></script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <!-- Notifications System -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+
+    <script>
+      // Progress tracking
+      const progressBar = document.getElementById("reading-progress");
+      const progressStats = document.querySelector(
+        ".progress-stats span:first-child",
+      );
+      const timeRemaining = document.getElementById("time-remaining");
+
+      function updateProgress() {
+        const windowHeight = window.innerHeight;
+        const documentHeight =
+          document.documentElement.scrollHeight - windowHeight;
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        const scrollPercent = (scrollTop / documentHeight) * 100;
+        if (progressBar) progressBar.style.width = scrollPercent + "%";
+        if (progressStats)
+          progressStats.textContent = Math.round(scrollPercent) + "% complete";
+        if (timeRemaining) {
+          const estimatedTotalTime = 10;
+          const timeRemainingValue = Math.max(
+            0,
+            Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100),
+          );
+          timeRemaining.textContent = `~${timeRemainingValue} min remaining`;
+        }
+      }
+
+      // Color generator
+      const generateBtn = document.getElementById("generate-colors");
+      const colorBoxes = document.querySelectorAll(".color-box");
+      const greenColors = [
+        "#05f5ad",
+        "#119c72",
+        "#19e1a5",
+        "#5aedc1",
+        "#9ff4db",
+      ];
+
+      function generateColorScheme() {
+        const shuffled = [...greenColors].sort(() => Math.random() - 0.5);
+        colorBoxes.forEach((box, index) => {
+          if (box)
+            box.style.backgroundColor = shuffled[index % shuffled.length];
+        });
+      }
+
+      window.addEventListener("scroll", updateProgress);
+      if (generateBtn)
+        generateBtn.addEventListener("click", generateColorScheme);
+      if (typeof generateColorScheme === "function") generateColorScheme();
+
+      // Download button
+      const downloadBtn = document.getElementById("download-exercises");
+      if (downloadBtn) {
+        downloadBtn.addEventListener("click", function () {
+          alert(
+            "Download starting... Practice exercises will be available soon!",
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

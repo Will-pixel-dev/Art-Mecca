@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Generator - Art Mecca</title>
+    <meta
+      name="description"
+      content="Generate creative character prompts, story ideas, and landscape concepts. Perfect for overcoming creative block and finding inspiration."
+    />
+    <meta
+      name="keywords"
+      content="prompt generator, character prompts, creative inspiration, art prompts, story ideas, landscape prompts"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Character Prompt Generator - Creative Inspiration For Artists"
+    />
+    <meta
+      property="og:description"
+      content="Generate creative character prompts, story ideas, and landscape concepts. Perfect for overcoming creative block."
+    />
+    <meta property="og:image" content="/images/og-prompts.jpg" />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/tools/prompt-generator.html"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Character Prompt Generator - Creative Inspiration For Artists"
+    />
+    <meta
+      name="twitter:description"
+      content="Generate creative character prompts, story ideas, and landscape concepts."
+    />
+    <meta name="twitter:image" content="/images/og-prompts.jpg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/tools.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/character-design-landing.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link active"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main class="tool-main">
+      <div class="container">
+        <!-- Tool Header -->
+        <div class="tool-header-compact">
+          <h1>Creative Prompt Generator</h1>
+          <p>
+            Spark your imagination with endless creative prompts for characters,
+            landscapes, and stories
+          </p>
+        </div>
+
+        <!-- Main Generator Container -->
+        <div class="prompt-generator-container">
+          <!-- Left Side: Category Selection -->
+          <div class="prompt-controls">
+            <div class="category-selection">
+              <h3><i class="fas fa-magic"></i> Prompt Category</h3>
+              <div class="category-cards">
+                <div class="category-card active" data-category="character">
+                  <div class="category-icon">
+                    <i class="fas fa-user-astronaut"></i>
+                  </div>
+                  <h4>Characters</h4>
+                  <p>Unique personas and creatures</p>
+                </div>
+                <div class="category-card" data-category="landscape">
+                  <div class="category-icon">
+                    <i class="fas fa-mountain"></i>
+                  </div>
+                  <h4>Landscapes</h4>
+                  <p>Breathtaking environments</p>
+                </div>
+                <div class="category-card" data-category="story">
+                  <div class="category-icon">
+                    <i class="fas fa-book-open"></i>
+                  </div>
+                  <h4>Stories</h4>
+                  <p>Compelling narratives</p>
+                </div>
+              </div>
+            </div>
+            <div class="quick-actions">
+              <button id="random-all-btn" class="btn btn-secondary btn-full">
+                <i class="fas fa-random"></i> Random Everything
+              </button>
+              <button id="save-prompt-btn" class="btn btn-outline btn-full">
+                <i class="fas fa-heart"></i> Save Prompt
+              </button>
+            </div>
+            <div class="saved-prompts-preview">
+              <h3><i class="fas fa-history"></i> Saved Prompts</h3>
+              <div class="saved-prompts-list" id="saved-prompts-preview">
+                <div class="empty-state-small">
+                  <i class="fas fa-lightbulb"></i>
+                  <p>No prompts saved yet</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Side: Prompt Display & Generation -->
+          <div class="prompt-display">
+            <div class="prompt-card">
+              <div class="prompt-header">
+                <div class="prompt-category-badge">
+                  <i class="fas fa-user-astronaut"></i><span>Character</span>
+                </div>
+                <div class="prompt-actions">
+                  <button
+                    class="btn-icon"
+                    id="copy-prompt-btn"
+                    title="Copy Prompt"
+                  >
+                    <i class="fas fa-copy"></i>
+                  </button>
+                  <button
+                    class="btn-icon"
+                    id="refresh-prompt-btn"
+                    title="New Prompt"
+                  >
+                    <i class="fas fa-redo"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="prompt-content">
+                <div class="prompt-text" id="prompt-text">
+                  Click "Generate Prompt" to create your first creative
+                  inspiration!
+                </div>
+                <div class="prompt-visual" id="prompt-visual">
+                  <div class="visual-placeholder">
+                    <i class="fas fa-palette"></i>
+                    <p>Your visual inspiration will appear here</p>
+                  </div>
+                </div>
+              </div>
+              <div class="prompt-generate-section">
+                <button
+                  id="generate-prompt-btn"
+                  class="btn btn-primary btn-sparkle btn-large"
+                >
+                  <i class="fas fa-wand-magic-sparkles"></i> Generate New Prompt
+                </button>
+              </div>
+              <div class="prompt-meta">
+                <div class="meta-item">
+                  <span class="meta-label">Category:</span
+                  ><span class="meta-value" id="current-category"
+                    >Character</span
+                  >
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Complexity:</span
+                  ><span class="meta-value" id="current-complexity"
+                    >Detailed</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="category-options" id="category-options"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i></a
+              ><a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i></a
+              ><a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i></a
+              ><a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i></a
+              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
+              ><a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System (for bell icon dropdown) -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <!-- Page Scripts -->
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/tools/prompt-generator.js"></script>
+  </body>
+</html>

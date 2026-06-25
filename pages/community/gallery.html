@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Community Gallery | Art Mecca</title>
+    <meta
+      name="description"
+      content="Browse stunning digital artwork from the Art Mecca community. Discover new artists, get inspired, and share your own creations."
+    />
+    <meta
+      name="keywords"
+      content="art gallery, digital art, artwork, community art, artists"
+    />
+
+    <meta property="og:title" content="Community Gallery - Art Mecca" />
+    <meta
+      property="og:description"
+      content="Browse stunning digital artwork from the Art Mecca community."
+    />
+    <meta property="og:image" content="/images/og-gallery.jpg" />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/community/gallery.html"
+    />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Community Gallery - Art Mecca" />
+    <meta
+      name="twitter:description"
+      content="Browse stunning digital artwork from the Art Mecca community."
+    />
+    <meta name="twitter:image" content="/images/og-gallery.jpg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/variables.css" />
+    <link rel="stylesheet" href="../../css/main.css" />
+    <link rel="stylesheet" href="../../css/gallery.css" />
+    <link rel="stylesheet" href="../../css/header.css" />
+    <link rel="stylesheet" href="../../css/footer.css" />
+    <link rel="stylesheet" href="../../css/search.css" />
+    <link rel="stylesheet" href="../../css/avatar.css" />
+    <!-- Fonts & Libraries -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- ========== SIDEBAR NAVIGATION ========== -->
+    <aside class="sidebar" id="sidebar">
+      <button class="sidebar-collapse-toggle" id="sidebarToggle">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="sidebar-content">
+        <div class="sidebar-logo">
+          <span class="logo-icon">🎨</span
+          ><span class="logo-text">Art Mecca</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="../../index.html" class="sidebar-link"
+            ><i class="fas fa-home"></i><span>Home</span></a
+          >
+          <a href="../tutorials/tutorials.html" class="sidebar-link"
+            ><i class="fas fa-graduation-cap"></i><span>Tutorials</span></a
+          >
+          <a href="../tools/tools.html" class="sidebar-link"
+            ><i class="fas fa-tools"></i><span>Tools</span></a
+          >
+          <a href="../software/software-comparison.html" class="sidebar-link"
+            ><i class="fas fa-laptop-code"></i><span>Software</span></a
+          >
+          <a href="hub.html" class="sidebar-link"
+            ><i class="fas fa-users"></i><span>Community Hub</span></a
+          >
+          <a href="gallery.html" class="sidebar-link active"
+            ><i class="fas fa-images"></i><span>Gallery</span></a
+          >
+          <a href="search-users.html" class="sidebar-link">
+            <i class="fas fa-search"></i><span>Find Artists</span>
+          </a>
+          <a href="../Equip/Equip.html" class="sidebar-link"
+            ><i class="fas fa-briefcase"></i><span>Equip</span></a
+          >
+          <a href="../truly-yours/truly-yours-project.html" class="sidebar-link"
+            ><i class="fas fa-star"></i><span>Truly Yours</span></a
+          >
+        </nav>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-nav secondary">
+          <a href="#" class="sidebar-link" id="sidebarLikes"
+            ><i class="fas fa-heart"></i><span>Liked Artworks</span
+            ><span class="badge" id="likesCount">0</span></a
+          >
+          <a href="#" class="sidebar-link" id="sidebarSaves"
+            ><i class="fas fa-bookmark"></i><span>Saved Items</span
+            ><span class="badge" id="savesCount">0</span></a
+          >
+          <a href="#" class="sidebar-link" id="sidebarUploads"
+            ><i class="fas fa-cloud-upload-alt"></i><span>My Uploads</span></a
+          >
+          <a href="#" class="sidebar-link" id="sidebarNotifications"
+            ><i class="fas fa-bell"></i><span>Notifications</span></a
+          >
+        </nav>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar-sidebar" id="sidebarUserAvatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="user-info">
+          <span class="user-name" id="sidebarUserName">Guest User</span>
+          <span class="user-email" id="sidebarUserEmail"></span>
+          <button class="logout-btn" id="logoutBtn" style="display: none">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+          <a
+            href="../auth/login.html"
+            class="user-login-link"
+            id="sidebarLoginLink"
+            >Sign In</a
+          >
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="main-content">
+      <header class="top-bar">
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Category Dropdown -->
+        <div class="category-dropdown">
+          <button class="dropdown-btn" id="categoryDropdownBtn">
+            <i class="fas fa-filter"></i
+            ><span id="selectedCategory">All Categories</span
+            ><i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="dropdown-menu" id="categoryDropdownMenu">
+            <a href="#" data-category="all" class="dropdown-item active"
+              >✨ All</a
+            >
+            <a href="#" data-category="daily" class="dropdown-item"
+              >⚡ Daily Challenge</a
+            >
+            <a href="#" data-category="weekly" class="dropdown-item"
+              >📅 Weekly Challenge</a
+            >
+            <a href="#" data-category="monthly" class="dropdown-item"
+              >🌟 Monthly Challenge</a
+            >
+            <a href="#" data-category="yearly" class="dropdown-item"
+              >🏆 Yearly Challenge</a
+            >
+            <a href="#" data-category="random" class="dropdown-item"
+              >🎲 Random Prompt</a
+            >
+            <a href="#" data-category="original" class="dropdown-item"
+              >🎨 Original</a
+            >
+            <a href="#" data-category="photography" class="dropdown-item"
+              >📷 Photography</a
+            >
+            <a href="#" data-category="animation" class="dropdown-item"
+              >🎬 Animation</a
+            >
+            <a href="#" data-category="traditional-art" class="dropdown-item"
+              >🖌️ Traditional Art</a
+            >
+            <a href="#" data-category="trending" class="dropdown-item"
+              >🔥 Trending</a
+            >
+            <a href="#" data-category="new" class="dropdown-item"
+              >🆕 New Arrivals</a
+            >
+            <!-- Add to filter bar -->
+            <div class="filter-bar">
+              <!-- ... existing filters ... -->
+              <label
+                style="
+                  color: #a0aec0;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  cursor: pointer;
+                "
+              >
+                <input type="checkbox" id="verifiedOnly" />
+                <i class="fas fa-shield-alt" style="color: #10b981"></i>
+                Verified Only
+              </label>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a
+              href="#"
+              data-category="nsfw"
+              class="dropdown-item"
+              style="color: #ef4444"
+              >🔞 NSFW Gallery</a
+            >
+          </div>
+        </div>
+
+        <!-- Mini Random Prompt -->
+        <div class="mini-prompt">
+          <i class="fas fa-dice-d6"></i
+          ><span id="miniPromptText">Click for inspiration</span>
+          <button class="mini-prompt-btn" id="miniPromptBtn">New</button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar-container">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search artwork, artists, tags..."
+            class="search-bar-input"
+          />
+          <button
+            class="search-clear"
+            id="searchClearBtn"
+            style="display: none"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- AUTH BUTTONS - Needed for authManager -->
+        <div class="auth-buttons"></div>
+
+        <!-- Upload Button -->
+        <button class="top-upload-btn" id="topUploadBtn">
+          <i class="fas fa-plus"></i><span>Upload</span>
+        </button>
+      </header>
+
+      <!-- Random Prompt Banner -->
+      <div class="random-prompt-banner" id="randomPromptBanner">
+        <div class="prompt-banner-content">
+          <div class="prompt-icon">🎲</div>
+          <div class="prompt-text">
+            <span class="prompt-label">Random Prompt Generator</span>
+            <span class="prompt-value" id="randomPromptText"
+              >Click the button for inspiration!</span
+            >
+          </div>
+          <button class="btn-prompt" id="generateRandomPrompt">
+            New Prompt <i class="fas fa-dice-d6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Masonry Gallery Grid -->
+      <div class="gallery-container">
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="gallery-sizer"></div>
+        </div>
+        <div class="loading-spinner" id="loadingSpinner">
+          <div class="spinner"></div>
+          <p>Loading amazing artwork...</p>
+        </div>
+        <div class="load-more-container" id="loadMoreContainer">
+          <button class="btn-load-more" id="loadMoreBtn">
+            Load More <i class="fas fa-arrow-down"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ========== MODALS ========== -->
+    <!-- Upload Modal -->
+    <div class="modal-overlay" id="uploadModal">
+      <div class="modal-container upload-modal">
+        <div class="modal-header">
+          <h3><i class="fas fa-cloud-upload-alt"></i> Share Your Artwork</h3>
+          <button class="modal-close" id="closeUploadModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="uploadForm">
+            <div class="upload-area" id="uploadArea">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Drag & drop or click to upload</p>
+              <span>PNG, JPG, JPEG up to 10MB</span>
+              <input type="file" id="imageFile" accept="image/*" hidden />
+            </div>
+            <div class="form-group">
+              <label>Title <span class="required">*</span></label>
+              <input
+                type="text"
+                id="artTitle"
+                placeholder="Give your artwork a title"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Category <span class="required">*</span></label>
+              <select id="artCategory" required>
+                <option value="">Select category</option>
+                <option value="daily">⚡ Daily Challenge</option>
+                <option value="weekly">📅 Weekly Challenge</option>
+                <option value="monthly">🌟 Monthly Challenge</option>
+                <option value="yearly">🏆 Yearly Challenge</option>
+                <option value="random">🎲 Random Prompt</option>
+                <option value="original">🎨 Original</option>
+                <option value="photography">📷 Photography</option>
+                <option value="animation">🎬 Animation</option>
+                <option value="traditional-art">🖌️ Traditional Art</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea
+                id="artDescription"
+                rows="3"
+                placeholder="Tell us about your artwork..."
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>Tags (comma separated)</label>
+              <input
+                type="text"
+                id="artTags"
+                placeholder="e.g., portrait, digital art, fantasy"
+              />
+            </div>
+            <!-- Add this after the Tags field or before the submit button -->
+            <div class="form-group">
+              <label
+                class="checkbox-label"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  cursor: pointer;
+                "
+              >
+                <input type="checkbox" id="isNSFW" />
+                <span class="checkmark"></span>
+                <span style="font-weight: 500"
+                  >🔞 This artwork contains mature content (18+)</span
+                >
+              </label>
+              <small
+                class="helper-text"
+                style="color: #6b7280; display: block; margin-top: 0.25rem"
+              >
+                Checking this will restrict access to verified 18+ users only.
+              </small>
+            </div>
+
+            <!-- NSFW Category (shown when NSFW is checked) -->
+            <div
+              class="form-group"
+              id="nsfwCategoryGroup"
+              style="display: none"
+            >
+              <label>NSFW Category</label>
+              <select id="nsfwCategory">
+                <option value="nudity">Artistic Nudity</option>
+                <option value="violence">Gore & Violence</option>
+                <option value="mature">Mature Themes</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-submit" id="submitArtBtn">
+              <i class="fas fa-paper-plane"></i> Publish to Gallery
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Detail Modal -->
+    <div class="modal-overlay" id="imageModal">
+      <div class="modal-container image-modal">
+        <button class="modal-close" id="closeImageModal">&times;</button>
+        <div class="image-modal-content">
+          <div class="image-modal-left">
+            <img id="modalImage" src="" alt="" />
+          </div>
+          <div class="image-modal-right">
+            <div class="modal-artist-info">
+              <div class="artist-avatar" id="modalArtistAvatar">🎨</div>
+              <div class="artist-details">
+                <h4 id="modalArtistName">Artist Name</h4>
+                <span class="post-time" id="modalPostTime">Just now</span>
+              </div>
+            </div>
+            <h2 id="modalTitle">Artwork Title</h2>
+            <p id="modalDescription" class="modal-description">
+              Artwork description goes here...
+            </p>
+            <div class="modal-tags" id="modalTags"></div>
+            <div class="modal-actions">
+              <button class="action-btn like-btn" id="modalLikeBtn">
+                <i class="far fa-heart"></i><span id="likeCount">0</span>
+              </button>
+              <button class="action-btn cheers-btn" id="modalCheersBtn">
+                <i class="fas fa-glass-cheers"></i
+                ><span id="cheersCount">0</span>
+              </button>
+              <button class="action-btn" id="modalDownloadBtn">
+                <i class="fas fa-download"></i>
+              </button>
+              <button class="action-btn" id="modalShareBtn">
+                <i class="fas fa-share-alt"></i>
+              </button>
+              <button class="action-btn" id="modalSaveBtn">
+                <i class="fas fa-bookmark"></i>
+              </button>
+            </div>
+            <div class="comment-section">
+              <div class="comment-header" id="commentHeader">
+                <h4>
+                  <i class="fas fa-comments"></i> Comments
+                  <span id="commentCount">0</span>
+                </h4>
+                <button class="toggle-comments" id="toggleCommentsBtn">
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+              </div>
+              <div class="comment-body" id="commentBody">
+                <div class="comment-input">
+                  <div class="comment-avatar">👤</div>
+                  <input
+                    type="text"
+                    id="commentInput"
+                    placeholder="Add a comment..."
+                  />
+                  <button id="postCommentBtn">Post</button>
+                </div>
+                <div class="comments-list" id="commentsList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+      <i class="fas fa-check-circle"></i><span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="../tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="../software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="../../tools/tools.html">Tools</a></li>
+              <li><a href="hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ========== SCRIPTS ========== -->
+    <!-- Config & Auth (Firebase SDKs already in head) -->
+    <script src="../../config/firebase-config.js"></script>
+    <script src="../../js/auth/auth-manager.js"></script>
+    <script src="../../js/auth/auth-check.js"></script>
+
+    <!-- ========== SEO ========== -->
+    <script src="/js/utils/seo.js"></script>
+
+    <!-- Navbar Active Detection -->
+    <script src="../../js/navbar-active.js"></script>
+
+    <!-- ========== ERROR HANDLER ========== -->
+    <script src="/js/utils/error-handler.js"></script>
+
+    <!-- Notifications System -->
+    <script src="../../js/community/notifications.js"></script>
+
+    <!-- ========== CACHE & QUERY OPTIMIZER ========== -->
+    <script src="/js/utils/cache-manager.js"></script>
+    <script src="/js/utils/query-optimizer.js"></script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+    <!-- Page Scripts -->
+    <script src="../../js/community/gallery.js"></script>
+    <script src="../../js/main.js"></script>
+
+    <!-- Header Initialization -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+  </body>
+</html>

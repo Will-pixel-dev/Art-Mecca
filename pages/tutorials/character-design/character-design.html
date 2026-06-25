@@ -1,0 +1,2128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Character Design | Art Mecca</title>
+    <meta
+      name="description"
+      content="Learn dynamic character design with our comprehensive tutorial. Master silhouette, shape language, color theory, and personality-driven design."
+    />
+    <meta
+      name="keywords"
+      content="character design, character creation, character art, digital art tutorial, character design tutorial, OC creation"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Dynamic Character Design - Master Character Creation"
+    />
+    <meta
+      property="og:description"
+      content="Learn dynamic character design with our comprehensive tutorial. Master silhouette, shape language, and personality-driven design."
+    />
+    <meta
+      property="og:image"
+      content="/images/tutorials/character-design-hero.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/tutorials/character-design/character-design.html"
+    />
+    <meta property="og:type" content="article" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Dynamic Character Design - Master Character Creation"
+    />
+    <meta
+      name="twitter:description"
+      content="Learn dynamic character design with our comprehensive tutorial."
+    />
+    <meta
+      name="twitter:image"
+      content="/images/tutorials/character-design-hero.jpg"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ============================================
+           CHARACTER DESIGN TUTORIAL - ORANGE THEME
+           Colors: #ff9500, #ffbb00, #f56200, #ffba24
+           ============================================ */
+
+      :root {
+        --tutorial-primary: #ff9500;
+        --tutorial-primary-dark: #f56200;
+        --tutorial-primary-light: #ffbb00;
+        --tutorial-primary-lighter: #ffba24;
+        --tutorial-primary-lightest: #ffe0b3;
+      }
+
+      /* ============================================
+           CUSTOM ORANGE THEME NAVBAR
+           ============================================ */
+
+      .main-header {
+        background: white;
+        box-shadow:
+          0 8px 32px rgba(255, 149, 0, 0.15),
+          0 2px 8px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(255, 149, 0, 0.2);
+      }
+
+      .main-header .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+      }
+
+      .main-header .logo-icon {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #ff9500, #f56200, #ffbb00);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: logoPulse 3s ease-in-out infinite;
+      }
+
+      @keyframes logoPulse {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 0px rgba(255, 149, 0, 0.3));
+        }
+        50% {
+          filter: drop-shadow(0 0 8px rgba(255, 149, 0, 0.6));
+        }
+      }
+
+      .main-header .logo-text {
+        font-size: 1.3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ff9500, #f56200, #ffbb00, #ffba24);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        background-size: 200% auto;
+        animation: shimmer 3s linear infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 0% center;
+        }
+        100% {
+          background-position: 200% center;
+        }
+      }
+
+      .main-header .nav-link {
+        color: #4a5568;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .main-header .nav-link:hover {
+        background: linear-gradient(135deg, #ff9500, #f56200);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        transform: translateY(-2px);
+      }
+
+      .main-header .nav-link.active {
+        background: linear-gradient(135deg, #ff9500, #f56200);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 600;
+      }
+
+      .main-header .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background: linear-gradient(90deg, #ff9500, #f56200);
+        border-radius: 3px;
+        animation: underlineGlow 2s ease-in-out infinite;
+      }
+
+      @keyframes underlineGlow {
+        0%,
+        100% {
+          opacity: 0.6;
+          width: 60%;
+        }
+        50% {
+          opacity: 1;
+          width: 80%;
+          box-shadow: 0 0 6px #ff9500;
+        }
+      }
+
+      .main-header .dropdown-arrow {
+        font-size: 0.7rem;
+        transition: transform 0.3s ease;
+        color: #f56200;
+      }
+
+      .nav-dropdown:hover .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+
+      .main-header .dropdown-menu {
+        background: white;
+        border: none;
+        border-radius: 12px;
+        box-shadow:
+          0 12px 32px rgba(255, 149, 0, 0.2),
+          0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+
+      .main-header .dropdown-menu::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #ff9500, #f56200, #ffbb00, #ffba24);
+      }
+
+      .main-header .dropdown-item {
+        padding: 0.75rem 1.5rem;
+        color: #4a5568;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .main-header .dropdown-item:hover {
+        background: linear-gradient(90deg, #ffe0b3, white);
+        color: #f56200;
+        padding-left: 1.8rem;
+      }
+
+      .main-header .search-btn {
+        color: #4a5568;
+        transition: all 0.3s ease;
+      }
+
+      .main-header .search-btn:hover {
+        color: #ff9500;
+        transform: scale(1.05);
+      }
+
+      .main-header .user-btn {
+        color: #4a5568;
+        transition: all 0.3s ease;
+      }
+
+      .main-header .user-btn:hover {
+        color: #ff9500;
+        transform: scale(1.05);
+      }
+
+      .main-header .signup-btn {
+        background: linear-gradient(135deg, #ff9500, #f56200);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+      }
+
+      .main-header .signup-btn:hover {
+        background: linear-gradient(135deg, #f56200, #ff9500);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 149, 0, 0.4);
+      }
+
+      .user-dropdown {
+        border-top: 3px solid #ff9500;
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(255, 149, 0, 0.2);
+      }
+
+      .user-dropdown .dropdown-item:hover {
+        background: #ffe0b3;
+        color: #f56200;
+      }
+
+      .mobile-menu-btn span {
+        background: #f56200;
+      }
+
+      /* ============================================
+           TUTORIAL CONTENT STYLES
+           ============================================ */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8f8f8;
+        color: #1a1a1a;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      /* Tutorial Hero Section */
+      .tutorial-hero {
+        background: linear-gradient(135deg, #ffe0b3, white);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        margin: 2rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+
+      .tutorial-info {
+        flex: 1;
+        min-width: 280px;
+      }
+
+      .breadcrumb {
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .breadcrumb a {
+        color: #ff9500;
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        color: #f56200;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+
+      .tutorial-description {
+        font-size: 1.1rem;
+        margin: 1rem 0;
+        color: #333;
+      }
+
+      .tutorial-meta {
+        display: flex;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+        color: #ff9500;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .difficulty {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+      }
+
+      .intermediate {
+        background: #ffbb00;
+        color: white;
+      }
+
+      .approach-selector {
+        margin-top: 1.5rem;
+      }
+
+      .approach-selector h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .approach-buttons {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .approach-btn {
+        background: #f8f8f8;
+        border: 2px solid #e5e5e5;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .approach-btn.active {
+        background: #ff9500;
+        color: white;
+        border-color: #ff9500;
+      }
+
+      .tools-required {
+        margin-top: 1.5rem;
+      }
+
+      .tools-required h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .tools-required ul {
+        margin-left: 1.5rem;
+        color: #555;
+      }
+
+      .tutorial-image {
+        flex: 1;
+        min-width: 280px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .tutorial-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .tutorial-image:hover img {
+        transform: scale(1.02);
+      }
+
+      .image-caption {
+        padding: 0.5rem;
+        text-align: center;
+        font-style: italic;
+        font-size: 0.8rem;
+        background: #f5f5f5;
+        color: #666;
+      }
+
+      /* Progress Bar */
+      .progress-container {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress {
+        height: 100%;
+        background: linear-gradient(90deg, #ff9500, #f56200);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .progress-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      /* Tutorial Content */
+      .tutorial-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+        color: #f56200;
+        margin: 2rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+        color: #333;
+        margin: 1rem 0 0.5rem;
+      }
+
+      .step {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .step:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: #ff9500;
+        color: white;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      .step-content {
+        margin-left: 0.5rem;
+      }
+
+      .step-content p {
+        line-height: 1.7;
+        color: #444;
+      }
+
+      /* Tutorial Visual Aid Image */
+      .tutorial-visual {
+        margin: 1.5rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f8f8f8;
+        border: 1px solid #e5e5e5;
+      }
+
+      .visual-placeholder {
+        width: 100%;
+        min-height: 250px;
+        background: linear-gradient(135deg, #f8f8f8, #e0e0e0);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .visual-placeholder i {
+        font-size: 4rem;
+        color: #ff9500;
+        margin-bottom: 1rem;
+        opacity: 0.6;
+      }
+
+      .visual-placeholder p {
+        color: #888;
+        font-size: 0.9rem;
+      }
+
+      .visual-placeholder .placeholder-note {
+        font-size: 0.7rem;
+        color: #aaa;
+        margin-top: 0.5rem;
+      }
+
+      .tutorial-visual img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .visual-caption {
+        padding: 0.5rem 1rem;
+        text-align: center;
+        font-style: italic;
+        font-size: 0.8rem;
+        background: #f5f5f5;
+        color: #666;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .tips {
+        background: #ffe0b3;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        border-left: 4px solid #ff9500;
+      }
+
+      .tips h4 {
+        color: #f56200;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Interactive Elements */
+      .character-traits {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
+
+      .trait-card {
+        background: #f8f8f8;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .trait-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .trait-card.active {
+        background: #ffe0b3;
+        border: 2px solid #ff9500;
+      }
+
+      .trait-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: #ff9500;
+      }
+
+      .design-prompt {
+        background: linear-gradient(135deg, #ffe0b3, #fff5e6);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+
+      .design-prompt h3 {
+        color: #f56200;
+      }
+
+      .prompt-text {
+        font-size: 1.1rem;
+        margin: 1rem 0;
+        font-weight: 500;
+      }
+
+      .generate-prompt {
+        background: #ff9500;
+        color: white;
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .generate-prompt:hover {
+        background: #f56200;
+        transform: translateY(-2px);
+      }
+
+      /* Video Section */
+      .video-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .video-section h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .video-placeholder {
+        width: 100%;
+        height: 400px;
+        background: linear-gradient(135deg, #ffbb00, #f56200);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        cursor: pointer;
+      }
+
+      .video-placeholder i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .video-placeholder p {
+        font-size: 1.1rem;
+      }
+
+      /* Tutorial Navigation */
+      .tutorial-navigation {
+        display: flex;
+        justify-content: space-between;
+        margin: 2rem 0;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        background: white;
+        border: 2px solid #ff9500;
+        border-radius: 50px;
+        color: #f56200;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .nav-btn:hover {
+        background: #ff9500;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .completion-message {
+        background: linear-gradient(135deg, #ff9500, #f56200);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .completion-message h3 {
+        color: white;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      /* Footer */
+      .tutorial-footer {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        color: white;
+        padding: 3rem 0 1rem 0;
+        margin-top: 3rem;
+      }
+
+      .tutorial-footer .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .footer-section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #ff9500, #f56200);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .footer-section h4 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #a0aec0;
+      }
+
+      .footer-section p {
+        color: #cbd5e0;
+        line-height: 1.6;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 0.5rem;
+      }
+
+      .footer-section ul li a {
+        color: #cbd5e0;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .footer-section ul li a:hover {
+        color: #ff9500;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .social-link:hover {
+        background: #ff9500;
+        transform: translateY(-3px);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #a0aec0;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .tutorial-hero {
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: 1.6rem;
+        }
+
+        h2 {
+          font-size: 1.3rem;
+        }
+
+        .tutorial-navigation {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .nav-btn {
+          justify-content: center;
+        }
+
+        .video-placeholder {
+          height: 250px;
+        }
+
+        .approach-buttons {
+          flex-direction: column;
+        }
+
+        .character-traits {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header with Orange Theme - Updated Navbar -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM (LEFT of search) -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i
+              ><input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <!-- Tutorial Content -->
+    <main>
+      <div class="container">
+        <!-- Tutorial Header -->
+        <section class="tutorial-hero">
+          <div class="tutorial-info">
+            <div class="breadcrumb">
+              <a href="/index.html">Home</a> &gt;
+              <a href="/pages/tutorials/tutorials.html">Tutorials</a> &gt;
+              <a href="/pages/tutorials/character-design-tutorials.html"
+                >Character Design</a
+              >
+              &gt;
+              <span>Dynamic Character Creation</span>
+            </div>
+            <h1>Dynamic Character Design: Finding Your Approach</h1>
+            <p class="tutorial-description">
+              Explore different methods for creating compelling characters that
+              tell a story through their design.
+            </p>
+
+            <div class="tutorial-meta">
+              <div class="meta-item">
+                <i class="fas fa-clock"></i> 30-45 min
+              </div>
+              <div class="meta-item">
+                <i class="fas fa-user"></i> Multiple Artists
+              </div>
+              <div class="meta-item">
+                <i class="fas fa-calendar"></i> Updated Weekly
+              </div>
+            </div>
+
+            <div
+              class="tutorial-actions"
+              style="
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                margin-top: 1rem;
+              "
+            >
+              <button
+                class="btn-save-tutorial"
+                id="saveTutorialBtn"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  padding: 0.5rem 1rem;
+                  background: white;
+                  border: 2px solid #ff9500;
+                  border-radius: 40px;
+                  color: #ff9500;
+                  font-weight: 500;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                "
+              >
+                <i class="far fa-bookmark" id="saveIcon"></i>
+                <span id="saveText">Save Tutorial</span>
+              </button>
+              <div
+                class="completion-checkbox"
+                style="display: flex; align-items: center; gap: 0.5rem"
+              >
+                <input
+                  type="checkbox"
+                  id="markCompleted"
+                  style="width: 20px; height: 20px; accent-color: #ff9500"
+                />
+                <label for="markCompleted" style="color: #666"
+                  >Mark as completed</label
+                >
+              </div>
+            </div>
+
+            <div class="difficulty intermediate">All Levels</div>
+
+            <div class="approach-selector">
+              <h3>Choose Your Approach</h3>
+              <div class="approach-buttons">
+                <button class="approach-btn active" data-approach="silhouette">
+                  Silhouette First
+                </button>
+                <button class="approach-btn" data-approach="personality">
+                  Personality First
+                </button>
+                <button class="approach-btn" data-approach="story">
+                  Story Driven
+                </button>
+                <button class="approach-btn" data-approach="archetype">
+                  Archetype Based
+                </button>
+              </div>
+            </div>
+
+            <div class="tools-required">
+              <h3>Tools Required</h3>
+              <ul>
+                <li>Sketchbook or digital drawing software</li>
+                <li>Reference images (optional)</li>
+                <li>Character design worksheets (provided)</li>
+                <li>Imagination and creativity!</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tutorial-image">
+            <img
+              src="/images/tutorials/character-design-hero.jpg"
+              alt="Character Design Process"
+            />
+            <div class="image-caption">
+              Various character design approaches and outcomes
+            </div>
+          </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <section class="progress-container">
+          <div class="progress-bar">
+            <div class="progress" id="reading-progress"></div>
+          </div>
+          <div class="progress-stats">
+            <span>0% complete</span
+            ><span id="time-remaining">~15 min remaining</span>
+          </div>
+        </section>
+
+        <!-- Tutorial Content -->
+        <section class="tutorial-content">
+          <!-- Step 1 -->
+          <div class="step" id="step-1">
+            <h2>
+              <span class="step-number">1</span>Understanding Character Design
+              Fundamentals
+            </h2>
+            <div class="step-content">
+              <p>
+                Character design is more than just drawing a person - it's about
+                creating a visual representation of personality, backstory, and
+                role. Great characters communicate who they are before they even
+                speak.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Design Principle</h4>
+                <p>
+                  Strong character designs often use shape language, color
+                  psychology, and silhouette readability to communicate
+                  character traits instantly.
+                </p>
+              </div>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Character Fundamentals Visual Aid</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 1.1 - Key elements that make characters memorable (Add your
+                image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step" id="step-2">
+            <h2>
+              <span class="step-number">2</span>Define Core Character Traits
+            </h2>
+            <div class="step-content">
+              <p>
+                Before drawing, establish your character's key personality
+                traits. These will inform every design decision you make.
+              </p>
+              <div class="character-traits">
+                <div class="trait-card" data-trait="personality">
+                  <div class="trait-icon"><i class="fas fa-brain"></i></div>
+                  <h4>Personality</h4>
+                  <p>Is your character brave, shy, mischievous, or wise?</p>
+                </div>
+                <div class="trait-card" data-trait="background">
+                  <div class="trait-icon"><i class="fas fa-history"></i></div>
+                  <h4>Background</h4>
+                  <p>Where do they come from? What's their story?</p>
+                </div>
+                <div class="trait-card" data-trait="motivation">
+                  <div class="trait-icon"><i class="fas fa-bullseye"></i></div>
+                  <h4>Motivation</h4>
+                  <p>What do they want? What drives them?</p>
+                </div>
+                <div class="trait-card" data-trait="role">
+                  <div class="trait-icon"><i class="fas fa-mask"></i></div>
+                  <h4>Role</h4>
+                  <p>What function do they serve in the story?</p>
+                </div>
+              </div>
+              <div class="design-prompt">
+                <h3>Need Inspiration?</h3>
+                <p class="prompt-text" id="prompt-text">
+                  Create a character who finds magic in ordinary objects
+                </p>
+                <button class="generate-prompt" id="generate-prompt">
+                  New Prompt
+                </button>
+              </div>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Character Trait Exploration Visual Aid</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 2.1 - How different traits affect character design (Add your
+                image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step" id="step-3">
+            <h2>
+              <span class="step-number">3</span>Silhouette and Shape Language
+            </h2>
+            <div class="step-content">
+              <p>
+                A strong, readable silhouette is crucial for character
+                recognition. Different shapes communicate different
+                personalities.
+              </p>
+              <h3>Shape Associations</h3>
+              <ul>
+                <li><strong>Circles:</strong> Friendly, soft, approachable</li>
+                <li><strong>Squares:</strong> Strong, reliable, stable</li>
+                <li>
+                  <strong>Triangles:</strong> Dynamic, dangerous, aggressive
+                </li>
+                <li>
+                  <strong>Organic Shapes:</strong> Natural, magical,
+                  unpredictable
+                </li>
+              </ul>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Shape Language Demonstration</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own silhouette and shape
+                  examples
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 3.1 - How different shapes communicate character traits (Add
+                your image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step" id="step-4">
+            <h2>
+              <span class="step-number">4</span>Color Theory for Characters
+            </h2>
+            <div class="step-content">
+              <p>
+                Colors evoke emotions and communicate personality. Choose your
+                palette intentionally to support your character's story.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Color Psychology</h4>
+                <p>
+                  Consider cultural associations with colors. Red can mean
+                  passion or danger, blue can mean calm or sadness, etc.
+                </p>
+              </div>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Color Theory Character Examples</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own color palette examples
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 4.1 - How color choices affect character perception (Add
+                your image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="step" id="step-5">
+            <h2><span class="step-number">5</span>Costume and Prop Design</h2>
+            <div class="step-content">
+              <p>
+                Clothing and accessories tell stories about your character's
+                profession, status, personality, and world.
+              </p>
+              <h3>Costume Considerations</h3>
+              <ul>
+                <li>Practicality vs. aesthetic</li>
+                <li>Cultural and historical accuracy</li>
+                <li>Character's economic status</li>
+                <li>Personal style preferences</li>
+              </ul>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Costume Design Examples</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own costume design images
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 5.1 - How costumes communicate character information (Add
+                your image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="step" id="step-6">
+            <h2>
+              <span class="step-number">6</span>Facial Expressions and Body
+              Language
+            </h2>
+            <div class="step-content">
+              <p>
+                How your character carries themselves and expresses emotions
+                brings them to life and makes them relatable.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Acting Through Design</h4>
+                <p>
+                  Consider how your character would stand, walk, and react to
+                  different situations. These details make them feel real.
+                </p>
+              </div>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Expression and Body Language Examples</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own expression sheet
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 6.1 - Communicating emotion through expression and posture
+                (Add your image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 7 -->
+          <div class="step" id="step-7">
+            <h2>
+              <span class="step-number">7</span>Creating Variety and Contrast
+            </h2>
+            <div class="step-content">
+              <p>
+                When designing multiple characters, ensure they're visually
+                distinct and their designs complement each other.
+              </p>
+              <h3>Contrast Techniques</h3>
+              <ul>
+                <li>Vary heights and body types</li>
+                <li>Use complementary color schemes</li>
+                <li>Mix different silhouette shapes</li>
+                <li>Contrast personality through design</li>
+              </ul>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Character Variety Examples</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own character ensemble
+                  examples
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 7.1 - Creating visually distinct character ensembles (Add
+                your image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 8 -->
+          <div class="step" id="step-8">
+            <h2><span class="step-number">8</span>Refining Your Design</h2>
+            <div class="step-content">
+              <p>
+                Take your initial concept and polish it into a final design
+                that's both visually appealing and functionally effective.
+              </p>
+              <h3>Refinement Checklist</h3>
+              <ul>
+                <li>Is the silhouette strong and readable?</li>
+                <li>Do colors support the character's personality?</li>
+                <li>Is the design appropriate for its intended use?</li>
+                <li>Does it stand out from similar characters?</li>
+              </ul>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Before/After Refinement Examples</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own refinement process
+                  images
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 8.1 - The journey from rough sketch to final design (Add
+                your image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 9 -->
+          <div class="step" id="step-9">
+            <h2>
+              <span class="step-number">9</span>Presentation and Turnaround
+            </h2>
+            <div class="step-content">
+              <p>
+                Present your character professionally with multiple views,
+                expressions, and details that showcase your design.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Portfolio Ready</h4>
+                <p>
+                  Include expression sheets, turnaround views, and context shots
+                  to show your character from all angles and in different
+                  situations.
+                </p>
+              </div>
+            </div>
+            <!-- TUTORIAL VISUAL AID PLACEHOLDER - Replace src with your actual image -->
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-image"></i>
+                <p>📷 Your Character Turnaround Examples</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own character turnaround
+                  sheet
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 9.1 - Professional character presentation with multiple
+                views (Add your image description)
+              </div>
+            </div>
+          </div>
+
+          <!-- Completion Message -->
+          <div class="completion-message">
+            <h3><i class="fas fa-trophy"></i> Character Created!</h3>
+            <p>
+              You've explored the fundamentals of dynamic character design.
+              Remember that great characters evolve - don't be afraid to revisit
+              and refine your designs as you grow as an artist.
+            </p>
+          </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="video-section">
+          <h2>Character Design in Action</h2>
+          <p>
+            Watch professional artists create characters from concept to
+            completion.
+          </p>
+          <div class="video-container">
+            <div class="video-placeholder">
+              <i class="fab fa-youtube"></i>
+              <p>Character Design Process Video</p>
+              <p><small>Click to watch the full tutorial</small></p>
+            </div>
+          </div>
+          <p style="margin-top: 1rem">
+            <a href="#" style="color: #ff9500; text-decoration: none"
+              >Explore more character design videos on our YouTube channel →</a
+            >
+          </p>
+        </section>
+
+        <!-- Tutorial Navigation -->
+        <section class="tutorial-navigation">
+          <a
+            href="/pages/tutorials/digital-painting-landing.html"
+            class="nav-btn"
+            ><i class="fas fa-arrow-left"></i> Previous Tutorial</a
+          >
+          <a href="/pages/tutorials/color-lighting-landing.html" class="nav-btn"
+            >Next Tutorial <i class="fas fa-arrow-right"></i
+          ></a>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i></a
+              ><a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i></a
+              ><a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i></a
+              ><a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i></a
+              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
+              ><a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <!-- Navbar Active Detection -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Progress tracking
+        const progressBar = document.getElementById("reading-progress");
+        const progressStats = document.querySelector(
+          ".progress-stats span:first-child",
+        );
+        const timeRemaining = document.getElementById("time-remaining");
+
+        // Approach selector
+        const approachButtons = document.querySelectorAll(".approach-btn");
+
+        // Character traits
+        const traitCards = document.querySelectorAll(".trait-card");
+
+        // Design prompt generator
+        const promptText = document.getElementById("prompt-text");
+        const generatePromptBtn = document.getElementById("generate-prompt");
+
+        // Video placeholder
+        const videoPlaceholder = document.querySelector(".video-placeholder");
+
+        // Design prompts
+        const designPrompts = [
+          "Create a character who finds magic in ordinary objects",
+          "Design a character based on your favorite season",
+          "Imagine a character who can communicate with animals",
+          "Create a character whose appearance contradicts their personality",
+          "Design a character inspired by a historical figure",
+          "Imagine a character who collects unusual things",
+          "Create a character with a hidden talent or ability",
+          "Design a character based on a mythological creature",
+          "Imagine a character who travels between worlds",
+          "Create a character with a unique profession",
+        ];
+
+        // Update progress as user scrolls
+        function updateProgress() {
+          const windowHeight = window.innerHeight;
+          const documentHeight =
+            document.documentElement.scrollHeight - windowHeight;
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+          const scrollPercent = (scrollTop / documentHeight) * 100;
+
+          if (progressBar) progressBar.style.width = scrollPercent + "%";
+          if (progressStats)
+            progressStats.textContent =
+              Math.round(scrollPercent) + "% complete";
+
+          if (timeRemaining) {
+            const estimatedTotalTime = 15;
+            const timeRemainingValue = Math.max(
+              0,
+              Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100),
+            );
+            timeRemaining.textContent = `~${timeRemainingValue} min remaining`;
+          }
+        }
+
+        // Change approach
+        function changeApproach(e) {
+          approachButtons.forEach((btn) => btn.classList.remove("active"));
+          e.target.classList.add("active");
+          console.log(`Switched to ${e.target.dataset.approach} approach`);
+        }
+
+        // Select trait
+        function selectTrait(e) {
+          traitCards.forEach((card) => card.classList.remove("active"));
+          e.currentTarget.classList.add("active");
+          console.log(`Selected ${e.currentTarget.dataset.trait} trait`);
+        }
+
+        // Generate new prompt
+        function generateNewPrompt() {
+          const randomIndex = Math.floor(Math.random() * designPrompts.length);
+          if (promptText) promptText.textContent = designPrompts[randomIndex];
+        }
+
+        // Initialize
+        updateProgress();
+        generateNewPrompt();
+
+        // Event listeners
+        window.addEventListener("scroll", updateProgress);
+
+        approachButtons.forEach((btn) => {
+          btn.addEventListener("click", changeApproach);
+        });
+
+        traitCards.forEach((card) => {
+          card.addEventListener("click", selectTrait);
+        });
+
+        if (generatePromptBtn)
+          generatePromptBtn.addEventListener("click", generateNewPrompt);
+
+        // Video placeholder click
+        if (videoPlaceholder) {
+          videoPlaceholder.addEventListener("click", function () {
+            alert(
+              "🎬 This would open a YouTube video demonstrating character design processes",
+            );
+          });
+        }
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 100,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+      });
+    </script>
+    <script>
+      // Tutorial save functionality
+      // Tutorial save functionality
+      const tutorialData = {
+        id: "character-design",
+        title: "Dynamic Character Design: Finding Your Approach",
+        category: "character-design",
+        thumbnail: "/images/tutorials/character-design-hero.jpg",
+        duration: "30-45 min",
+        difficulty: "intermediate",
+        steps: 9,
+      };
+
+      // Check if user is logged in and load saved status
+      firebase.auth().onAuthStateChanged(async (user) => {
+        const saveBtn = document.getElementById("saveTutorialBtn");
+        const saveIcon = document.getElementById("saveIcon");
+        const saveText = document.getElementById("saveText");
+        const completedCheckbox = document.getElementById("markCompleted");
+
+        if (!user) {
+          if (saveBtn) saveBtn.style.display = "none";
+          if (completedCheckbox) completedCheckbox.style.display = "none";
+          return;
+        }
+
+        if (saveBtn) saveBtn.style.display = "flex";
+        if (completedCheckbox) completedCheckbox.style.display = "flex";
+
+        // Load saved status - check if document EXISTS, not a 'saved' property
+        try {
+          const savedRef = firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("savedTutorials")
+            .doc(tutorialData.id);
+
+          const savedDoc = await savedRef.get();
+
+          // If the document exists, it means the tutorial is saved
+          if (savedDoc.exists) {
+            saveIcon.className = "fas fa-bookmark";
+            saveText.textContent = "Saved";
+            saveBtn.style.background = "#ff9500";
+            saveBtn.style.color = "white";
+          } else {
+            saveIcon.className = "far fa-bookmark";
+            saveText.textContent = "Save Tutorial";
+            saveBtn.style.background = "white";
+            saveBtn.style.color = "#ff9500";
+          }
+
+          // Load completed status
+          const progressDoc = await firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("tutorialProgress")
+            .doc(tutorialData.id)
+            .get();
+
+          if (progressDoc.exists && progressDoc.data().completed) {
+            completedCheckbox.checked = true;
+          } else {
+            completedCheckbox.checked = false;
+          }
+
+          // Also load reading progress from localStorage
+          const savedProgress = localStorage.getItem(
+            `tutorial_progress_${tutorialData.id}`,
+          );
+          if (savedProgress) {
+            const progressPercent = parseInt(savedProgress);
+            const progressBar = document.getElementById("reading-progress");
+            const progressStats = document.querySelector(
+              ".progress-stats span:first-child",
+            );
+            if (progressBar) progressBar.style.width = progressPercent + "%";
+            if (progressStats)
+              progressStats.textContent = progressPercent + "% complete";
+          }
+        } catch (error) {
+          console.error("Error loading saved status:", error);
+        }
+      });
+
+      // Save tutorial function - FIXED to prevent duplicates
+      document
+        .getElementById("saveTutorialBtn")
+        ?.addEventListener("click", async () => {
+          const user = firebase.auth().currentUser;
+          if (!user) {
+            alert("Please login to save tutorials");
+            window.location.href = "/pages/auth/login.html";
+            return;
+          }
+
+          const saveIcon = document.getElementById("saveIcon");
+          const saveText = document.getElementById("saveText");
+          const saveBtn = document.getElementById("saveTutorialBtn");
+
+          // Disable button temporarily to prevent double-click
+          saveBtn.disabled = true;
+          saveBtn.style.opacity = "0.7";
+
+          try {
+            const savedRef = firebase
+              .firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("savedTutorials")
+              .doc(tutorialData.id);
+
+            const doc = await savedRef.get();
+
+            if (doc.exists) {
+              // Unsave - delete the document
+              await savedRef.delete();
+              saveIcon.className = "far fa-bookmark";
+              saveText.textContent = "Save Tutorial";
+              saveBtn.style.background = "white";
+              saveBtn.style.color = "#ff9500";
+              showToast("Tutorial removed from saved");
+            } else {
+              // Save - create the document
+              await savedRef.set({
+                tutorialId: tutorialData.id,
+                title: tutorialData.title,
+                category: tutorialData.category,
+                thumbnail: tutorialData.thumbnail,
+                duration: tutorialData.duration,
+                difficulty: tutorialData.difficulty,
+                savedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              });
+              saveIcon.className = "fas fa-bookmark";
+              saveText.textContent = "Saved";
+              saveBtn.style.background = "#ff9500";
+              saveBtn.style.color = "white";
+              showToast("Tutorial saved to your profile!");
+            }
+          } catch (error) {
+            console.error("Error saving tutorial:", error);
+            alert("Error saving tutorial");
+          } finally {
+            // Re-enable button
+            saveBtn.disabled = false;
+            saveBtn.style.opacity = "1";
+          }
+        });
+
+      // Mark as completed
+      document
+        .getElementById("markCompleted")
+        ?.addEventListener("change", async (e) => {
+          const user = firebase.auth().currentUser;
+          if (!user) {
+            alert("Please login to track progress");
+            e.target.checked = false;
+            return;
+          }
+
+          const progressBar = document.getElementById("reading-progress");
+          const completedCheckbox = e.target;
+
+          // Disable checkbox temporarily to prevent double-click
+          completedCheckbox.disabled = true;
+
+          try {
+            await firebase
+              .firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("tutorialProgress")
+              .doc(tutorialData.id)
+              .set({
+                tutorialId: tutorialData.id,
+                title: tutorialData.title,
+                category: tutorialData.category,
+                completed: e.target.checked,
+                completedAt: e.target.checked
+                  ? firebase.firestore.FieldValue.serverTimestamp()
+                  : null,
+                lastViewed: firebase.firestore.FieldValue.serverTimestamp(),
+                progress: parseInt(progressBar?.style.width || "0"),
+              });
+
+            showToast(
+              e.target.checked
+                ? "Marked as completed! 🎉"
+                : "Marked as incomplete",
+            );
+          } catch (error) {
+            console.error("Error saving progress:", error);
+          } finally {
+            // Re-enable checkbox
+            completedCheckbox.disabled = false;
+          }
+        });
+
+      // Save scroll progress
+      let progressTimeout;
+      const progressBar = document.getElementById("reading-progress");
+      window.addEventListener("scroll", () => {
+        if (progressTimeout) clearTimeout(progressTimeout);
+        progressTimeout = setTimeout(() => {
+          const user = firebase.auth().currentUser;
+          if (!user) return;
+
+          const progressPercent = parseInt(progressBar?.style.width || "0");
+          if (progressPercent > 0) {
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("tutorialProgress")
+              .doc(tutorialData.id)
+              .set(
+                {
+                  progress: progressPercent,
+                  lastViewed: firebase.firestore.FieldValue.serverTimestamp(),
+                },
+                { merge: true },
+              );
+
+            localStorage.setItem(
+              `tutorial_progress_${tutorialData.id}`,
+              progressPercent,
+            );
+          }
+        }, 1000);
+      });
+
+      function showToast(message) {
+        // Remove any existing toast
+        const existingToast = document.querySelector(
+          ".toast-notification-custom",
+        );
+        if (existingToast) existingToast.remove();
+
+        const toast = document.createElement("div");
+        toast.className = "toast-notification-custom";
+        toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+        toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #1f2937;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+    </script>
+  </body>
+</html>

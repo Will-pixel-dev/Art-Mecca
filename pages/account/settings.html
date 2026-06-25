@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Settings - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/settings.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <div class="nav-actions">
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="settings-main">
+      <div class="container">
+        <div class="settings-header">
+          <h1><i class="fas fa-cog"></i> Account Settings</h1>
+          <p>Manage your account security and preferences</p>
+        </div>
+
+        <div class="settings-container">
+          <!-- Sidebar Navigation -->
+          <aside class="settings-sidebar">
+            <nav class="settings-nav">
+              <a
+                href="#profile"
+                class="settings-nav-link active"
+                data-section="profile"
+              >
+                <i class="fas fa-user"></i> Profile
+              </a>
+              <a
+                href="#security"
+                class="settings-nav-link"
+                data-section="security"
+              >
+                <i class="fas fa-shield-alt"></i> Security
+              </a>
+              <a href="#email" class="settings-nav-link" data-section="email">
+                <i class="fas fa-envelope"></i> Email
+              </a>
+              <a
+                href="#notifications"
+                class="settings-nav-link"
+                data-section="notifications"
+              >
+                <i class="fas fa-bell"></i> Notifications
+              </a>
+              <a
+                href="#privacy"
+                class="settings-nav-link"
+                data-section="privacy"
+              >
+                <i class="fas fa-lock"></i> Privacy
+              </a>
+              <a href="#danger" class="settings-nav-link" data-section="danger">
+                <i
+                  class="fas fa-exclamation-triangle"
+                  style="color: #ef4444"
+                ></i>
+                Danger Zone
+              </a>
+            </nav>
+          </aside>
+
+          <!-- Content Area -->
+          <div class="settings-content">
+            <!-- Profile Section -->
+            <section id="profile" class="settings-section active">
+              <h2><i class="fas fa-user"></i> Profile Information</h2>
+              <p class="section-desc">Update your public profile information</p>
+
+              <div class="settings-card">
+                <div class="form-group">
+                  <label for="displayName">Display Name</label>
+                  <input
+                    type="text"
+                    id="displayName"
+                    placeholder="Your display name"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input
+                    type="text"
+                    id="username"
+                    placeholder="Your unique username"
+                  />
+                  <small class="helper-text"
+                    >This is your unique identifier on Art Mecca</small
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="bio">Bio</label>
+                  <textarea
+                    id="bio"
+                    rows="3"
+                    placeholder="Tell us about yourself..."
+                  ></textarea>
+                  <small class="helper-text"
+                    ><span id="bioCount">0</span>/500 characters</small
+                  >
+                </div>
+
+                <button id="updateProfileBtn" class="btn-primary">
+                  <i class="fas fa-save"></i> Update Profile
+                </button>
+              </div>
+            </section>
+
+            <!-- Security Section -->
+            <section id="security" class="settings-section">
+              <h2><i class="fas fa-shield-alt"></i> Security</h2>
+              <p class="section-desc">
+                Change your password and manage security settings
+              </p>
+
+              <div class="settings-card">
+                <div class="form-group">
+                  <label for="currentPassword">Current Password</label>
+                  <div class="password-input-wrapper">
+                    <input
+                      type="password"
+                      id="currentPassword"
+                      placeholder="Enter current password"
+                    />
+                    <button
+                      type="button"
+                      class="password-toggle"
+                      data-target="currentPassword"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="newPassword">New Password</label>
+                  <div class="password-input-wrapper">
+                    <input
+                      type="password"
+                      id="newPassword"
+                      placeholder="Enter new password (min 6 characters)"
+                    />
+                    <button
+                      type="button"
+                      class="password-toggle"
+                      data-target="newPassword"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                  <div class="password-strength">
+                    <div class="strength-bar" id="strengthBar"></div>
+                    <span class="strength-text" id="strengthText">Weak</span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm New Password</label>
+                  <div class="password-input-wrapper">
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Confirm new password"
+                    />
+                    <button
+                      type="button"
+                      class="password-toggle"
+                      data-target="confirmPassword"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <button id="changePasswordBtn" class="btn-primary">
+                  <i class="fas fa-key"></i> Change Password
+                </button>
+              </div>
+            </section>
+
+            <!-- Email Section -->
+            <section id="email" class="settings-section">
+              <h2><i class="fas fa-envelope"></i> Email Address</h2>
+              <p class="section-desc">Change your email address</p>
+
+              <div class="settings-card">
+                <div class="form-group">
+                  <label for="currentEmail">Current Email</label>
+                  <input type="email" id="currentEmail" disabled />
+                </div>
+
+                <div class="form-group">
+                  <label for="newEmail">New Email</label>
+                  <input
+                    type="email"
+                    id="newEmail"
+                    placeholder="Enter new email address"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="emailPassword">Confirm Password</label>
+                  <div class="password-input-wrapper">
+                    <input
+                      type="password"
+                      id="emailPassword"
+                      placeholder="Enter your password to confirm"
+                    />
+                    <button
+                      type="button"
+                      class="password-toggle"
+                      data-target="emailPassword"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <button id="changeEmailBtn" class="btn-primary">
+                  <i class="fas fa-envelope"></i> Change Email
+                </button>
+              </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications" class="settings-section">
+              <h2><i class="fas fa-bell"></i> Notifications</h2>
+              <p class="section-desc">Manage your notification preferences</p>
+
+              <div class="settings-card">
+                <div class="toggle-group">
+                  <div class="toggle-item">
+                    <div>
+                      <h4>Email Notifications</h4>
+                      <p>Receive notifications via email</p>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="emailNotifications" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div>
+                      <h4>Push Notifications</h4>
+                      <p>Receive browser push notifications</p>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="pushNotifications" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div>
+                      <h4>Artwork Likes</h4>
+                      <p>Get notified when someone likes your artwork</p>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="likeNotifications" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div>
+                      <h4>Comments</h4>
+                      <p>Get notified when someone comments on your artwork</p>
+                    </div>
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        id="commentNotifications"
+                        checked
+                      />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div>
+                      <h4>New Followers</h4>
+                      <p>Get notified when someone shadows you</p>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="shadowNotifications" checked />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <button id="saveNotificationsBtn" class="btn-primary">
+                  <i class="fas fa-save"></i> Save Preferences
+                </button>
+              </div>
+            </section>
+
+            <!-- Privacy Section -->
+            <section id="privacy" class="settings-section">
+              <h2><i class="fas fa-lock"></i> Privacy</h2>
+              <p class="section-desc">Manage your privacy settings</p>
+
+              <div class="settings-card">
+                <div class="toggle-group">
+                  <div class="toggle-item">
+                    <div>
+                      <h4>Show Email in Profile</h4>
+                      <p>Display your email on your public profile</p>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="showEmail" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div>
+                      <h4>Private Profile</h4>
+                      <p>Only allow approved users to follow you</p>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="privateProfile" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div>
+                      <h4>Show NSFW Content</h4>
+                      <p>Display mature content in gallery</p>
+                    </div>
+                    <label class="switch">
+                      <input type="checkbox" id="showNSFW" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <button id="savePrivacyBtn" class="btn-primary">
+                  <i class="fas fa-save"></i> Save Privacy Settings
+                </button>
+              </div>
+            </section>
+
+            <!-- Danger Zone -->
+            <section id="danger" class="settings-section">
+              <h2>
+                <i
+                  class="fas fa-exclamation-triangle"
+                  style="color: #ef4444"
+                ></i>
+                Danger Zone
+              </h2>
+              <p class="section-desc" style="color: #ef4444">
+                These actions are irreversible. Proceed with caution.
+              </p>
+
+              <div class="settings-card danger-card">
+                <div class="danger-item">
+                  <div>
+                    <h4>Delete Account</h4>
+                    <p>
+                      Permanently delete your account and all associated data
+                    </p>
+                  </div>
+                  <button id="deleteAccountBtn" class="btn-danger">
+                    <i class="fas fa-trash"></i> Delete Account
+                  </button>
+                </div>
+
+                <div class="danger-item">
+                  <div>
+                    <h4>Deactivate Account</h4>
+                    <p>
+                      Temporarily deactivate your account (can be reactivated)
+                    </p>
+                  </div>
+                  <button id="deactivateAccountBtn" class="btn-warning">
+                    <i class="fas fa-pause"></i> Deactivate
+                  </button>
+                </div>
+
+                <div class="danger-item">
+                  <div>
+                    <h4>Export Data</h4>
+                    <p>Download all your data from Art Mecca</p>
+                  </div>
+                  <button id="exportDataBtn" class="btn-secondary">
+                    <i class="fas fa-download"></i> Export Data
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>Your creative universe.</p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+              >
+                <i class="fab fa-pinterest"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/account/settings.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+  </body>
+</html>

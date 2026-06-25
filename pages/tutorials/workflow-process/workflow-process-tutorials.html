@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workflow Process Tutorials | Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ============================================
+           WORKFLOW PROCESS LANDING PAGE
+           Purple Theme: #8b5cf6, #7c3aed, #6d28d9, #5b21b6, #a78bfa
+           ============================================ */
+
+      .wp-hero {
+        background: linear-gradient(
+          135deg,
+          rgba(139, 92, 246, 0.08) 0%,
+          rgba(109, 40, 217, 0.05) 100%
+        );
+        padding: 4rem 0;
+        text-align: center;
+        border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .wp-hero::before {
+        content: "";
+        position: absolute;
+        top: -30%;
+        left: -20%;
+        width: 140%;
+        height: 140%;
+        background: radial-gradient(
+          circle,
+          rgba(139, 92, 246, 0.1),
+          transparent
+        );
+        pointer-events: none;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: rgba(139, 92, 246, 0.12);
+        backdrop-filter: blur(2px);
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #6d28d9;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+      }
+
+      .wp-hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        background: linear-gradient(
+          135deg,
+          #1f2937 20%,
+          #8b5cf6 70%,
+          #6d28d9 90%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-subhead {
+        font-size: 1.1rem;
+        color: #6b7280;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* Section Header */
+      .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .section-header p {
+        color: #6b7280;
+        font-size: 1rem;
+      }
+
+      /* Tutorials Grid */
+      .tutorials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+      }
+
+      /* Tutorial Card */
+      .tutorial-card {
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        position: relative;
+        text-decoration: none;
+        display: block;
+        color: inherit;
+      }
+
+      .tutorial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 30px -12px rgba(139, 92, 246, 0.4);
+      }
+
+      /* Gradient border on hover */
+      .tutorial-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 1rem;
+        padding: 2px;
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed, #6d28d9);
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      .tutorial-card:hover::before {
+        opacity: 1;
+      }
+
+      .card-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .card-category {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: rgba(139, 92, 246, 0.1);
+        color: #6d28d9;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+      }
+
+      .card-description {
+        font-size: 0.85rem;
+        color: #6b7280;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+      }
+
+      .card-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+
+      .card-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .difficulty-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .difficulty-beginner {
+        color: #10b981;
+      }
+      .difficulty-intermediate {
+        color: #8b5cf6;
+      }
+      .difficulty-advanced {
+        color: #6d28d9;
+      }
+
+      /* Coming Soon Card */
+      .coming-soon {
+        background: linear-gradient(135deg, #f8f8f8, #f0f0f5);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 380px;
+      }
+
+      .coming-soon .card-icon {
+        font-size: 3rem;
+        color: #8b5cf6;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .coming-soon .card-title {
+        color: #9ca3af;
+      }
+
+      .coming-soon .card-description {
+        color: #9ca3af;
+      }
+
+      /* CTA Section */
+      .wp-cta {
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        border-radius: 1.5rem;
+        padding: 3rem;
+        text-align: center;
+        margin: 4rem 0;
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+      }
+
+      .wp-cta h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+
+      .wp-cta p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-primary-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        background: white;
+        border-radius: 50px;
+        color: #6d28d9;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        gap: 0.8rem;
+      }
+
+      @media (max-width: 768px) {
+        .tutorials-grid {
+          grid-template-columns: 1fr;
+          margin: 2rem 1rem;
+        }
+
+        .wp-hero {
+          padding: 2rem 0;
+        }
+
+        .wp-cta {
+          padding: 2rem;
+          margin: 2rem 1rem;
+        }
+
+        .wp-cta h2 {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color&lighting/color-lighting-tutorials.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <div class="wp-hero">
+        <div class="container">
+          <span class="hero-badge"
+            ><i class="fas fa-chart-line"></i> Workflow Process</span
+          >
+          <h1>Optimize Your Creative Workflow</h1>
+          <p class="hero-subhead">
+            Learn how to work smarter, not harder. Master time management,
+            reference usage, portfolio preparation, and develop an efficient
+            creative process.
+          </p>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Tutorials Grid -->
+        <div class="section-header">
+          <h2>Workflow Process Tutorials</h2>
+          <p>
+            Learn from professional artists and optimize your creative workflow
+          </p>
+        </div>
+
+        <div class="tutorials-grid">
+          <!-- Portfolio Preparation -->
+          <a
+            href="/pages/tutorials/workflow-process/portfolio-preparation.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Career Development</span>
+              <h3 class="card-title">Portfolio Preparation</h3>
+              <p class="card-description">
+                Learn how to build a professional art portfolio that stands out
+                to clients and employers.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 35 min</span>
+                <span><i class="fas fa-star"></i> 4.9 rating</span>
+                <span><i class="fas fa-eye"></i> 3.2K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Reference Usage -->
+          <a
+            href="/pages/tutorials/workflow-process/reference-usage.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #7c3aed, #6d28d9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-book-open"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Reference & Research</span>
+              <h3 class="card-title">Effective Reference Usage</h3>
+              <p class="card-description">
+                Master the art of using references effectively without copying.
+                Learn to gather, organize, and use references.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 25 min</span>
+                <span><i class="fas fa-star"></i> 4.8 rating</span>
+                <span><i class="fas fa-eye"></i> 2.7K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Time Management -->
+          <a
+            href="/pages/tutorials/workflow-process/time-management.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #6d28d9, #5b21b6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Productivity</span>
+              <h3 class="card-title">Time Management for Artists</h3>
+              <p class="card-description">
+                Learn to manage your time effectively, beat procrastination, and
+                build a sustainable creative routine.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 30 min</span>
+                <span><i class="fas fa-star"></i> 4.7 rating</span>
+                <span><i class="fas fa-eye"></i> 4.1K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Workflow Optimization -->
+          <a
+            href="/pages/tutorials/workflow-process/workflow-optimization.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #5b21b6, #4c1d95);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-rocket"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Efficiency</span>
+              <h3 class="card-title">Workflow Optimization</h3>
+              <p class="card-description">
+                Streamline your creative process with organization techniques,
+                shortcuts, and efficient practices.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 40 min</span>
+                <span><i class="fas fa-star"></i> 4.9 rating</span>
+                <span><i class="fas fa-eye"></i> 3.5K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Creative Block Strategies - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(139, 92, 246, 0.1); color: #6d28d9"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Overcoming Creative Block</h3>
+              <p class="card-description">
+                Strategies and techniques to overcome creative blocks and stay
+                inspired.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Client Communication - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(139, 92, 246, 0.1); color: #6d28d9"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Client Communication</h3>
+              <p class="card-description">
+                Learn to communicate effectively with clients, manage feedback,
+                and deliver projects successfully.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pricing & Negotiation - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-tag"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(139, 92, 246, 0.1); color: #6d28d9"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Pricing & Negotiation</h3>
+              <p class="card-description">
+                Learn how to price your art, negotiate commissions, and value
+                your work appropriately.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Media for Artists - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(139, 92, 246, 0.1); color: #6d28d9"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Social Media for Artists</h3>
+              <p class="card-description">
+                Grow your audience, build your brand, and market your art
+                effectively on social media.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="wp-cta">
+          <h2>Ready to Optimize Your Workflow?</h2>
+          <p>Join thousands of artists working smarter with Art Mecca</p>
+          <a href="/pages/auth/register.html" class="btn-primary-cta">
+            Start Learning Free <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+  </body>
+</html>

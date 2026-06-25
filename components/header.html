@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+  </head>
+  <body>
+    <header class="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <!-- Logo/Brand -->
+          <div class="nav-brand">
+            <a href="/" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+
+          <!-- Navigation Links -->
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li class="nav-dropdown">
+              <a href="pages/tutorials/digital-painting.html" class="nav-link">
+                Tutorials
+                <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="pages/tutorials/digital-painting.html"
+                    >Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/tutorials/character-design.html"
+                    >Character Design</a
+                  >
+                </li>
+                <li><a href="#">Color Theory</a></li>
+                <li><a href="#">Anatomy</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown">
+              <a
+                href="pages/tools/color-palette-generator.html"
+                class="nav-link"
+              >
+                Tools
+                <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="pages/tools/color-palette-generator.html"
+                    >Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/tools/color-scheme-analyzer.html"
+                    >Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/tools/contrast-checker.html"
+                    >Contrast Checker</a
+                  >
+                </li>
+                <li>
+                  <a href="pages/tools/prompt-generator.html"
+                    >Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="pages/software/software-comparison.html" class="nav-link"
+                >Software</a
+              >
+            </li>
+            <li>
+              <a href="pages/community/challenges.html" class="nav-link"
+                >Community</a
+              >
+            </li>
+          </ul>
+
+          <!-- Right Side Actions -->
+          <div class="nav-actions">
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </button>
+            <div class="auth-buttons">
+              <a
+                href="pages/auth/login.html"
+                class="btn-icon user-btn"
+                aria-label="Login"
+                title="Login"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                  <polyline points="10 17 15 12 10 7"></polyline>
+                  <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+              </a>
+              <a
+                href="pages/auth/register.html"
+                class="btn btn-primary signup-btn"
+              >
+                Sign Up
+              </a>
+            </div>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Search Overlay -->
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                class="search-icon"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path d="M18 6L6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <!-- Search results will appear here -->
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>

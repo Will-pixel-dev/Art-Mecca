@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Dropdown Test</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial;
+        padding: 50px;
+        background: #f0f0f0;
+      }
+      .test-container {
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .avatar-btn {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+      }
+      .dropdown {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        min-width: 200px;
+        z-index: 999999;
+        border: 2px solid red;
+      }
+      .dropdown a,
+      .dropdown button {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #333;
+        width: 100%;
+        text-align: left;
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
+      .dropdown a:hover,
+      .dropdown button:hover {
+        background: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Dropdown Test - Click the avatar</h2>
+    <div class="test-container">
+      <button class="avatar-btn" id="testAvatar">A</button>
+      <div class="dropdown" id="testDropdown">
+        <a href="#">My Profile</a>
+        <a href="#">My Artwork</a>
+        <button id="testLogout">Logout</button>
+      </div>
+    </div>
+
+    <script>
+      const avatar = document.getElementById("testAvatar");
+      const dropdown = document.getElementById("testDropdown");
+      let isOpen = false;
+
+      avatar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        isOpen = !isOpen;
+        dropdown.style.display = isOpen ? "block" : "none";
+        console.log("Test dropdown toggled:", isOpen);
+      });
+
+      document.addEventListener("click", (e) => {
+        if (
+          isOpen &&
+          !avatar.contains(e.target) &&
+          !dropdown.contains(e.target)
+        ) {
+          dropdown.style.display = "none";
+          isOpen = false;
+        }
+      });
+    </script>
+  </body>
+</html>

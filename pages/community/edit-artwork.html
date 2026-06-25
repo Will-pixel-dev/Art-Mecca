@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Artwork - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      .edit-main {
+        padding: 3rem 0;
+        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
+        min-height: 100vh;
+      }
+
+      .edit-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      .edit-header {
+        padding: 1.5rem 2rem;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        color: white;
+      }
+
+      .edit-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .edit-header p {
+        opacity: 0.9;
+        font-size: 0.9rem;
+      }
+
+      .edit-body {
+        padding: 2rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #1f2937;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 0.5rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #fe67ea;
+        box-shadow: 0 0 0 3px rgba(254, 103, 234, 0.1);
+      }
+
+      .preview-image {
+        margin-bottom: 1.5rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background: #f8f8f8;
+        text-align: center;
+      }
+
+      .preview-image img {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        justify-content: flex-end;
+      }
+
+      .btn-save {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(254, 103, 234, 0.4);
+      }
+
+      .btn-delete {
+        background: white;
+        color: #ef4444;
+        border: 2px solid #ef4444;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-delete:hover {
+        background: #ef4444;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .btn-cancel {
+        background: white;
+        color: #6b7280;
+        border: 2px solid #e5e7eb;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+      }
+
+      .btn-cancel:hover {
+        background: #f8f8f8;
+      }
+
+      .loading-state {
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #e5e7eb;
+        border-top-color: #fe67ea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .error-state {
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .error-state i {
+        font-size: 3rem;
+        color: #ef4444;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .edit-body {
+          padding: 1.5rem;
+        }
+        .action-buttons {
+          flex-direction: column;
+        }
+        .btn-save,
+        .btn-delete,
+        .btn-cancel {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header - Updated Navbar -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/character-design-landing.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main class="edit-main">
+      <div class="container">
+        <div class="edit-container">
+          <div class="edit-header">
+            <h1><i class="fas fa-edit"></i> Edit Artwork</h1>
+            <p>Update your artwork details</p>
+          </div>
+          <div class="edit-body">
+            <div id="loadingState" class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading artwork...</p>
+            </div>
+            <div id="errorState" class="error-state" style="display: none">
+              <i class="fas fa-exclamation-triangle"></i>
+              <h3>Artwork Not Found</h3>
+              <p>
+                The artwork you're trying to edit doesn't exist or you don't
+                have permission.
+              </p>
+              <a
+                href="/pages/community/gallery.html"
+                class="btn-cancel"
+                style="display: inline-block; margin-top: 1rem"
+                >Back to Gallery</a
+              >
+            </div>
+            <div id="editForm" style="display: none">
+              <div class="preview-image" id="previewImage"></div>
+              <div class="form-group">
+                <label>Title *</label>
+                <input type="text" id="artTitle" placeholder="Artwork title" />
+              </div>
+              <div class="form-group">
+                <label>Category *</label>
+                <select id="artCategory">
+                  <option value="daily">Daily Challenge</option>
+                  <option value="weekly">Weekly Challenge</option>
+                  <option value="monthly">Monthly Challenge</option>
+                  <option value="yearly">Yearly Challenge</option>
+                  <option value="random">Random Prompt</option>
+                  <option value="original">Original (No Prompt)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  id="artDescription"
+                  rows="4"
+                  placeholder="Tell us about your artwork..."
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label>Tags (comma separated)</label>
+                <input
+                  type="text"
+                  id="artTags"
+                  placeholder="e.g., portrait, digital art, fantasy"
+                />
+              </div>
+              <div class="action-buttons">
+                <a href="/pages/community/gallery.html" class="btn-cancel"
+                  >Cancel</a
+                >
+                <button class="btn-delete" id="deleteBtn">
+                  <i class="fas fa-trash"></i> Delete Artwork
+                </button>
+                <button class="btn-save" id="saveBtn">
+                  <i class="fas fa-save"></i> Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+
+    <script src="/js/community/edit-artwork.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/search.js"></script>
+  </body>
+</html>

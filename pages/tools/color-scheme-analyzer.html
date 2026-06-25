@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Scheme Analyzer - Art Mecca</title>
+    <meta
+      name="description"
+      content="Test your color combinations for WCAG accessibility compliance. Analyze contrast ratios, simulate color blindness, and get recommendations."
+    />
+    <meta
+      name="keywords"
+      content="color scheme analyzer, contrast checker, WCAG accessibility, color blindness simulator, color accessibility"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Color Scheme Analyzer - Test Contrast & Accessibility"
+    />
+    <meta
+      property="og:description"
+      content="Test your color combinations for WCAG accessibility compliance. Analyze contrast ratios and simulate color blindness."
+    />
+    <meta property="og:image" content="/images/og-analyzer.jpg" />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/tools/color-scheme-analyzer.html"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Color Scheme Analyzer - Test Contrast & Accessibility"
+    />
+    <meta
+      name="twitter:description"
+      content="Test your color combinations for WCAG accessibility compliance."
+    />
+    <meta name="twitter:image" content="/images/og-analyzer.jpg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/tools.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/character-design-landing.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link active"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main class="tool-main">
+      <div class="container">
+        <!-- Tool Header -->
+        <div class="tool-header-compact">
+          <h1>Color Scheme Analyzer</h1>
+          <p>
+            Test color combinations for accessibility and WCAG compliance with
+            detailed contrast analysis
+          </p>
+        </div>
+
+        <!-- Main Analyzer Container -->
+        <div class="analyzer-container">
+          <!-- Left Side: Color Input & Controls -->
+          <div class="analyzer-controls">
+            <div class="control-section">
+              <h3><i class="fas fa-eye-dropper"></i> Color Input</h3>
+              <div class="color-pair-inputs">
+                <div class="color-input-group">
+                  <label for="foreground">Foreground Color</label>
+                  <div class="color-input-row">
+                    <input type="color" id="foreground" value="#000000" />
+                    <input
+                      type="text"
+                      id="foreground-hex"
+                      value="#000000"
+                      placeholder="#000000"
+                      maxlength="7"
+                    />
+                    <button
+                      class="btn-swap-colors"
+                      id="swap-colors"
+                      title="Swap colors"
+                    >
+                      <i class="fas fa-exchange-alt"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="color-input-group">
+                  <label for="background">Background Color</label>
+                  <div class="color-input-row">
+                    <input type="color" id="background" value="#ffffff" />
+                    <input
+                      type="text"
+                      id="background-hex"
+                      value="#ffffff"
+                      placeholder="#ffffff"
+                      maxlength="7"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="quick-presets">
+                <h4>Quick Presets</h4>
+                <div class="preset-buttons">
+                  <button
+                    class="preset-btn"
+                    data-fg="#000000"
+                    data-bg="#ffffff"
+                  >
+                    Black on White
+                  </button>
+                  <button
+                    class="preset-btn"
+                    data-fg="#ffffff"
+                    data-bg="#000000"
+                  >
+                    White on Black
+                  </button>
+                  <button
+                    class="preset-btn"
+                    data-fg="#f705d7"
+                    data-bg="#1a1a1a"
+                  >
+                    Pink on Dark
+                  </button>
+                  <button
+                    class="preset-btn"
+                    data-fg="#1a1a1a"
+                    data-bg="#f8f8f8"
+                  >
+                    Dark on Light
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="action-buttons">
+              <button id="analyze-btn" class="btn btn-primary">
+                <i class="fas fa-chart-bar"></i> Analyze Contrast
+              </button>
+              <button id="random-test-btn" class="btn btn-secondary">
+                <i class="fas fa-random"></i> Random Test
+              </button>
+              <button id="save-combination-btn" class="btn btn-outline">
+                <i class="fas fa-heart"></i> Save Combination
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Side: Results & Analysis -->
+          <div class="analyzer-results">
+            <!-- Visual Preview -->
+            <div class="preview-section">
+              <h3><i class="fas fa-palette"></i> Visual Preview</h3>
+              <div class="preview-container">
+                <div class="preview-box" id="preview-box">
+                  <div class="preview-text">
+                    <h4>Sample Heading Text</h4>
+                    <p>
+                      This is how your text will look with the current color
+                      combination. The quick brown fox jumps over the lazy dog.
+                    </p>
+                    <div class="preview-buttons">
+                      <button class="preview-btn">Sample Button</button>
+                      <button class="preview-btn secondary">Secondary</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accessibility Results -->
+            <div class="results-section">
+              <h3>
+                <i class="fas fa-universal-access"></i> Accessibility Analysis
+              </h3>
+              <div class="contrast-results">
+                <div class="contrast-score">
+                  <div class="score-value" id="contrast-ratio">4.5:1</div>
+                  <div class="score-label">Contrast Ratio</div>
+                </div>
+                <div class="wcag-compliance">
+                  <div class="compliance-item" data-level="aa-normal">
+                    <span class="compliance-icon"></span>
+                    <span class="compliance-text">WCAG AA (Normal Text)</span>
+                    <span class="compliance-status" id="wcag-aa-normal"
+                      >Pass</span
+                    >
+                  </div>
+                  <div class="compliance-item" data-level="aa-large">
+                    <span class="compliance-icon"></span>
+                    <span class="compliance-text">WCAG AA (Large Text)</span>
+                    <span class="compliance-status" id="wcag-aa-large"
+                      >Pass</span
+                    >
+                  </div>
+                  <div class="compliance-item" data-level="aaa-normal">
+                    <span class="compliance-icon"></span>
+                    <span class="compliance-text">WCAG AAA (Normal Text)</span>
+                    <span class="compliance-status" id="wcag-aaa-normal"
+                      >Pass</span
+                    >
+                  </div>
+                  <div class="compliance-item" data-level="aaa-large">
+                    <span class="compliance-icon"></span>
+                    <span class="compliance-text">WCAG AAA (Large Text)</span>
+                    <span class="compliance-status" id="wcag-aaa-large"
+                      >Pass</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Color Blindness Simulation -->
+              <div class="color-blindness-section">
+                <h4>Color Blindness Simulation</h4>
+                <div class="simulation-grid">
+                  <div class="simulation-item">
+                    <div class="simulation-preview normal" id="normal-preview">
+                      Normal Vision
+                    </div>
+                  </div>
+                  <div class="simulation-item">
+                    <div
+                      class="simulation-preview protanopia"
+                      id="protanopia-preview"
+                    >
+                      Protanopia
+                    </div>
+                  </div>
+                  <div class="simulation-item">
+                    <div
+                      class="simulation-preview deuteranopia"
+                      id="deuteranopia-preview"
+                    >
+                      Deuteranopia
+                    </div>
+                  </div>
+                  <div class="simulation-item">
+                    <div
+                      class="simulation-preview tritanopia"
+                      id="tritanopia-preview"
+                    >
+                      Tritanopia
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recommendations -->
+              <div class="recommendations-section">
+                <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                <div class="recommendations-list" id="recommendations">
+                  <div class="recommendation-item">
+                    <i class="fas fa-check-circle"></i
+                    ><span>Great contrast ratio for normal text</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saved Combinations Section -->
+        <div class="saved-combinations-section">
+          <div class="section-header">
+            <h2><i class="fas fa-history"></i> Saved Combinations</h2>
+            <button
+              id="clear-saved-combinations"
+              class="btn btn-outline btn-small"
+            >
+              <i class="fas fa-trash"></i> Clear All
+            </button>
+          </div>
+          <div class="saved-combinations-grid" id="saved-combinations">
+            <div class="empty-state">
+              <i class="fas fa-palette"></i>
+              <h3>No combinations saved yet</h3>
+              <p>
+                Analyze and save your first color combination to see it here!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i></a
+              ><a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i></a
+              ><a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i></a
+              ><a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i></a
+              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
+              ><a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System (for bell icon dropdown) -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <!-- Page Scripts -->
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/tools/color-scheme-analyzer.js"></script>
+  </body>
+</html>

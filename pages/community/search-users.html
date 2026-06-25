@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find Artists - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      .search-users-main {
+        padding: 2rem 0;
+        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
+        min-height: 100vh;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        color: #6b7280;
+      }
+
+      /* Search Section */
+      .search-section {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .search-input-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .search-input-group input {
+        flex: 1;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 50px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .search-input-group input:focus {
+        outline: none;
+        border-color: #fe67ea;
+        box-shadow: 0 0 0 3px rgba(254, 103, 234, 0.1);
+      }
+
+      .search-btn {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        color: white;
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(254, 103, 234, 0.3);
+      }
+
+      /* Filter Chips */
+      .filter-chips {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+      }
+
+      .filter-chip {
+        padding: 0.4rem 1rem;
+        background: #f3f4f6;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #4b5563;
+      }
+
+      .filter-chip:hover {
+        background: #fe67ea;
+        color: white;
+      }
+
+      .filter-chip.active {
+        background: #fe67ea;
+        color: white;
+      }
+
+      /* Results Count */
+      .results-count {
+        margin-bottom: 1rem;
+        color: #6b7280;
+        font-size: 0.9rem;
+      }
+
+      /* Users Grid */
+      .users-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+      }
+
+      /* ============================================
+       PRETTY ARTIST CARD STYLES
+    ============================================ */
+
+      .user-card {
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .user-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 30px -12px rgba(254, 103, 234, 0.25);
+      }
+
+      /* Gradient border effect on hover */
+      .user-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 1rem;
+        padding: 2px;
+        background: linear-gradient(135deg, #fe67ea, #63dbee, #8b5cf6);
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      .user-card:hover::before {
+        opacity: 1;
+      }
+
+      /* Card Content Layout */
+      .user-card-content {
+        display: flex;
+        padding: 1.2rem;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      /* Right side info */
+      .user-info-right {
+        flex: 1;
+      }
+
+      /* Avatar - Now on right side */
+      .user-avatar-right {
+        width: 85px;
+        height: 85px;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        font-weight: bold;
+        flex-shrink: 0;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 4px 12px rgba(254, 103, 234, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .user-card:hover .user-avatar-right {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(254, 103, 234, 0.4);
+      }
+
+      /* Name */
+      .user-name {
+        font-size: 1.15rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #1f2937, #4a5568);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.2rem;
+      }
+
+      /* Username */
+      .user-username {
+        font-size: 0.7rem;
+        color: #fe67ea;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        display: inline-block;
+        background: rgba(254, 103, 234, 0.1);
+        padding: 0.1rem 0.5rem;
+        border-radius: 50px;
+      }
+
+      /* Bio */
+      .user-bio {
+        font-size: 0.75rem;
+        color: #6b7280;
+        line-height: 1.4;
+        margin-bottom: 0.8rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* Stats */
+      .user-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.8rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #f0eef2;
+      }
+
+      .user-stat {
+        text-align: center;
+        flex: 1;
+      }
+
+      .user-stat-value {
+        display: block;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fe67ea, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 0.9rem;
+      }
+
+      .user-stat-label {
+        font-size: 0.6rem;
+        color: #9ca3af;
+        font-weight: 500;
+      }
+
+      /* Shadow Button - Pink (default) */
+      .shadow-btn-small {
+        background: linear-gradient(135deg, #fe67ea, #e237ce);
+        color: white;
+        border: none;
+        padding: 0.45rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        letter-spacing: 0.3px;
+      }
+
+      .shadow-btn-small:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(254, 103, 234, 0.4);
+      }
+
+      /* Shadowing (following) - Purple */
+      .shadow-btn-small.active {
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+      }
+
+      .shadow-btn-small.active:hover {
+        box-shadow: 0 6px 14px rgba(139, 92, 246, 0.4);
+      }
+
+      /* Loading & Empty States */
+      .loading-state {
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid #e5e7eb;
+        border-top-color: #fe67ea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 1rem;
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .users-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .search-input-group {
+          flex-direction: column;
+        }
+
+        .filter-chips {
+          justify-content: center;
+        }
+
+        .user-card-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .user-stats {
+          justify-content: center;
+        }
+
+        .user-avatar-right {
+          width: 70px;
+          height: 70px;
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/character-design-landing.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link active"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main class="search-users-main">
+      <div class="container">
+        <div class="page-header">
+          <h1><i class="fas fa-users"></i> Find Artists</h1>
+          <p>Discover and connect with talented artists in our community</p>
+        </div>
+
+        <div class="search-section">
+          <div class="search-input-group">
+            <input
+              type="text"
+              id="userSearchInput"
+              placeholder="Search by name, username, or specialty..."
+            />
+            <button id="searchUsersBtn" class="search-btn">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
+          <div class="filter-chips" id="filterChips">
+            <span class="filter-chip active" data-filter="all"
+              >All Artists</span
+            >
+            <span class="filter-chip" data-filter="popular">Most Followed</span>
+            <span class="filter-chip" data-filter="active">Most Active</span>
+            <span class="filter-chip" data-filter="new">Newest</span>
+          </div>
+        </div>
+
+        <div id="resultsCount" class="results-count"></div>
+
+        <div id="usersGrid" class="users-grid">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading artists...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System (for bell icon dropdown) -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/community/search-users.js"></script>
+  </body>
+</html>

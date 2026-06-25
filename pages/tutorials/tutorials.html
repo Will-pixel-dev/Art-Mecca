@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorials | Art Mecca</title>
+
+     <meta name="description" content="Learn digital painting fundamentals with this comprehensive tutorial. Master brushes, layers, color theory, and rendering techniques." />
+  <meta name="keywords" content="digital painting tutorial, digital art, painting techniques, art tutorial" />
+
+  <meta property="og:title" content="Digital Painting Fundamentals - Art Mecca" />
+  <meta property="og:description" content="Learn digital painting fundamentals with this comprehensive tutorial." />
+  <meta property="og:image" content="/images/tutorials/digital-painting-hero.jpg" />
+  <meta property="og:url" content="https://artisanhub.com/pages/tutorials/digital-painting.html" />
+  <meta property="og:type" content="article" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Digital Painting Fundamentals - Art Mecca" />
+  <meta name="twitter:description" content="Learn digital painting fundamentals with this comprehensive tutorial." />
+  <meta name="twitter:image" content="/images/tutorials/digital-painting-hero.jpg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/tutorials-landing.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+<ul class="nav-links" id="nav-links">
+  <li>
+    <a href="/index.html" class="nav-link" data-section="home">Home</a>
+  </li>
+  <li>
+    <a href="/index.html#about" class="nav-link" data-section="about">About</a>
+  </li>
+  <li class="nav-dropdown" data-section="tutorials">
+    <a href="/pages/tutorials/tutorials.html" class="nav-link">Tutorials <span class="dropdown-arrow">▼</span></a>
+    <ul class="dropdown-menu">
+      <li><a href="/pages/tutorials/character-design/character-design-tutorials.html">🎨 Character Design</a></li>
+      <li><a href="/pages/tutorials/color&lighting/color-lighting-tutorials.html">💡 Color & Lighting</a></li>
+      <li><a href="/pages/tutorials/digital-painting/digital-painting-tutorials.html">🖌️ Digital Painting</a></li>
+      <li><a href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html">😌 Facial Features</a></li>
+      <li><a href="/pages/tutorials/software-guides/software-guides-tutorials.html">💻 Software Guide</a></li>
+      <li><a href="/pages/tutorials/workflow-process/workflow-process-tutorials.html">⚙️ Workflow Process</a></li>
+      <li><a href="/pages/tutorials/tutorials.html">📚 Full Catalogue</a></li>
+    </ul>
+  </li>
+  <li class="nav-dropdown" data-section="software">
+    <a href="/pages/software/software-comparison.html" class="nav-link">Software <span class="dropdown-arrow">▼</span></a>
+    <ul class="dropdown-menu">
+      <li><a href="/pages/software/software-comparison.html">⚖️ Software Comparison</a></li>
+      <li><a href="/pages/tools/software-quiz.html">📝 Software Quiz</a></li>
+    </ul>
+  </li>
+  <li class="nav-dropdown" data-section="tools">
+    <a href="/pages/tools/tools.html" class="nav-link active">Tools <span class="dropdown-arrow">▼</span></a>
+    <ul class="dropdown-menu">
+      <li><a href="/pages/tools/color-palette-generator.html">🎨 Color Palette Generator</a></li>
+      <li><a href="/pages/tools/color-scheme-analyzer.html">🔍 Color Scheme Analyzer</a></li>
+      <li><a href="/pages/tools/prompt-generator.html">🤖 Character Prompt Generator</a></li>
+    </ul>
+  </li>
+  <li class="nav-dropdown" data-section="community">
+    <a href="/pages/community/hub.html" class="nav-link">Community <span class="dropdown-arrow">▼</span></a>
+    <ul class="dropdown-menu">
+      <li><a href="/pages/community/hub.html#daily-challenge">🔥 Daily Challenge</a></li>
+      <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+      <li><a href="/pages/community/search-users.html">🔍 Find Artists</a></li>
+      <li><a href="/pages/community/activity-feed.html">📰 Activity Feed</a></li>
+      <li><a href="/pages/community/challenges.html">🏆 Challenges</a></li>
+      <li><a href="/pages/community/analytics.html">📊 Analytics</a></li>
+    </ul>
+  </li>
+  <li class="nav-dropdown" data-section="equip">
+    <a href="/pages/Equip/Equip.html" class="nav-link">Equip <span class="dropdown-arrow">▼</span></a>
+    <ul class="dropdown-menu">
+      <li><a href="/pages/Equip/Equip.html">📁 Portfolio Template</a></li>
+      <li><a href="/pages/Equip/price-comparison.html">📄 CV Template</a></li>
+      <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+      <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="/pages/truly-yours/truly-yours-project.html" class="nav-link truly-yours-link" data-section="truly-yours">Truly Yours ✨</a>
+  </li>
+</ul>
+          <div class="nav-actions">
+            <!-- Bell icon - LEFT of search (your notification code uses these IDs) -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <!-- Tutorials Hero Section -->
+    <section class="tutorials-hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="hero-title">Master Digital Art</h1>
+          <p class="hero-subtitle">
+            Step-by-step tutorials to level up your skills, from beginner basics
+            to advanced techniques
+          </p>
+          <div class="hero-stats">
+    <div class="stat"><span class="stat-number" id="tutorial-count">0</span><span class="stat-label">Tutorials</span></div>
+    <div class="stat"><span class="stat-number" id="hours-count">0</span><span class="stat-label">Hours of Content</span></div>
+    <div class="stat"><span class="stat-number" id="levels-count">0</span><span class="stat-label">Skill Levels</span></div>
+</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-bg-elements">
+        <div class="bg-element"></div>
+        <div class="bg-element"></div>
+        <div class="bg-element"></div>
+      </div>
+    </section>
+
+    <!-- Tutorials Main Content -->
+    <main class="tutorials-main">
+      <div class="container">
+        <!-- Featured Tutorials -->
+        <section class="featured-tutorials" id="featured">
+          <div class="section-header">
+            <h2>Featured Tutorials</h2>
+            <p>Start with these popular tutorials loved by our community</p>
+          </div>
+          <div class="featured-grid" id="featured-grid">
+            <!-- Featured tutorials will be loaded here by JavaScript -->
+          </div>
+        </section>
+
+        <!-- Categories Filter -->
+        <section class="categories-section">
+          <div class="section-header">
+            <h2>Browse by Category</h2>
+            <p>Find tutorials that match your interests</p>
+          </div>
+          <div class="categories-grid">
+            <div class="category-card" data-category="facial-features">
+              <div class="category-icon"><i class="fas fa-eye"></i></div>
+              <h3>Facial Features</h3>
+              <p>Master eyes, nose, lips, and skin rendering</p>
+              <span class="tutorial-count">6 tutorials</span>
+            </div>
+            <div class="category-card" data-category="character-design">
+              <div class="category-icon"><i class="fas fa-user"></i></div>
+              <h3>Character Design</h3>
+              <p>Create compelling characters and creatures</p>
+              <span class="tutorial-count">3 tutorials</span>
+            </div>
+            <div class="category-card" data-category="digital-painting">
+              <div class="category-icon">
+                <i class="fas fa-paint-brush"></i>
+              </div>
+              <h3>Digital Painting</h3>
+              <p>Fundamentals and advanced techniques</p>
+              <span class="tutorial-count">4 tutorials</span>
+            </div>
+            <div class="category-card" data-category="color-theory">
+              <div class="category-icon"><i class="fas fa-palette"></i></div>
+              <h3>Color & Lighting</h3>
+              <p>Master color theory and lighting techniques</p>
+              <span class="tutorial-count">2 tutorials</span>
+            </div>
+            <div class="category-card" data-category="software">
+              <div class="category-icon"><i class="fas fa-laptop"></i></div>
+              <h3>Software Guides</h3>
+              <p>Photoshop, Procreate, Clip Studio and more</p>
+              <span class="tutorial-count">3 tutorials</span>
+            </div>
+            <div class="category-card" data-category="workflow">
+              <div class="category-icon"><i class="fas fa-rocket"></i></div>
+              <h3>Workflow & Process</h3>
+              <p>Speed up your workflow and efficiency</p>
+              <span class="tutorial-count">4 tutorials</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- All Tutorials Grid -->
+        <section class="all-tutorials">
+          <div class="section-header">
+            <h2>All Tutorials</h2>
+            <p>Browse our complete collection of digital art tutorials</p>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-group">
+              <label for="category-filter">Category:</label>
+              <select id="category-filter" class="filter-select">
+                <option value="all">All Categories</option>
+                <option value="facial-features">Facial Features</option>
+                <option value="character-design">Character Design</option>
+                <option value="digital-painting">Digital Painting</option>
+                <option value="color-theory">Color & Lighting</option>
+                <option value="software">Software Guides</option>
+                <option value="workflow">Workflow & Process</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="difficulty-filter">Difficulty:</label>
+              <select id="difficulty-filter" class="filter-select">
+                <option value="all">All Levels</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="duration-filter">Duration:</label>
+              <select id="duration-filter" class="filter-select">
+                <option value="all">Any Duration</option>
+                <option value="short">Under 15 min</option>
+                <option value="medium">15-30 min</option>
+                <option value="long">Over 30 min</option>
+              </select>
+            </div>
+            <div class="search-group">
+              <input
+                type="text"
+                id="tutorial-search"
+                placeholder="Search tutorials..."
+                class="search-input"
+              />
+              <i class="fas fa-search search-icon"></i>
+            </div>
+          </div>
+          <div class="tutorials-grid" id="tutorials-grid"></div>
+          <div class="loading-indicator" id="loading-indicator">
+            <div class="loading-spinner"></div>
+            <p>Loading more tutorials...</p>
+          </div>
+          <div class="no-results" id="no-results" style="display: none">
+            <i class="fas fa-search"></i>
+            <h3>No tutorials found</h3>
+            <p>Try adjusting your filters or search terms</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i></a
+              ><a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i></a
+              ><a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i></a
+              ><a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i></a
+              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
+              ><a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+        <!-- JavaScript -->
+    <script src="/js/tutorials/tutorials-data.js"></script>
+    <script src="/js/tutorials/tutorials-landing.js"></script>
+    <script src="/js/search.js"></script>
+
+    <!-- Auth Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- ========== SEO ========== -->
+<script src="/js/utils/seo.js"></script>
+
+    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System (for bell icon dropdown) -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("Tutorial page DOM loaded, initializing search...");
+        const searchEngine = new SearchEngine();
+        const searchBtn = document.getElementById("search-btn");
+        const searchOverlay = document.getElementById("search-overlay");
+        const searchInput = document.getElementById("search-input");
+        if (searchBtn && searchOverlay) {
+          searchBtn.addEventListener("click", function () {
+            searchOverlay.classList.add("active");
+            setTimeout(() => {
+              if (searchInput) searchInput.focus();
+            }, 100);
+          });
+        }
+        const searchClose = document.getElementById("search-close");
+        if (searchClose) {
+          searchClose.addEventListener("click", function () {
+            searchOverlay.classList.remove("active");
+            if (searchInput) searchInput.value = "";
+            if (searchEngine) searchEngine.showPlaceholder();
+          });
+        }
+        if (searchOverlay) {
+          searchOverlay.addEventListener("click", function (e) {
+            if (e.target === searchOverlay) {
+              searchOverlay.classList.remove("active");
+              if (searchInput) searchInput.value = "";
+              if (searchEngine) searchEngine.showPlaceholder();
+            }
+          });
+        }
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "Escape" &&
+            searchOverlay &&
+            searchOverlay.classList.contains("active")
+          ) {
+            searchOverlay.classList.remove("active");
+            if (searchInput) searchInput.value = "";
+            if (searchEngine) searchEngine.showPlaceholder();
+          }
+        });
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("=== TUTORIALS DEBUGGING ===");
+        if (typeof tutorialData === "undefined") {
+          console.error("❌ tutorialData is NOT loaded");
+          return;
+        }
+        console.log("✅ tutorialData loaded successfully");
+        console.log("Total tutorials:", tutorialData.getAllTutorials().length);
+        const featuredGrid = document.getElementById("featured-grid");
+        const tutorialsGrid = document.getElementById("tutorials-grid");
+        if (!featuredGrid) console.error("❌ featured-grid element not found");
+        if (!tutorialsGrid)
+          console.error("❌ tutorials-grid element not found");
+      });
+    </script>
+  </body>
+</html>

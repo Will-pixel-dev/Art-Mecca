@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      .notifications-main {
+        padding: 3rem 0;
+        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
+        min-height: 100vh;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        color: #6b7280;
+      }
+
+      .notifications-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .notifications-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .notifications-header h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .mark-all-btn {
+        background: none;
+        border: none;
+        color: #fe67ea;
+        cursor: pointer;
+        font-size: 0.8rem;
+      }
+
+      .mark-all-btn:hover {
+        text-decoration: underline;
+      }
+
+      .notifications-list {
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+
+      .notification-item {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .notification-item:hover {
+        background: #f8f8f8;
+      }
+
+      .notification-item.unread {
+        background: #fef5fc;
+      }
+
+      .notification-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+      }
+
+      .notification-icon.like {
+        background: #fee2e2;
+        color: #ef4444;
+      }
+      .notification-icon.cheer {
+        background: #fef3c7;
+        color: #f59e0b;
+      }
+      .notification-icon.shadow {
+        background: #e0e7ff;
+        color: #4f46e5;
+      }
+      .notification-icon.comment {
+        background: #dcfce7;
+        color: #10b981;
+      }
+
+      .notification-content {
+        flex: 1;
+      }
+
+      .notification-text {
+        font-size: 0.9rem;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+        line-height: 1.4;
+      }
+
+      .notification-text strong {
+        font-weight: 600;
+      }
+
+      .notification-time {
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+
+      .loading-state {
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #e5e7eb;
+        border-top-color: #fe67ea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        color: #fe67ea;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .upload-new-btn {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        color: white;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .notifications-container {
+          margin: 0 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/character-design-landing.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link active"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main class="notifications-main">
+      <div class="container">
+        <div class="page-header">
+          <h1><i class="fas fa-bell"></i> Notifications</h1>
+          <p>Stay updated with activity on your artwork</p>
+        </div>
+
+        <div id="authCheck" style="display: none">
+          <div class="empty-state">
+            <i class="fas fa-lock"></i>
+            <h3>Please Login</h3>
+            <p>You need to be logged in to view notifications.</p>
+            <a href="/pages/auth/login.html" class="upload-new-btn">Login</a>
+          </div>
+        </div>
+
+        <div id="contentArea" style="display: none">
+          <div class="notifications-container">
+            <div class="notifications-header">
+              <h2>All Notifications</h2>
+              <button id="markAllReadBtnPage" class="mark-all-btn">
+                Mark all as read
+              </button>
+            </div>
+            <div id="loadingState" class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading notifications...</p>
+            </div>
+            <div id="notificationsList" class="notifications-list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection -->
+    <script src="/js/navbar-active.js"></script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <!-- Notifications System for dropdown -->
+    <script src="/js/community/notifications.js"></script>
+
+    <!-- Notifications Page Script -->
+    <script>
+      // Notifications Page - Separate from dropdown
+      class NotificationsPage {
+        constructor() {
+          this.notifications = [];
+          this.currentUser = null;
+          this.init();
+        }
+
+        async init() {
+          firebase.auth().onAuthStateChanged(async (user) => {
+            if (!user) {
+              document.getElementById("authCheck").style.display = "block";
+              document.getElementById("contentArea").style.display = "none";
+              return;
+            }
+
+            this.currentUser = user;
+            document.getElementById("authCheck").style.display = "none";
+            document.getElementById("contentArea").style.display = "block";
+
+            await this.loadNotifications();
+            this.setupEventListeners();
+          });
+        }
+
+        async loadNotifications() {
+          const loadingState = document.getElementById("loadingState");
+          const notificationsList =
+            document.getElementById("notificationsList");
+
+          loadingState.style.display = "block";
+          notificationsList.innerHTML = "";
+
+          try {
+            // Get notifications from Firestore
+            const snapshot = await firebase
+              .firestore()
+              .collection("users")
+              .doc(this.currentUser.uid)
+              .collection("notifications")
+              .orderBy("createdAt", "desc")
+              .limit(50)
+              .get();
+
+            this.notifications = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+              read: doc.data().read || false,
+            }));
+
+            if (this.notifications.length === 0) {
+              notificationsList.innerHTML = `
+                <div class="empty-state">
+                  <i class="fas fa-bell-slash"></i>
+                  <p>No notifications yet</p>
+                </div>
+              `;
+            } else {
+              notificationsList.innerHTML = this.notifications
+                .map((notif) => this.renderNotification(notif))
+                .join("");
+              this.attachClickHandlers();
+            }
+          } catch (error) {
+            console.error("Error loading notifications:", error);
+            notificationsList.innerHTML =
+              '<div class="empty-state"><p>Error loading notifications</p></div>';
+          } finally {
+            loadingState.style.display = "none";
+          }
+        }
+
+        renderNotification(notification) {
+          const type = notification.type || "like";
+          const data = notification.data || {};
+          const timeAgo = this.formatTimeAgo(notification.createdAt);
+          const unreadClass = notification.read ? "" : "unread";
+
+          let iconClass = "like";
+          let iconHtml = '<i class="fas fa-heart"></i>';
+          let text = "New notification";
+          let link = "#";
+
+          switch (type) {
+            case "like":
+              iconClass = "like";
+              iconHtml = '<i class="fas fa-heart"></i>';
+              text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> liked your artwork <strong>${this.escapeHtml(data.artworkTitle || "")}</strong>`;
+              link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+              break;
+            case "cheer":
+              iconClass = "cheer";
+              iconHtml = '<i class="fas fa-glass-cheers"></i>';
+              text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> cheered for your artwork <strong>${this.escapeHtml(data.artworkTitle || "")}</strong>`;
+              link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+              break;
+            case "shadow":
+              iconClass = "shadow";
+              iconHtml = '<i class="fas fa-eye"></i>';
+              text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> started shadowing you`;
+              link = `/pages/community/profile.html?user=${data.userId || ""}`;
+              break;
+            case "comment":
+              iconClass = "comment";
+              iconHtml = '<i class="fas fa-comment"></i>';
+              text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> commented on your artwork`;
+              link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+              break;
+          }
+
+          return `
+            <a href="${link}" class="notification-item ${unreadClass}" data-id="${notification.id}" data-read="${notification.read}">
+              <div class="notification-icon ${iconClass}">
+                ${iconHtml}
+              </div>
+              <div class="notification-content">
+                <div class="notification-text">${text}</div>
+                <div class="notification-time">${timeAgo}</div>
+              </div>
+            </a>
+          `;
+        }
+
+        attachClickHandlers() {
+          document.querySelectorAll(".notification-item").forEach((item) => {
+            item.addEventListener("click", async (e) => {
+              const notificationId = item.dataset.id;
+              const isRead = item.dataset.read === "true";
+
+              if (!isRead && notificationId) {
+                try {
+                  await firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(this.currentUser.uid)
+                    .collection("notifications")
+                    .doc(notificationId)
+                    .update({ read: true });
+
+                  item.classList.remove("unread");
+                  item.dataset.read = "true";
+                } catch (error) {
+                  console.error("Error marking as read:", error);
+                }
+              }
+            });
+          });
+        }
+
+        setupEventListeners() {
+          const markAllBtn = document.getElementById("markAllReadBtnPage");
+          if (markAllBtn) {
+            markAllBtn.addEventListener("click", async () => {
+              const unreadIds = this.notifications
+                .filter((n) => !n.read)
+                .map((n) => n.id);
+              if (unreadIds.length === 0) return;
+
+              try {
+                const batch = firebase.firestore().batch();
+                unreadIds.forEach((id) => {
+                  const ref = firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(this.currentUser.uid)
+                    .collection("notifications")
+                    .doc(id);
+                  batch.update(ref, { read: true });
+                });
+                await batch.commit();
+
+                this.notifications.forEach((n) => {
+                  n.read = true;
+                });
+                document
+                  .querySelectorAll(".notification-item.unread")
+                  .forEach((item) => {
+                    item.classList.remove("unread");
+                    item.dataset.read = "true";
+                  });
+              } catch (error) {
+                console.error("Error marking all as read:", error);
+              }
+            });
+          }
+        }
+
+        formatTimeAgo(timestamp) {
+          if (!timestamp) return "Just now";
+
+          let date;
+          if (timestamp && timestamp.toDate) {
+            date = timestamp.toDate();
+          } else if (timestamp && timestamp.seconds) {
+            date = new Date(timestamp.seconds * 1000);
+          } else if (timestamp instanceof Date) {
+            date = timestamp;
+          } else {
+            date = new Date(timestamp);
+          }
+
+          if (isNaN(date.getTime())) return "Just now";
+
+          const seconds = Math.floor((new Date() - date) / 1000);
+          if (seconds < 60) return "Just now";
+
+          const minutes = Math.floor(seconds / 60);
+          if (minutes < 60) return `${minutes} min ago`;
+
+          const hours = Math.floor(minutes / 60);
+          if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+
+          const days = Math.floor(hours / 24);
+          if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
+
+          const weeks = Math.floor(days / 7);
+          if (weeks < 4) return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
+
+          const months = Math.floor(days / 30);
+          if (months < 12)
+            return `${months} month${months === 1 ? "" : "s"} ago`;
+
+          const years = Math.floor(days / 365);
+          return `${years} year${years === 1 ? "" : "s"} ago`;
+        }
+
+        escapeHtml(text) {
+          if (!text) return "";
+          const div = document.createElement("div");
+          div.textContent = text;
+          return div.innerHTML;
+        }
+      }
+
+      // Initialize the notifications page
+      document.addEventListener("DOMContentLoaded", () => {
+        new NotificationsPage();
+      });
+    </script>
+  </body>
+</html>

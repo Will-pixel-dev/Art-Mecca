@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NSFW Gallery - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/gallery.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+
+    <style>
+      .nsfw-gallery-main {
+        padding: 2rem 0;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        min-height: 100vh;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: white;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        color: #a0aec0;
+      }
+
+      /* Age Gate Overlay */
+      .age-gate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 60vh;
+        padding: 2rem;
+      }
+
+      .age-gate-card {
+        background: white;
+        border-radius: 1.5rem;
+        padding: 3rem;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .age-gate-card .age-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .age-gate-card h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: #1f2937;
+      }
+
+      .age-gate-card p {
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .age-gate-card .age-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .age-gate-card .age-btn {
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .age-gate-card .age-btn.yes {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        color: white;
+      }
+
+      .age-gate-card .age-btn.yes:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(254, 103, 234, 0.4);
+      }
+
+      .age-gate-card .age-btn.no {
+        background: #e5e7eb;
+        color: #4b5563;
+      }
+
+      .age-gate-card .age-btn.no:hover {
+        background: #d1d5db;
+      }
+
+      .age-gate-card .warning-text {
+        font-size: 0.8rem;
+        color: #9ca3af;
+        margin-top: 1rem;
+      }
+
+      /* Content Warning Banner */
+      .content-warning-banner {
+        background: rgba(254, 103, 234, 0.1);
+        border: 1px solid rgba(254, 103, 234, 0.2);
+        border-radius: 0.75rem;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #c4b8ff;
+      }
+
+      .content-warning-banner i {
+        font-size: 1.5rem;
+        color: #fe67ea;
+      }
+
+      .content-warning-banner .warning-text {
+        flex: 1;
+        font-size: 0.9rem;
+      }
+
+      .nsfw-badge {
+        display: inline-block;
+        background: #ef4444;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.6rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      /* NSFW Card - Blurred by default */
+      .nsfw-card .card-image {
+        filter: blur(10px);
+        transition: filter 0.3s ease;
+      }
+
+      .nsfw-card:hover .card-image {
+        filter: blur(4px);
+      }
+
+      .nsfw-card .card-image.unblurred {
+        filter: blur(0);
+      }
+
+      .nsfw-blur-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        pointer-events: none;
+        z-index: 5;
+        text-align: center;
+      }
+
+      .nsfw-card .nsfw-blur-overlay {
+        display: flex;
+      }
+
+      .nsfw-card.unblurred .nsfw-blur-overlay {
+        display: none;
+      }
+
+      .filter-bar {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+        align-items: center;
+      }
+
+      .filter-bar select,
+      .filter-bar input {
+        padding: 0.5rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        font-size: 0.9rem;
+      }
+
+      .filter-bar select option {
+        color: #1f2937;
+      }
+
+      .filter-bar input::placeholder {
+        color: #6b7280;
+      }
+
+      .filter-bar .filter-label {
+        color: #a0aec0;
+        font-size: 0.9rem;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 4rem;
+        color: #a0aec0;
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      @media (max-width: 768px) {
+        .age-gate-card {
+          padding: 2rem;
+          margin: 1rem;
+        }
+
+        .age-gate-card .age-buttons {
+          flex-direction: column;
+        }
+
+        .filter-bar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main class="nsfw-gallery-main">
+      <div class="container">
+        <div class="page-header">
+          <h1>🔞 Mature Content Gallery</h1>
+          <p>Artistic works containing mature themes</p>
+        </div>
+        <!-- Age Gate Overlay -->
+        <div class="age-gate" id="ageGate">
+          <div class="age-gate-card">
+            <div class="age-icon">🔞</div>
+            <h2>Age Verification Required</h2>
+            <p>
+              This gallery contains mature artistic content. You must be 18
+              years or older to view these works.
+            </p>
+
+            <!-- Age Verification Form -->
+            <div id="ageVerificationForm" style="display: none">
+              <div style="text-align: left; margin: 1rem 0">
+                <div style="margin-bottom: 1rem">
+                  <label
+                    style="
+                      display: block;
+                      color: #4b5563;
+                      font-weight: 500;
+                      margin-bottom: 0.3rem;
+                      font-size: 0.9rem;
+                    "
+                  >
+                    Date of Birth
+                  </label>
+                  <input
+                    type="date"
+                    id="dobInput"
+                    style="
+                      width: 100%;
+                      padding: 0.7rem;
+                      border: 1px solid #d1d5db;
+                      border-radius: 0.5rem;
+                      font-size: 1rem;
+                    "
+                    max="2008-06-19"
+                  />
+                </div>
+                <div style="margin-bottom: 1rem">
+                  <label
+                    style="
+                      display: block;
+                      color: #4b5563;
+                      font-weight: 500;
+                      margin-bottom: 0.3rem;
+                      font-size: 0.9rem;
+                    "
+                  >
+                    ID/Passport Number
+                  </label>
+                  <input
+                    type="text"
+                    id="idInput"
+                    placeholder="Enter your ID or Passport number"
+                    style="
+                      width: 100%;
+                      padding: 0.7rem;
+                      border: 1px solid #d1d5db;
+                      border-radius: 0.5rem;
+                      font-size: 1rem;
+                    "
+                  />
+                </div>
+                <div style="margin-bottom: 1rem">
+                  <label
+                    style="
+                      display: block;
+                      color: #4b5563;
+                      font-weight: 500;
+                      margin-bottom: 0.3rem;
+                      font-size: 0.9rem;
+                    "
+                  >
+                    Full Name (as on ID)
+                  </label>
+                  <input
+                    type="text"
+                    id="fullNameInput"
+                    placeholder="Enter your full name"
+                    style="
+                      width: 100%;
+                      padding: 0.7rem;
+                      border: 1px solid #d1d5db;
+                      border-radius: 0.5rem;
+                      font-size: 1rem;
+                    "
+                  />
+                </div>
+              </div>
+              <div
+                class="age-buttons"
+                style="flex-direction: column; gap: 0.5rem"
+              >
+                <button
+                  class="age-btn yes"
+                  id="submitAgeVerification"
+                  style="width: 100%"
+                >
+                  Submit & Verify
+                </button>
+                <button
+                  class="age-btn no"
+                  id="cancelVerification"
+                  style="width: 100%"
+                >
+                  Cancel
+                </button>
+              </div>
+              <p
+                id="verificationError"
+                style="
+                  color: #ef4444;
+                  font-size: 0.85rem;
+                  margin-top: 0.5rem;
+                  display: none;
+                "
+              ></p>
+            </div>
+
+            <!-- Initial Buttons -->
+            <div id="ageGateButtons">
+              <div class="age-buttons">
+                <button class="age-btn yes" id="ageVerifyBtn">I am 18+</button>
+                <button class="age-btn no" id="ageDenyBtn">
+                  I am under 18
+                </button>
+              </div>
+            </div>
+
+            <!-- Existing Users Section -->
+            <div
+              style="
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e5e7eb;
+              "
+            >
+              <p
+                style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem"
+              >
+                Already registered? Verify your age to access this gallery.
+              </p>
+              <button
+                id="verifyExistingAge"
+                class="btn btn-outline"
+                style="
+                  padding: 0.5rem 1.5rem;
+                  border: 2px solid #fe67ea;
+                  border-radius: 0.5rem;
+                  background: transparent;
+                  color: #fe67ea;
+                  font-weight: 600;
+                  cursor: pointer;
+                "
+              >
+                Verify Age Now
+              </button>
+            </div>
+
+            <p class="warning-text">
+              By submitting your ID, you confirm you are of legal age to view
+              mature content. Your information is securely stored and only used
+              for age verification.
+            </p>
+          </div>
+        </div>
+
+        <!-- Gallery Content - Hidden until age verified -->
+        <div id="galleryContent" style="display: none">
+          <!-- Content Warning -->
+          <div class="content-warning-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="warning-text">
+              <strong>Content Warning:</strong> This gallery contains mature
+              themes including nudity, violence, and adult concepts. All content
+              is artistic in nature and created by consenting adults.
+            </span>
+          </div>
+
+          <!-- Filter Bar -->
+          <div class="filter-bar">
+            <span class="filter-label">Filter:</span>
+            <select id="nsfwFilter">
+              <option value="all">All Content</option>
+              <option value="nudity">Artistic Nudity</option>
+              <option value="violence">Gore & Violence</option>
+              <option value="mature">Mature Themes</option>
+            </select>
+            <input
+              type="text"
+              id="nsfwSearch"
+              placeholder="Search NSFW gallery..."
+            />
+            <label
+              style="
+                color: #a0aec0;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                cursor: pointer;
+              "
+            >
+              <input type="checkbox" id="unblurToggle" /> Unblur Images
+            </label>
+          </div>
+
+          <!-- Gallery Grid -->
+          <div class="gallery-container">
+            <div class="gallery-grid" id="nsfwGalleryGrid">
+              <div class="gallery-sizer"></div>
+            </div>
+            <div class="loading-spinner" id="loadingSpinner">
+              <div class="spinner"></div>
+              <p style="color: #a0aec0">Loading mature artwork...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/community/notifications.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/error-handler.js"></script>
+    <script src="/js/community/nsfw-gallery.js"></script>
+  </body>
+</html>

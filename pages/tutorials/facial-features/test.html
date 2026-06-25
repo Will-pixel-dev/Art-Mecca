@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test</title>
+  </head>
+  <body>
+    <h1>Why lord!!</h1>
+  </body>
+</html>
+/* ============================================ */ /* GRAFFITI WALL EFFECT -
+INSTRUCTIONS & CSS */ /* ============================================ */ /* HOW
+TO CREATE A GRAFFITI WALL BACKGROUND: 1. OPTION A - Use an image: body {
+background-image: url('path-to-your-graffiti-wall-image.jpg');
+background-repeat: repeat; background-size: auto; } 2. OPTION B - Use CSS to
+create a subtle graffiti texture: (See the CSS below - uncomment when ready) 3.
+FOR ANIMATED EFFECTS on images/elements: - Add data-scroll or data-aos
+attributes to elements - Or use the CSS animations below */ /* Uncomment this
+section when you're ready for the graffiti wall effect */ /* body {
+background-image: url('../../images/graffiti-wall-texture.jpg');
+background-repeat: repeat; background-size: 400px 400px; background-attachment:
+fixed; position: relative; } body::before { content: ''; position: fixed; top:
+0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.85);
+z-index: -1; pointer-events: none; } /* Animated elements for graffiti wall
+effect */ /* @keyframes subtleFloat { 0%, 100% { transform: translateY(0px); }
+50% { transform: translateY(-5px); } } @keyframes subtlePulse { 0%, 100% {
+opacity: 0.95; } 50% { opacity: 1; } } @keyframes slowDrift { 0% {
+background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+.community-hero.has-image { animation: subtlePulse 8s ease-in-out infinite; }
+.feature-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.feature-card:hover { transform: translateY(-8px) scale(1.02); }
+.daily-challenge-card { animation: subtleFloat 6s ease-in-out infinite; }
+.activity-item img { transition: transform 0.5s ease; } .activity-item:hover img
+{ transform: scale(1.05); } /* For scroll-triggered animations (requires
+Intersection Observer) */ /* .reveal-on-scroll { opacity: 0; transform:
+translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); } */ /*
+Floating graffiti-style spray paint effect */ /* @keyframes sprayFade { 0% {
+opacity: 0; transform: scale(0.8); } 50% { opacity: 0.3; } 100% { opacity: 0;
+transform: scale(1.5); } } .spray-effect { position: fixed; pointer-events:
+none; width: 100px; height: 100px; background: radial-gradient(circle,
+rgba(254,103,234,0.2) 0%, rgba(254,103,234,0) 70%); border-radius: 50%;
+animation: sprayFade 1s ease-out forwards; z-index: 9999; } */ /*
+============================================ */ /* END OF GRAFFITI WALL
+INSTRUCTIONS */ /* ============================================ */ /* Responsive
+additions */

@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NSFW Content Settings - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      .settings-main {
+        padding: 3rem 0;
+        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
+        min-height: 100vh;
+      }
+
+      .settings-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .settings-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .settings-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .settings-header p {
+        color: #6b7280;
+      }
+
+      .settings-section {
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1.5rem 0;
+      }
+
+      .settings-section:last-child {
+        border-bottom: none;
+      }
+
+      .settings-section h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .settings-section p {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+      }
+
+      .toggle-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 50px;
+        height: 28px;
+        background: #e5e7eb;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .toggle-switch.active {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+      }
+
+      .toggle-switch .toggle-circle {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 22px;
+        height: 22px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .toggle-switch.active .toggle-circle {
+        left: 25px;
+      }
+
+      .toggle-label {
+        font-weight: 500;
+      }
+
+      .warning-box {
+        background: #fef3c7;
+        border: 1px solid #f59e0b;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+
+      .warning-box strong {
+        color: #92400e;
+      }
+
+      .badge-18 {
+        display: inline-block;
+        background: #ef4444;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+      }
+
+      .badge-verified {
+        display: inline-block;
+        background: #10b981;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+      }
+
+      .age-display {
+        background: #f3f4f6;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .age-display .age-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fe67ea;
+      }
+
+      .age-display .age-label {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .btn-save {
+        width: 100%;
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        color: white;
+        border: none;
+        padding: 0.8rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+      }
+
+      .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(254, 103, 234, 0.4);
+      }
+
+      .toast-message {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        background: #1f2937;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        z-index: 10000;
+        font-weight: 500;
+        display: none;
+      }
+
+      .toast-message.show {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main class="settings-main">
+      <div class="container">
+        <div class="settings-container">
+          <div class="settings-header">
+            <h1>NSFW Content Settings</h1>
+            <p>Manage your mature content preferences</p>
+          </div>
+
+          <div id="ageDisplay" class="age-display">
+            <span class="age-label">Your Age:</span>
+            <span class="age-number" id="userAge">--</span>
+            <span class="age-label">years old</span>
+            <span id="ageBadge"></span>
+          </div>
+
+          <div id="settingsContent">
+            <!-- NSFW Toggle -->
+            <div class="settings-section">
+              <div class="toggle-row">
+                <div>
+                  <h3>Show NSFW Content</h3>
+                  <p>Enable to view mature content on the platform.</p>
+                </div>
+                <div class="toggle-switch" id="nsfwToggle">
+                  <div class="toggle-circle"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Blur Thumbnails -->
+            <div class="settings-section">
+              <div class="toggle-row">
+                <div>
+                  <h3>Blur Thumbnails</h3>
+                  <p>
+                    Blur NSFW thumbnails in galleries until you click on them.
+                  </p>
+                </div>
+                <div class="toggle-switch active" id="blurToggle">
+                  <div class="toggle-circle"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ID Verification -->
+            <div class="settings-section">
+              <h3>
+                ID Verification
+                <span class="badge-verified" id="idVerificationBadge"
+                  >Not Verified</span
+                >
+              </h3>
+              <p>
+                Verify your identity to access all NSFW content and create
+                mature artwork.
+              </p>
+              <p>
+                <strong>18+ verification required</strong> to view and create
+                NSFW content.
+              </p>
+              <button class="btn-save" id="verifyIdBtn">Verify ID</button>
+              <div class="warning-box">
+                <strong>⚠️ Important:</strong> ID verification is optional. You
+                can still use all other features without verification.
+              </div>
+            </div>
+
+            <!-- Save Button -->
+            <button class="btn-save" id="saveSettingsBtn">Save Settings</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Message -->
+    <div class="toast-message" id="toastMessage">
+      <i class="fas fa-check-circle" style="color: #10b981"></i>
+      <span id="toastText">Settings saved!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/community/notifications.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+
+    <script>
+      // NSFW Settings Logic
+      class NSFWSettings {
+        constructor() {
+          this.currentUser = null;
+          this.userData = null;
+          this.init();
+        }
+
+        async init() {
+          firebase.auth().onAuthStateChanged(async (user) => {
+            if (!user) {
+              window.location.href = "/pages/auth/login.html";
+              return;
+            }
+
+            this.currentUser = user;
+            await this.loadUserData();
+            this.setupEventListeners();
+          });
+        }
+
+        async loadUserData() {
+          try {
+            const doc = await firebase
+              .firestore()
+              .collection("users")
+              .doc(this.currentUser.uid)
+              .get();
+
+            if (doc.exists) {
+              this.userData = doc.data();
+              this.renderSettings();
+            }
+          } catch (error) {
+            console.error("Error loading user data:", error);
+          }
+        }
+
+        renderSettings() {
+          const age = this.userData.age || 0;
+          const isAdult = age >= 18;
+          const nsfwPreferences = this.userData.nsfwPreferences || {
+            enabled: false,
+            showBlurred: true,
+          };
+
+          // Display age
+          document.getElementById("userAge").textContent = age;
+
+          // Show age badge
+          const ageBadge = document.getElementById("ageBadge");
+          if (isAdult) {
+            ageBadge.innerHTML = '<span class="badge-18">18+</span>';
+          } else {
+            ageBadge.innerHTML =
+              '<span style="color: #f59e0b; font-weight: 600;">Under 18</span>';
+          }
+
+          // Show ID verification status
+          const idBadge = document.getElementById("idVerificationBadge");
+          if (this.userData.isIdentityVerified) {
+            idBadge.textContent = "✅ Verified";
+            idBadge.style.background = "#10b981";
+          } else {
+            idBadge.textContent = "❌ Not Verified";
+            idBadge.style.background = "#ef4444";
+          }
+
+          // Set toggle states
+          const nsfwToggle = document.getElementById("nsfwToggle");
+          const blurToggle = document.getElementById("blurToggle");
+
+          if (nsfwPreferences.enabled && isAdult) {
+            nsfwToggle.classList.add("active");
+          } else {
+            nsfwToggle.classList.remove("active");
+          }
+
+          if (nsfwPreferences.showBlurred !== false) {
+            blurToggle.classList.add("active");
+          } else {
+            blurToggle.classList.remove("active");
+          }
+
+          // Disable NSFW toggle if under 18
+          if (!isAdult) {
+            nsfwToggle.style.opacity = "0.5";
+            nsfwToggle.style.cursor = "not-allowed";
+            nsfwToggle.title = "You must be 18+ to enable NSFW content";
+          } else {
+            nsfwToggle.style.opacity = "1";
+            nsfwToggle.style.cursor = "pointer";
+            nsfwToggle.title = "";
+          }
+
+          // Show/hide blur toggle based on NSFW toggle
+          if (!nsfwPreferences.enabled) {
+            blurToggle.style.opacity = "0.5";
+            blurToggle.style.cursor = "not-allowed";
+          } else {
+            blurToggle.style.opacity = "1";
+            blurToggle.style.cursor = "pointer";
+          }
+        }
+
+        setupEventListeners() {
+          // NSFW toggle
+          const nsfwToggle = document.getElementById("nsfwToggle");
+          nsfwToggle.addEventListener("click", () => {
+            const age = this.userData.age || 0;
+            if (age < 18) {
+              this.showToast("You must be 18+ to enable NSFW content", "error");
+              return;
+            }
+            nsfwToggle.classList.toggle("active");
+            this.updateBlurToggleState();
+          });
+
+          // Blur toggle
+          const blurToggle = document.getElementById("blurToggle");
+          blurToggle.addEventListener("click", () => {
+            if (
+              !document
+                .getElementById("nsfwToggle")
+                .classList.contains("active")
+            ) {
+              this.showToast(
+                "Enable NSFW content first to change blur settings",
+                "error",
+              );
+              return;
+            }
+            blurToggle.classList.toggle("active");
+          });
+
+          // ID Verification
+          document
+            .getElementById("verifyIdBtn")
+            .addEventListener("click", () => {
+              this.showIdVerificationModal();
+            });
+
+          // Save settings
+          document
+            .getElementById("saveSettingsBtn")
+            .addEventListener("click", () => {
+              this.saveSettings();
+            });
+        }
+
+        updateBlurToggleState() {
+          const nsfwActive = document
+            .getElementById("nsfwToggle")
+            .classList.contains("active");
+          const blurToggle = document.getElementById("blurToggle");
+
+          if (nsfwActive) {
+            blurToggle.style.opacity = "1";
+            blurToggle.style.cursor = "pointer";
+          } else {
+            blurToggle.style.opacity = "0.5";
+            blurToggle.style.cursor = "not-allowed";
+            blurToggle.classList.remove("active");
+          }
+        }
+
+        async saveSettings() {
+          const nsfwEnabled = document
+            .getElementById("nsfwToggle")
+            .classList.contains("active");
+          const showBlurred = document
+            .getElementById("blurToggle")
+            .classList.contains("active");
+
+          try {
+            await firebase
+              .firestore()
+              .collection("users")
+              .doc(this.currentUser.uid)
+              .update({
+                "nsfwPreferences.enabled": nsfwEnabled,
+                "nsfwPreferences.showBlurred": showBlurred,
+              });
+
+            this.userData.nsfwPreferences = {
+              enabled: nsfwEnabled,
+              showBlurred: showBlurred,
+            };
+            this.showToast("Settings saved successfully!", "success");
+          } catch (error) {
+            console.error("Error saving settings:", error);
+            this.showToast("Error saving settings. Please try again.", "error");
+          }
+        }
+
+        showIdVerificationModal() {
+          // For now, this is a placeholder. In a real implementation,
+          // you would integrate with a third-party ID verification service.
+          if (this.userData.isIdentityVerified) {
+            this.showToast("You are already verified! ✅", "success");
+            return;
+          }
+
+          const age = this.userData.age || 0;
+          if (age < 18) {
+            this.showToast("You must be 18+ to verify your identity.", "error");
+            return;
+          }
+
+          // Simulate verification
+          const confirm = window.confirm(
+            "⚠️ ID Verification (Demo)\n\n" +
+              "In a production environment, this would:\n" +
+              "1. Redirect to a secure ID verification service\n" +
+              "2. Ask you to upload a government-issued ID\n" +
+              "3. Verify your age (18+)\n\n" +
+              "For this demo, click OK to simulate verification.",
+          );
+
+          if (confirm) {
+            // Simulate successful verification
+            firebase
+              .firestore()
+              .collection("users")
+              .doc(this.currentUser.uid)
+              .update({
+                isIdentityVerified: true,
+              })
+              .then(() => {
+                this.userData.isIdentityVerified = true;
+                this.renderSettings();
+                this.showToast("✅ Identity verified successfully!", "success");
+              });
+          }
+        }
+
+        showToast(message, type = "success") {
+          const toast = document.getElementById("toastMessage");
+          const toastText = document.getElementById("toastText");
+          const icon = toast.querySelector("i");
+
+          toastText.textContent = message;
+          toast.className = "toast-message show";
+
+          if (type === "success") {
+            icon.className = "fas fa-check-circle";
+            icon.style.color = "#10b981";
+          } else if (type === "error") {
+            icon.className = "fas fa-exclamation-circle";
+            icon.style.color = "#ef4444";
+          }
+
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 4000);
+        }
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        new NSFWSettings();
+      });
+    </script>
+    <script src="/js/components/avatar-manager.js"></script>
+  </body>
+</html>

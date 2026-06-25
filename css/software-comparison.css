@@ -1,0 +1,341 @@
+/* ========================================
+   SOFTWARE COMPARISON PAGE STYLES
+   Pink theme - Art Mecca
+   ======================================== */
+
+/* ----- Base & Hero Section ----- */
+.comparison-hero {
+  background: linear-gradient(
+    135deg,
+    rgba(254, 103, 234, 0.08) 0%,
+    rgba(99, 219, 238, 0.05) 100%
+  );
+  padding: var(--space-16) 0 var(--space-12);
+  text-align: center;
+  border-bottom: 1px solid var(--border-light, rgba(254, 103, 234, 0.15));
+  position: relative;
+  overflow: hidden;
+}
+
+.comparison-hero::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(
+    circle,
+    rgba(254, 103, 234, 0.12) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(254, 103, 234, 0.12);
+  backdrop-filter: blur(2px);
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary-dark, #e237ce);
+  margin-bottom: var(--space-4);
+  border: 1px solid rgba(254, 103, 234, 0.3);
+}
+
+.comparison-hero h1 {
+  font-size: clamp(2rem, 5vw, var(--font-size-4xl, 2.5rem));
+  font-weight: 800;
+  background: linear-gradient(
+    135deg,
+    var(--dark, #1f2937) 20%,
+    var(--primary, #fe67ea) 70%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.02em;
+}
+
+.hero-subhead {
+  font-size: var(--font-size-lg, 1.125rem);
+  color: var(--gray, #6b7280);
+  max-width: 720px;
+  margin: 0 auto var(--space-8);
+}
+
+/* ----- Comparison Table Card ----- */
+.comparison-card {
+  background: var(--white, #ffffff);
+  border-radius: var(--radius-xl, 1.5rem);
+  box-shadow: var(--shadow-lg);
+  overflow-x: auto;
+  margin: var(--space-10) 0 var(--space-16);
+  border: 1px solid var(--border-light, rgba(254, 103, 234, 0.15));
+  transition: var(--transition, all 0.3s ease);
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  min-width: 800px;
+}
+
+.comparison-table th {
+  background: rgba(254, 103, 234, 0.04);
+  padding: var(--space-5) var(--space-6);
+  text-align: left;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--dark, #1f2937);
+  border-bottom: 2px solid var(--primary-lightest, #fbc3ef);
+}
+
+.comparison-table td {
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--gray-light, #e5e7eb);
+  vertical-align: middle;
+  color: var(--dark-light, #2d2d2d);
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.highlight-row {
+  background: rgba(254, 103, 234, 0.02);
+}
+
+/* Software Name Cell */
+.software-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--dark, #1f2937);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.software-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(145deg, var(--primary-lightest, #fbc3ef), #fff);
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* Feature Badges */
+.feature-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.25rem 0.7rem;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--success, #10b981);
+  width: fit-content;
+  margin: 0.15rem 0.2rem;
+}
+
+.feature-badge i {
+  font-size: 0.7rem;
+}
+
+.feature-badge-neutral {
+  background: rgba(107, 114, 128, 0.1);
+  color: var(--gray, #6b7280);
+}
+
+.price-tag {
+  font-weight: 700;
+  color: var(--primary-dark, #e237ce);
+}
+
+.rating-stars {
+  color: #fbbf24;
+  letter-spacing: 2px;
+}
+
+/* Compare Button */
+.btn-compare {
+  background: transparent;
+  border: 1px solid var(--primary, #fe67ea);
+  color: var(--primary-dark, #e237ce);
+  padding: 0.4rem 1rem;
+  border-radius: 40px;
+  font-weight: 500;
+  transition: var(--transition-fast, all 0.15s ease);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-compare:hover {
+  background: var(--primary, #fe67ea);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ----- Features Showcase Grid ----- */
+.features-showcase {
+  margin: var(--space-16) 0;
+}
+
+.section-title-center {
+  text-align: center;
+  font-size: var(--font-size-3xl, 1.875rem);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+}
+
+.section-desc {
+  text-align: center;
+  color: var(--gray, #6b7280);
+  max-width: 640px;
+  margin: 0 auto var(--space-12);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-8);
+}
+
+.feature-compare-card {
+  background: var(--white, #ffffff);
+  border-radius: var(--radius-lg, 1rem);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light, rgba(254, 103, 234, 0.15));
+  transition: all 0.2s ease;
+}
+
+.feature-compare-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light, #dc6af6);
+}
+
+.feature-icon-lg {
+  font-size: 2rem;
+  background: linear-gradient(
+    145deg,
+    var(--primary-light, #dc6af6),
+    var(--primary, #fe67ea)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--space-4);
+}
+
+.feature-compare-card h3 {
+  font-size: var(--font-size-xl, 1.25rem);
+  margin-bottom: var(--space-3);
+  color: var(--dark, #1f2937);
+}
+
+.feature-compare-card p {
+  color: var(--gray, #6b7280);
+  line-height: 1.5;
+}
+
+/* ----- CTA Section ----- */
+.cta-software {
+  background: linear-gradient(
+    125deg,
+    rgba(254, 103, 234, 0.08),
+    rgba(99, 219, 238, 0.05)
+  );
+  border-radius: var(--radius-xl, 1.5rem);
+  padding: var(--space-12) var(--space-8);
+  text-align: center;
+  margin: var(--space-16) 0 var(--space-12);
+  border: 1px solid var(--border-light, rgba(254, 103, 234, 0.15));
+}
+
+.cta-software h3 {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+  color: var(--dark, #1f2937);
+}
+
+.cta-software p {
+  color: var(--gray, #6b7280);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.btn-primary-soft {
+  background: var(--primary, #fe67ea);
+  color: white;
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 60px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  margin-top: var(--space-4);
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.btn-primary-soft:hover {
+  background: var(--primary-dark, #e237ce);
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+/* ----- Responsive Adjustments ----- */
+@media (max-width: 768px) {
+  .comparison-table th,
+  .comparison-table td {
+    padding: var(--space-4);
+  }
+
+  .software-name {
+    font-size: 0.95rem;
+  }
+
+  .feature-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .cta-software {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .section-title-center {
+    font-size: var(--font-size-2xl, 1.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .comparison-card {
+    margin: var(--space-6) 0 var(--space-10);
+  }
+
+  .comparison-table {
+    font-size: 0.85rem;
+    min-width: 700px;
+  }
+
+  .btn-compare {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+  }
+}

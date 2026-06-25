@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/auth.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <div class="nav-actions">
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="auth-page">
+      <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-header">
+            <h1>Create Account</h1>
+            <p>Join the Art Mecca community</p>
+          </div>
+
+          <form id="registerForm" class="auth-form">
+            <!-- Full Name -->
+            <div class="form-group">
+              <label for="fullname"
+                >Full Name <span class="required">*</span></label
+              >
+              <input
+                type="text"
+                id="fullname"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email"
+                >Email Address <span class="required">*</span></label
+              >
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="password"
+                >Password <span class="required">*</span></label
+              >
+              <div class="password-input-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Create a password"
+                  required
+                  minlength="6"
+                />
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="passwordToggle"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <small class="helper-text">Must be at least 6 characters</small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+              <label for="confirmPassword"
+                >Confirm Password <span class="required">*</span></label
+              >
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+
+            <!-- DATE OF BIRTH -->
+            <div class="form-group">
+              <label for="dateOfBirth"
+                >Date of Birth <span class="required">*</span></label
+              >
+              <input type="date" id="dateOfBirth" required />
+              <small class="helper-text"
+                >You must be at least 13 years old to join.</small
+              >
+            </div>
+
+            <!-- Terms -->
+            <div class="form-group checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="terms" required />
+                <span class="checkmark"></span>
+                I agree to the
+                <a href="/pages/legal/terms.html" target="_blank"
+                  >Terms of Service</a
+                >
+                and
+                <a href="/pages/legal/privacy.html" target="_blank"
+                  >Privacy Policy</a
+                >
+              </label>
+            </div>
+
+            <button type="submit" class="btn-submit" id="registerBtn">
+              <i class="fas fa-user-plus"></i> Create Account
+            </button>
+          </form>
+
+          <div class="auth-footer">
+            <p>
+              Already have an account?
+              <a href="/pages/auth/login.html">Sign In</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+
+    <!-- DO NOT include register.js - it's conflicting! -->
+
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Wait for authManager to be ready
+        function initRegistration() {
+          if (typeof authManager === "undefined") {
+            console.log("Waiting for authManager...");
+            setTimeout(initRegistration, 200);
+            return;
+          }
+
+          console.log("AuthManager loaded, setting up registration...");
+
+          const form = document.getElementById("registerForm");
+          const fullname = document.getElementById("fullname");
+          const email = document.getElementById("email");
+          const password = document.getElementById("password");
+          const confirmPassword = document.getElementById("confirmPassword");
+          const dateOfBirth = document.getElementById("dateOfBirth");
+          const terms = document.getElementById("terms");
+          const submitBtn = document.getElementById("registerBtn");
+          const passwordToggle = document.getElementById("passwordToggle");
+
+          if (!form) {
+            console.error("Register form not found!");
+            return;
+          }
+
+          // Disable HTML5 validation
+          form.setAttribute("novalidate", "true");
+          document
+            .querySelectorAll("#registerForm input[required]")
+            .forEach((el) => {
+              el.removeAttribute("required");
+            });
+
+          // Password visibility toggle
+          if (passwordToggle) {
+            passwordToggle.addEventListener("click", function () {
+              const type = password.type === "password" ? "text" : "password";
+              password.type = type;
+              this.querySelector("i").className =
+                type === "password" ? "fas fa-eye" : "fas fa-eye-slash";
+            });
+          }
+
+          // Set max date for DOB (13 years ago)
+          const today = new Date();
+          const maxDate = new Date(
+            today.getFullYear() - 13,
+            today.getMonth(),
+            today.getDate(),
+          );
+          if (dateOfBirth) {
+            dateOfBirth.max = maxDate.toISOString().split("T")[0];
+          }
+
+          form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log("Form submitted!");
+
+            // Clear existing messages
+            const existingMsg = document.getElementById("auth-message");
+            if (existingMsg) existingMsg.remove();
+
+            // Validation
+            if (!fullname.value.trim()) {
+              showMessage("Please enter your full name.", "error");
+              fullname.focus();
+              return;
+            }
+
+            if (
+              !email.value.trim() ||
+              !email.value.includes("@") ||
+              !email.value.includes(".")
+            ) {
+              showMessage("Please enter a valid email address.", "error");
+              email.focus();
+              return;
+            }
+
+            if (password.value !== confirmPassword.value) {
+              showMessage("Passwords do not match!", "error");
+              confirmPassword.focus();
+              return;
+            }
+
+            if (password.value.length < 6) {
+              showMessage("Password must be at least 6 characters.", "error");
+              password.focus();
+              return;
+            }
+
+            if (!dateOfBirth.value) {
+              showMessage("Please enter your date of birth.", "error");
+              dateOfBirth.focus();
+              return;
+            }
+
+            const dob = new Date(dateOfBirth.value);
+            const age = new Date().getFullYear() - dob.getFullYear();
+            const monthDiff = new Date().getMonth() - dob.getMonth();
+            const dayDiff = new Date().getDate() - dob.getDate();
+            const finalAge =
+              monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
+
+            console.log("User age:", finalAge);
+
+            if (finalAge < 13) {
+              showMessage(
+                "You must be at least 13 years old to join Art Mecca.",
+                "error",
+              );
+              dateOfBirth.focus();
+              return;
+            }
+
+            if (!terms.checked) {
+              showMessage(
+                "Please agree to the Terms of Service and Privacy Policy.",
+                "error",
+              );
+              terms.focus();
+              return;
+            }
+
+            // Submit
+            submitBtn.disabled = true;
+            submitBtn.innerHTML =
+              '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+
+            try {
+              console.log("Calling authManager.register...");
+              const result = await authManager.register(
+                email.value,
+                password.value,
+                fullname.value,
+                dateOfBirth.value,
+              );
+
+              console.log("Registration result:", result);
+
+              if (result.success) {
+                showMessage(
+                  "✅ Account created! Please check your email to verify your account.",
+                  "success",
+                );
+                submitBtn.disabled = false;
+                submitBtn.innerHTML =
+                  '<i class="fas fa-user-plus"></i> Create Account';
+
+                setTimeout(() => {
+                  window.location.href = "/pages/auth/login.html";
+                }, 3000);
+              } else {
+                showMessage(
+                  result.error || "Registration failed. Please try again.",
+                  "error",
+                );
+                submitBtn.disabled = false;
+                submitBtn.innerHTML =
+                  '<i class="fas fa-user-plus"></i> Create Account';
+              }
+            } catch (error) {
+              console.error("Registration error:", error);
+              // Show the actual error message
+              showMessage(
+                "Error: " +
+                  (error.message || "Registration failed. Please try again."),
+                "error",
+              );
+              submitBtn.disabled = false;
+              submitBtn.innerHTML =
+                '<i class="fas fa-user-plus"></i> Create Account';
+            }
+          });
+        }
+
+        function showMessage(message, type) {
+          const existing = document.getElementById("auth-message");
+          if (existing) existing.remove();
+
+          const messageEl = document.createElement("div");
+          messageEl.id = "auth-message";
+          messageEl.style.cssText = `
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        text-align: center;
+        font-weight: 500;
+        background: ${type === "success" ? "#10b981" : "#ef4444"};
+        color: white;
+        animation: fadeIn 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      `;
+          messageEl.textContent = message;
+
+          const form = document.getElementById("registerForm");
+          if (form) {
+            form.insertBefore(messageEl, form.firstChild);
+          }
+
+          setTimeout(() => {
+            if (messageEl) {
+              messageEl.style.opacity = "0";
+              messageEl.style.transition = "opacity 0.3s ease";
+              setTimeout(() => messageEl.remove(), 300);
+            }
+          }, 5000);
+        }
+
+        initRegistration();
+      });
+
+      const style = document.createElement("style");
+      style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Art Mecca - Digital Art Community</title>
+    <meta
+      name="description"
+      content="Join thousands of digital artists sharing tutorials, tools, and artwork. Learn digital painting, character design, and more."
+    />
+    <meta
+      name="keywords"
+      content="digital art, art community, tutorials, digital painting, character design, art tools"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Art Mecca - Digital Art Community" />
+    <meta
+      property="og:description"
+      content="Join thousands of digital artists sharing tutorials, tools, and artwork. Learn digital painting, character design, and more."
+    />
+    <meta property="og:image" content="/images/og-home.jpg" />
+    <meta property="og:url" content="https://artisanhub.com/" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Art Mecca - Digital Art Community" />
+    <meta
+      name="twitter:description"
+      content="Join thousands of digital artists sharing tutorials, tools, and artwork."
+    />
+    <meta name="twitter:image" content="/images/og-home.jpg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/home.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/search.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <script src="/js/utils/lazy-load.js"></script>
+  <body>
+    <!-- UPDATED HEADER - with emojis, bell left of search, restructured dropdowns -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="../../index.html#about"
+                class="nav-link"
+                data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon (notifications) - now to the LEFT of search -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </button>
+            <!-- EMPTY auth-buttons - will be populated by authManager -->
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                class="search-icon"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path d="M18 6L6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="parallax-main">
+      <!-- Parallax Hero Section -->
+      <section
+        class="parallax-hero"
+        style="
+          background-image: url(&quot;assets/images/imported/backgroundi/Illustration2.png&quot;);
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+        "
+      ></section>
+      <section class="parallax-hero">
+        <div class="parallax-bg" data-speed="0.5"></div>
+        <div class="parallax-clouds" data-speed="0.3"></div>
+        <div class="parallax-art-1" data-speed="0.8">🎨</div>
+        <div class="parallax-art-2" data-speed="0.6">✨</div>
+        <div class="parallax-art-3" data-speed="0.4">🖌️</div>
+
+        <div class="hero-content">
+          <div class="container">
+            <h1 class="hero-title" data-speed="0.9">
+              Unleash Your <span class="gradient-text">Creative</span> Potential
+            </h1>
+            <p class="hero-subtitle" data-speed="0.8">
+              Tools, tutorials, and community for the modern digital artist
+            </p>
+            <div class="hero-buttons" data-speed="0.7">
+              <a
+                href="pages/community/challenges.html"
+                class="btn btn-primary btn-glow"
+                >Start Creating</a
+              >
+              <a href="#about" class="btn btn-secondary">Learn More</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-indicator">
+          <div class="mouse">
+            <div class="wheel"></div>
+          </div>
+          <div class="arrow"></div>
+        </div>
+      </section>
+
+      <!-- About Section with Parallax -->
+      <section class="page about-page" id="about">
+        <div class="parallax-about-bg" data-speed="0.2"></div>
+        <div class="container">
+          <div class="about-content">
+            <div class="about-text" data-speed="0.5">
+              <h2>About Art Mecca</h2>
+              <p class="about-intro">
+                Hiya! Welcome to Art Mecca, a home for your art and passion.
+                We're a community, driven and dedicated to empowering digital
+                artists worldwide. Whether you're just starting out or a
+                seasoned pro, this was made for you. A place to be around and
+                find like-minded creatives, learn new skills, network, make new
+                friends, or just hang out and have fun.
+              </p>
+
+              <div class="about-container">
+                <div class="wrapper-content">
+                  <h3>Learn</h3>
+                  <p>
+                    Explore our tools, tutorials, curated by artists of all
+                    levels.
+                  </p>
+                </div>
+                <div class="slider-container">
+                  <div class="wrapper" data-speed="0.7">
+                    <button
+                      class="slider-nav prev-btn"
+                      onclick="changeSlide(-1)"
+                    >
+                      <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button
+                      class="slider-nav next-btn"
+                      onclick="changeSlide(1)"
+                    >
+                      <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="wrapper-holder">
+                      <div
+                        class="slide"
+                        id="slider-img-1"
+                        style="background-image: url(slide1.gif)"
+                      ></div>
+                      <div
+                        class="slide"
+                        id="slider-img-2"
+                        style="background-image: url(slide2.jpeg)"
+                      ></div>
+                      <div
+                        class="slide"
+                        id="slider-img-3"
+                        style="background-image: url(slide3.jpeg)"
+                      ></div>
+                      <div
+                        class="slide"
+                        id="slider-img-4"
+                        style="background-image: url(slide4.jpeg)"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="button-holder">
+                    <button
+                      class="button active"
+                      onclick="goToSlide(0)"
+                    ></button>
+                    <button class="button" onclick="goToSlide(1)"></button>
+                    <button class="button" onclick="goToSlide(2)"></button>
+                    <button class="button" onclick="goToSlide(3)"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="create-content">
+                <h3>Create</h3>
+                <p>
+                  Use our interactive tools like color palette generators,
+                  contrast checkers, and creative prompt systems.
+                </p>
+              </div>
+
+              <div class="create-container">
+                <div class="card">
+                  <div class="front">
+                    <i class="fas fa-palette"></i>
+                    <h4>Color Tools</h4>
+                  </div>
+                  <div class="back">
+                    <p>Generate perfect color palettes</p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="front">
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Prompt Generator</h4>
+                  </div>
+                  <div class="back">
+                    <p>Get creative inspiration</p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="front">
+                    <i class="fas fa-sliders-h"></i>
+                    <h4>Contrast Checker</h4>
+                  </div>
+                  <div class="back">
+                    <p>Ensure perfect contrast</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="Equip">
+                <div class="equip-content">
+                  <div class="equip-text">
+                    <h3>Equip</h3>
+                    <p>
+                      Showcase your artwork, track your progress, and build your
+                      professional portfolio.
+                    </p>
+                    <p
+                      style="
+                        margin-top: 1rem;
+                        font-style: italic;
+                        color: var(--primary);
+                      "
+                    >
+                      Click the briefcase to see your portfolio items!
+                    </p>
+                  </div>
+                  <div class="equip-briefcase" id="briefcase-container"></div>
+                </div>
+              </div>
+
+              <section class="page connect-section" id="connect">
+                <div class="parallax-connect-bg" data-speed="0.3"></div>
+                <div class="container">
+                  <div class="connect-content">
+                    <div class="connect-text" data-speed="0.6">
+                      <h3>Connect</h3>
+                      <p>
+                        Join our vibrant community of digital artists and
+                        immerse yourself in creativity.
+                      </p>
+                    </div>
+                    <div class="connect-visual-area" data-speed="0.7">
+                      <div class="main-image-placeholder"></div>
+                      <div class="connect-buttons-grid">
+                        <a
+                          href="pages/community/challenges.html"
+                          class="btn-hub-special"
+                        >
+                          <i class="fas fa-users"></i>
+                          <span class="btn-text">Community Hub</span>
+                        </a>
+                        <a
+                          href="pages/community/gallery.html"
+                          class="btn-connect-regular"
+                        >
+                          <i class="fas fa-images"></i>
+                          <span class="btn-text">Gallery</span>
+                        </a>
+                        <a href="#" class="btn-connect-regular">
+                          <i class="fas fa-calendar"></i>
+                          <span class="btn-text">Events</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div class="about-cta">
+                <h3>Ready to Start Your Creative Journey?</h3>
+                <p>
+                  Join thousands of artists who are already transforming their
+                  skills.
+                </p>
+                <div class="cta-buttons">
+                  <a href="pages/auth/register.html" class="btn btn-primary"
+                    >Join Now</a
+                  >
+                  <a
+                    href="pages/tutorials/tutorials.html"
+                    class="btn btn-outline"
+                    >Explore Tutorials</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="about-visual">
+              <div class="floating-element element-1" data-speed="0.3">⭐</div>
+              <div class="floating-element element-2" data-speed="0.5">🎯</div>
+              <div class="floating-element element-3" data-speed="0.4">💫</div>
+              <div class="floating-element element-4" data-speed="0.6">🌟</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="page features-page">
+        <div class="parallax-features-bg" data-speed="0.1"></div>
+        <div class="container">
+          <div class="features-header" data-speed="0.6">
+            <h2>
+              Everything You Need to <span class="gradient-text">Grow</span>
+            </h2>
+            <p>Discover our comprehensive suite of tools and resources</p>
+          </div>
+          <div class="features-grid-compact">
+            <div class="feature-card-compact" data-speed="0.7">
+              <div class="feature-icon">🎨</div>
+              <h3>Interactive Tools</h3>
+              <p>
+                Color palette generators, contrast checkers, and creative
+                prompts.
+              </p>
+              <a
+                href="pages/tools/color-palette-generator.html"
+                class="btn btn-outline"
+                >Explore Tools</a
+              >
+            </div>
+            <div class="feature-card-compact" data-speed="0.8">
+              <div class="feature-icon">📚</div>
+              <h3>Expert Tutorials</h3>
+              <p>
+                Step-by-step guides for digital painting and character design.
+              </p>
+              <a href="pages/tutorials/tutorials.html" class="btn btn-outline"
+                >Learn More</a
+              >
+            </div>
+            <div class="feature-card-compact" data-speed="0.9">
+              <div class="feature-icon">👥</div>
+              <h3>Art Community</h3>
+              <p>
+                Monthly challenges, feedback, and collaboration opportunities.
+              </p>
+              <a href="pages/community/hub.html" class="btn btn-outline"
+                >Join Community</a
+              >
+            </div>
+            <div class="feature-card-compact" data-speed="1.0">
+              <div class="feature-icon">💼</div>
+              <h3>My Portfolio</h3>
+              <p>
+                Showcase your artwork and build your professional portfolio.
+              </p>
+              <a href="pages/Equip/Equip.html" class="btn btn-outline"
+                >View Portfolio</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Social Section -->
+      <section class="page social-page">
+        <div class="parallax-social-bg" data-speed="0.15"></div>
+        <div class="container">
+          <div class="social-content">
+            <div class="video-showcase-single" data-speed="0.6">
+              <div class="video-container-single">
+                <div class="video-placeholder">
+                  <i class="fas fa-play-circle"></i>
+                  <p>Art Mecca in Action</p>
+                  <span
+                    >Watch how our tools and community help artists create
+                    amazing work</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="social-text" data-speed="0.7">
+              <h2>
+                Join Our Creative <span class="gradient-text">Movement</span>
+              </h2>
+              <p>
+                Experience the power of our platform through this showcase of
+                community creations.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compact Footer -->
+        <footer class="compact-footer">
+          <div class="container">
+            <div class="footer-main">
+              <div class="footer-brand">
+                <div class="logo">
+                  <span class="logo-icon">🎨</span>
+                  <span class="logo-text">Art Mecca</span>
+                </div>
+                <p>Empowering digital artists worldwide</p>
+              </div>
+              <div class="social-links">
+                <a
+                  href="https://www.youtube.com/@Trulyyours26"
+                  class="social-link"
+                  ><i class="fab fa-youtube"></i
+                ></a>
+                <a
+                  href="https://www.instagram.com/_trulyyours26"
+                  class="social-link"
+                  ><i class="fab fa-instagram"></i
+                ></a>
+                <a href="https://x.com/TrulyYoursMira" class="social-link"
+                  ><i class="fab fa-twitter"></i
+                ></a>
+                <a
+                  href="https://www.tiktok.com/@truly_yours26"
+                  class="social-link"
+                  ><i class="fab fa-tiktok"></i
+                ></a>
+                <a href="#" class="social-link"
+                  ><i class="fab fa-discord"></i
+                ></a>
+                <a
+                  href="https://za.pinterest.com/TrulyYours26/"
+                  class="social-link"
+                  ><i class="fab fa-pinterest"></i
+                ></a>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+              <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path d="m18 15-6-6-6 6" />
+      </svg>
+    </button>
+
+    <!-- ========== FIREBASE SDKs (ONCE) ========== -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <!-- ========== YOUR CONFIG & AUTH ========== -->
+    <script src="config/firebase-config.js"></script>
+    <script src="js/auth/auth-manager.js"></script>
+
+    <!-- ========== SEO ========== -->
+    <script src="/js/utils/seo.js"></script>
+
+    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System (for bell icon dropdown) -->
+    <script src="/js/community/notifications.js"></script>
+
+    <!-- ========== HEADER INIT ========== -->
+    <script>
+      // Initialize auth manager and ensure persistence
+      document.addEventListener("DOMContentLoaded", function () {
+        // Wait for Firebase to initialize
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            // Force an immediate UI update
+            authManager.updateUI();
+
+            // Also listen for auth state changes
+            window.addEventListener("authStateChanged", function () {
+              authManager.updateUI();
+            });
+          }
+        }, 300);
+      });
+
+      // Additional check for pageshow (when navigating back/forward)
+      window.addEventListener("pageshow", function () {
+        if (typeof authManager !== "undefined") {
+          setTimeout(() => authManager.updateUI(), 100);
+        }
+      });
+    </script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <!-- ========== OTHER SCRIPTS ========== -->
+    <script src="js/main.js"></script>
+    <script src="js/parallax.js"></script>
+    <script src="js/briefcase.js"></script>
+    <script src="js/search.js"></script>
+  </body>
+</html>

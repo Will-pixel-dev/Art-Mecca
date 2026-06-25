@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creative Tools - Art Mecca</title>
+    <meta
+      name="description"
+      content="Free creative tools for digital artists including color palette generator, color scheme analyzer, and character prompt generator. Enhance your art workflow."
+    />
+    <meta
+      name="keywords"
+      content="color palette generator, color scheme analyzer, character prompt generator, art tools, digital art tools, creative tools"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Creative Tools For Digital Artists" />
+    <meta
+      property="og:description"
+      content="Free creative tools for digital artists including color palette generator, color scheme analyzer, and character prompt generator."
+    />
+    <meta property="og:image" content="/images/og-tools.jpg" />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/tools/tools.html"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Creative Tools For Digital Artists" />
+    <meta
+      name="twitter:description"
+      content="Free creative tools for digital artists including color palette generator and more."
+    />
+    <meta name="twitter:image" content="/images/og-tools.jpg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ============================================
+           TOOLS LANDING PAGE - ENHANCED STYLES
+           ============================================ */
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      /* Tools Hero Section */
+      .tools-hero {
+        background: linear-gradient(
+          135deg,
+          rgba(254, 103, 234, 0.1) 0%,
+          rgba(99, 219, 238, 0.1) 100%
+        );
+        padding: 4rem 0;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid rgba(254, 103, 234, 0.2);
+      }
+
+      .hero-content {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .hero-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #fe67ea, #63dbee, #7aa5f0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: titleGlow 3s ease-in-out infinite;
+      }
+
+      @keyframes titleGlow {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 0px rgba(254, 103, 234, 0.3));
+        }
+        50% {
+          filter: drop-shadow(0 0 10px rgba(254, 103, 234, 0.5));
+        }
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #4a5568;
+      }
+
+      /* Features Header */
+      .features-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .features-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .features-header p {
+        color: #666;
+        font-size: 1rem;
+      }
+
+      /* Enhanced Features Grid - More Square Cards */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        margin-bottom: 4rem;
+      }
+
+      /* ============================================
+           PERMANENT RAINBOW BORDER CARDS (3rem)
+           ============================================ */
+
+      .feature-card {
+        background: white;
+        border-radius: 24px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        min-height: 380px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      /* Permanent animated looping gradient border - 3rem around */
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: -3rem;
+        left: -3rem;
+        right: -3rem;
+        bottom: -3rem;
+        background: linear-gradient(
+          135deg,
+          #ff69b4,
+          #ff9500,
+          #ffdd00,
+          #05f5ad,
+          #63dbee,
+          #7aa5f0,
+          #9d9afe,
+          #ff69b4
+        );
+        background-size: 400% 400%;
+        border-radius: 40px;
+        opacity: 1;
+        z-index: -2;
+        animation: borderRotate 4s linear infinite;
+      }
+
+      @keyframes borderRotate {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* White inner background */
+      .feature-card::after {
+        content: "";
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+        background: white;
+        border-radius: 20px;
+        z-index: -1;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover .feature-icon {
+        transform: scale(1.1);
+      }
+
+      .feature-card h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 0.75rem;
+      }
+
+      .feature-card p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+      }
+
+      /* Button Styles */
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        background: transparent;
+        border: 2px solid #fe67ea;
+        border-radius: 50px;
+        color: #fe67ea;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        align-self: center;
+      }
+
+      .btn-outline:hover {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        border-color: transparent;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(254, 103, 234, 0.4);
+      }
+
+      /* ============================================
+           FEATURED ART SECTION - CONSTANT LEFT TO RIGHT SHADOWS
+           ============================================ */
+
+      .featured-art-section {
+        padding: 3rem;
+        background: white;
+        border-radius: 30px;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        position: relative;
+        z-index: 1;
+      }
+
+      .featured-art-section h2 {
+        text-align: center;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .featured-art-section > p {
+        text-align: center;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto 2rem auto;
+      }
+
+      .featured-art-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      /* Art Card with constant left-to-right gradient shadow */
+      .art-card {
+        background: linear-gradient(135deg, #f8f8f8, white);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Constant colorful gradient shadow behind art cards - left to right */
+      .art-card::before {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: -15px;
+        right: -15px;
+        top: -15px;
+        background: linear-gradient(
+          90deg,
+          #ff69b4,
+          #ff9500,
+          #ffdd00,
+          #05f5ad,
+          #63dbee,
+          #7aa5f0,
+          #9d9afe,
+          #ff69b4
+        );
+        background-size: 200% 100%;
+        filter: blur(25px);
+        border-radius: 30px;
+        opacity: 0.7;
+        z-index: -2;
+        transition: opacity 0.3s ease;
+      }
+
+      .art-card:hover::before {
+        opacity: 1;
+      }
+
+      /* Inner white background */
+      .art-card::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        background: white;
+        border-radius: 14px;
+        z-index: -1;
+      }
+
+      .art-card:hover {
+        transform: translateY(-8px);
+      }
+
+      .art-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .art-card:hover img {
+        transform: scale(1.05);
+      }
+
+      .art-card h3 {
+        padding: 1rem 1rem 0.5rem 1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .art-card p {
+        padding: 0 1rem 1rem 1rem;
+        font-size: 0.85rem;
+        color: #666;
+      }
+
+      /* CTA Section */
+      .tools-cta {
+        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        border-radius: 20px;
+        padding: 3rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 30px rgba(254, 103, 234, 0.3);
+      }
+
+      .tools-cta h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+
+      .tools-cta p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        background: white;
+        border: none;
+        border-radius: 50px;
+        color: #fe67ea;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        gap: 0.8rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .tools-hero {
+          padding: 2rem 0;
+        }
+
+        .features-grid {
+          gap: 2rem;
+        }
+
+        .feature-card {
+          padding: 1.5rem;
+          min-height: 340px;
+        }
+
+        .tools-cta {
+          padding: 2rem;
+        }
+
+        .featured-art-section {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tutorials/character-design-landing.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link active"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM (correct IDs for notifications.js) -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main>
+      <!-- Tools Hero Section -->
+      <section class="tools-hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1 class="hero-title">Creative Tools for Artists</h1>
+            <p class="hero-subtitle">
+              Explore our collection of essential tools designed to enhance your
+              artistic workflow and inspire your creativity. From color palette
+              generators to advanced color theory resources, our tools are
+              curated to help artists of all levels create stunning and
+              harmonious artworks.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section with Permanent Rainbow Border Cards -->
+      <div class="container">
+        <div class="features-header">
+          <h2>
+            Everything You Need to <span class="gradient-text">Create</span>
+          </h2>
+          <p>Discover our comprehensive suite of tools and resources</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Color Palette Generator</h3>
+            <p>
+              Create harmonious color schemes with our intuitive palette
+              generator, perfect for artists seeking inspiration and cohesion in
+              their work.
+            </p>
+            <a
+              href="/pages/tools/color-palette-generator.html"
+              class="btn-outline"
+              >Explore Tool <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Color Scheme Analyzer</h3>
+            <p>
+              Analyze and refine your color choices with our advanced color
+              scheme analyzer, designed to help artists understand color
+              relationships.
+            </p>
+            <a
+              href="/pages/tools/color-scheme-analyzer.html"
+              class="btn-outline"
+              >Explore Tool <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">💡</div>
+            <h3>Character Prompt Generator</h3>
+            <p>
+              Generate creative prompts for your art projects to spark
+              inspiration and overcome creative blocks.
+            </p>
+            <a href="/pages/tools/prompt-generator.html" class="btn-outline"
+              >Explore Tool <i class="fas fa-arrow-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured Art Section with Constant Gradient Shadows -->
+      <div class="container">
+        <div class="featured-art-section">
+          <h2>Featured Art Using Our Tools</h2>
+          <p>
+            Explore stunning artworks created by our community using our tools.
+            Get inspired by the creativity and skill of fellow artists.
+          </p>
+          <div class="featured-art-grid">
+            <div class="art-card">
+              <img
+                src="/assets/featured-art/art1.jpg"
+                alt="Sunset Serenity"
+                onerror="
+                  this.src =
+                    'https://placehold.co/400x200/fe67ea/white?text=Sunset+Serenity'
+                "
+              />
+              <h3>Sunset Serenity</h3>
+              <p>Created using the Color Palette Generator</p>
+            </div>
+            <div class="art-card">
+              <img
+                src="/assets/featured-art/art2.jpg"
+                alt="Vibrant Cityscape"
+                onerror="
+                  this.src =
+                    'https://placehold.co/400x200/63dbee/white?text=Vibrant+Cityscape'
+                "
+              />
+              <h3>Vibrant Cityscape</h3>
+              <p>Created using the Color Scheme Analyzer</p>
+            </div>
+            <div class="art-card">
+              <img
+                src="/assets/featured-art/art3.jpg"
+                alt="Dreamy Forest"
+                onerror="
+                  this.src =
+                    'https://placehold.co/400x200/7aa5f0/white?text=Dreamy+Forest'
+                "
+              />
+              <h3>Dreamy Forest</h3>
+              <p>Created using the Prompt Generator</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="container">
+        <div class="tools-cta">
+          <h2>Ready to elevate your art?</h2>
+          <p>
+            Join thousands of artists already using our tools to create amazing
+            artwork
+          </p>
+          <a href="/pages/auth/register.html" class="btn-primary"
+            >Get Started Free <i class="fas fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                aria-label="YouTube"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a
+                href="https://x.com/TrulyYoursMira"
+                class="social-link"
+                aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                aria-label="TikTok"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link" aria-label="Discord"
+                ><i class="fab fa-discord"></i
+              ></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                aria-label="Pinterest"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- Notifications System (for bell icon dropdown) -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+  </body>
+</html>

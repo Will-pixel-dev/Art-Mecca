@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/profile-enhanced.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <main class="profile-hero-main" id="profileContent" style="display: none">
+      <!-- LAYER 1: BACKGROUND -->
+      <div class="hero-layer-1" id="layer1Container">
+        <div id="layer1Content">
+          <div
+            style="
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            "
+          ></div>
+        </div>
+        <div class="layer-overlay"></div>
+      </div>
+
+      <!-- LAYER 1 UPLOAD CONTROLS - MOVED OUTSIDE layer-1 -->
+      <div class="layer-1-controls" id="layer1Controls" style="display: none">
+        <label class="upload-btn">
+          <i class="fas fa-image"></i> Change Background
+          <input type="file" id="layer1Upload" accept="image/*,video/*" />
+        </label>
+      </div>
+
+      <!-- LAYER 2: TRANSPARENT OVERLAY -->
+      <div class="hero-layer-2" id="layer2Container">
+        <div id="layer2Content">
+          <div
+            style="
+              width: 200px;
+              height: 200px;
+              border-radius: 50%;
+              background: linear-gradient(135deg, #fe67ea, #63dbee);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 4rem;
+              color: white;
+              font-weight: bold;
+              opacity: 0.8;
+            "
+          >
+            🎨
+          </div>
+        </div>
+      </div>
+
+      <!-- LAYER 2 UPLOAD CONTROLS - MOVED OUTSIDE layer-2 -->
+      <div class="layer-2-controls" id="layer2Controls" style="display: none">
+        <label class="upload-btn">
+          <i class="fas fa-user"></i> Change Overlay
+          <input type="file" id="layer2Upload" accept="image/*,video/*" />
+        </label>
+      </div>
+      <!-- LAYER 3: GLASS UI -->
+      <div class="hero-layer-3 hero-theme-dark">
+        <!-- Top Bar: Nav -->
+        <div class="hero-top-bar">
+          <nav class="hero-nav">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              Art Mecca
+            </a>
+            <!-- Toggle Button - Add this -->
+            <button
+              class="nav-toggle-btn"
+              id="navToggleBtn"
+              aria-label="Toggle navigation"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="nav-links">
+              <li>
+                <a href="/index.html" class="nav-link" data-section="home"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/index.html#about"
+                  class="nav-link"
+                  data-section="about"
+                  >About</a
+                >
+              </li>
+              <li class="nav-dropdown" data-section="tutorials">
+                <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                  >Tutorials <span class="dropdown-arrow">▼</span></a
+                >
+                <ul class="dropdown-menu">
+                  <li>
+                    <a
+                      href="/pages/tutorials/character-design/character-design-tutorials.html"
+                      >🎨 Character Design</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                      >💡 Color & Lighting</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                      >🖌️ Digital Painting</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                      >😌 Facial Features</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                      >💻 Software Guide</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                      >⚙️ Workflow Process</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/pages/tutorials/tutorials.html"
+                      >📚 Full Catalogue</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-dropdown" data-section="software">
+                <a
+                  href="/pages/software/software-comparison.html"
+                  class="nav-link"
+                  >Software <span class="dropdown-arrow">▼</span></a
+                >
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/pages/software/software-comparison.html"
+                      >⚖️ Software Comparison</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/pages/tools/software-quiz.html"
+                      >📝 Software Quiz</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-dropdown" data-section="tools">
+                <a href="/pages/tools/tools.html" class="nav-link"
+                  >Tools <span class="dropdown-arrow">▼</span></a
+                >
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/pages/tools/color-palette-generator.html"
+                      >🎨 Color Palette Generator</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/pages/tools/color-scheme-analyzer.html"
+                      >🔍 Color Scheme Analyzer</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/pages/tools/prompt-generator.html"
+                      >🤖 Character Prompt Generator</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-dropdown" data-section="community">
+                <a href="/pages/community/hub.html" class="nav-link"
+                  >Community <span class="dropdown-arrow">▼</span></a
+                >
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/pages/community/hub.html#daily-challenge"
+                      >🔥 Daily Challenge</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/pages/community/gallery.html">🖼️ Gallery</a>
+                  </li>
+                  <li>
+                    <a href="/pages/community/search-users.html"
+                      >🔍 Find Artists</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/pages/community/activity-feed.html"
+                      >📰 Activity Feed</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  </li>
+                  <li>
+                    <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-dropdown" data-section="equip">
+                <a href="/pages/Equip/Equip.html" class="nav-link"
+                  >Equip <span class="dropdown-arrow">▼</span></a
+                >
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  </li>
+                  <li>
+                    <a href="/pages/Equip/price-comparison.html"
+                      >📄 CV Template</a
+                    >
+                  </li>
+                  <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                  <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="/pages/truly-yours/truly-yours-project.html"
+                  class="nav-link truly-yours-link"
+                  data-section="truly-yours"
+                  >Truly Yours ✨</a
+                >
+              </li>
+            </ul>
+            <div class="auth-buttons">
+              <button class="btn-icon search-btn">
+                <i class="fas fa-search"></i>
+              </button>
+              <div class="auth-buttons-container"></div>
+              <!-- Avatar container - add this where you want the avatar to appear -->
+              <div class="nav-avatar-container" id="navAvatar"></div>
+            </div>
+            <!-- Profile Avatar Section - Add this near the top of your profile content -->
+            <div class="profile-avatar-section" id="profileAvatarSection">
+              <div class="avatar-wrapper avatar-xxl" id="profileAvatarWrapper">
+                <span class="avatar-initials" id="profileAvatarInitials"
+                  >JD</span
+                >
+              </div>
+              <div class="avatar-info">
+                <h3 id="profileAvatarName">Your Name</h3>
+                <p id="profileAvatarUsername">@username</p>
+                <button class="btn-change-avatar" id="changeAvatarBtn">
+                  <i class="fas fa-camera"></i> Change Profile Picture
+                </button>
+                <input
+                  type="file"
+                  id="avatarUpload"
+                  accept="image/*"
+                  style="display: none"
+                />
+              </div>
+            </div>
+          </nav>
+        </div>
+
+        <!-- Right Sidebar Icons -->
+        <div class="hero-right-sidebar">
+          <a
+            href="#"
+            class="sidebar-icon"
+            data-action="notifications"
+            title="Notifications"
+          >
+            <i class="fas fa-bell"></i>
+          </a>
+          <a
+            href="#"
+            class="sidebar-icon"
+            data-action="settings"
+            title="Settings"
+          >
+            <i class="fas fa-cog"></i>
+          </a>
+          <a href="#" class="sidebar-icon" data-action="cv" title="CV">
+            <i class="fas fa-file-alt"></i>
+          </a>
+          <a
+            href="#"
+            class="sidebar-icon"
+            data-action="edit"
+            title="Edit Profile"
+          >
+            <i class="fas fa-pen"></i>
+          </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="hero-content-left">
+          <!-- Name Section -->
+          <div class="hero-name-section-left">
+            <h1 class="artist-name">Artist Name</h1>
+            <p class="artist-username">@username</p>
+            <div class="hero-badges">
+              <span class="hero-badge artist"
+                ><i class="fas fa-palette"></i> Artist</span
+              >
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="hero-stats-left">
+            <div class="hero-stat">
+              <span class="stat-value" data-stat="artworks">0</span>
+              <span class="stat-label">Artworks</span>
+            </div>
+            <div class="hero-stat">
+              <span class="stat-value" data-stat="followers">0</span>
+              <span class="stat-label">Followers</span>
+            </div>
+            <div class="hero-stat">
+              <span class="stat-value" data-stat="following">0</span>
+              <span class="stat-label">Following</span>
+            </div>
+            <div class="hero-stat">
+              <span class="stat-value" data-stat="likes">0</span>
+              <span class="stat-label">Likes</span>
+            </div>
+          </div>
+
+          <!-- Bio -->
+          <div class="hero-bio-left collapsed">
+            <p class="bio-text">No bio yet. Click to expand.</p>
+            <button class="bio-toggle">Show more ▼</button>
+          </div>
+
+          <!-- ARTIST BADGE SECTION - ADDED -->
+          <div class="artist-badge-section" id="artistBadgeSection">
+            <div class="badge-header">
+              <h3><i class="fas fa-award"></i> Artist Badge</h3>
+              <button
+                class="btn-edit-badge"
+                id="editBadgeBtn"
+                style="display: none"
+              >
+                <i class="fas fa-pen"></i> Edit Badge
+              </button>
+            </div>
+
+            <!-- Badge Display -->
+            <div class="badge-display" id="badgeDisplay">
+              <div class="badge-container">
+                <div class="badge-icon">
+                  <i class="fas fa-palette" id="badgeIcon"></i>
+                </div>
+                <div class="badge-info">
+                  <div class="badge-primary">
+                    <span class="badge-label">Artist Type</span>
+                    <span class="badge-value" id="badgeArtistType"
+                      >Not set</span
+                    >
+                  </div>
+                  <div class="badge-secondary">
+                    <span class="badge-label">Specialties</span>
+                    <div class="badge-tags" id="badgeSpecialties">
+                      <span class="badge-tag">Not set</span>
+                    </div>
+                  </div>
+                  <div class="badge-medium">
+                    <span class="badge-label">Medium</span>
+                    <div class="badge-tags" id="badgeMediumTags">
+                      <span class="badge-tag">Not set</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="hero-bottom-bar-horizontal">
+          <div class="hero-social-links"></div>
+          <button class="hero-shadow-btn">
+            <span class="shadow-text">Shadow</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Theme Toggle -->
+      <button class="hero-theme-toggle" title="Toggle Theme">
+        <i class="fas fa-sun"></i>
+      </button>
+
+      <!-- Upload Loading -->
+      <div
+        id="uploadLoading"
+        style="
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 9999;
+          background: rgba(0, 0, 0, 0.8);
+          padding: 20px 30px;
+          border-radius: 12px;
+          color: white;
+          font-weight: 600;
+        "
+      >
+        <i class="fas fa-spinner fa-spin"></i> Uploading...
+      </div>
+
+      <!-- SOCIAL LINKS MODAL -->
+      <div class="modal-overlay" id="socialLinksModal">
+        <div class="modal-container social-modal">
+          <div class="modal-header">
+            <h3><i class="fas fa-link"></i> Edit Social Links</h3>
+            <button class="modal-close" id="closeSocialModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p style="color: #a0aec0; margin-bottom: 1rem">
+              Add your social media links. Leave empty to remove.
+            </p>
+            <form id="socialLinksForm">
+              <div class="social-input-group">
+                <label
+                  ><i class="fab fa-instagram" style="color: #e4405f"></i>
+                  Instagram</label
+                >
+                <input
+                  type="url"
+                  id="socialInstagram"
+                  placeholder="https://instagram.com/yourusername"
+                />
+              </div>
+              <div class="social-input-group">
+                <label
+                  ><i class="fab fa-tiktok" style="color: #000000"></i>
+                  TikTok</label
+                >
+                <input
+                  type="url"
+                  id="socialTikTok"
+                  placeholder="https://tiktok.com/@yourusername"
+                />
+              </div>
+              <div class="social-input-group">
+                <label
+                  ><i class="fab fa-youtube" style="color: #ff0000"></i>
+                  YouTube</label
+                >
+                <input
+                  type="url"
+                  id="socialYouTube"
+                  placeholder="https://youtube.com/@yourusername"
+                />
+              </div>
+              <div class="social-input-group">
+                <label
+                  ><i class="fab fa-pinterest" style="color: #e60023"></i>
+                  Pinterest</label
+                >
+                <input
+                  type="url"
+                  id="socialPinterest"
+                  placeholder="https://pinterest.com/yourusername"
+                />
+              </div>
+              <div class="social-input-group">
+                <label
+                  ><i class="fab fa-discord" style="color: #5865f2"></i>
+                  Discord</label
+                >
+                <input
+                  type="url"
+                  id="socialDiscord"
+                  placeholder="https://discord.gg/invitecode"
+                />
+              </div>
+              <div class="social-input-group">
+                <label
+                  ><i class="fab fa-x-twitter" style="color: #000000"></i> X
+                  (Twitter)</label
+                >
+                <input
+                  type="url"
+                  id="socialX"
+                  placeholder="https://x.com/yourusername"
+                />
+              </div>
+              <div class="social-input-group">
+                <label
+                  ><i class="fas fa-user" style="color: #8b5cf6"></i>
+                  VGen</label
+                >
+                <input
+                  type="url"
+                  id="socialVGen"
+                  placeholder="https://vgen.co/yourusername"
+                />
+              </div>
+              <div class="social-input-group">
+                <label
+                  ><i class="fas fa-coffee" style="color: #ff813f"></i>
+                  Ko-Fi</label
+                >
+                <input
+                  type="url"
+                  id="socialKoFi"
+                  placeholder="https://ko-fi.com/yourusername"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelSocialBtn">Cancel</button>
+            <button class="btn btn-primary" id="saveSocialBtn">
+              <i class="fas fa-save"></i> Save Social Links
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTIST BADGE MODAL - ADDED -->
+      <div class="modal-overlay" id="badgeModal">
+        <div class="modal-container badge-modal">
+          <div class="modal-header">
+            <h3><i class="fas fa-award"></i> Edit Artist Badge</h3>
+            <button class="modal-close" id="closeBadgeModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="badgeForm">
+              <!-- Artist Type -->
+              <div class="form-group">
+                <label>Artist Type <span class="required">*</span></label>
+                <select id="artistType" required>
+                  <option value="">Select your primary style</option>
+                  <option value="digital">🎨 Digital Artist</option>
+                  <option value="traditional">🖌️ Traditional Artist</option>
+                  <option value="mixed">🎭 Mixed Media Artist</option>
+                  <option value="3d">🧊 3D Artist</option>
+                  <option value="photography">📷 Photographer</option>
+                  <option value="animation">🎬 Animator</option>
+                </select>
+              </div>
+
+              <!-- Specialties -->
+              <div class="form-group">
+                <label>Specialties (Select up to 4)</label>
+                <div class="specialties-grid" id="specialtiesGrid">
+                  <div class="specialty-group" data-type="digital">
+                    <h4>Digital Art</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="character-design" />
+                      Character Design
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="portrait" /> Portrait Art
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="anatomy" /> Anatomy &
+                      Technical
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="landscape" /> Landscape &
+                      Environment
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="digital-painting" />
+                      Digital Painting
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="concept-art" /> Concept Art
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="illustration" />
+                      Illustration
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="manga" /> Manga & Comics
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="storyboarding" />
+                      Storyboarding
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="photo-manipulation" />
+                      Photo Manipulation
+                    </label>
+                  </div>
+
+                  <div class="specialty-group" data-type="traditional">
+                    <h4>Traditional Art</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="oil-painting" /> Oil
+                      Painting
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="watercolor" />
+                      Watercolor
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="acrylic" /> Acrylic
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="charcoal" /> Charcoal &
+                      Graphite
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="ink" /> Ink Drawing
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="pastel" /> Pastel Art
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="mixed-media" /> Mixed Media
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="collage" /> Collage
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="printmaking" />
+                      Printmaking
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="sketching" /> Sketching
+                    </label>
+                  </div>
+
+                  <div class="specialty-group" data-type="3d">
+                    <h4>3D Art</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="3d-modeling" /> 3D Modeling
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="sculpting" /> Sculpting
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="texturing" /> Texturing
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="rigging" /> Rigging
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="animation-3d" /> 3D
+                      Animation
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="game-art" /> Game Art
+                    </label>
+                  </div>
+
+                  <div class="specialty-group" data-type="photography">
+                    <h4>Photography</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="portrait-photography" />
+                      Portrait Photography
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="landscape-photography" />
+                      Landscape Photography
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="macro" /> Macro Photography
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="street" /> Street
+                      Photography
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="fine-art" /> Fine Art
+                      Photography
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="wildlife" /> Wildlife
+                      Photography
+                    </label>
+                  </div>
+
+                  <div class="specialty-group" data-type="animation">
+                    <h4>Animation</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="2d-animation" /> 2D
+                      Animation
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="stop-motion" /> Stop Motion
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="motion-graphics" />
+                      Motion Graphics
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="character-animation" />
+                      Character Animation
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="experimental" />
+                      Experimental Animation
+                    </label>
+                  </div>
+                </div>
+                <small class="helper-text">Select up to 4 specialties</small>
+              </div>
+
+              <!-- Medium -->
+              <div class="form-group">
+                <label>Medium (Select up to 3)</label>
+                <div class="medium-grid" id="mediumGrid">
+                  <div class="medium-group" data-type="traditional">
+                    <h4>Traditional</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="watercolor" />
+                      Watercolor
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="acrylic" /> Acrylic
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="oil-paint" /> Oil Paint
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="ink" /> Ink
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="graphite" /> Graphite
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="charcoal-medium" />
+                      Charcoal
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="pastel-medium" /> Oil Pastel
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="gouache" /> Gouache
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="colored-pencil" />
+                      Colored Pencil
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="marker" /> Marker
+                    </label>
+                  </div>
+
+                  <div class="medium-group" data-type="digital">
+                    <h4>Digital</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="photoshop" /> Adobe
+                      Photoshop
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="procreate" /> Procreate
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="clip-studio" /> Clip Studio
+                      Paint EX/PRO
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="krita" /> Krita
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="ibis-paint" /> Ibis Paint
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="affinity" /> Affinity
+                      Designer/Photo
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="corel-painter" /> Corel
+                      Painter
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="blender" /> Blender
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="zbrush" /> ZBrush
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="maya" /> Maya
+                    </label>
+                  </div>
+
+                  <div class="medium-group" data-type="platform">
+                    <h4>Platform</h4>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="windows" /> Windows
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="mac" /> Mac OS
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="ipad" /> iPad
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="android" /> Android
+                    </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" value="linux" /> Linux
+                    </label>
+                  </div>
+                </div>
+                <small class="helper-text">Select up to 3 mediums</small>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" id="cancelBadgeBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="saveBadgeBtn">
+              <i class="fas fa-save"></i> Save Badge
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Loading State -->
+    <div
+      id="loadingState"
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #0f0f1c;
+        color: white;
+        flex-direction: column;
+        gap: 16px;
+      "
+    >
+      <div
+        style="
+          width: 40px;
+          height: 40px;
+          border: 3px solid #2a2a3e;
+          border-top-color: #fe67ea;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        "
+      ></div>
+      <p style="color: #a0aec0">Loading profile...</p>
+    </div>
+
+    <!-- Error State -->
+    <div
+      id="errorState"
+      style="
+        display: none;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #0f0f1c;
+        color: white;
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      "
+    >
+      <i
+        class="fas fa-exclamation-triangle"
+        style="font-size: 3rem; color: #ef4444"
+      ></i>
+      <h2>User Not Found</h2>
+      <p style="color: #a0aec0">
+        The profile you're looking for doesn't exist.
+      </p>
+      <a href="/pages/community/gallery.html" style="color: #fe67ea"
+        >Back to Gallery</a
+      >
+    </div>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer" style="display: none">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>Your creative universe.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/community/profile-enhanced.js"></script>
+
+    <style>
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </body>
+</html>

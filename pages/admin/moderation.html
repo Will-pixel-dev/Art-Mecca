@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moderation Dashboard - Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/moderation.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <div class="nav-actions">
+            <div class="auth-buttons"></div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="moderation-main">
+      <div class="container">
+        <div class="moderation-header">
+          <h1><i class="fas fa-shield-alt"></i> Moderation Dashboard</h1>
+          <p>Review and manage reported content</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #ef4444">
+              <i class="fas fa-flag"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="pendingReports">0</span>
+              <span class="stat-label">Pending Reports</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #f59e0b">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="pendingNSFW">0</span>
+              <span class="stat-label">Pending NSFW Reviews</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #10b981">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="approvedCount">0</span>
+              <span class="stat-label">Approved This Month</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: #8b5cf6">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="totalUsers">0</span>
+              <span class="stat-label">Total Users</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="moderation-tabs">
+          <button class="tab-btn active" data-tab="reports">
+            <i class="fas fa-flag"></i> Reports
+          </button>
+          <button class="tab-btn" data-tab="nsfw">
+            <i class="fas fa-eye"></i> NSFW Review
+          </button>
+          <button class="tab-btn" data-tab="users">
+            <i class="fas fa-users"></i> Users
+          </button>
+          <button class="tab-btn" data-tab="warnings">
+            <i class="fas fa-exclamation-triangle"></i> Warnings
+          </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content active" id="reportsTab">
+          <div class="tab-header">
+            <h3><i class="fas fa-flag"></i> Reported Content</h3>
+            <span class="tab-count" id="reportsCount">0</span>
+          </div>
+          <div id="reportsList">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading reports...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="nsfwTab">
+          <div class="tab-header">
+            <h3><i class="fas fa-eye"></i> NSFW Content Review</h3>
+            <span class="tab-count" id="nsfwCount">0</span>
+          </div>
+          <div id="nsfwList">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading NSFW content...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="usersTab">
+          <div class="tab-header">
+            <h3><i class="fas fa-users"></i> User Management</h3>
+            <span class="tab-count" id="usersCount">0</span>
+          </div>
+          <div id="usersList">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading users...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="warningsTab">
+          <div class="tab-header">
+            <h3><i class="fas fa-exclamation-triangle"></i> Warning Logs</h3>
+            <span class="tab-count" id="warningsCount">0</span>
+          </div>
+          <div id="warningsList">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading warnings...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>Your creative universe.</p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+              >
+                <i class="fab fa-pinterest"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/admin/moderation.js"></script>
+  </body>
+</html>

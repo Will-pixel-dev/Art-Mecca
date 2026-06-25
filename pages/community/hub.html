@@ -1,0 +1,1360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Hub | Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../css/variables.css" />
+    <link rel="stylesheet" href="../../css/main.css" />
+    <link rel="stylesheet" href="../../css/header.css" />
+    <link rel="stylesheet" href="../../css/community-hub.css" />
+    <link rel="stylesheet" href="../../css/search.css" />
+    <link rel="stylesheet" href="../../css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="../../index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="../../index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="../../index.html#about"
+                class="nav-link"
+                data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="../tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="../tutorials/character-design-landing.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a href="../tutorials/color-lighting-landing.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a href="../tutorials/digital-painting-landing.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a href="../tutorials/facial-anatomy-basics.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a href="../tutorials/software-guides-landing.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a href="../tutorials/workflow-process-landing.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="../tutorials/tutorials.html">📚 Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a href="../software/software-comparison.html" class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="../software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="../tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="../tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="../tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="../tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="../tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="hub.html" class="nav-link active"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="hub.html#daily-challenge">🔥 Daily Challenge</a>
+                </li>
+                <li><a href="gallery.html">🖼️ Gallery</a></li>
+                <li><a href="search-users.html">🔍 Find Artists</a></li>
+                <li><a href="activity-feed.html">📰 Activity Feed</a></li>
+                <li><a href="challenges.html">🏆 Challenges</a></li>
+                <li><a href="analytics.html">📊 Analytics</a></li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="../Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li><a href="../Equip/Equip.html">📁 Portfolio Template</a></li>
+                <li>
+                  <a href="../Equip/price-comparison.html">📄 CV Template</a>
+                </li>
+                <li><a href="../Equip/earn.html">💰 Earn</a></li>
+                <li><a href="../Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="../truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM (correct IDs for notifications.js) -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <!-- ========== SEARCH OVERLAY ========== -->
+    <!-- (Search overlay already included above - keeping for reference but removing duplicate) -->
+
+    <!-- Community Hero Section with TEMP IMAGE -->
+    <section class="community-hero" id="community-hero">
+      <div
+        class="hero-temp-image"
+        style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+          z-index: 0;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+            font-family: monospace;
+            text-align: center;
+          "
+        >
+          <div>
+            <i
+              class="fas fa-image"
+              style="font-size: 48px; margin-bottom: 16px; opacity: 0.5"
+            ></i>
+            <p
+              style="
+                background: rgba(0, 0, 0, 0.5);
+                padding: 8px 16px;
+                border-radius: 8px;
+              "
+            >
+              🎨 HERO IMAGE PLACEHOLDER 🎨<br />Replace with your
+              artwork/graffiti image<br />Dimensions: Full width, ~400px height
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="container" style="position: relative; z-index: 1">
+        <div class="hero-content">
+          <h1 class="hero-title">Artisan Community Hub</h1>
+          <p class="hero-subtitle">
+            Connect, create, and grow with artists worldwide
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Challenge Section with TEMP IMAGE BACKGROUND -->
+    <section class="daily-challenge-section" id="daily-challenge">
+      <div class="container">
+        <div class="section-header">
+          <h2>Today's Creative Challenge</h2>
+          <p>Join artists worldwide in today's creative prompt</p>
+          <div class="challenge-timer">
+            <span id="challenge-timer"
+              >New challenge in: <span id="countdown">24:00:00</span></span
+            >
+          </div>
+        </div>
+
+        <div class="daily-challenge-card" id="daily-challenge-card">
+          <div
+            class="challenge-temp-bg"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+              z-index: 0;
+              border-radius: inherit;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                color: white;
+                font-family: monospace;
+                font-size: 12px;
+                opacity: 0.4;
+              "
+            >
+              <i
+                class="fas fa-palette"
+                style="font-size: 64px; margin-right: 16px"
+              ></i>
+              <span>🎨 CHALLENGE BG IMAGE PLACEHOLDER 🎨</span>
+            </div>
+          </div>
+
+          <div
+            class="challenge-header"
+            style="
+              position: relative;
+              z-index: 1;
+              background: linear-gradient(
+                135deg,
+                rgba(254, 103, 234, 0.9),
+                rgba(99, 219, 238, 0.9)
+              );
+            "
+          >
+            <div class="challenge-badge">
+              <i class="fas fa-bolt"></i>
+              Daily Challenge
+            </div>
+            <div class="challenge-date" id="challenge-date">Loading...</div>
+          </div>
+
+          <div
+            class="challenge-content"
+            style="
+              position: relative;
+              z-index: 1;
+              background: rgba(255, 255, 255, 0.92);
+              backdrop-filter: blur(8px);
+            "
+          >
+            <h3 id="daily-prompt-title">Loading today's prompt...</h3>
+            <p id="daily-prompt-description">
+              Connect with artists worldwide by creating artwork based on this
+              daily theme.
+            </p>
+
+            <div class="prompt-tags">
+              <span class="tag" id="prompt-tag-1">inspiration</span>
+              <span class="tag" id="prompt-tag-2">daily</span>
+              <span class="tag" id="prompt-tag-3">community</span>
+            </div>
+
+            <div class="challenge-actions">
+              <button class="btn btn-primary" id="start-challenge-btn">
+                <i class="fas fa-paint-brush"></i>
+                Start Creating
+              </button>
+              <button class="btn btn-outline" id="share-challenge-btn">
+                <i class="fas fa-share"></i>
+                Share Challenge
+              </button>
+              <button class="btn btn-outline" id="view-submissions-btn">
+                <i class="fas fa-eye"></i>
+                View Submissions
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="challenge-stats"
+            style="
+              position: relative;
+              z-index: 1;
+              background: rgba(248, 248, 248, 0.95);
+              backdrop-filter: blur(4px);
+            "
+          >
+            <div class="stat-item">
+              <span class="stat-number" id="participants-count">0</span>
+              <span class="stat-label">Participants Today</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="submissions-count">0</span>
+              <span class="stat-label">Submissions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Features Grid -->
+    <section class="community-features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Community Features</h2>
+          <p>Explore everything our community has to offer</p>
+        </div>
+
+        <div class="features-grid">
+          <a
+            href="challenges.html"
+            class="feature-card"
+            style="border-top: 4px solid var(--primary)"
+          >
+            <div
+              class="feature-icon"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary),
+                  var(--primary-dark)
+                );
+              "
+            >
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h3>Monthly Challenges</h3>
+            <p>Join themed art challenges with prizes and recognition</p>
+            <span class="feature-badge" style="background: var(--primary)"
+              >Active Now</span
+            >
+          </a>
+
+          <a
+            href="gallery.html"
+            class="feature-card"
+            style="border-top: 4px solid var(--secondary)"
+          >
+            <div
+              class="feature-icon"
+              style="
+                background: linear-gradient(135deg, var(--secondary), #4bc0d4);
+              "
+            >
+              <i class="fas fa-images"></i>
+            </div>
+            <h3>Community Gallery</h3>
+            <p>Browse and showcase artwork from our talented members</p>
+            <span class="feature-badge" style="background: var(--secondary)"
+              >15K+ Artworks</span
+            >
+          </a>
+
+          <a
+            href="profiles.html"
+            class="feature-card"
+            style="border-top: 4px solid var(--accent)"
+          >
+            <div
+              class="feature-icon"
+              style="
+                background: linear-gradient(135deg, var(--accent), #c4d645);
+              "
+            >
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Artist Profiles</h3>
+            <p>Connect with fellow artists and build your network</p>
+            <span
+              class="feature-badge"
+              style="background: var(--accent); color: var(--dark)"
+              >5K+ Members</span
+            >
+          </a>
+
+          <div
+            class="feature-card"
+            style="border-top: 4px solid var(--accent-dark)"
+          >
+            <div
+              class="feature-icon"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--accent-dark),
+                  var(--accent-darker)
+                );
+              "
+            >
+              <i class="fas fa-comments"></i>
+            </div>
+            <h3>Live Chat & Forums</h3>
+            <p>Discuss techniques, get feedback, and make friends</p>
+            <span class="feature-badge" style="background: var(--accent-dark)"
+              >Coming Soon</span
+            >
+          </div>
+
+          <div class="feature-card" style="border-top: 4px solid #10b981">
+            <div
+              class="feature-icon"
+              style="background: linear-gradient(135deg, #10b981, #059669)"
+            >
+              <i class="fas fa-hands-helping"></i>
+            </div>
+            <h3>Collaboration Hub</h3>
+            <p>Find partners for collaborative projects and art trades</p>
+            <span class="feature-badge" style="background: #10b981">Beta</span>
+          </div>
+
+          <div class="feature-card" style="border-top: 4px solid #f59e0b">
+            <div
+              class="feature-icon"
+              style="background: linear-gradient(135deg, #f59e0b, #d97706)"
+            >
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Progress Tracking</h3>
+            <p>Track your artistic journey and skill development</p>
+            <span class="feature-badge" style="background: #f59e0b">New</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Navigation Section -->
+    <section class="quick-nav-section">
+      <div class="container">
+        <div class="quick-nav-cards">
+          <div
+            class="quick-nav-card"
+            onclick="window.location.href = 'challenges.html'"
+          >
+            <div
+              class="quick-nav-icon"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary),
+                  var(--primary-dark)
+                );
+              "
+            >
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="quick-nav-info">
+              <h4>Active Challenges</h4>
+              <p>3 ongoing, 1 ending soon</p>
+            </div>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+
+          <div
+            class="quick-nav-card"
+            onclick="window.location.href = 'gallery.html'"
+          >
+            <div
+              class="quick-nav-icon"
+              style="
+                background: linear-gradient(135deg, var(--secondary), #4bc0d4);
+              "
+            >
+              <i class="fas fa-fire"></i>
+            </div>
+            <div class="quick-nav-info">
+              <h4>Trending Artworks</h4>
+              <p>+127 new today</p>
+            </div>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+
+          <div
+            class="quick-nav-card"
+            onclick="window.location.href = 'profiles.html'"
+          >
+            <div
+              class="quick-nav-icon"
+              style="
+                background: linear-gradient(135deg, var(--accent), #c4d645);
+              "
+            >
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="quick-nav-info">
+              <h4>New Artists</h4>
+              <p>24 joined this week</p>
+            </div>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+
+          <div class="quick-nav-card" id="chat-preview-card">
+            <div
+              class="quick-nav-icon"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--accent-dark),
+                  var(--accent-darker)
+                );
+              "
+            >
+              <i class="fas fa-comment-dots"></i>
+            </div>
+            <div class="quick-nav-info">
+              <h4>Community Chat</h4>
+              <p>Coming December 2024</p>
+            </div>
+            <i class="fas fa-clock"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Activity Section -->
+    <section class="recent-activity">
+      <div class="container">
+        <div class="section-header">
+          <h2>Recent Community Activity</h2>
+          <p>See what our community has been creating</p>
+        </div>
+
+        <div class="activity-grid" id="recent-activity-grid">
+          <!-- Activity items will be loaded by JavaScript -->
+        </div>
+
+        <div class="view-all-container">
+          <a href="gallery.html" class="btn btn-outline">
+            View All Activity
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section class="leaderboard-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>🏆 Weekly Top Creators</h2>
+          <p>Most active and inspiring artists this week</p>
+        </div>
+
+        <div class="leaderboard-grid" id="leaderboard-grid">
+          <!-- Leaderboard will be populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Artists Section -->
+    <section class="featured-artists">
+      <div class="container">
+        <div class="section-header">
+          <h2>Featured Artists</h2>
+          <p>Get inspired by our talented community members</p>
+        </div>
+
+        <div class="artists-grid" id="featured-artists-grid">
+          <!-- Featured artists will be loaded by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- WEEKLY CHALLENGE SECTION -->
+    <section class="weekly-challenge-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>📅 Weekly Challenge</h2>
+          <p>Build consistency and develop your skills one week at a time</p>
+        </div>
+
+        <div class="purpose-paragraph">
+          <i class="fas fa-quote-left"></i>
+          <p>
+            Weekly challenges help you build a sustainable creative habit. With
+            a new theme every Monday, you'll have just enough time to explore an
+            idea deeply while maintaining momentum. Perfect for artists who want
+            to grow consistently without feeling overwhelmed.
+          </p>
+        </div>
+
+        <div class="weekly-challenge-card">
+          <div
+            class="challenge-temp-bg"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+              z-index: 0;
+              border-radius: inherit;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                color: white;
+                font-family: monospace;
+                font-size: 12px;
+                opacity: 0.4;
+              "
+            >
+              <i
+                class="fas fa-calendar-week"
+                style="font-size: 64px; margin-right: 16px"
+              ></i>
+              <span>📅 WEEKLY CHALLENGE BG IMAGE PLACEHOLDER 📅</span>
+            </div>
+          </div>
+
+          <div
+            class="challenge-header"
+            style="
+              position: relative;
+              z-index: 1;
+              background: linear-gradient(
+                135deg,
+                rgba(16, 185, 129, 0.9),
+                rgba(5, 150, 105, 0.9)
+              );
+            "
+          >
+            <div class="challenge-badge">
+              <i class="fas fa-calendar-week"></i>
+              Week 14 · March 31 - April 6
+            </div>
+            <div class="challenge-days-left">
+              <i class="fas fa-hourglass-half"></i>
+              6 days left
+            </div>
+          </div>
+
+          <div
+            class="challenge-content"
+            style="
+              position: relative;
+              z-index: 1;
+              background: rgba(255, 255, 255, 0.92);
+              backdrop-filter: blur(8px);
+            "
+          >
+            <h3>"Urban Jungle"</h3>
+            <p>
+              Create artwork that blends city architecture with natural
+              elements. Think vines growing on skyscrapers, tree roots breaking
+              through pavement, or wildlife adapting to urban environments.
+            </p>
+
+            <div class="prompt-tags">
+              <span
+                class="tag"
+                style="background: rgba(16, 185, 129, 0.2); color: #10b981"
+                >cityscape</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(16, 185, 129, 0.2); color: #10b981"
+                >nature</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(16, 185, 129, 0.2); color: #10b981"
+                >surreal</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(16, 185, 129, 0.2); color: #10b981"
+                >contrast</span
+              >
+            </div>
+
+            <div class="challenge-actions">
+              <button
+                class="btn btn-primary"
+                style="background: linear-gradient(135deg, #10b981, #059669)"
+              >
+                <i class="fas fa-paint-brush"></i>
+                Join Weekly Challenge
+              </button>
+              <button class="btn btn-outline">
+                <i class="fas fa-share"></i>
+                Share
+              </button>
+              <button class="btn btn-outline">
+                <i class="fas fa-eye"></i>
+                View Submissions
+              </button>
+            </div>
+
+            <div class="challenge-prize">
+              <i class="fas fa-gem"></i>
+              Prize: Featured artist spot + 500 community points
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MONTHLY CHALLENGE SECTION -->
+    <section class="monthly-challenge-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>🌟 Monthly Challenge</h2>
+          <p>Immerse yourself in a theme and create your masterpiece</p>
+        </div>
+
+        <div class="purpose-paragraph">
+          <i class="fas fa-quote-left"></i>
+          <p>
+            Monthly challenges are designed for deeper exploration and
+            storytelling. With four weeks to develop your concept, you'll have
+            the time to create portfolio-worthy pieces, experiment with
+            techniques, and receive meaningful feedback from the community.
+          </p>
+        </div>
+
+        <div class="monthly-challenge-card">
+          <div
+            class="challenge-temp-bg"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+              z-index: 0;
+              border-radius: inherit;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                color: white;
+                font-family: monospace;
+                font-size: 12px;
+                opacity: 0.4;
+              "
+            >
+              <i
+                class="fas fa-calendar-alt"
+                style="font-size: 64px; margin-right: 16px"
+              ></i>
+              <span>🌟 MONTHLY CHALLENGE BG IMAGE PLACEHOLDER 🌟</span>
+            </div>
+          </div>
+
+          <div
+            class="challenge-header"
+            style="
+              position: relative;
+              z-index: 1;
+              background: linear-gradient(
+                135deg,
+                rgba(139, 92, 246, 0.9),
+                rgba(109, 40, 217, 0.9)
+              );
+            "
+          >
+            <div class="challenge-badge">
+              <i class="fas fa-calendar-alt"></i>
+              April 2024 · Mythical Realms
+            </div>
+            <div class="challenge-days-left">
+              <i class="fas fa-hourglass-half"></i>
+              24 days left
+            </div>
+          </div>
+
+          <div
+            class="challenge-content"
+            style="
+              position: relative;
+              z-index: 1;
+              background: rgba(255, 255, 255, 0.92);
+              backdrop-filter: blur(8px);
+            "
+          >
+            <h3>"Mythical Realms Reimagined"</h3>
+            <p>
+              Take a classic mythical creature or legend and give it a fresh,
+              unexpected twist. What would a phoenix look like in a cyberpunk
+              world? How does a dragon adapt to climate change? Your imagination
+              is the only limit.
+            </p>
+
+            <div class="prompt-tags">
+              <span
+                class="tag"
+                style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6"
+                >mythology</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6"
+                >fantasy</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6"
+                >reimagine</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6"
+                >worldbuilding</span
+              >
+            </div>
+
+            <div class="challenge-actions">
+              <button
+                class="btn btn-primary"
+                style="background: linear-gradient(135deg, #8b5cf6, #6d28d9)"
+              >
+                <i class="fas fa-paint-brush"></i>
+                Join Monthly Challenge
+              </button>
+              <button class="btn btn-outline">
+                <i class="fas fa-share"></i>
+                Share
+              </button>
+              <button class="btn btn-outline">
+                <i class="fas fa-eye"></i>
+                View Submissions
+              </button>
+            </div>
+
+            <div class="challenge-prize">
+              <i class="fas fa-trophy"></i>
+              Prize: $100 gift card + 1-year premium membership + Featured
+              exhibition
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- YEARLY CHALLENGE SECTION -->
+    <section class="yearly-challenge-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>🏆 Yearly Challenge</h2>
+          <p>The ultimate test of artistic dedication and growth</p>
+        </div>
+
+        <div class="purpose-paragraph">
+          <i class="fas fa-quote-left"></i>
+          <p>
+            The yearly challenge is our most ambitious program - a 12-month
+            artistic journey with quarterly milestones, mentorship
+            opportunities, and a final showcase. Perfect for artists ready to
+            transform their practice, build a substantial body of work, and
+            compete for the title of Artisan of the Year.
+          </p>
+        </div>
+
+        <div class="yearly-challenge-card">
+          <div
+            class="challenge-temp-bg"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+              z-index: 0;
+              border-radius: inherit;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                color: white;
+                font-family: monospace;
+                font-size: 12px;
+                opacity: 0.4;
+              "
+            >
+              <i
+                class="fas fa-calendar-check"
+                style="font-size: 64px; margin-right: 16px"
+              ></i>
+              <span>🏆 YEARLY CHALLENGE BG IMAGE PLACEHOLDER 🏆</span>
+            </div>
+          </div>
+
+          <div
+            class="challenge-header"
+            style="
+              position: relative;
+              z-index: 1;
+              background: linear-gradient(
+                135deg,
+                rgba(245, 158, 11, 0.9),
+                rgba(217, 119, 6, 0.9)
+              );
+            "
+          >
+            <div class="challenge-badge">
+              <i class="fas fa-calendar-check"></i>
+              2024 Grand Challenge · "Metamorphosis"
+            </div>
+            <div class="challenge-days-left">
+              <i class="fas fa-hourglass-half"></i>
+              275 days left
+            </div>
+          </div>
+
+          <div
+            class="challenge-content"
+            style="
+              position: relative;
+              z-index: 1;
+              background: rgba(255, 255, 255, 0.92);
+              backdrop-filter: blur(8px);
+            "
+          >
+            <h3>"Metamorphosis: The Year of Transformation"</h3>
+            <p>
+              Document transformation through 12 themed chapters - one for each
+              month. From personal growth to environmental change, from
+              character evolution to artistic style development. Create a
+              cohesive body of work that tells a story of change and emergence.
+            </p>
+
+            <div class="prompt-tags">
+              <span
+                class="tag"
+                style="background: rgba(245, 158, 11, 0.2); color: #f59e0b"
+                >transformation</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(245, 158, 11, 0.2); color: #f59e0b"
+                >growth</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(245, 158, 11, 0.2); color: #f59e0b"
+                >evolution</span
+              >
+              <span
+                class="tag"
+                style="background: rgba(245, 158, 11, 0.2); color: #f59e0b"
+                >series</span
+              >
+            </div>
+
+            <div class="challenge-actions">
+              <button
+                class="btn btn-primary"
+                style="background: linear-gradient(135deg, #f59e0b, #d97706)"
+              >
+                <i class="fas fa-paint-brush"></i>
+                Join Yearly Challenge
+              </button>
+              <button class="btn btn-outline">
+                <i class="fas fa-share"></i>
+                Share
+              </button>
+              <button class="btn btn-outline">
+                <i class="fas fa-eye"></i>
+                View Submissions
+              </button>
+            </div>
+
+            <div class="challenge-prize">
+              <i class="fas fa-crown"></i>
+              Grand Prize: $5,000 + Solo exhibition + Mentorship program +
+              "Artisan of the Year" title
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENHANCED Community CTA Section -->
+    <section class="community-cta-enhanced">
+      <div class="cta-overlay"></div>
+      <div class="container">
+        <div class="cta-content-enhanced">
+          <div class="cta-badge">
+            <span class="badge-pulse">✨ Join 10,000+ Artists ✨</span>
+          </div>
+          <h2>Ready to Join Our Creative Community?</h2>
+          <p>
+            Connect with thousands of artists, share your work, get feedback,
+            and grow together.
+          </p>
+
+          <div class="cta-stats">
+            <div class="cta-stat">
+              <span class="cta-stat-number">10K+</span>
+              <span class="cta-stat-label">Active Members</span>
+            </div>
+            <div class="cta-stat">
+              <span class="cta-stat-number">15K+</span>
+              <span class="cta-stat-label">Artworks Shared</span>
+            </div>
+            <div class="cta-stat">
+              <span class="cta-stat-number">500+</span>
+              <span class="cta-stat-label">Daily Challenge Submissions</span>
+            </div>
+          </div>
+
+          <div class="cta-buttons-enhanced">
+            <a href="../auth/register.html" class="btn btn-primary btn-large">
+              <i class="fas fa-user-plus"></i>
+              Join Art Mecca — It's Free
+            </a>
+            <a href="../auth/login.html" class="btn btn-outline btn-large">
+              <i class="fas fa-sign-in-alt"></i>
+              Sign In
+            </a>
+          </div>
+
+          <div class="cta-testimonial">
+            <div class="testimonial-avatars">
+              <span class="avatar">🎨</span>
+              <span class="avatar">🖌️</span>
+              <span class="avatar">✏️</span>
+              <span class="avatar">🎭</span>
+            </div>
+            <p>
+              "This community transformed my art practice. I've grown more in 6
+              months than in 3 years alone!"
+            </p>
+            <span class="testimonial-author">— Sarah, Digital Artist</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="../tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="../software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="../tools/tools.html">Tools</a></li>
+              <li><a href="hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                aria-label="YouTube"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a
+                href="https://x.com/TrulyYoursMira"
+                class="social-link"
+                aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                aria-label="TikTok"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link" aria-label="Discord"
+                ><i class="fab fa-discord"></i
+              ></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                aria-label="Pinterest"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <script src="../../config/firebase-config.js"></script>
+    <script src="../../js/auth/auth-manager.js"></script>
+    <script src="../../js/auth/auth-check.js"></script>
+
+    <!-- ========== ERROR HANDLER ========== -->
+    <script src="/js/utils/error-handler.js"></script>
+
+    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <script src="../../js/navbar-active.js"></script>
+
+    <!-- Notifications System (for bell icon dropdown) -->
+    <script src="../../js/community/notifications.js"></script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+
+    <!-- ========== CACHE & QUERY OPTIMIZER ========== -->
+    <script src="/js/utils/cache-manager.js"></script>
+    <script src="/js/utils/query-optimizer.js"></script>
+
+    <script src="../../js/main.js"></script>
+    <script src="../../js/search.js"></script>
+    <script src="../../js/community/community-hub.js"></script>
+
+    <script>
+      function loadLeaderboard() {
+        const leaders = [
+          {
+            rank: 1,
+            name: "Alex Chen",
+            avatar: "AC",
+            points: 2847,
+            change: "+2",
+            specialty: "Character Design",
+          },
+          {
+            rank: 2,
+            name: "Maria Rodriguez",
+            avatar: "MR",
+            points: 2653,
+            change: "=",
+            specialty: "Environment Art",
+          },
+          {
+            rank: 3,
+            name: "Sarah Johnson",
+            avatar: "SJ",
+            points: 2431,
+            change: "+5",
+            specialty: "Portrait Artist",
+          },
+          {
+            rank: 4,
+            name: "Dr. Kenji Tanaka",
+            avatar: "KT",
+            points: 2218,
+            change: "-1",
+            specialty: "Anatomy",
+          },
+          {
+            rank: 5,
+            name: "Emma Williams",
+            avatar: "EW",
+            points: 2094,
+            change: "+3",
+            specialty: "Digital Painting",
+          },
+        ];
+
+        const grid = document.getElementById("leaderboard-grid");
+        if (grid) {
+          grid.innerHTML = leaders
+            .map(
+              (leader) => `
+            <div class="leaderboard-card" onclick="window.location.href='profiles.html?artist=${leader.name.toLowerCase().replace(" ", "-")}'">
+              <div class="leaderboard-rank" style="background: ${leader.rank === 1 ? "linear-gradient(135deg, #FFD700, #FFA500)" : leader.rank === 2 ? "linear-gradient(135deg, #C0C0C0, #A8A8A8)" : leader.rank === 3 ? "linear-gradient(135deg, #CD7F32, #B87333)" : "var(--gray-light)"}">
+                ${leader.rank}
+              </div>
+              <div class="leaderboard-avatar">${leader.avatar}</div>
+              <div class="leaderboard-info">
+                <h4>${leader.name}</h4>
+                <p>${leader.specialty}</p>
+              </div>
+              <div class="leaderboard-stats">
+                <span class="points">${leader.points} pts</span>
+                <span class="change ${leader.change.includes("+") ? "positive" : leader.change.includes("-") ? "negative" : "neutral"}">
+                  ${leader.change}
+                </span>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadLeaderboard();
+      });
+    </script>
+  </body>
+</html>

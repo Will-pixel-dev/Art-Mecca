@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facial Anatomy Tutorials | Art Mecca</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ============================================
+           FACIAL ANATOMY LANDING PAGE
+           Pink/Rose Theme: #fe67ea, #e237ce, #f705d7, #ff99f0, #ffc4f5
+           ============================================ */
+
+      .fa-hero {
+        background: linear-gradient(
+          135deg,
+          rgba(254, 103, 234, 0.08) 0%,
+          rgba(254, 103, 234, 0.05) 100%
+        );
+        padding: 4rem 0;
+        text-align: center;
+        border-bottom: 1px solid rgba(254, 103, 234, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .fa-hero::before {
+        content: "";
+        position: absolute;
+        top: -30%;
+        left: -20%;
+        width: 140%;
+        height: 140%;
+        background: radial-gradient(
+          circle,
+          rgba(254, 103, 234, 0.1),
+          transparent
+        );
+        pointer-events: none;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: rgba(254, 103, 234, 0.12);
+        backdrop-filter: blur(2px);
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #e237ce;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(254, 103, 234, 0.3);
+      }
+
+      .fa-hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        background: linear-gradient(
+          135deg,
+          #1f2937 20%,
+          #fe67ea 70%,
+          #e237ce 90%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+      }
+
+      .hero-subhead {
+        font-size: 1.1rem;
+        color: #6b7280;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* Section Header */
+      .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #fe67ea, #e237ce);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .section-header p {
+        color: #6b7280;
+        font-size: 1rem;
+      }
+
+      /* Tutorials Grid */
+      .tutorials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+      }
+
+      /* Tutorial Card */
+      .tutorial-card {
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        position: relative;
+        text-decoration: none;
+        display: block;
+        color: inherit;
+      }
+
+      .tutorial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 30px -12px rgba(254, 103, 234, 0.4);
+      }
+
+      /* Gradient border on hover */
+      .tutorial-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 1rem;
+        padding: 2px;
+        background: linear-gradient(135deg, #fe67ea, #e237ce, #f705d7);
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+      }
+
+      .tutorial-card:hover::before {
+        opacity: 1;
+      }
+
+      .card-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .card-category {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: rgba(254, 103, 234, 0.1);
+        color: #e237ce;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+      }
+
+      .card-description {
+        font-size: 0.85rem;
+        color: #6b7280;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+      }
+
+      .card-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+
+      .card-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .difficulty-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .difficulty-beginner {
+        color: #10b981;
+      }
+      .difficulty-intermediate {
+        color: #fe67ea;
+      }
+      .difficulty-advanced {
+        color: #e237ce;
+      }
+
+      /* Coming Soon Card */
+      .coming-soon {
+        background: linear-gradient(135deg, #f8f8f8, #f0f0f5);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 380px;
+      }
+
+      .coming-soon .card-icon {
+        font-size: 3rem;
+        color: #fe67ea;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+      }
+
+      .coming-soon .card-title {
+        color: #9ca3af;
+      }
+
+      .coming-soon .card-description {
+        color: #9ca3af;
+      }
+
+      /* CTA Section */
+      .fa-cta {
+        background: linear-gradient(135deg, #fe67ea, #e237ce);
+        border-radius: 1.5rem;
+        padding: 3rem;
+        text-align: center;
+        margin: 4rem 0;
+        box-shadow: 0 10px 30px rgba(254, 103, 234, 0.3);
+      }
+
+      .fa-cta h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+
+      .fa-cta p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-primary-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        background: white;
+        border-radius: 50px;
+        color: #e237ce;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        gap: 0.8rem;
+      }
+
+      @media (max-width: 768px) {
+        .tutorials-grid {
+          grid-template-columns: 1fr;
+          margin: 2rem 1rem;
+        }
+
+        .fa-hero {
+          padding: 2rem 0;
+        }
+
+        .fa-cta {
+          padding: 2rem;
+          margin: 2rem 1rem;
+        }
+
+        .fa-cta h2 {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header - Updated with working notification system -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/index.html" class="logo">
+              <span class="logo-icon">🎨</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/index.html" class="nav-link" data-section="home"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/index.html#about" class="nav-link" data-section="about"
+                >About</a
+              >
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color&lighting/color-lighting-tutorials.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-optimization.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✨</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <!-- Bell icon - NOTIFICATION SYSTEM -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <!-- Search button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="auth-buttons"></div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Avatar container - add this where you want the avatar to appear -->
+      <div class="nav-avatar-container" id="navAvatar"></div>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <div class="fa-hero">
+        <div class="container">
+          <span class="hero-badge"
+            ><i class="fas fa-eye"></i> Facial Features</span
+          >
+          <h1>Master Facial Anatomy</h1>
+          <p class="hero-subhead">
+            Learn to draw and render realistic facial features with our
+            comprehensive tutorials. From eyes and noses to lips and
+            expressions, master the art of portraiture.
+          </p>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Tutorials Grid -->
+        <div class="section-header">
+          <h2>Facial Anatomy Tutorials</h2>
+          <p>
+            Learn from professional artists and master the art of drawing
+            realistic faces
+          </p>
+        </div>
+
+        <div class="tutorials-grid">
+          <!-- Facial Anatomy Basics -->
+          <a
+            href="/pages/tutorials/facial-features/facial-anatomy-basics.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #fe67ea, #e237ce);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-face"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Facial Features</span>
+              <h3 class="card-title">Facial Anatomy Basics</h3>
+              <p class="card-description">
+                Learn the fundamental structure of the human face - proportions,
+                planes, and underlying anatomy.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 25 min</span>
+                <span><i class="fas fa-star"></i> 4.9 rating</span>
+                <span><i class="fas fa-eye"></i> 3.4K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Eye Render Tutorial -->
+          <a
+            href="/pages/tutorials/facial-features/eye-render-tutorial.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #fe67ea, #f705d7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-eye"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Facial Features</span>
+              <h3 class="card-title">Eye Render Tutorial</h3>
+              <p class="card-description">
+                Master the art of rendering realistic eyes - from iris details
+                to catchlights and eyelashes.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 30 min</span>
+                <span><i class="fas fa-star"></i> 4.8 rating</span>
+                <span><i class="fas fa-eye"></i> 5.2K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Nose Rendering -->
+          <a
+            href="/pages/tutorials/facial-features/nose-rendering-tutorial.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #f705d7, #ff99f0);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-nose"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Facial Features</span>
+              <h3 class="card-title">Nose Rendering Tutorial</h3>
+              <p class="card-description">
+                Learn to draw and shade noses from any angle - anatomy,
+                proportions, and lighting.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 20 min</span>
+                <span><i class="fas fa-star"></i> 4.7 rating</span>
+                <span><i class="fas fa-eye"></i> 2.1K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Lip Rendering -->
+          <a
+            href="/pages/tutorials/facial-features/lip-rendering-tutorial.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #ff99f0, #ffc4f5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-lips"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Facial Features</span>
+              <h3 class="card-title">Lip Rendering Tutorial</h3>
+              <p class="card-description">
+                Master the art of drawing realistic lips - shapes, textures,
+                highlights, and shadows.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 25 min</span>
+                <span><i class="fas fa-star"></i> 4.8 rating</span>
+                <span><i class="fas fa-eye"></i> 1.8K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Facial Expressions -->
+          <a
+            href="/pages/tutorials/facial-features/facial-expressions.html"
+            class="tutorial-card"
+          >
+            <div
+              class="card-image"
+              style="
+                background: linear-gradient(135deg, #fe67ea, #f705d7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: white;
+              "
+            >
+              <i class="fas fa-face-smile"></i>
+            </div>
+            <div class="card-content">
+              <span class="card-category">Facial Features</span>
+              <h3 class="card-title">Facial Expressions Masterclass</h3>
+              <p class="card-description">
+                Learn to convey emotion through facial expressions - happiness,
+                sadness, anger, surprise, and more.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-clock"></i> 40 min</span>
+                <span><i class="fas fa-star"></i> 4.9 rating</span>
+                <span><i class="fas fa-eye"></i> 4.5K views</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Skin Rendering - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-hand-peace"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(254, 103, 234, 0.1); color: #e237ce"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Skin Rendering Techniques</h3>
+              <p class="card-description">
+                Learn to render realistic skin tones, textures, and subsurface
+                scattering.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ears & Hair - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-ear-deaf"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(254, 103, 234, 0.1); color: #e237ce"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Ears & Hair Rendering</h3>
+              <p class="card-description">
+                Master the structure of ears and learn to draw flowing,
+                realistic hair.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aging & Features - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(254, 103, 234, 0.1); color: #e237ce"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Aging & Character Features</h3>
+              <p class="card-description">
+                Learn how facial features change with age and how to create
+                distinct character traits.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Asymmetry & Unique Features - Coming Soon -->
+          <div class="tutorial-card coming-soon">
+            <div class="card-icon">
+              <i class="fas fa-dragon"></i>
+            </div>
+            <div class="card-content">
+              <span
+                class="card-category"
+                style="background: rgba(254, 103, 234, 0.1); color: #e237ce"
+                >Coming Soon</span
+              >
+              <h3 class="card-title">Facial Asymmetry & Unique Features</h3>
+              <p class="card-description">
+                Create memorable, believable characters by mastering asymmetry
+                and unique facial characteristics.
+              </p>
+              <div class="card-meta">
+                <span><i class="fas fa-hourglass-half"></i> In Production</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="fa-cta">
+          <h2>Ready to Master Facial Anatomy?</h2>
+          <p>
+            Join thousands of artists learning to create stunning portraits with
+            Art Mecca
+          </p>
+          <a href="/pages/auth/register.html" class="btn-primary-cta">
+            Start Learning Free <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="tutorial-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Art Mecca</h3>
+            <p>
+              Your comprehensive resource for digital art tutorials, tools, and
+              community.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
+              <li>
+                <a href="/pages/software/software-comparison.html">Software</a>
+              </li>
+              <li><a href="/pages/tools/tools.html">Tools</a></li>
+              <li><a href="/pages/community/hub.html">Community</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Connect</h4>
+            <div class="social-links">
+              <a
+                href="https://www.youtube.com/@Trulyyours26"
+                class="social-link"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="https://www.instagram.com/_trulyyours26"
+                class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://x.com/TrulyYoursMira" class="social-link"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a
+                href="https://www.tiktok.com/@truly_yours26"
+                class="social-link"
+                ><i class="fab fa-tiktok"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+              <a
+                href="https://za.pinterest.com/TrulyYours26/"
+                class="social-link"
+                ><i class="fab fa-pinterest"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- Navbar Active Detection -->
+    <script src="/js/navbar-active.js"></script>
+
+    <script src="/js/components/avatar-manager.js"></script>
+
+    <!-- Notifications System -->
+    <script src="/js/community/notifications.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+  </body>
+</html>
