@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Art Mecca - Digital Art Community</title>
+    <title>Art Mecca — Cyber Art Studio</title>
     <meta
       name="description"
       content="Join thousands of digital artists sharing tutorials, tools, and artwork. Learn digital painting, character design, and more."
@@ -12,15 +12,17 @@
       name="keywords"
       content="digital art, art community, tutorials, digital painting, character design, art tools"
     />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://artmecca.com/" />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Art Mecca - Digital Art Community" />
     <meta
       property="og:description"
-      content="Join thousands of digital artists sharing tutorials, tools, and artwork. Learn digital painting, character design, and more."
+      content="Join thousands of digital artists sharing tutorials, tools, and artwork."
     />
     <meta property="og:image" content="/images/og-home.jpg" />
-    <meta property="og:url" content="https://artisanhub.com/" />
+    <meta property="og:url" content="https://artmecca.com/" />
     <meta property="og:type" content="website" />
 
     <!-- Twitter -->
@@ -32,17 +34,25 @@
     />
     <meta name="twitter:image" content="/images/og-home.jpg" />
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="stylesheet" href="css/header.css" />
-    <link rel="stylesheet" href="css/home.css" />
-    <link rel="stylesheet" href="css/footer.css" />
-    <link rel="stylesheet" href="css/search.css" />
-
-    <!-- Fonts -->
+    <!-- ===== FONTS ===== -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
 
@@ -51,19 +61,55 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/components/header.css" />
+    <link rel="stylesheet" href="css/components/footer.css" />
+    <link rel="stylesheet" href="css/search.css" />
   </head>
-  <script src="/js/utils/lazy-load.js"></script>
   <body>
-    <!-- UPDATED HEADER - with emojis, bell left of search, restructured dropdowns -->
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== THEME TOGGLE — BOTTOM RIGHT ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
+      <!-- Holographic corner brackets -->
+      <span class="corner-bracket tl"></span>
+      <span class="corner-bracket tr"></span>
+      <span class="corner-bracket bl"></span>
+      <span class="corner-bracket br"></span>
+      <span class="header-border-glow"></span>
+
       <div class="container">
         <nav class="navbar">
+          <!-- Logo / Brand -->
           <div class="nav-brand">
             <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
+          <!-- Navigation Links -->
           <ul class="nav-links" id="nav-links">
             <li>
               <a href="/index.html" class="nav-link" data-section="home"
@@ -71,17 +117,12 @@
               >
             </li>
             <li>
-              <a
-                href="../../index.html#about"
-                class="nav-link"
-                data-section="about"
-                >About</a
-              >
+              <a href="#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a
@@ -90,27 +131,32 @@
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting.html"
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
                     >💡 Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting.html"
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
                     >🖌️ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
                     >😌 Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides.html"
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
                     >💻 Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process.html"
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
                     >⚙️ Workflow Process</a
                   >
                 </li>
@@ -125,8 +171,9 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
@@ -139,9 +186,9 @@
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
@@ -161,9 +208,9 @@
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
@@ -190,9 +237,9 @@
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
@@ -211,12 +258,14 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✨
+              </a>
             </li>
           </ul>
+
+          <!-- RIGHT SIDE: Nav Actions -->
           <div class="nav-actions">
-            <!-- Bell icon (notifications) - now to the LEFT of search -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -253,26 +302,20 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
               aria-label="Search"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
+              <i class="fas fa-search"></i>
             </button>
-            <!-- EMPTY auth-buttons - will be populated by authManager -->
+
+            <div class="nav-avatar-container" id="navAvatar"></div>
             <div class="auth-buttons"></div>
           </div>
+
+          <!-- Mobile Menu Button -->
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -282,21 +325,13 @@
           </button>
         </nav>
       </div>
+
+      <!-- Search Overlay -->
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
             <div class="search-input-wrapper">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                class="search-icon"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </svg>
+              <i class="fas fa-search search-icon"></i>
               <input
                 type="text"
                 placeholder="Search tutorials, tools, artists..."
@@ -305,16 +340,7 @@
               />
             </div>
             <button class="btn-icon search-close" id="search-close">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
-                <path d="M18 6L6 18"></path>
-                <path d="m6 6 12 12"></path>
-              </svg>
+              <i class="fas fa-times"></i>
             </button>
           </div>
           <div class="search-results" id="search-results">
@@ -327,262 +353,302 @@
     </header>
 
     <main class="parallax-main">
-      <!-- Parallax Hero Section -->
-      <section
-        class="parallax-hero"
-        style="
-          background-image: url(&quot;assets/images/imported/backgroundi/Illustration2.png&quot;);
-          background-size: cover;
-          background-position: center;
-          background-attachment: fixed;
-        "
-      ></section>
-      <section class="parallax-hero">
-        <div class="parallax-bg" data-speed="0.5"></div>
-        <div class="parallax-clouds" data-speed="0.3"></div>
-        <div class="parallax-art-1" data-speed="0.8">🎨</div>
-        <div class="parallax-art-2" data-speed="0.6">✨</div>
-        <div class="parallax-art-3" data-speed="0.4">🖌️</div>
+      <!-- ========================================== -->
+      <!-- HERO SECTION - 3 LAYER SYSTEM             -->
+      <!-- ========================================== -->
+      <section class="parallax-hero" id="homeHero">
+        <!-- LAYER 1: BACKGROUND -->
+        <div class="hero-layer-1" id="layer1Container">
+          <div id="layer1Content">
+            <img
+              src="#"
+              alt="Background"
+              class="hero-bg-image"
+              onload="this.classList.add('loaded')"
+              onerror="this.style.display = 'none'"
+            />
+            <div class="hero-bg-fallback"></div>
+          </div>
+        </div>
 
-        <div class="hero-content">
-          <div class="container">
-            <h1 class="hero-title" data-speed="0.9">
-              Unleash Your <span class="gradient-text">Creative</span> Potential
-            </h1>
-            <p class="hero-subtitle" data-speed="0.8">
-              Tools, tutorials, and community for the modern digital artist
-            </p>
-            <div class="hero-buttons" data-speed="0.7">
-              <a
-                href="pages/community/challenges.html"
-                class="btn btn-primary btn-glow"
-                >Start Creating</a
+        <!-- LAYER 2: OVERLAY / AMBIENT EFFECTS -->
+        <div class="hero-layer-2" id="layer2Container">
+          <div id="layer2Content">
+            <div class="neon-orb"></div>
+            <div class="grid-overlay"></div>
+            <span class="graffiti-tag tag-top-left">✧ FRESH</span>
+            <span class="graffiti-tag tag-bottom-right">★ NEON</span>
+            <div class="scan-line-hero"></div>
+          </div>
+        </div>
+
+        <!-- LAYER 3: GLASS UI CONTENT -->
+        <div class="hero-layer-3">
+          <div class="hero-content glass-panel">
+            <div class="title-screen">
+              <div class="title-top">
+                <span class="press-start">✦ PRESS START ✦</span>
+                <div class="loading-bar-container">
+                  <div class="loading-bar"></div>
+                </div>
+              </div>
+
+              <h1 class="hero-title">
+                <span class="title-line-1">ART</span>
+                <span class="title-line-2">MECCA</span>
+                <span class="title-line-3 script-tag"
+                  >✦ cyber den & studio ✦</span
+                >
+              </h1>
+
+              <p
+                class="hero-subtitle glitch-text"
+                data-text="where digital artists gather to tag the future"
               >
-              <a href="#about" class="btn btn-secondary">Learn More</a>
+                where digital artists gather to tag the future
+              </p>
+
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="stat-value" id="heroArtworks">10K+</span>
+                  <span class="stat-label">crew</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="stat-value" id="heroArtists">5K+</span>
+                  <span class="stat-label">missions</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="stat-value" id="heroTutorials">200+</span>
+                  <span class="stat-label">tags</span>
+                </div>
+              </div>
+
+              <div class="hero-buttons">
+                <a href="/home.html" class="btn btn-primary btn-glow">
+                  <span class="btn-icon">▶</span> START GAME
+                </a>
+                <a href="#about" class="btn btn-secondary">
+                  <span class="btn-icon">◆</span> CONTINUE
+                </a>
+              </div>
+
+              <div class="title-bottom">
+                <span class="version-text">v2.0 — EST. 2026</span>
+                <span class="credit-text">✧ KEEP IT FRESH ✧</span>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Scroll Indicator -->
         <div class="scroll-indicator">
-          <div class="mouse">
-            <div class="wheel"></div>
-          </div>
-          <div class="arrow"></div>
+          <span class="scroll-text">▼ SCROLL</span>
+          <div class="scroll-line"></div>
         </div>
       </section>
 
-      <!-- About Section with Parallax -->
-      <section class="page about-page" id="about">
+      <!-- ============================================================ -->
+      <!-- SECTION 1: ABOUT INTRO                                       -->
+      <!-- ============================================================ -->
+      <section class="page about-intro-section" id="about">
         <div class="parallax-about-bg" data-speed="0.2"></div>
         <div class="container">
           <div class="about-content">
-            <div class="about-text" data-speed="0.5">
-              <h2>About Art Mecca</h2>
-              <p class="about-intro">
-                Hiya! Welcome to Art Mecca, a home for your art and passion.
-                We're a community, driven and dedicated to empowering digital
-                artists worldwide. Whether you're just starting out or a
-                seasoned pro, this was made for you. A place to be around and
-                find like-minded creatives, learn new skills, network, make new
-                friends, or just hang out and have fun.
+            <div class="section-badge">✦ MISSION LOG ✦</div>
+            <h2>About <span class="gradient-text">Art Mecca</span></h2>
+            <p class="about-intro">
+              Hiya! Welcome to Art Mecca, a home for your art and passion. We're
+              a community, driven and dedicated to empowering digital artists
+              worldwide. Whether you're just starting out or a seasoned pro,
+              this was made for you. A place to be around and find like-minded
+              creatives, learn new skills, network, make new friends, or just
+              hang out and have fun.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 2: LEARN                                             -->
+      <!-- ============================================================ -->
+      <section class="page learn-section" id="learn">
+        <div class="container">
+          <div class="learn-container glass-panel">
+            <div class="learn-content">
+              <div class="section-badge">✦ MODULE 01 ✦</div>
+              <h3>Learn</h3>
+              <p>
+                Explore our tools, tutorials, curated by artists of all levels.
               </p>
-
-              <div class="about-container">
-                <div class="wrapper-content">
-                  <h3>Learn</h3>
-                  <p>
-                    Explore our tools, tutorials, curated by artists of all
-                    levels.
-                  </p>
-                </div>
-                <div class="slider-container">
-                  <div class="wrapper" data-speed="0.7">
-                    <button
-                      class="slider-nav prev-btn"
-                      onclick="changeSlide(-1)"
-                    >
-                      <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button
-                      class="slider-nav next-btn"
-                      onclick="changeSlide(1)"
-                    >
-                      <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <div class="wrapper-holder">
-                      <div
-                        class="slide"
-                        id="slider-img-1"
-                        style="background-image: url(slide1.gif)"
-                      ></div>
-                      <div
-                        class="slide"
-                        id="slider-img-2"
-                        style="background-image: url(slide2.jpeg)"
-                      ></div>
-                      <div
-                        class="slide"
-                        id="slider-img-3"
-                        style="background-image: url(slide3.jpeg)"
-                      ></div>
-                      <div
-                        class="slide"
-                        id="slider-img-4"
-                        style="background-image: url(slide4.jpeg)"
-                      ></div>
-                    </div>
-                  </div>
-                  <div class="button-holder">
-                    <button
-                      class="button active"
-                      onclick="goToSlide(0)"
-                    ></button>
-                    <button class="button" onclick="goToSlide(1)"></button>
-                    <button class="button" onclick="goToSlide(2)"></button>
-                    <button class="button" onclick="goToSlide(3)"></button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="create-content">
-                <h3>Create</h3>
-                <p>
-                  Use our interactive tools like color palette generators,
-                  contrast checkers, and creative prompt systems.
-                </p>
-              </div>
-
-              <div class="create-container">
-                <div class="card">
-                  <div class="front">
-                    <i class="fas fa-palette"></i>
-                    <h4>Color Tools</h4>
-                  </div>
-                  <div class="back">
-                    <p>Generate perfect color palettes</p>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="front">
-                    <i class="fas fa-lightbulb"></i>
-                    <h4>Prompt Generator</h4>
-                  </div>
-                  <div class="back">
-                    <p>Get creative inspiration</p>
-                  </div>
-                </div>
-                <div class="card">
-                  <div class="front">
-                    <i class="fas fa-sliders-h"></i>
-                    <h4>Contrast Checker</h4>
-                  </div>
-                  <div class="back">
-                    <p>Ensure perfect contrast</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="Equip">
-                <div class="equip-content">
-                  <div class="equip-text">
-                    <h3>Equip</h3>
-                    <p>
-                      Showcase your artwork, track your progress, and build your
-                      professional portfolio.
-                    </p>
-                    <p
-                      style="
-                        margin-top: 1rem;
-                        font-style: italic;
-                        color: var(--primary);
-                      "
-                    >
-                      Click the briefcase to see your portfolio items!
-                    </p>
-                  </div>
-                  <div class="equip-briefcase" id="briefcase-container"></div>
-                </div>
-              </div>
-
-              <section class="page connect-section" id="connect">
-                <div class="parallax-connect-bg" data-speed="0.3"></div>
-                <div class="container">
-                  <div class="connect-content">
-                    <div class="connect-text" data-speed="0.6">
-                      <h3>Connect</h3>
-                      <p>
-                        Join our vibrant community of digital artists and
-                        immerse yourself in creativity.
-                      </p>
-                    </div>
-                    <div class="connect-visual-area" data-speed="0.7">
-                      <div class="main-image-placeholder"></div>
-                      <div class="connect-buttons-grid">
-                        <a
-                          href="pages/community/challenges.html"
-                          class="btn-hub-special"
-                        >
-                          <i class="fas fa-users"></i>
-                          <span class="btn-text">Community Hub</span>
-                        </a>
-                        <a
-                          href="pages/community/gallery.html"
-                          class="btn-connect-regular"
-                        >
-                          <i class="fas fa-images"></i>
-                          <span class="btn-text">Gallery</span>
-                        </a>
-                        <a href="#" class="btn-connect-regular">
-                          <i class="fas fa-calendar"></i>
-                          <span class="btn-text">Events</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <div class="about-cta">
-                <h3>Ready to Start Your Creative Journey?</h3>
-                <p>
-                  Join thousands of artists who are already transforming their
-                  skills.
-                </p>
-                <div class="cta-buttons">
-                  <a href="pages/auth/register.html" class="btn btn-primary"
-                    >Join Now</a
-                  >
-                  <a
-                    href="pages/tutorials/tutorials.html"
-                    class="btn btn-outline"
-                    >Explore Tutorials</a
-                  >
-                </div>
-              </div>
             </div>
-            <div class="about-visual">
-              <div class="floating-element element-1" data-speed="0.3">⭐</div>
-              <div class="floating-element element-2" data-speed="0.5">🎯</div>
-              <div class="floating-element element-3" data-speed="0.4">💫</div>
-              <div class="floating-element element-4" data-speed="0.6">🌟</div>
+            <div class="slider-container">
+              <div class="wrapper" data-speed="0.7">
+                <button class="slider-nav prev-btn" onclick="changeSlide(-1)">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-nav next-btn" onclick="changeSlide(1)">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="wrapper-holder">
+                  <div
+                    class="slide"
+                    id="slider-img-1"
+                    style="background-image: url(slide1.gif)"
+                  ></div>
+                  <div
+                    class="slide"
+                    id="slider-img-2"
+                    style="background-image: url(slide2.jpeg)"
+                  ></div>
+                  <div
+                    class="slide"
+                    id="slider-img-3"
+                    style="background-image: url(slide3.jpeg)"
+                  ></div>
+                  <div
+                    class="slide"
+                    id="slider-img-4"
+                    style="background-image: url(slide4.jpeg)"
+                  ></div>
+                </div>
+              </div>
+              <div class="button-holder">
+                <button class="button active" onclick="goToSlide(0)"></button>
+                <button class="button" onclick="goToSlide(1)"></button>
+                <button class="button" onclick="goToSlide(2)"></button>
+                <button class="button" onclick="goToSlide(3)"></button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Features Section -->
-      <section class="page features-page">
+      <!-- ============================================================ -->
+      <!-- SECTION 3: CREATE                                            -->
+      <!-- ============================================================ -->
+      <section class="page create-section" id="create">
+        <div class="container">
+          <div class="create-header">
+            <div class="section-badge">✦ MODULE 02 ✦</div>
+            <h3>Create</h3>
+            <p>
+              Use our interactive tools like color palette generators, contrast
+              checkers, and creative prompt systems.
+            </p>
+          </div>
+
+          <div class="create-container">
+            <div class="card glass-panel">
+              <div class="front">
+                <i class="fas fa-palette"></i>
+                <h4>Color Tools</h4>
+              </div>
+              <div class="back">
+                <p>Generate perfect color palettes</p>
+              </div>
+            </div>
+            <div class="card glass-panel">
+              <div class="front">
+                <i class="fas fa-lightbulb"></i>
+                <h4>Prompt Generator</h4>
+              </div>
+              <div class="back">
+                <p>Get creative inspiration</p>
+              </div>
+            </div>
+            <div class="card glass-panel">
+              <div class="front">
+                <i class="fas fa-sliders-h"></i>
+                <h4>Contrast Checker</h4>
+              </div>
+              <div class="back">
+                <p>Ensure perfect contrast</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 4: EQUIP                                             -->
+      <!-- ============================================================ -->
+      <section class="page equip-section" id="equip">
+        <div class="container">
+          <div class="Equip glass-panel">
+            <div class="equip-content">
+              <div class="equip-text">
+                <div class="section-badge">✦ MODULE 03 ✦</div>
+                <h3>Equip</h3>
+                <p>
+                  Showcase your artwork, track your progress, and build your
+                  professional portfolio.
+                </p>
+                <p class="equip-hint">
+                  ⚡ Click the briefcase to see your portfolio items!
+                </p>
+              </div>
+              <div class="equip-briefcase" id="briefcase-container"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 5: CONNECT                                           -->
+      <!-- ============================================================ -->
+      <section class="page connect-section" id="connect">
+        <div class="parallax-connect-bg" data-speed="0.3"></div>
+        <div class="container">
+          <div class="connect-content">
+            <div class="connect-text">
+              <div class="section-badge">✦ MODULE 04 ✦</div>
+              <h3>Connect</h3>
+              <p>
+                Join our vibrant community of digital artists and immerse
+                yourself in creativity.
+              </p>
+            </div>
+            <div class="connect-visual-area">
+              <div class="main-image-placeholder"></div>
+              <div class="connect-buttons-grid">
+                <a href="pages/community/hub.html" class="btn-hub-special">
+                  <i class="fas fa-users"></i>
+                  <span class="btn-text">Community Hub</span>
+                </a>
+                <a
+                  href="pages/community/gallery.html"
+                  class="btn-connect-regular"
+                >
+                  <i class="fas fa-images"></i>
+                  <span class="btn-text">Gallery</span>
+                </a>
+                <a href="#" class="btn-connect-regular">
+                  <i class="fas fa-calendar"></i>
+                  <span class="btn-text">Events</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 6: FEATURES                                          -->
+      <!-- ============================================================ -->
+      <section class="page features-page" id="features">
         <div class="parallax-features-bg" data-speed="0.1"></div>
         <div class="container">
-          <div class="features-header" data-speed="0.6">
+          <div class="features-header">
+            <div class="section-badge">✦ UPGRADES ✦</div>
             <h2>
-              Everything You Need to <span class="gradient-text">Grow</span>
+              Everything You Need to
+              <span class="gradient-text">Grow</span>
             </h2>
             <p>Discover our comprehensive suite of tools and resources</p>
           </div>
           <div class="features-grid-compact">
-            <div class="feature-card-compact" data-speed="0.7">
-              <div class="feature-icon">🎨</div>
+            <div class="feature-card-compact glass-panel" data-speed="0.7">
+              <div class="feature-icon neon-icon">🎨</div>
               <h3>Interactive Tools</h3>
               <p>
                 Color palette generators, contrast checkers, and creative
@@ -591,51 +657,83 @@
               <a
                 href="pages/tools/color-palette-generator.html"
                 class="btn btn-outline"
-                >Explore Tools</a
               >
+                <span class="btn-icon">◆</span> Explore Tools
+              </a>
             </div>
-            <div class="feature-card-compact" data-speed="0.8">
-              <div class="feature-icon">📚</div>
+            <div class="feature-card-compact glass-panel" data-speed="0.8">
+              <div class="feature-icon neon-icon">📚</div>
               <h3>Expert Tutorials</h3>
               <p>
                 Step-by-step guides for digital painting and character design.
               </p>
-              <a href="pages/tutorials/tutorials.html" class="btn btn-outline"
-                >Learn More</a
-              >
+              <a href="pages/tutorials/tutorials.html" class="btn btn-outline">
+                <span class="btn-icon">◆</span> Learn More
+              </a>
             </div>
-            <div class="feature-card-compact" data-speed="0.9">
-              <div class="feature-icon">👥</div>
+            <div class="feature-card-compact glass-panel" data-speed="0.9">
+              <div class="feature-icon neon-icon">👥</div>
               <h3>Art Community</h3>
               <p>
                 Monthly challenges, feedback, and collaboration opportunities.
               </p>
-              <a href="pages/community/hub.html" class="btn btn-outline"
-                >Join Community</a
-              >
+              <a href="pages/community/hub.html" class="btn btn-outline">
+                <span class="btn-icon">◆</span> Join Community
+              </a>
             </div>
-            <div class="feature-card-compact" data-speed="1.0">
-              <div class="feature-icon">💼</div>
+            <div class="feature-card-compact glass-panel" data-speed="1.0">
+              <div class="feature-icon neon-icon">💼</div>
               <h3>My Portfolio</h3>
               <p>
                 Showcase your artwork and build your professional portfolio.
               </p>
-              <a href="pages/Equip/Equip.html" class="btn btn-outline"
-                >View Portfolio</a
-              >
+              <a href="pages/Equip/Equip.html" class="btn btn-outline">
+                <span class="btn-icon">◆</span> View Portfolio
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Social Section -->
+      <!-- ============================================================ -->
+      <!-- SECTION 7: CTA                                               -->
+      <!-- ============================================================ -->
+      <section class="page cta-section" id="cta">
+        <div class="container">
+          <div class="about-cta glass-panel">
+            <span class="cta-graffiti-tag tag-1">✧ KEEP IT FRESH ✧</span>
+            <span class="cta-graffiti-tag tag-2">★ STREET ART ★</span>
+
+            <h3>
+              Ready to Start Your
+              <span class="gradient-text">Creative</span> Journey?
+            </h3>
+            <p>
+              Join thousands of artists who are already transforming their
+              skills in the cyber den.
+            </p>
+            <div class="cta-buttons">
+              <a href="pages/auth/register.html" class="btn btn-glow">
+                <span class="btn-icon">▶</span> JOIN THE CREW
+              </a>
+              <a href="pages/tutorials/tutorials.html" class="btn btn-outline">
+                <span class="btn-icon">◆</span> EXPLORE TUTORIALS
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SOCIAL SECTION                           -->
+      <!-- ========================================== -->
       <section class="page social-page">
         <div class="parallax-social-bg" data-speed="0.15"></div>
         <div class="container">
           <div class="social-content">
             <div class="video-showcase-single" data-speed="0.6">
               <div class="video-container-single">
-                <div class="video-placeholder">
+                <div class="video-placeholder glass-panel">
                   <i class="fas fa-play-circle"></i>
                   <p>Art Mecca in Action</p>
                   <span
@@ -646,6 +744,7 @@
               </div>
             </div>
             <div class="social-text" data-speed="0.7">
+              <div class="section-badge">✦ COMMUNITY ✦</div>
               <h2>
                 Join Our Creative <span class="gradient-text">Movement</span>
               </h2>
@@ -657,17 +756,40 @@
           </div>
         </div>
 
-        <!-- Compact Footer -->
-        <footer class="compact-footer">
+        <!-- ========================================== -->
+        <!-- HOLOGRAPHIC FOOTER                       -->
+        <!-- ========================================== -->
+        <footer class="holographic-footer">
+          <!-- Holographic effects -->
+          <div class="footer-hologram"></div>
+          <div class="footer-scanline"></div>
+
+          <!-- Corner brackets -->
+          <span class="footer-corner tl"></span>
+          <span class="footer-corner tr"></span>
+          <span class="footer-corner bl"></span>
+          <span class="footer-corner br"></span>
+          <div class="footer-hologram"></div>
           <div class="container">
             <div class="footer-main">
               <div class="footer-brand">
                 <div class="logo">
-                  <span class="logo-icon">🎨</span>
+                  <span class="logo-icon">✧</span>
                   <span class="logo-text">Art Mecca</span>
                 </div>
-                <p>Empowering digital artists worldwide</p>
+                <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+                <div class="footer-status">
+                  <span class="status-dot"></span>
+                  <span class="status-text">SYSTEM: NOMINAL</span>
+                </div>
               </div>
+              <nav class="footer-nav">
+                <a href="#">about</a>
+                <a href="#">guidelines</a>
+                <a href="#">support</a>
+                <a href="#">careers</a>
+                <a href="#">privacy</a>
+              </nav>
               <div class="social-links">
                 <a
                   href="https://www.youtube.com/@Trulyyours26"
@@ -695,17 +817,20 @@
                   class="social-link"
                   ><i class="fab fa-pinterest"></i
                 ></a>
+                <a href="/pages/admin/privacy.html#cookies">Cookie Policy</a>
               </div>
             </div>
             <div class="footer-bottom">
-              <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+              <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
               <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Contact</a>
+                <a href="#">privacy policy</a>
+                <a href="#">terms of service</a>
+                <a href="#">contact</a>
               </div>
             </div>
           </div>
+          <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+          <div class="footer-scanline"></div>
         </footer>
       </section>
     </main>
@@ -723,7 +848,7 @@
       </svg>
     </button>
 
-    <!-- ========== FIREBASE SDKs (ONCE) ========== -->
+    <!-- ========== FIREBASE SDKs ========== -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -732,48 +857,19 @@
     <!-- ========== YOUR CONFIG & AUTH ========== -->
     <script src="config/firebase-config.js"></script>
     <script src="js/auth/auth-manager.js"></script>
+    <script src="js/auth/page-redirect.js"></script>
 
-    <!-- ========== SEO ========== -->
-    <script src="/js/utils/seo.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <!-- ========== NAVBAR ACTIVE ========== -->
     <script src="/js/navbar-active.js"></script>
 
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
-
-    <!-- ========== HEADER INIT ========== -->
-    <script>
-      // Initialize auth manager and ensure persistence
-      document.addEventListener("DOMContentLoaded", function () {
-        // Wait for Firebase to initialize
-        setTimeout(function () {
-          if (typeof authManager !== "undefined") {
-            // Force an immediate UI update
-            authManager.updateUI();
-
-            // Also listen for auth state changes
-            window.addEventListener("authStateChanged", function () {
-              authManager.updateUI();
-            });
-          }
-        }, 300);
-      });
-
-      // Additional check for pageshow (when navigating back/forward)
-      window.addEventListener("pageshow", function () {
-        if (typeof authManager !== "undefined") {
-          setTimeout(() => authManager.updateUI(), 100);
-        }
-      });
-    </script>
-
+    <!-- ========== AVATAR MANAGER ========== -->
     <script src="/js/components/avatar-manager.js"></script>
 
-    <!-- ========== OTHER SCRIPTS ========== -->
-    <script src="js/main.js"></script>
+    <!-- ========== MAIN SCRIPTS ========== -->
+    <script src="js/index.js"></script>
     <script src="js/parallax.js"></script>
-    <script src="js/briefcase.js"></script>
     <script src="js/search.js"></script>
+    <!-- Cookie Banner -->
+    <script src="/js/components/cookie-banner.js"></script>
   </body>
 </html>

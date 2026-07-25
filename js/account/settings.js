@@ -7,6 +7,8 @@ class AccountSettings {
     constructor() {
         this.currentUser = null;
         this.userData = null;
+        this.isAdult = false;
+        this.isNSFWCreator = false;
         this.init();
     }
 
@@ -25,6 +27,7 @@ class AccountSettings {
             this.setupNavigation();
             this.setupPasswordStrength();
             this.populateForm();
+            this.setupNSFWCreatorToggle();
         });
     }
 
@@ -33,6 +36,11 @@ class AccountSettings {
             const doc = await db.collection('users').doc(this.currentUser.uid).get();
             if (doc.exists) {
                 this.userData = doc.data();
+                // Check if user is 18+
+                const age = parseInt(this.userData.age) || 0;
+                this.isAdult = age >= 18;
+                this.isNSFWCreator = this.userData.isNSFWCreator || false;
+                console.log('Age:', age, 'Is Adult:', this.isAdult, 'Is NSFW Creator:', this.isNSFWCreator);
             }
         } catch (error) {
             console.error('Error loading user data:', error);
@@ -60,7 +68,127 @@ class AccountSettings {
         document.getElementById('likeNotifications').checked = this.userData?.notifications?.likes !== false;
         document.getElementById('commentNotifications').checked = this.userData?.notifications?.comments !== false;
         document.getElementById('shadowNotifications').checked = this.userData?.notifications?.shadows !== false;
+
+        // NSFW Creator Toggle will be set by setupNSFWCreatorToggle()
     }
+
+    // ============================================================
+    // NSFW CREATOR TOGGLE - FIXED
+    // ============================================================
+
+    setupNSFWCreatorToggle() {
+        const section = document.getElementById('nsfwCreatorSection');
+        const toggle = document.getElementById('nsfwCreatorToggle');
+        const warningBox = document.getElementById('nsfwWarningBox');
+        const confirmation = document.getElementById('nsfwConfirmation');
+        const confirmYes = document.getElementById('nsfwConfirmYes');
+        const confirmNo = document.getElementById('nsfwConfirmNo');
+
+        // Only show if user is 18+
+        if (this.isAdult) {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+            return;
+        }
+
+        // Set initial toggle state
+        toggle.checked = this.isNSFWCreator;
+
+        // Show warning if enabled
+        if (this.isNSFWCreator) {
+            warningBox.style.display = 'flex';
+            confirmation.style.display = 'none';
+        } else {
+            warningBox.style.display = 'none';
+            confirmation.style.display = 'none';
+        }
+
+        // Remove any existing listeners to avoid duplicates
+        const newToggle = toggle.cloneNode(true);
+        toggle.parentNode.replaceChild(newToggle, toggle);
+
+        // Handle toggle click - show confirmation when turning ON
+        newToggle.addEventListener('change', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (this.checked) {
+                // User is trying to turn it ON - show confirmation
+                confirmation.style.display = 'block';
+                warningBox.style.display = 'none';
+                // Uncheck temporarily until they confirm
+                this.checked = false;
+            } else {
+                // User is trying to turn it OFF - no confirmation needed
+                confirmation.style.display = 'none';
+                warningBox.style.display = 'none';
+                // Save immediately
+                window.accountSettings.saveNSFWCreatorStatus(false);
+            }
+        });
+
+        // Confirm Yes - turn ON
+        confirmYes.addEventListener('click', () => {
+            confirmation.style.display = 'none';
+            newToggle.checked = true;
+            warningBox.style.display = 'flex';
+            window.accountSettings.saveNSFWCreatorStatus(true);
+        });
+
+        // Confirm No - cancel, stay OFF
+        confirmNo.addEventListener('click', () => {
+            confirmation.style.display = 'none';
+            newToggle.checked = false;
+            warningBox.style.display = 'none';
+        });
+    }
+
+    async saveNSFWCreatorStatus(enabled) {
+        try {
+            const updateData = {
+                isNSFWCreator: enabled,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            // Add timestamp if enabling
+            if (enabled) {
+                updateData.nsfwCreatorSince = firebase.firestore.FieldValue.serverTimestamp();
+            }
+
+            await db.collection('users').doc(this.currentUser.uid).update(updateData);
+
+            this.isNSFWCreator = enabled;
+            this.userData.isNSFWCreator = enabled;
+
+            if (enabled) {
+                this.showToast('🔞 NSFW Creator mode enabled! Your profile is now age-gated.', 'success');
+            } else {
+                this.showToast('NSFW Creator mode disabled. Your profile is now public.', 'success');
+            }
+
+            // Update the toggle state in the UI
+            const toggle = document.getElementById('nsfwCreatorToggle');
+            const warningBox = document.getElementById('nsfwWarningBox');
+            const confirmation = document.getElementById('nsfwConfirmation');
+
+            if (toggle) toggle.checked = enabled;
+            if (warningBox) warningBox.style.display = enabled ? 'flex' : 'none';
+            if (confirmation) confirmation.style.display = 'none';
+
+        } catch (error) {
+            console.error('Error saving NSFW Creator status:', error);
+            this.showToast('Error updating NSFW Creator status: ' + error.message, 'error');
+
+            // Revert toggle on error
+            const toggle = document.getElementById('nsfwCreatorToggle');
+            if (toggle) toggle.checked = this.isNSFWCreator;
+        }
+    }
+
+    // ============================================================
+    // NAVIGATION
+    // ============================================================
 
     setupNavigation() {
         const links = document.querySelectorAll('.settings-nav-link');
@@ -532,34 +660,6 @@ class AccountSettings {
             console.error('Error exporting data:', error);
             this.showToast('Error exporting data', 'error');
         }
-    }
-
-    // ========== ADMIN FUNCTIONS ==========
-
-    /**
-     * Admin: Reset user password
-     * @param {string} email - User's email address
-     */
-    static async adminResetPassword(email) {
-        if (!confirm(`Send password reset email to ${email}?`)) return;
-
-        try {
-            await firebase.auth().sendPasswordResetEmail(email);
-            alert('✅ Password reset email sent!');
-        } catch (error) {
-            console.error('Error sending reset email:', error);
-            alert('Error: ' + error.message);
-        }
-    }
-
-    /**
-     * Admin: Change user email
-     * @param {string} userId - User's UID
-     * @param {string} newEmail - New email address
-     */
-    static async adminChangeEmail(userId, newEmail) {
-        // This requires admin SDK - typically done via Cloud Function
-        alert('This requires a Firebase Cloud Function with admin SDK. Contact developer.');
     }
 
     // ========== UTILITY ==========

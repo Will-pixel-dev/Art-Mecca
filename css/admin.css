@@ -1,0 +1,816 @@
+/* ================================================================
+   ADMIN PAGES — CUSTOM COLOR SCHEME
+   Primary: #8c51fb | Secondary: #549dfc | Light: #d5c9f3
+   ================================================================ */
+
+/* ============================================================
+   THEME VARIABLES
+   ============================================================ */
+:root {
+  --bg-light: #f8f5ff;
+  --bg-dark: #13032b;
+  --card-light: #ffffff;
+  --card-dark: #1f0a3a;
+
+  --text-light: #1a102a;
+  --text-dark: #ece8f0;
+  --text-muted-light: #645e78;
+  --text-muted-dark: #a898b8;
+
+  --border-light: rgba(107, 78, 204, 0.08);
+  --border-dark: rgba(255, 255, 255, 0.04);
+
+  --primary: #8c51fb;
+  --primary-dim: rgba(140, 81, 251, 0.06);
+  --primary-glow: 0 0 40px rgba(140, 81, 251, 0.08);
+
+  --secondary: #549dfc;
+  --secondary-dim: rgba(84, 157, 252, 0.04);
+
+  --light-lavender: #d5c9f3;
+  --light-lavender-dim: rgba(213, 201, 243, 0.1);
+
+  --shadow-light: 0 8px 40px rgba(19, 3, 43, 0.06);
+  --shadow-dark: 0 8px 40px rgba(0, 0, 0, 0.3);
+
+  --radius: 12px;
+  --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-mono: "Share Tech Mono", monospace;
+
+  /* Default to light */
+  --bg: var(--bg-light);
+  --card: var(--card-light);
+  --text: var(--text-light);
+  --text-muted: var(--text-muted-light);
+  --border: var(--border-light);
+  --shadow: var(--shadow-light);
+}
+
+/* ============================================================
+   DARK MODE
+   ============================================================ */
+[data-theme="dark"] {
+  --bg: var(--bg-dark);
+  --card: var(--card-dark);
+  --text: var(--text-dark);
+  --text-muted: var(--text-muted-dark);
+  --border: var(--border-dark);
+  --shadow: var(--shadow-dark);
+  --primary-dim: rgba(140, 81, 251, 0.08);
+  --primary-glow: 0 0 40px rgba(140, 81, 251, 0.04);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+.admin-page {
+  min-height: 100vh;
+  padding: 40px 0 60px;
+  background: var(--bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ============================================================
+   ANIMATED BACKGROUND — CLOUDS
+   ============================================================ */
+.cloud-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--light-lavender);
+  opacity: 0.04;
+  filter: blur(60px);
+  animation: cloudFloat linear infinite;
+}
+
+.cloud-1 {
+  width: 400px;
+  height: 200px;
+  top: -5%;
+  left: -10%;
+  animation-duration: 45s;
+  animation-delay: 0s;
+}
+
+.cloud-2 {
+  width: 500px;
+  height: 250px;
+  bottom: 10%;
+  right: -15%;
+  animation-duration: 55s;
+  animation-delay: 5s;
+}
+
+.cloud-3 {
+  width: 300px;
+  height: 150px;
+  top: 30%;
+  left: 30%;
+  animation-duration: 50s;
+  animation-delay: 10s;
+}
+
+.cloud-4 {
+  width: 350px;
+  height: 180px;
+  bottom: 30%;
+  left: -5%;
+  animation-duration: 48s;
+  animation-delay: 15s;
+}
+
+.cloud-5 {
+  width: 450px;
+  height: 220px;
+  top: 10%;
+  right: 20%;
+  animation-duration: 60s;
+  animation-delay: 3s;
+}
+
+@keyframes cloudFloat {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+  25% {
+    transform: translateX(30px) translateY(-20px) scale(1.02);
+  }
+  50% {
+    transform: translateX(-20px) translateY(15px) scale(0.98);
+  }
+  75% {
+    transform: translateX(40px) translateY(-10px) scale(1.01);
+  }
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+[data-theme="dark"] .cloud {
+  background: var(--primary);
+  opacity: 0.02;
+}
+
+/* ============================================================
+   ADMIN HEADER — CUSTOM
+   ============================================================ */
+.admin-header {
+  position: relative;
+  z-index: 10;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.admin-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-header .logo a {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-header .logo a span {
+  color: var(--primary);
+}
+
+.admin-header .logo a i {
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.admin-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-header .header-actions .auth-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-header .header-actions .btn {
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.admin-header .header-actions .btn-login {
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.admin-header .header-actions .btn-login:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.admin-header .header-actions .btn-signup {
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+
+.admin-header .header-actions .btn-signup:hover {
+  background: #7a44e8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(140, 81, 251, 0.3);
+}
+
+.admin-header .header-actions .btn-icon {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 6px;
+  transition: all var(--transition);
+  border-radius: 6px;
+}
+
+.admin-header .header-actions .btn-icon:hover {
+  color: var(--primary);
+  background: var(--primary-dim);
+}
+
+/* ============================================================
+   ADMIN HERO
+   ============================================================ */
+.admin-hero {
+  text-align: center;
+  padding: 30px 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-hero-content {
+  position: relative;
+  display: inline-block;
+}
+
+.admin-hero-icon {
+  font-size: 2.8rem;
+  display: block;
+  margin-bottom: 6px;
+  color: var(--primary);
+  opacity: 0.5;
+}
+
+.admin-hero h1 {
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.admin-hero h1 .accent {
+  color: var(--primary);
+}
+
+.admin-hero .subtitle {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 300;
+}
+
+.admin-hero .graffiti {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  color: var(--primary);
+  opacity: 0.03;
+  pointer-events: none;
+  position: absolute;
+  top: -10px;
+  right: -50px;
+  transform: rotate(6deg);
+  letter-spacing: 6px;
+}
+
+/* ============================================================
+   BREADCRUMB
+   ============================================================ */
+.admin-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  position: relative;
+  z-index: 1;
+}
+
+.admin-breadcrumb a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all var(--transition);
+  opacity: 0.6;
+}
+
+.admin-breadcrumb a:hover {
+  opacity: 1;
+}
+
+.admin-breadcrumb .sep {
+  opacity: 0.2;
+}
+
+.admin-breadcrumb .current {
+  opacity: 0.5;
+}
+
+/* ============================================================
+   ADMIN CONTENT
+   ============================================================ */
+.admin-content {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 3rem 3.5rem;
+  box-shadow: var(--shadow);
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1;
+}
+
+.admin-content:hover {
+  box-shadow: var(--shadow), var(--primary-glow);
+}
+
+/* Content Typography */
+.admin-content h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.admin-content h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-content p {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.admin-content ul,
+.admin-content ol {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.admin-content li {
+  margin-bottom: 0.3rem;
+}
+
+.admin-content ul li::marker {
+  color: var(--primary);
+}
+
+.admin-content ol li::marker {
+  color: var(--primary);
+}
+
+.admin-content strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.admin-content a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all var(--transition);
+  border-bottom: 1px solid transparent;
+}
+
+.admin-content a:hover {
+  border-bottom-color: var(--primary);
+  color: var(--secondary);
+}
+
+.admin-content .highlight-box {
+  background: var(--primary-dim);
+  border-left: 3px solid var(--primary);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.admin-content .highlight-box p {
+  margin-bottom: 0;
+}
+
+.admin-content .warning-box {
+  background: rgba(140, 81, 251, 0.02);
+  border-left: 3px solid rgba(140, 81, 251, 0.15);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.admin-content .warning-box p {
+  margin-bottom: 0;
+}
+
+.admin-content .contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.admin-content .contact-card {
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all var(--transition);
+  border: 1px solid var(--border);
+}
+
+.admin-content .contact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+}
+
+.admin-content .contact-card i {
+  font-size: 1.6rem;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.admin-content .contact-card h4 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.25rem 0 0.1rem;
+  font-size: 0.9rem;
+}
+
+.admin-content .contact-card p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0 0 0.15rem 0;
+}
+
+.admin-content .contact-card a {
+  font-size: 0.8rem;
+  border-bottom: none;
+}
+
+.admin-content .last-updated {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  opacity: 0.4;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  text-align: right;
+}
+
+/* ============================================================
+   ADMIN FOOTER — CUSTOM
+   ============================================================ */
+.admin-footer {
+  position: relative;
+  z-index: 10;
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.admin-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-footer .footer-nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-footer .footer-nav a {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.admin-footer .footer-nav a:hover {
+  color: var(--primary);
+}
+
+.admin-footer .footer-copy {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.admin-footer .footer-copy span {
+  color: var(--primary);
+}
+
+/* ============================================================
+   RELATED LINKS
+   ============================================================ */
+.admin-related {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+}
+
+.admin-related .label {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+
+.admin-related a {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.admin-related a:hover {
+  color: var(--primary);
+}
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+.theme-toggle-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.04);
+  box-shadow: var(--shadow), var(--primary-glow);
+  color: var(--primary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .admin-hero h1 {
+    font-size: 2.6rem;
+  }
+  .admin-hero .graffiti {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-page {
+    padding: 20px 0 40px;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .admin-hero h1 {
+    font-size: 2rem;
+  }
+
+  .admin-hero-icon {
+    font-size: 2.2rem;
+  }
+
+  .admin-hero .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .admin-content {
+    padding: 1.5rem 1.25rem;
+    border-radius: 8px;
+  }
+
+  .admin-content h2 {
+    font-size: 1.05rem;
+  }
+
+  .admin-content h3 {
+    font-size: 0.95rem;
+  }
+
+  .admin-content p,
+  .admin-content ul,
+  .admin-content ol {
+    font-size: 0.85rem;
+  }
+
+  .admin-content .contact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-breadcrumb {
+    font-size: 0.6rem;
+  }
+
+  .admin-related {
+    padding: 0.5rem 1rem;
+    gap: 0.3rem 1rem;
+  }
+
+  .admin-related .label {
+    font-size: 0.5rem;
+  }
+
+  .admin-related a {
+    font-size: 0.65rem;
+  }
+
+  .admin-footer .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .admin-footer .footer-nav {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .admin-footer .footer-nav a {
+    font-size: 0.65rem;
+  }
+
+  .admin-header .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .theme-toggle-wrapper {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .theme-toggle {
+    padding: 6px 12px;
+    font-size: 0.5rem;
+  }
+
+  .cloud-1,
+  .cloud-2,
+  .cloud-3,
+  .cloud-4,
+  .cloud-5 {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .admin-hero-icon {
+    font-size: 1.8rem;
+  }
+
+  .admin-hero .subtitle {
+    font-size: 0.8rem;
+  }
+
+  .admin-content {
+    padding: 1rem 0.75rem;
+    border-radius: 6px;
+  }
+
+  .admin-content .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-content .highlight-box,
+  .admin-content .warning-box {
+    padding: 0.75rem 1rem;
+  }
+
+  .admin-content .contact-card {
+    padding: 1rem;
+  }
+
+  .admin-header .header-actions .btn {
+    padding: 4px 12px;
+    font-size: 0.65rem;
+  }
+}

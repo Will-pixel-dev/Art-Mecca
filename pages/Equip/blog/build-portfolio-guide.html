@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to Build a Portfolio That Gets Noticed — Art Mecca</title>
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/blog-article.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  </head>
+  <body class="blog-article-page">
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <!-- Same header as blog.html -->
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- ARTICLE CONTENT                                               -->
+    <!-- ============================================================ -->
+    <main class="article-main">
+      <div class="container">
+        <div class="article-container glass-panel">
+          <!-- Back Link -->
+          <a href="/pages/Equip/blog.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Blog
+          </a>
+
+          <!-- Article Header -->
+          <div class="article-header">
+            <span class="article-category">Career</span>
+            <h1>How to Build a Portfolio That Gets Noticed</h1>
+            <div class="article-meta">
+              <span><i class="fas fa-user"></i> Art Mecca Team</span>
+              <span><i class="fas fa-calendar"></i> January 5, 2026</span>
+              <span><i class="fas fa-clock"></i> 7 min read</span>
+            </div>
+          </div>
+
+          <!-- Article Image -->
+          <div class="article-image">
+            <div class="article-placeholder">📁</div>
+          </div>
+
+          <!-- Article Body -->
+          <div class="article-body">
+            <p class="lead">
+              Your portfolio is the most powerful tool in your arsenal as an
+              artist. It's the first thing potential clients, galleries, and
+              collaborators will see. A strong portfolio can open doors, while a
+              weak one can close them just as fast. Here's how to build a
+              portfolio that truly gets noticed.
+            </p>
+
+            <h2>1. Quality Over Quantity</h2>
+            <p>
+              The biggest mistake artists make is including everything they've
+              ever made. Your portfolio should be a curated selection of your
+              very best work—not a comprehensive history of everything you've
+              created.
+            </p>
+            <ul>
+              <li>
+                <strong>Aim for 10-15 pieces</strong> — enough to show range,
+                not so many that it feels overwhelming.
+              </li>
+              <li>
+                <strong>Every piece must be your best</strong> — if you're not
+                100% proud of it, leave it out.
+              </li>
+              <li>
+                <strong>Show your strongest work first</strong> — grab attention
+                immediately.
+              </li>
+            </ul>
+            <p>
+              Think of your portfolio like a highlight reel. Each piece should
+              be a home run. No filler, no "good enough" — only excellence.
+            </p>
+
+            <h2>2. Tailor to Your Audience</h2>
+            <p>
+              Different opportunities require different portfolios. A gallery
+              looking for fine art wants something different from a game studio
+              looking for concept artists.
+            </p>
+            <ul>
+              <li>
+                <strong>For galleries:</strong> Show finished, polished pieces
+                that tell a story and demonstrate technical skill.
+              </li>
+              <li>
+                <strong>For commercial work:</strong> Show process, versatility,
+                and ability to follow briefs.
+              </li>
+              <li>
+                <strong>For freelance:</strong> Include client work and
+                testimonials alongside personal projects.
+              </li>
+            </ul>
+            <p>
+              <strong>Pro tip:</strong> Create multiple versions of your
+              portfolio tailored to different audiences. A game company doesn't
+              need to see your landscape paintings, and a gallery doesn't need
+              to see your character sketches.
+            </p>
+
+            <h2>3. Show Your Process</h2>
+            <p>
+              Many artists make the mistake of only showing the finished
+              product. Including process work can set you apart and demonstrate
+              your problem-solving skills.
+            </p>
+            <ul>
+              <li>
+                Include sketches, thumbnails, and WIP (work in progress) images.
+              </li>
+              <li>
+                Show how you developed an idea from rough concept to final
+                piece.
+              </li>
+              <li>
+                Add brief captions explaining your choices and techniques.
+              </li>
+            </ul>
+            <p>
+              This is especially important for commercial work, where clients
+              want to see not just what you can create, but <em>how</em> you
+              work.
+            </p>
+
+            <h2>4. Presentation Matters</h2>
+            <p>
+              How you present your work is as important as the work itself. A
+              well-designed portfolio shows that you care about details and
+              professionalism.
+            </p>
+            <ul>
+              <li>
+                <strong>Use high-quality images</strong> — invest in good
+                photography or scanning.
+              </li>
+              <li>
+                <strong>Consistent styling</strong> — your portfolio should feel
+                cohesive, not random.
+              </li>
+              <li>
+                <strong>Clean layout</strong> — let the art speak. Don't clutter
+                with distracting backgrounds or animations.
+              </li>
+              <li>
+                <strong>Mobile-friendly</strong> — many clients will view your
+                portfolio on their phone.
+              </li>
+            </ul>
+            <p>
+              Your portfolio's design should enhance your work, not compete with
+              it. Minimalist, clean, and professional is almost always the right
+              approach.
+            </p>
+
+            <blockquote>
+              <p>
+                "Your portfolio is your visual resume. It should be polished,
+                professional, and a true reflection of who you are as an
+                artist."
+              </p>
+              <cite>— Maya Patel, Art Director at PixelWorks</cite>
+            </blockquote>
+
+            <h2>5. Keep It Updated</h2>
+            <p>
+              A static portfolio is a dead portfolio. Your body of work should
+              evolve as you grow as an artist.
+            </p>
+            <ul>
+              <li>
+                <strong>Review and revise</strong> — every 3-6 months, look at
+                your portfolio with fresh eyes.
+              </li>
+              <li>
+                <strong>Replace weaker pieces</strong> — as you create better
+                work, older pieces should be retired.
+              </li>
+              <li>
+                <strong>Stay relevant</strong> — if you're applying for jobs,
+                make sure your portfolio reflects current trends.
+              </li>
+              <li>
+                <strong>Add new work</strong> — show that you're active and
+                constantly improving.
+              </li>
+            </ul>
+            <p>
+              A portfolio that hasn't been updated in a year suggests a stagnant
+              artist. Show that you're growing and evolving.
+            </p>
+
+            <h2>6. Get Feedback</h2>
+            <p>
+              You can't see your own work objectively. Getting feedback from
+              trusted peers, mentors, or even strangers can reveal blind spots.
+            </p>
+            <ul>
+              <li>Ask fellow artists for honest critiques.</li>
+              <li>
+                Join portfolio review sessions in your community or online.
+              </li>
+              <li>
+                Pay attention to which pieces get the most positive responses.
+              </li>
+              <li>Be open to constructive criticism — it's how you improve.</li>
+            </ul>
+            <p>
+              Remember: your portfolio is never "finished." It's a living,
+              breathing representation of your artistic journey.
+            </p>
+
+            <div class="article-tags">
+              <span class="tag">#portfolio</span>
+              <span class="tag">#career</span>
+              <span class="tag">#tips</span>
+              <span class="tag">#freelance</span>
+            </div>
+          </div>
+
+          <!-- Author Bio -->
+          <div class="author-bio">
+            <div class="author-avatar">🎨</div>
+            <div class="author-info">
+              <h4>Art Mecca Team</h4>
+              <p>
+                We're a collective of artists, writers, and creative
+                professionals dedicated to helping artists grow their careers.
+              </p>
+            </div>
+          </div>
+
+          <!-- Related Articles -->
+          <div class="related-articles">
+            <h3>Related Articles</h3>
+            <div class="related-grid">
+              <a
+                href="/pages/Equip/blog/finding-clients-guide.html"
+                class="related-card glass-panel"
+              >
+                <h4>How to Find Your First Art Clients</h4>
+                <p>Practical advice for freelancers</p>
+              </a>
+              <a
+                href="/pages/Equip/blog/interview-alex-rivera.html"
+                class="related-card glass-panel"
+              >
+                <h4>Interview with Alex Rivera</h4>
+                <p>Building a creative business</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <!-- Same footer as blog.html -->
+    </footer>
+
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+    <script src="/js/auth/page-redirect.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,16 +38,34 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -60,475 +78,1082 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
-      /* ============================================
-           TOOLS LANDING PAGE - ENHANCED STYLES
-           ============================================ */
+      /* ================================================================
+         TOOLS LANDING — CYBERPUNK GREEN HUD AESTHETIC
+         ================================================================ */
 
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(67, 234, 162, 0.06);
+        --bg-card-hover: rgba(67, 234, 162, 0.12);
+        --bg-elevated: rgba(67, 234, 162, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(67, 234, 162, 0.15);
+
+        /* Theme Colors - Green */
+        --color-green: #43eaa2;
+        --color-green-dark: #2ecc71;
+        --color-green-darker: #27ae60;
+        --color-green-darkest: #1b8c4a;
+        --color-green-light: #6ef0b8;
+        --color-green-mid: #43eaa2;
+
+        /* Glitch Colors - Green Only */
+        --color-glitch-a: #029b78;
+        --color-glitch-b: #43eaa2;
+        --color-glitch-c: #ad03fc;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+
+        /* Spray */
+        --color-spray-green: #43eaa2;
+        --color-spray-red: #ff0040;
+
+        /* Gradients */
+        --gradient-green: linear-gradient(135deg, #43eaa2, #2ecc71, #27ae60);
+        --gradient-cyber: linear-gradient(135deg, #00eaff, #029566, #43eaa2);
+        --gradient-neon: linear-gradient(135deg, #43eaa2, #2ecc71);
+
+        /* Glows */
+        --glow-green:
+          0 0 40px rgba(67, 234, 162, 0.3), 0 0 80px rgba(67, 234, 162, 0.1);
+        --glow-green-dark:
+          0 0 40px rgba(46, 204, 113, 0.3), 0 0 80px rgba(46, 204, 113, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(67, 234, 162, 0.2);
+
+        --glow-green:
+          0 0 40px rgba(67, 234, 162, 0.08), 0 0 80px rgba(67, 234, 162, 0.03);
+        --glow-green-dark:
+          0 0 40px rgba(46, 204, 113, 0.08), 0 0 80px rgba(46, 204, 113, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
       body {
-        font-family: "Inter", sans-serif;
-        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
         margin: 0;
         padding: 0;
+        overflow-x: hidden;
       }
 
       .container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 1.5rem;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
       }
 
-      /* Tools Hero Section */
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(67, 234, 162, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         HERO SECTION — FULL VIEWPORT GREEN
+         ============================================================ */
       .tools-hero {
-        background: linear-gradient(
-          135deg,
-          rgba(254, 103, 234, 0.1) 0%,
-          rgba(99, 219, 238, 0.1) 100%
-        );
-        padding: 4rem 0;
-        margin-bottom: 2rem;
-        border-bottom: 1px solid rgba(254, 103, 234, 0.2);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        background: var(--bg-body);
+        z-index: 2;
+        padding: 6rem 2rem;
+      }
+
+      .tools-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background:
+          radial-gradient(
+            ellipse at 50% 100%,
+            rgba(67, 234, 162, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 30% 0%,
+            rgba(46, 204, 113, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 70% 50%,
+            rgba(67, 234, 162, 0.04) 0%,
+            transparent 40%
+          );
+        pointer-events: none;
+      }
+
+      .tools-hero::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 40px;
+        right: 60px;
+        font-family: var(--font-tag);
+        font-size: 3.5rem;
+        color: var(--color-green);
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 0;
+        letter-spacing: 6px;
+        transform: rotate(-6deg);
       }
 
       .hero-content {
-        text-align: center;
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
+        position: relative;
+        z-index: 1;
       }
 
-      .hero-title {
-        font-size: 3rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, #fe67ea, #63dbee, #7aa5f0);
+      .hero-content h1 {
+        font-family: var(--font-display);
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+        color: var(--text-primary);
+        line-height: 1.1;
+      }
+
+      .hero-content h1 .highlight {
+        background: var(--gradient-green);
         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         background-clip: text;
-        color: transparent;
-        animation: titleGlow 3s ease-in-out infinite;
+        animation: shimmerGreen 4s ease-in-out infinite;
+        background-size: 200% 200%;
       }
 
-      @keyframes titleGlow {
+      @keyframes shimmerGreen {
         0%,
         100% {
-          filter: drop-shadow(0 0 0px rgba(254, 103, 234, 0.3));
-        }
-        50% {
-          filter: drop-shadow(0 0 10px rgba(254, 103, 234, 0.5));
-        }
-      }
-
-      .hero-subtitle {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        color: #4a5568;
-      }
-
-      /* Features Header */
-      .features-header {
-        text-align: center;
-        margin-bottom: 3rem;
-      }
-
-      .features-header h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 0.5rem;
-      }
-
-      .gradient-text {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      .features-header p {
-        color: #666;
-        font-size: 1rem;
-      }
-
-      /* Enhanced Features Grid - More Square Cards */
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 3rem;
-        margin-bottom: 4rem;
-      }
-
-      /* ============================================
-           PERMANENT RAINBOW BORDER CARDS (3rem)
-           ============================================ */
-
-      .feature-card {
-        background: white;
-        border-radius: 24px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        min-height: 380px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-      /* Permanent animated looping gradient border - 3rem around */
-      .feature-card::before {
-        content: "";
-        position: absolute;
-        top: -3rem;
-        left: -3rem;
-        right: -3rem;
-        bottom: -3rem;
-        background: linear-gradient(
-          135deg,
-          #ff69b4,
-          #ff9500,
-          #ffdd00,
-          #05f5ad,
-          #63dbee,
-          #7aa5f0,
-          #9d9afe,
-          #ff69b4
-        );
-        background-size: 400% 400%;
-        border-radius: 40px;
-        opacity: 1;
-        z-index: -2;
-        animation: borderRotate 4s linear infinite;
-      }
-
-      @keyframes borderRotate {
-        0% {
           background-position: 0% 50%;
         }
         50% {
           background-position: 100% 50%;
         }
-        100% {
-          background-position: 0% 50%;
-        }
       }
 
-      /* White inner background */
-      .feature-card::after {
-        content: "";
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        right: 6px;
-        bottom: 6px;
-        background: white;
-        border-radius: 20px;
-        z-index: -1;
-      }
-
-      .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-      }
-
-      .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        display: inline-block;
-        transition: transform 0.3s ease;
-      }
-
-      .feature-card:hover .feature-icon {
-        transform: scale(1.1);
-      }
-
-      .feature-card h3 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 0.75rem;
-      }
-
-      .feature-card p {
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-        flex-grow: 1;
-      }
-
-      /* Button Styles */
-      .btn-outline {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.6rem 1.2rem;
-        background: transparent;
-        border: 2px solid #fe67ea;
-        border-radius: 50px;
-        color: #fe67ea;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        align-self: center;
-      }
-
-      .btn-outline:hover {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        border-color: transparent;
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 14px rgba(254, 103, 234, 0.4);
-      }
-
-      /* ============================================
-           FEATURED ART SECTION - CONSTANT LEFT TO RIGHT SHADOWS
-           ============================================ */
-
-      .featured-art-section {
-        padding: 3rem;
-        background: white;
-        border-radius: 30px;
-        margin-bottom: 3rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      .hero-content .hero-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-family: var(--font-condensed);
         position: relative;
         z-index: 1;
       }
 
-      .featured-art-section h2 {
-        text-align: center;
-        font-size: 1.8rem;
+      .hero-content .hero-subtitle .highlight {
+        color: var(--color-green);
         font-weight: 700;
-        margin-bottom: 0.5rem;
       }
 
-      .featured-art-section > p {
+      /* Scroll indicator */
+      .scroll-indicator {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        opacity: 0.4;
+        animation: bounceDown 2s ease-in-out infinite;
+      }
+
+      .scroll-indicator .scroll-text {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .scroll-indicator .scroll-line {
+        width: 1px;
+        height: 40px;
+        background: linear-gradient(180deg, var(--text-muted), transparent);
+      }
+
+      @keyframes bounceDown {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(6px);
+        }
+      }
+
+      /* ============================================================
+         SECTION HEADERS
+         ============================================================ */
+      .section-header {
         text-align: center;
-        color: #666;
-        max-width: 600px;
-        margin: 0 auto 2rem auto;
-      }
-
-      .featured-art-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-      }
-
-      /* Art Card with constant left-to-right gradient shadow */
-      .art-card {
-        background: linear-gradient(135deg, #f8f8f8, white);
-        border-radius: 16px;
-        overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        cursor: pointer;
+        margin-bottom: 3.5rem;
         position: relative;
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+        padding-top: 2rem;
       }
 
-      /* Constant colorful gradient shadow behind art cards - left to right */
-      .art-card::before {
+      .section-header h2 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: 2px;
+        margin-bottom: 0.75rem;
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-header h2 .gradient-text {
+        background: var(--gradient-green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .section-header h2::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: var(--gradient-green);
+        margin: 12px auto 0;
+        border-radius: 2px;
+        box-shadow: 0 0 30px rgba(67, 234, 162, 0.2);
+      }
+
+      .section-header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         FEATURES GRID
+         ============================================================ */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         FEATURE CARD — GLASS GREEN
+         ============================================================ */
+      .feature-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-card), var(--glow-green);
+        transition: all var(--transition-slow);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 380px;
+      }
+
+      /* Animated border glow */
+      .feature-card::before {
         content: "";
         position: absolute;
-        bottom: -15px;
-        left: -15px;
-        right: -15px;
-        top: -15px;
-        background: linear-gradient(
-          90deg,
-          #ff69b4,
-          #ff9500,
-          #ffdd00,
-          #05f5ad,
-          #63dbee,
-          #7aa5f0,
-          #9d9afe,
-          #ff69b4
-        );
-        background-size: 200% 100%;
-        filter: blur(25px);
-        border-radius: 30px;
-        opacity: 0.7;
-        z-index: -2;
-        transition: opacity 0.3s ease;
+        inset: -2px;
+        border-radius: 18px;
+        background: var(--gradient-green);
+        opacity: 0;
+        z-index: -1;
+        transition: opacity var(--transition);
       }
 
-      .art-card:hover::before {
+      .feature-card:hover::before {
         opacity: 1;
+        animation: borderPulse 2s ease-in-out infinite;
       }
 
-      /* Inner white background */
-      .art-card::after {
+      @keyframes borderPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      .feature-card::after {
         content: "";
         position: absolute;
         top: 2px;
         left: 2px;
         right: 2px;
         bottom: 2px;
-        background: white;
+        background: var(--bg-body);
         border-radius: 14px;
         z-index: -1;
       }
 
+      .feature-card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(67, 234, 162, 0.3);
+        box-shadow: var(--shadow-card-hover), var(--glow-green-dark);
+      }
+
+      .feature-card .feature-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        transition: transform var(--transition);
+        color: var(--color-green);
+      }
+
+      .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(-3deg);
+      }
+
+      .feature-card h3 {
+        font-family: var(--font-display);
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.5px;
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+        font-family: var(--font-condensed);
+      }
+
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.5rem;
+        background: transparent;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-decoration: none;
+        transition: all var(--transition);
+        align-self: center;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-outline:hover {
+        border-color: var(--color-green);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-green);
+      }
+
+      /* ============================================================
+         FEATURED ART SECTION — GLASS
+         ============================================================ */
+      .featured-art-section {
+        padding: 3rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        margin-bottom: 3rem;
+        box-shadow: var(--shadow-card), var(--glow-green);
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+      }
+
+      .featured-art-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-green);
+        opacity: 0.4;
+      }
+
+      .featured-art-section h2 {
+        text-align: center;
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .featured-art-section h2 .highlight {
+        background: var(--gradient-green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .featured-art-section > p {
+        text-align: center;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 2rem auto;
+        font-family: var(--font-condensed);
+      }
+
+      .featured-art-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+
+      /* ============================================================
+         ART CARD — GLASS GREEN
+         ============================================================ */
+      .art-card {
+        background: var(--bg-elevated);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all var(--transition-slow);
+        cursor: pointer;
+        position: relative;
+        border: 1px solid var(--border-color);
+      }
+
+      .art-card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 13px;
+        background: var(--gradient-green);
+        opacity: 0;
+        z-index: -1;
+        transition: opacity var(--transition);
+      }
+
+      .art-card:hover::before {
+        opacity: 1;
+      }
+
       .art-card:hover {
         transform: translateY(-8px);
+        border-color: rgba(67, 234, 162, 0.3);
+        box-shadow: var(--shadow-card-hover), var(--glow-green);
       }
 
-      .art-card img {
+      .art-card .art-image {
         width: 100%;
         height: 200px;
-        object-fit: cover;
-        transition: transform 0.5s ease;
+        background: var(--gradient-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
+        opacity: 0.7;
+        transition: transform var(--transition);
       }
 
-      .art-card:hover img {
-        transform: scale(1.05);
+      .art-card:hover .art-image {
+        transform: scale(1.03);
       }
 
       .art-card h3 {
-        padding: 1rem 1rem 0.5rem 1rem;
+        padding: 1rem 1rem 0.3rem 1rem;
         font-size: 1.1rem;
-        font-weight: 600;
-        color: #1a1a1a;
+        font-weight: 700;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        letter-spacing: 0.5px;
       }
 
       .art-card p {
         padding: 0 1rem 1rem 1rem;
-        font-size: 0.85rem;
-        color: #666;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
       }
 
-      /* CTA Section */
+      /* ============================================================
+         CTA SECTION
+         ============================================================ */
       .tools-cta {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        border-radius: 20px;
-        padding: 3rem;
+        background: var(--gradient-green);
+        border-radius: 16px;
+        padding: 4rem;
         text-align: center;
         margin-bottom: 3rem;
-        box-shadow: 0 10px 30px rgba(254, 103, 234, 0.3);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 60px rgba(67, 234, 162, 0.2);
+        z-index: 2;
+      }
+
+      .tools-cta::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 255, 255, 0.03) 2px,
+          rgba(255, 255, 255, 0.03) 4px
+        );
+        pointer-events: none;
+        animation: ctaScan 3s linear infinite;
+      }
+
+      @keyframes ctaScan {
+        0% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(100%);
+        }
+      }
+
+      .tools-cta::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-6deg);
+        font-family: var(--font-tag);
+        font-size: 8rem;
+        color: rgba(255, 255, 255, 0.03);
+        pointer-events: none;
+        letter-spacing: 10px;
       }
 
       .tools-cta h2 {
-        font-size: 1.8rem;
-        font-weight: 700;
+        font-size: 2rem;
+        font-weight: 800;
+        font-family: var(--font-display);
         color: white;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
+        letter-spacing: 2px;
       }
 
       .tools-cta p {
         color: rgba(255, 255, 255, 0.9);
         margin-bottom: 1.5rem;
+        font-family: var(--font-condensed);
+        position: relative;
+        z-index: 1;
+        font-size: 1.1rem;
       }
 
       .btn-primary {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.8rem 2rem;
+        padding: 0.8rem 2.5rem;
         background: white;
         border: none;
-        border-radius: 50px;
-        color: #fe67ea;
+        border-radius: 4px;
+        color: #1a102a;
         font-weight: 700;
+        font-family: var(--font-condensed);
         text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all var(--transition);
+        position: relative;
+        z-index: 1;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
       }
 
       .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
         gap: 0.8rem;
       }
 
-      /* Responsive */
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-green);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-green-dark);
+        border-color: var(--color-green);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
       @media (max-width: 768px) {
-        .hero-title {
-          font-size: 2rem;
+        .tools-hero {
+          min-height: 100vh;
+          padding: 4rem 1.5rem;
         }
 
-        .tools-hero {
-          padding: 2rem 0;
+        .hero-content h1 {
+          font-size: clamp(2.5rem, 10vw, 3.5rem);
+        }
+
+        .tools-hero::after {
+          font-size: 2rem;
+          right: 20px;
+          bottom: 20px;
+        }
+
+        .hero-content .hero-subtitle {
+          font-size: 1rem;
         }
 
         .features-grid {
-          gap: 2rem;
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
         }
 
         .feature-card {
-          padding: 1.5rem;
-          min-height: 340px;
-        }
-
-        .tools-cta {
-          padding: 2rem;
+          min-height: 320px;
+          padding: 2rem 1.5rem;
         }
 
         .featured-art-section {
           padding: 1.5rem;
         }
+
+        .featured-art-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .tools-cta {
+          padding: 2.5rem 1.5rem;
+        }
+
+        .tools-cta h2 {
+          font-size: 1.5rem;
+        }
+
+        .tools-cta::after {
+          font-size: 4rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .scroll-indicator {
+          display: none;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-content h1 {
+          font-size: 2.2rem;
+        }
+
+        .hero-content .hero-subtitle {
+          font-size: 0.9rem;
+        }
+
+        .feature-card {
+          min-height: 280px;
+          padding: 1.5rem 1rem;
+        }
+
+        .feature-card .feature-icon {
+          font-size: 2.5rem;
+        }
+
+        .tools-cta::after {
+          font-size: 2.5rem;
+        }
+
+        .tools-hero::after {
+          font-size: 1.5rem;
+          right: 10px;
+          bottom: 10px;
+          opacity: 0.02;
+        }
+
+        .featured-art-section {
+          padding: 1rem;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Header - Updated with working notification system -->
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -536,85 +1161,91 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--color-green)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link active"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link active">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -622,12 +1253,13 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM (correct IDs for notifications.js) -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -664,7 +1296,7 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -672,8 +1304,20 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
+
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -683,6 +1327,7 @@
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -706,38 +1351,48 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN ====== -->
     <main>
-      <!-- Tools Hero Section -->
+      <!-- Hero Section - Full Viewport -->
       <section class="tools-hero">
-        <div class="container">
-          <div class="hero-content">
-            <h1 class="hero-title">Creative Tools for Artists</h1>
-            <p class="hero-subtitle">
-              Explore our collection of essential tools designed to enhance your
-              artistic workflow and inspire your creativity. From color palette
-              generators to advanced color theory resources, our tools are
-              curated to help artists of all levels create stunning and
-              harmonious artworks.
-            </p>
-          </div>
+        <div class="hero-content">
+          <h1>
+            Creative
+            <span class="glitch-header" data-text="Tools">Tools</span> for
+            Artists
+          </h1>
+          <p class="hero-subtitle">
+            Explore our collection of essential tools designed to enhance your
+            artistic workflow and inspire your creativity. From color palette
+            generators to advanced color theory resources, our tools are curated
+            to help artists of all levels create stunning and harmonious
+            artworks.
+          </p>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+          <span class="scroll-text">▼ Scroll</span>
+          <div class="scroll-line"></div>
         </div>
       </section>
 
-      <!-- Features Section with Permanent Rainbow Border Cards -->
       <div class="container">
-        <div class="features-header">
+        <!-- Features Header -->
+        <div class="section-header">
           <h2>
-            Everything You Need to <span class="gradient-text">Create</span>
+            Everything You Need to
+            <span class="glitch-header" data-text="Create">Create</span>
           </h2>
           <p>Discover our comprehensive suite of tools and resources</p>
         </div>
+
+        <!-- Features Grid -->
         <div class="features-grid">
           <div class="feature-card">
-            <div class="feature-icon">🎨</div>
+            <div class="feature-icon">❖</div>
             <h3>Color Palette Generator</h3>
             <p>
               Create harmonious color schemes with our intuitive palette
@@ -747,12 +1402,13 @@
             <a
               href="/pages/tools/color-palette-generator.html"
               class="btn-outline"
-              >Explore Tool <i class="fas fa-arrow-right"></i
-            ></a>
+            >
+              Explore Tool <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
 
           <div class="feature-card">
-            <div class="feature-icon">📊</div>
+            <div class="feature-icon">⬖</div>
             <h3>Color Scheme Analyzer</h3>
             <p>
               Analyze and refine your color choices with our advanced color
@@ -762,168 +1418,306 @@
             <a
               href="/pages/tools/color-scheme-analyzer.html"
               class="btn-outline"
-              >Explore Tool <i class="fas fa-arrow-right"></i
-            ></a>
+            >
+              Explore Tool <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
 
           <div class="feature-card">
-            <div class="feature-icon">💡</div>
+            <div class="feature-icon">⧰</div>
             <h3>Character Prompt Generator</h3>
             <p>
               Generate creative prompts for your art projects to spark
               inspiration and overcome creative blocks.
             </p>
-            <a href="/pages/tools/prompt-generator.html" class="btn-outline"
-              >Explore Tool <i class="fas fa-arrow-right"></i
-            ></a>
+            <a href="/pages/tools/prompt-generator.html" class="btn-outline">
+              Explore Tool <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
         </div>
-      </div>
 
-      <!-- Featured Art Section with Constant Gradient Shadows -->
-      <div class="container">
+        <!-- Featured Art Section -->
         <div class="featured-art-section">
-          <h2>Featured Art Using Our Tools</h2>
+          <h2>Featured Art Using <span class="highlight">Our Tools</span></h2>
           <p>
             Explore stunning artworks created by our community using our tools.
             Get inspired by the creativity and skill of fellow artists.
           </p>
           <div class="featured-art-grid">
             <div class="art-card">
-              <img
-                src="/assets/featured-art/art1.jpg"
-                alt="Sunset Serenity"
-                onerror="
-                  this.src =
-                    'https://placehold.co/400x200/fe67ea/white?text=Sunset+Serenity'
-                "
-              />
+              <div class="art-image">
+                <i class="fas fa-sun"></i>
+              </div>
               <h3>Sunset Serenity</h3>
               <p>Created using the Color Palette Generator</p>
             </div>
             <div class="art-card">
-              <img
-                src="/assets/featured-art/art2.jpg"
-                alt="Vibrant Cityscape"
-                onerror="
-                  this.src =
-                    'https://placehold.co/400x200/63dbee/white?text=Vibrant+Cityscape'
-                "
-              />
+              <div class="art-image">
+                <i class="fas fa-city"></i>
+              </div>
               <h3>Vibrant Cityscape</h3>
               <p>Created using the Color Scheme Analyzer</p>
             </div>
             <div class="art-card">
-              <img
-                src="/assets/featured-art/art3.jpg"
-                alt="Dreamy Forest"
-                onerror="
-                  this.src =
-                    'https://placehold.co/400x200/7aa5f0/white?text=Dreamy+Forest'
-                "
-              />
+              <div class="art-image">
+                <i class="fas fa-tree"></i>
+              </div>
               <h3>Dreamy Forest</h3>
               <p>Created using the Prompt Generator</p>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- CTA Section -->
-      <div class="container">
+        <!-- CTA Section -->
         <div class="tools-cta">
           <h2>Ready to elevate your art?</h2>
           <p>
             Join thousands of artists already using our tools to create amazing
             artwork
           </p>
-          <a href="/pages/auth/register.html" class="btn-primary"
-            >Get Started Free <i class="fas fa-arrow-right"></i
-          ></a>
+          <a href="/pages/auth/register.html" class="btn-primary">
+            Get Started Free <i class="fas fa-arrow-right"></i>
+          </a>
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                aria-label="YouTube"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                aria-label="Instagram"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a
-                href="https://x.com/TrulyYoursMira"
-                class="social-link"
-                aria-label="Twitter"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                aria-label="TikTok"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link" aria-label="Discord"
-                ><i class="fab fa-discord"></i
-              ></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                aria-label="Pinterest"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html#cookies">Cookie Policy</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#43eaa2",
+                "#2ecc71",
+                "#27ae60",
+                "#58ebfe",
+                "#4ff3a6",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#43eaa2";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#43eaa2";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== AUTH ======
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
@@ -931,9 +1725,7 @@
         }, 300);
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
+    <!-- Cookie Banner -->
+    <script src="/js/components/cookie-banner.js"></script>
   </body>
 </html>

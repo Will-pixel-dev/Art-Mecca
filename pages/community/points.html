@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Points &amp; Prizes | Art Mecca</title>
+
+    <!-- SEO -->
+    <meta name="robots" content="noindex, follow" />
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="../../css/variables.css" />
+    <link rel="stylesheet" href="../../css/main.css" />
+    <link rel="stylesheet" href="../../css/components/header.css" />
+    <link rel="stylesheet" href="../../css/components/footer.css" />
+    <link rel="stylesheet" href="../../css/points.css" />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  </head>
+  <body>
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <!-- Logo -->
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+
+          <!-- Navigation Links -->
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/" class="nav-link" data-section="home">Home</a>
+            </li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+              >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--neon-cyan)"
+                    >❖ Software Journals</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link active">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+              >
+                Truly Yours ✦
+              </a>
+            </li>
+          </ul>
+
+          <!-- Nav Actions -->
+          <div class="nav-actions">
+            <!-- Notification Bell -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Theme Toggle -->
+            <button
+              class="theme-toggle-btn"
+              id="themeToggle"
+              aria-label="Toggle theme"
+            >
+              <i class="fas fa-moon"></i>
+              <i class="fas fa-sun" style="display: none"></i>
+            </button>
+
+            <!-- Avatar -->
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <!-- Auth Buttons -->
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Search Overlay -->
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- MAIN CONTENT                              -->
+    <!-- ========================================== -->
+    <main class="points-page">
+      <div class="container">
+        <!-- ========================================== -->
+        <!-- HERO SECTION - GLITCHED GOLD              -->
+        <!-- ========================================== -->
+        <section class="points-hero">
+          <span class="points-hero-icon">✦</span>
+          <h1 class="glitch-hero" data-text="POINTS &amp; PRIZES">
+            POINTS &amp; PRIZES
+          </h1>
+          <p class="subtitle glitch-subtitle" data-text="EARN. CREATE. WIN.">
+            EARN. CREATE. WIN.
+          </p>
+          <p class="tagline">Every challenge brings you closer to glory</p>
+          <div class="hero-graffiti-tag">✧ REWARD ✧</div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- USER POINTS SUMMARY                        -->
+        <!-- ========================================== -->
+        <section class="user-points-summary" id="userPointsSummary">
+          <div class="points-stat-card glass-panel">
+            <span class="stat-icon">⌘</span>
+            <span class="stat-number" id="totalPoints">0</span>
+            <span class="stat-label">Total Points</span>
+            <div class="stat-glow"></div>
+          </div>
+          <div class="points-stat-card glass-panel">
+            <span class="stat-icon">◈</span>
+            <span class="stat-number" id="badgesEarned">0</span>
+            <span class="stat-label">Badges Earned</span>
+            <div class="stat-glow"></div>
+          </div>
+          <div class="points-stat-card glass-panel">
+            <span class="stat-icon">◆</span>
+            <span class="stat-number" id="challengesWon">0</span>
+            <span class="stat-label">Challenges Won</span>
+            <div class="stat-glow"></div>
+          </div>
+          <div class="points-stat-card glass-panel">
+            <span class="stat-icon">✧</span>
+            <span class="stat-number" id="globalRank">#--</span>
+            <span class="stat-label">Global Rank</span>
+            <div class="stat-glow"></div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- HOW TO EARN POINTS                        -->
+        <!-- ========================================== -->
+        <section class="how-to-earn glass-panel">
+          <h3>
+            <span class="glitch-small" data-text="⚡ HOW TO EARN POINTS ⚡"
+              >⚡ HOW TO EARN POINTS ⚡</span
+            >
+          </h3>
+          <div class="earn-grid">
+            <div class="earn-item">
+              <span class="earn-icon">◈</span>
+              <div class="earn-info">
+                <span class="earn-action">Enter a Challenge</span>
+              </div>
+              <span class="earn-points">+10</span>
+            </div>
+            <div class="earn-item">
+              <span class="earn-icon">✦</span>
+              <div class="earn-info">
+                <span class="earn-action">Win Daily Challenge</span>
+              </div>
+              <span class="earn-points">+25</span>
+            </div>
+            <div class="earn-item">
+              <span class="earn-icon">◆</span>
+              <div class="earn-info">
+                <span class="earn-action">Win Weekly Challenge</span>
+              </div>
+              <span class="earn-points">+50</span>
+            </div>
+            <div class="earn-item">
+              <span class="earn-icon">⌘</span>
+              <div class="earn-info">
+                <span class="earn-action">Win Monthly Challenge</span>
+              </div>
+              <span class="earn-points">+100</span>
+            </div>
+            <div class="earn-item">
+              <span class="earn-icon">✧</span>
+              <div class="earn-info">
+                <span class="earn-action">Win Yearly Challenge</span>
+              </div>
+              <span class="earn-points">+500</span>
+            </div>
+            <div class="earn-item">
+              <span class="earn-icon">✧</span>
+              <div class="earn-info">
+                <span class="earn-action">Special Event Winner</span>
+              </div>
+              <span class="earn-points">+150</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PRIZE TIERS                                -->
+        <!-- ========================================== -->
+        <section class="prize-tiers">
+          <div class="section-header-gold">
+            <div class="section-badge">✦ PRIZE TIERS ✦</div>
+            <h2>
+              <span class="glitch-header" data-text="What You Can Win">
+                What You Can <span class="gradient-text">Win</span>
+                <span class="glitch-layer" data-text="What You Can Win"></span>
+                <span class="rgb-split" data-text="What You Can Win"></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>Every challenge has its rewards</p>
+          </div>
+
+          <div class="tier-grid">
+            <!-- Yearly Challenge -->
+            <div class="tier-card yearly glass-panel">
+              <div class="tier-header">
+                <span class="tier-icon">⌘</span>
+                <span class="tier-title">Yearly Challenge</span>
+                <span class="tier-badge grand">Grand Prize</span>
+              </div>
+              <div class="tier-body">
+                <div class="tier-prizes">
+                  <div class="prize-item">
+                    <span class="prize-icon">✦</span>
+                    <span class="prize-text"
+                      ><strong>Soul Chaser Badge</strong> — Exclusive animated
+                      badge on profile + next to username
+                      <span class="prize-badge">FOREVER</span></span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">◈</span>
+                    <span class="prize-text"
+                      ><strong>Featured Artist</strong> — 30-day homepage
+                      feature with interview &amp; Q&amp;A</span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">⌘</span>
+                    <span class="prize-text"
+                      ><strong>Blog Feature</strong> — Dedicated blog post about
+                      you and your work</span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">◆</span>
+                    <span class="prize-text"
+                      ><strong>"Grand Master" Role</strong> — Special
+                      Discord/Community role</span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">✧</span>
+                    <span class="prize-text"
+                      ><strong>Art Showcase</strong> — Your work featured in a
+                      dedicated "Best of Year" gallery</span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">✦</span>
+                    <span class="prize-text"
+                      ><strong>Process Video Feature</strong> — Your process
+                      video featured on the Art Mecca YouTube</span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">◈</span>
+                    <span class="prize-text"
+                      ><strong>Custom Prompt</strong> — You get to design a
+                      future challenge theme</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Monthly Challenge -->
+            <div class="tier-card glass-panel">
+              <div class="tier-header">
+                <span class="tier-icon">◆</span>
+                <span class="tier-title">Monthly Challenge</span>
+                <span class="tier-badge gold">Special</span>
+              </div>
+              <div class="tier-body">
+                <div class="tier-prizes">
+                  <div class="prize-item">
+                    <span class="prize-icon">⌘</span>
+                    <span class="prize-text"
+                      ><strong>1st Place</strong> — "Monthly Master" badge
+                      (animated, 30 days) + Featured on homepage for 7 days +
+                      Exclusive "Gold" role + Artwork becomes next month's
+                      challenge banner + Create a custom prompt for next month's
+                      challenge</span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">✦</span>
+                    <span class="prize-text"
+                      ><strong>2nd Place</strong> — "Silver Star" badge (30
+                      days) + Featured in monthly newsletter + Honorable mention
+                      in blog</span
+                    >
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">◈</span>
+                    <span class="prize-text"
+                      ><strong>3rd Place</strong> — "Bronze Talent" badge (30
+                      days) + Honorable mention</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Weekly Challenge -->
+            <div class="tier-card glass-panel">
+              <div class="tier-header">
+                <span class="tier-icon">✦</span>
+                <span class="tier-title">Weekly Challenge</span>
+                <span class="tier-badge silver">Weekly</span>
+              </div>
+              <div class="tier-body">
+                <div class="tier-prizes">
+                  <div class="prize-item">
+                    <span class="prize-icon">◈</span>
+                    <span class="prize-text"
+                      ><strong>1st Place</strong> — "Weekly Winner" badge (7
+                      days) + Social media feature (IG/Twitter) "Artist of the
+                      Week"
+                    </span>
+                  </div>
+                  <div class="prize-item">
+                    <span class="prize-icon">✦</span>
+                    <span class="prize-text"
+                      ><strong>Honorable Mention (2-3)</strong> — "Honorable
+                      Mention" badge + Shoutout in weekly recap</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Daily Challenge -->
+            <div class="tier-card glass-panel">
+              <div class="tier-header">
+                <span class="tier-icon">✧</span>
+                <span class="tier-title">Daily Challenge</span>
+                <span class="tier-badge bronze">Daily</span>
+              </div>
+              <div class="tier-body">
+                <div class="tier-prizes">
+                  <div class="prize-item">
+                    <span class="prize-icon">⌘</span>
+                    <span class="prize-text"
+                      ><strong>Daily Winner</strong> — "Daily Doodle" badge (24
+                      hours) + Featured in the "Daily Challenge" section +
+                      Bragging rights + Community recognition</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SPECIAL EVENTS                             -->
+        <!-- ========================================== -->
+        <section class="special-events">
+          <div class="section-header-gold">
+            <div class="section-badge">✦ SPECIAL EVENTS ✦</div>
+            <h2>
+              <span
+                class="glitch-header"
+                data-text="Seasonal &amp; Charity Events"
+              >
+                Seasonal &amp; <span class="gradient-text">Charity</span> Events
+                <span
+                  class="glitch-layer"
+                  data-text="Seasonal &amp; Charity Events"
+                ></span>
+                <span
+                  class="rgb-split"
+                  data-text="Seasonal &amp; Charity Events"
+                ></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>Limited-time events with exclusive prizes</p>
+          </div>
+
+          <div class="special-events-grid">
+            <div class="event-card glass-panel">
+              <div class="event-icon">✦</div>
+              <div class="event-name">Christmas Challenge</div>
+              <div class="event-prize">
+                "Holiday Hero" badge + Seasonal feature
+              </div>
+              <span class="event-badge seasonal">Seasonal</span>
+            </div>
+            <div class="event-card glass-panel">
+              <div class="event-icon">◈</div>
+              <div class="event-name">Halloween Challenge</div>
+              <div class="event-prize">
+                "Pumpkin King" badge + Spooky showcase
+              </div>
+              <span class="event-badge seasonal">Seasonal</span>
+            </div>
+            <div class="event-card glass-panel">
+              <div class="event-icon">⌘</div>
+              <div class="event-name">Cancer Awareness</div>
+              <div class="event-prize">"Supporter" badge + Charity gallery</div>
+              <span class="event-badge charity">Charity</span>
+            </div>
+            <div class="event-card glass-panel">
+              <div class="event-icon">◆</div>
+              <div class="event-name">Mental Health Awareness</div>
+              <div class="event-prize">
+                "Champion" badge + Community showcase
+              </div>
+              <span class="event-badge charity">Charity</span>
+            </div>
+            <div class="event-card glass-panel">
+              <div class="event-icon">✧</div>
+              <div class="event-name">Community Collab</div>
+              <div class="event-prize">
+                "Community Champion" badge + Co-created artwork
+              </div>
+              <span class="event-badge collaboration">Collaboration</span>
+            </div>
+            <div class="event-card glass-panel">
+              <div class="event-icon">✦</div>
+              <div class="event-name">Art Battle</div>
+              <div class="event-prize">
+                "Art Duelist" badge + Tournament winner status
+              </div>
+              <span class="event-badge competition">Competition</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- BADGE GALLERY - TROPHY ROOM               -->
+        <!-- ========================================== -->
+        <section class="badge-gallery">
+          <div class="section-header-gold">
+            <div class="section-badge">✦ TROPHY ROOM ✦</div>
+            <h2>
+              <span class="glitch-header" data-text="Your Badge Collection">
+                Your <span class="gradient-text">Badge</span> Collection
+                <span
+                  class="glitch-layer"
+                  data-text="Your Badge Collection"
+                ></span>
+                <span
+                  class="rgb-split"
+                  data-text="Your Badge Collection"
+                ></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>Show off your achievements</p>
+          </div>
+
+          <div class="badge-grid" id="badgeGrid">
+            <!-- Badges loaded by JavaScript -->
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">⌘</span>
+              <span class="badge-name">Grand Master</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">◈</span>
+              <span class="badge-name">Monthly Master</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">✦</span>
+              <span class="badge-name">Weekly Winner</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">◆</span>
+              <span class="badge-name">Daily Doodle</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">✧</span>
+              <span class="badge-name">Supporter</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">⌘</span>
+              <span class="badge-name">Holiday Hero</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">◈</span>
+              <span class="badge-name">Community Champion</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+            <div class="badge-card locked glass-panel">
+              <span class="badge-icon">✦</span>
+              <span class="badge-name">Art Duelist</span>
+              <span class="badge-status locked">🔒 Not Earned</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- POINTS SHOP / REWARDS                      -->
+        <!-- ========================================== -->
+        <section class="points-shop">
+          <div class="section-header-gold">
+            <div class="section-badge">✦ REWARDS ✦</div>
+            <h2>
+              <span class="glitch-header" data-text="Redeem Your Points">
+                Redeem Your
+                <span class="glitch-header" data-text="Points">Points</span>
+                <span
+                  class="glitch-layer"
+                  data-text="Redeem Your Points"
+                ></span>
+                <span class="rgb-split" data-text="Redeem Your Points"></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>Trade your points for exclusive perks</p>
+          </div>
+
+          <div class="shop-grid">
+            <div class="shop-item glass-panel">
+              <span class="shop-icon">◈</span>
+              <span class="shop-name">Homepage Feature</span>
+              <span class="shop-cost">200 pts</span>
+              <span class="shop-desc"
+                >Get your artwork featured on the homepage</span
+              >
+              <button class="btn-redeem" data-cost="200">Redeem</button>
+            </div>
+            <div class="shop-item glass-panel">
+              <span class="shop-icon">✦</span>
+              <span class="shop-name">Custom Badge Request</span>
+              <span class="shop-cost">300 pts</span>
+              <span class="shop-desc">Design your own custom badge</span>
+              <button class="btn-redeem" data-cost="300">Redeem</button>
+            </div>
+            <div class="shop-item glass-panel">
+              <span class="shop-icon">⌘</span>
+              <span class="shop-name">Suggest Challenge Theme</span>
+              <span class="shop-cost">100 pts</span>
+              <span class="shop-desc"
+                >Pick the theme for a future challenge</span
+              >
+              <button class="btn-redeem" data-cost="100">Redeem</button>
+            </div>
+            <div class="shop-item glass-panel">
+              <span class="shop-icon">◆</span>
+              <span class="shop-name">Social Media Shoutout</span>
+              <span class="shop-cost">150 pts</span>
+              <span class="shop-desc">Get featured on our social channels</span>
+              <button class="btn-redeem" data-cost="150">Redeem</button>
+            </div>
+            <div class="shop-item glass-panel">
+              <span class="shop-icon">✧</span>
+              <span class="shop-name">Profile Spotlight</span>
+              <span class="shop-cost">250 pts</span>
+              <span class="shop-desc">Get a spotlight on your profile</span>
+              <button class="btn-redeem" data-cost="250">Redeem</button>
+            </div>
+            <div class="shop-item glass-panel">
+              <span class="shop-icon">◈</span>
+              <span class="shop-name">Featured Artist</span>
+              <span class="shop-cost">500 pts</span>
+              <span class="shop-desc"
+                >Become a featured artist for 24 hours</span
+              >
+              <button class="btn-redeem" data-cost="500">Redeem</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CTA SECTION                                -->
+        <!-- ========================================== -->
+        <section class="hub-cta">
+          <div class="cta-content glass-panel">
+            <span class="cta-graffiti tag-1">✧ START ✧</span>
+            <span class="cta-graffiti tag-2">★ EARN ★</span>
+            <h2>
+              <span class="glitch-header" data-text="Ready to Start Earning?">
+                Ready to Start <span class="gradient-text">Earning</span>?
+                <span
+                  class="glitch-layer"
+                  data-text="Ready to Start Earning?"
+                ></span>
+                <span
+                  class="rgb-split"
+                  data-text="Ready to Start Earning?"
+                ></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>Join a challenge today and begin your journey to glory</p>
+            <div class="cta-buttons">
+              <a
+                href="/pages/community/hub.html#daily-challenge"
+                class="btn btn-primary btn-glow"
+              >
+                <span class="btn-icon">▶</span> JOIN A CHALLENGE
+              </a>
+              <a href="/pages/community/gallery.html" class="btn btn-secondary">
+                <span class="btn-icon">◆</span> BROWSE GALLERY
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ========================================================== -->
+    <!-- FOOTER                                                     -->
+    <!-- ========================================================== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+    </footer>
+
+    <!-- ========================================================== -->
+    <!-- SCRIPTS                                                    -->
+    <!-- ========================================================== -->
+
+    <!-- 1. Firebase Config -->
+    <script src="/config/firebase-config.js"></script>
+
+    <!-- 2. Auth -->
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- 3. Components -->
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+
+    <!-- 4. Navbar -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- 5. Search -->
+    <script src="/js/search.js"></script>
+
+    <!-- 6. SEO -->
+    <script src="/js/utils/seo.js"></script>
+
+    <!-- 7. Page Redirect -->
+    <script src="/js/auth/page-redirect.js"></script>
+
+    <!-- 8. Points Page -->
+    <script src="/js/points.js"></script>
+
+    <!-- 9. Particles & Theme Toggle -->
+    <script>
+      // ============================================================
+      // PARTICLES — SAME AS HOME PAGE (FIXED)
+      // ============================================================
+      (function initParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        if (!canvas) {
+          console.warn("Particle canvas not found");
+          return;
+        }
+
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouseX = -1000;
+        let mouseY = -1000;
+        const particleCount = 80;
+        let animationId = null;
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        class Particle {
+          constructor() {
+            this.reset();
+          }
+          reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+            this.opacity = Math.random() * 0.3 + 0.05;
+            const colors = [
+              "#ff6b00",
+              "#ff2d95",
+              "#ad03fc",
+              "#ff00ea",
+              "#f59e0b",
+              "#ff0040",
+            ];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+          }
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 200) {
+              const force = ((200 - dist) / 200) * 0.015;
+              this.speedX += (dx / dist) * force;
+              this.speedY += (dy / dist) * force;
+            }
+            this.speedX *= 0.999;
+            this.speedY *= 0.999;
+            const maxSpeed = 1.2;
+            const speed = Math.sqrt(
+              this.speedX * this.speedX + this.speedY * this.speedY,
+            );
+            if (speed > maxSpeed) {
+              this.speedX = (this.speedX / speed) * maxSpeed;
+              this.speedY = (this.speedY / speed) * maxSpeed;
+            }
+            if (
+              this.x < 0 ||
+              this.x > canvas.width ||
+              this.y < 0 ||
+              this.y > canvas.height
+            )
+              this.reset();
+          }
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function drawConnections() {
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 120) {
+                const opacity = (1 - dist / 120) * 0.05;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = "#ff6b00";
+                ctx.globalAlpha = opacity;
+                ctx.lineWidth = 0.6;
+                ctx.shadowColor = "#ff6b00";
+                ctx.shadowBlur = 4;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+              }
+            }
+          }
+        }
+
+        function animateParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+          drawConnections();
+          animationId = requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        // Cleanup on page unload
+        window.addEventListener("beforeunload", () => {
+          if (animationId) cancelAnimationFrame(animationId);
+        });
+
+        console.log("✅ Particles initialized");
+      })();
+
+      // ============================================================
+      // THEME TOGGLE — FIXED
+      // ============================================================
+      (function initThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (!themeToggle) {
+          console.warn("Theme toggle not found");
+          return;
+        }
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        const moonIcon = themeToggle.querySelector(".fa-moon");
+        const sunIcon = themeToggle.querySelector(".fa-sun");
+
+        if (savedTheme === "light") {
+          if (moonIcon) moonIcon.style.display = "none";
+          if (sunIcon) sunIcon.style.display = "block";
+        } else {
+          if (moonIcon) moonIcon.style.display = "block";
+          if (sunIcon) sunIcon.style.display = "none";
+        }
+
+        themeToggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          const current = document.documentElement.getAttribute("data-theme");
+          const next = current === "dark" ? "light" : "dark";
+
+          document.documentElement.setAttribute("data-theme", next);
+          localStorage.setItem("theme", next);
+
+          if (moonIcon && sunIcon) {
+            if (next === "light") {
+              moonIcon.style.display = "none";
+              sunIcon.style.display = "block";
+            } else {
+              moonIcon.style.display = "block";
+              sunIcon.style.display = "none";
+            }
+          }
+
+          console.log("Theme toggled to:", next);
+        });
+
+        console.log("✅ Theme toggle initialized");
+      })();
+
+      // ============================================================
+      // NOISE OVERLAY TOGGLE
+      // ============================================================
+      (function initNoiseToggle() {
+        const noiseOverlay = document.getElementById("noiseOverlay");
+        if (noiseOverlay) {
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "g" || e.key === "G") {
+              noiseOverlay.classList.add("active");
+              setTimeout(() => noiseOverlay.classList.remove("active"), 500);
+            }
+          });
+          console.log("✅ Noise toggle initialized");
+        }
+      })();
+    </script>
+  </body>
+</html>

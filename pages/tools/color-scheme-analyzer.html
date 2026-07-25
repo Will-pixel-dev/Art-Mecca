@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,57 +8,38 @@
       name="description"
       content="Test your color combinations for WCAG accessibility compliance. Analyze contrast ratios, simulate color blindness, and get recommendations."
     />
-    <meta
-      name="keywords"
-      content="color scheme analyzer, contrast checker, WCAG accessibility, color blindness simulator, color accessibility"
-    />
-
-    <!-- Open Graph -->
-    <meta
-      property="og:title"
-      content="Color Scheme Analyzer - Test Contrast & Accessibility"
-    />
-    <meta
-      property="og:description"
-      content="Test your color combinations for WCAG accessibility compliance. Analyze contrast ratios and simulate color blindness."
-    />
-    <meta property="og:image" content="/images/og-analyzer.jpg" />
-    <meta
-      property="og:url"
-      content="https://artisanhub.com/pages/tools/color-scheme-analyzer.html"
-    />
-    <meta property="og:type" content="website" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Color Scheme Analyzer - Test Contrast & Accessibility"
-    />
-    <meta
-      name="twitter:description"
-      content="Test your color combinations for WCAG accessibility compliance."
-    />
-    <meta name="twitter:image" content="/images/og-analyzer.jpg" />
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/tools.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -69,68 +50,1417 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ================================================================
+         COLOR SCHEME ANALYZER — CYBERPUNK BLUE HUD AESTHETIC
+         ================================================================ */
+
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(59, 130, 246, 0.06);
+        --bg-card-hover: rgba(59, 130, 246, 0.12);
+        --bg-elevated: rgba(59, 130, 246, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(59, 130, 246, 0.15);
+
+        /* Theme Colors - Blue */
+        --color-blue: #3b82f6;
+        --color-blue-dark: #2563eb;
+        --color-blue-darker: #1d4ed8;
+        --color-blue-light: #60a5fa;
+        --color-blue-lighter: #93bbfc;
+        --color-cyan: #58ebfe;
+
+        /* Glitch Colors - Blue Only */
+        --color-glitch-a: #00eaff;
+        --color-glitch-b: #3b82f6;
+        --color-glitch-c: #1d4ed8;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-magenta: #ff00ea;
+
+        /* Spray */
+        --color-spray-blue: #3b82f6;
+        --color-spray-cyan: #58ebfe;
+
+        /* Gradients */
+        --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb, #1d4ed8);
+        --gradient-cyber: linear-gradient(135deg, #00eaff, #3b82f6, #58ebfe);
+        --gradient-neon: linear-gradient(135deg, #3b82f6, #2563eb);
+
+        /* Glows */
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.1);
+        --glow-cyan:
+          0 0 40px rgba(88, 235, 254, 0.3), 0 0 80px rgba(88, 235, 254, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(59, 130, 246, 0.2);
+
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.08), 0 0 80px rgba(59, 130, 246, 0.03);
+        --glow-cyan:
+          0 0 40px rgba(88, 235, 254, 0.08), 0 0 80px rgba(88, 235, 254, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(59, 130, 246, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         GLASS CARD
+         ============================================================ */
+      .glass-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        transition: all var(--transition);
+      }
+
+      .glass-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(59, 130, 246, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      /* ============================================================
+         MAIN CONTENT
+         ============================================================ */
+      .tool-main {
+        position: relative;
+        z-index: 2;
+        padding: 2rem 0 4rem;
+        min-height: 100vh;
+      }
+
+      /* ============================================================
+         HEADER
+         ============================================================ */
+      .tool-header {
+        text-align: center;
+        padding: 3rem 0 2rem;
+        position: relative;
+      }
+
+      .tool-header::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-blue);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
+      }
+
+      .tool-header h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        line-height: 1.1;
+      }
+
+      .tool-header h1 .highlight {
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmerBlue 4s ease-in-out infinite;
+        background-size: 200% 200%;
+      }
+
+      @keyframes shimmerBlue {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .tool-header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         ANALYZER GRID
+         ============================================================ */
+      .analyzer-grid {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .analyzer-grid::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-blue);
+        opacity: 0.4;
+      }
+
+      @media (max-width: 860px) {
+        .analyzer-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ============================================================
+         CONTROLS SIDEBAR
+         ============================================================ */
+      .controls-sidebar {
+        padding: 1.5rem;
+        background: var(--bg-elevated);
+        border-right: 1px solid var(--border-color);
+      }
+
+      .controls-sidebar h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: var(--color-cyan);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .control-group {
+        margin-bottom: 1rem;
+      }
+
+      .control-group label {
+        display: block;
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.3rem;
+      }
+
+      .color-input-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .color-input-row input[type="color"] {
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        background: none;
+        padding: 0;
+        flex-shrink: 0;
+      }
+
+      .color-input-row input[type="text"] {
+        flex: 1;
+        padding: 0.4rem 0.6rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-size: 0.8rem;
+        font-family: var(--font-mono);
+        outline: none;
+        transition: all var(--transition);
+      }
+
+      .color-input-row input[type="text"]:focus {
+        border-color: var(--color-cyan);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.05);
+      }
+
+      .btn-swap {
+        width: 34px;
+        height: 34px;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-swap:hover {
+        border-color: var(--color-cyan);
+        color: var(--color-cyan);
+        transform: rotate(180deg);
+        box-shadow: var(--glow-cyan);
+      }
+
+      /* ============================================================
+         QUICK PRESETS
+         ============================================================ */
+      .quick-presets {
+        margin-top: 1rem;
+      }
+
+      .quick-presets h4 {
+        font-size: 0.6rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+      }
+
+      .preset-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+      }
+
+      .preset-btn {
+        padding: 0.3rem 0.5rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-size: 0.6rem;
+        font-family: var(--font-condensed);
+        cursor: pointer;
+        transition: all var(--transition);
+      }
+
+      .preset-btn:hover {
+        border-color: var(--color-cyan);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      /* ============================================================
+         INFO PANELS
+         ============================================================ */
+      .info-panel {
+        background: var(--bg-elevated);
+        border-radius: 4px;
+        padding: 0.75rem;
+        margin-top: 0.75rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .info-panel summary {
+        cursor: pointer;
+        color: var(--color-cyan);
+        font-weight: 600;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .info-panel summary:hover {
+        color: var(--color-blue-light);
+      }
+
+      .info-panel .info-content {
+        margin-top: 0.6rem;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .info-panel .info-content strong {
+        color: var(--text-primary);
+      }
+
+      .info-panel .info-content ul {
+        padding-left: 1rem;
+        margin: 0.3rem 0;
+      }
+
+      .info-panel .info-content ul li {
+        margin-bottom: 0.2rem;
+      }
+
+      /* ============================================================
+         ACTION BUTTONS
+         ============================================================ */
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+        border: none;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary {
+        background: var(--gradient-blue);
+        color: var(--text-inverse);
+        box-shadow: var(--glow-blue);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          var(--glow-cyan),
+          0 8px 40px rgba(59, 130, 246, 0.2);
+      }
+
+      .btn-secondary {
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--color-cyan);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-outline:hover {
+        border-color: var(--color-cyan);
+        color: var(--color-cyan);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .btn-small {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.65rem;
+      }
+
+      /* ============================================================
+         RESULTS AREA
+         ============================================================ */
+      .results-area {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      /* ---- Visual Preview ---- */
+      .preview-section {
+        background: var(--bg-elevated);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .preview-section h3 {
+        font-size: 0.8rem;
+        font-family: var(--font-display);
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .preview-box {
+        padding: 1.5rem;
+        min-height: 180px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.3s,
+          color 0.3s;
+        border: 1px solid var(--border-color);
+      }
+
+      .preview-text {
+        text-align: center;
+        max-width: 450px;
+      }
+
+      .preview-text h4 {
+        font-family: var(--font-display);
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .preview-text p {
+        font-size: 0.85rem;
+        font-family: var(--font-condensed);
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+        opacity: 0.9;
+      }
+
+      .preview-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .preview-btn {
+        padding: 0.4rem 1.2rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.7rem;
+        font-family: var(--font-condensed);
+        cursor: default;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .preview-btn.secondary {
+        background: transparent;
+        border: 1px solid currentColor;
+      }
+
+      /* ---- Results Section ---- */
+      .results-section {
+        background: var(--bg-elevated);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .results-section h3 {
+        font-size: 0.8rem;
+        font-family: var(--font-display);
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .contrast-results {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 600px) {
+        .contrast-results {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .contrast-score {
+        text-align: center;
+        padding: 0.75rem;
+        background: var(--bg-body);
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        min-width: 90px;
+      }
+
+      .score-value {
+        font-size: 2rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        transition: color 0.3s;
+      }
+
+      .score-label {
+        font-size: 0.55rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .wcag-compliance {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .compliance-item {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.3rem 0.6rem;
+        background: var(--bg-body);
+        border-radius: 4px;
+        border-left: 3px solid var(--text-muted);
+        font-size: 0.7rem;
+      }
+
+      .compliance-item.pass {
+        border-left-color: var(--color-neon-green);
+      }
+
+      .compliance-item.fail {
+        border-left-color: var(--color-spray-red);
+      }
+
+      .compliance-icon {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      .compliance-item.pass .compliance-icon {
+        background: var(--color-neon-green);
+      }
+
+      .compliance-item.fail .compliance-icon {
+        background: var(--color-spray-red);
+      }
+
+      .compliance-text {
+        flex: 1;
+        font-family: var(--font-condensed);
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .compliance-status {
+        font-size: 0.55rem;
+        font-family: var(--font-mono);
+        font-weight: 700;
+        padding: 0.1rem 0.5rem;
+        border-radius: 4px;
+        background: var(--text-muted);
+        color: var(--text-inverse);
+      }
+
+      .compliance-item.pass .compliance-status {
+        background: var(--color-neon-green);
+      }
+
+      .compliance-item.fail .compliance-status {
+        background: var(--color-spray-red);
+      }
+
+      /* ============================================================
+         COLOR BLINDNESS SIMULATION
+         ============================================================ */
+      .color-blindness-section {
+        margin-top: 1rem;
+      }
+
+      .color-blindness-section h4 {
+        font-size: 0.7rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .color-blindness-section h4 .info-icon {
+        cursor: help;
+        color: var(--color-cyan);
+        font-size: 0.7rem;
+      }
+
+      .simulation-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.4rem;
+      }
+
+      @media (max-width: 700px) {
+        .simulation-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .simulation-item {
+        text-align: center;
+      }
+
+      .simulation-preview {
+        padding: 0.5rem 0.3rem;
+        border-radius: 4px;
+        font-size: 0.55rem;
+        font-weight: 700;
+        font-family: var(--font-condensed);
+        transition:
+          background 0.3s,
+          color 0.3s;
+        border: 1px solid var(--border-color);
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* ============================================================
+         RECOMMENDATIONS
+         ============================================================ */
+      .recommendations-section {
+        margin-top: 1rem;
+      }
+
+      .recommendations-section h4 {
+        font-size: 0.7rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .recommendations-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .recommendation-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        background: var(--bg-body);
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-family: var(--font-condensed);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .recommendation-item i {
+        color: var(--color-cyan);
+        font-size: 0.8rem;
+      }
+
+      .recommendation-item i.fa-exclamation-triangle {
+        color: var(--color-spray-red);
+      }
+
+      /* ============================================================
+         SAVED COMBINATIONS
+         ============================================================ */
+      .saved-combinations-section {
+        margin-top: 3rem;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+
+      .section-header h2 {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .section-header h2 i {
+        color: var(--color-cyan);
+      }
+
+      .saved-combinations-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .saved-combination-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        transition: all var(--transition-slow);
+      }
+
+      .saved-combination-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(59, 130, 246, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      .combination-preview {
+        height: 60px;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border-color);
+      }
+
+      .combination-foreground {
+        padding: 0.2rem 1rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 1rem;
+        font-family: var(--font-mono);
+      }
+
+      .combination-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .combination-ratio {
+        font-weight: 700;
+        color: var(--color-cyan);
+        font-size: 0.9rem;
+        font-family: var(--font-mono);
+      }
+
+      .combination-status {
+        font-size: 0.55rem;
+        font-family: var(--font-mono);
+        padding: 0.1rem 0.5rem;
+        border-radius: 4px;
+        color: var(--text-inverse);
+        font-weight: 700;
+      }
+
+      .combination-name {
+        font-size: 0.7rem;
+        font-family: var(--font-condensed);
+        color: var(--text-secondary);
+        margin-bottom: 0.4rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .combination-card-actions {
+        display: flex;
+        gap: 0.3rem;
+        justify-content: flex-end;
+      }
+
+      .palette-action-btn {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.55rem;
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .palette-action-btn:hover {
+        background: rgba(59, 130, 246, 0.08);
+        color: var(--color-cyan);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .palette-action-btn.delete:hover {
+        color: var(--color-spray-red);
+        background: rgba(255, 0, 64, 0.08);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--text-secondary);
+        grid-column: 1 / -1;
+      }
+
+      .empty-state i {
+        font-size: 2rem;
+        color: var(--color-cyan);
+        opacity: 0.3;
+        margin-bottom: 0.5rem;
+      }
+
+      .empty-state h3 {
+        font-size: 1rem;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        margin-bottom: 0.2rem;
+        letter-spacing: 0.5px;
+      }
+
+      .empty-state p {
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-blue);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+        border-color: var(--color-cyan);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-cyan);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
+      @media (max-width: 768px) {
+        .tool-main {
+          padding: 1rem 0 3rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .tool-header h1 {
+          font-size: 2rem;
+        }
+
+        .tool-header p {
+          font-size: 1rem;
+        }
+
+        .analyzer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .controls-sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .results-area {
+          padding: 1rem;
+        }
+
+        .saved-combinations-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .tool-header::after {
+          font-size: 1.5rem;
+          right: 10px;
+          bottom: 5px;
+          opacity: 0.02;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tool-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .controls-sidebar {
+          padding: 1rem;
+        }
+
+        .results-area {
+          padding: 0.75rem;
+        }
+
+        .preview-box {
+          padding: 1rem;
+          min-height: 140px;
+        }
+
+        .preview-text h4 {
+          font-size: 1rem;
+        }
+
+        .preview-text p {
+          font-size: 0.75rem;
+        }
+
+        .simulation-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .contrast-results {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Header - Updated with working notification system -->
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -138,85 +1468,93 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--color-cyan)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link active"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link active">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                  <a
+                    href="/pages/tools/color-scheme-analyzer.html"
+                    style="color: var(--color-cyan)"
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -224,12 +1562,13 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -266,7 +1605,7 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -274,8 +1613,20 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
+
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -285,6 +1636,7 @@
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -308,126 +1660,136 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN ====== -->
     <main class="tool-main">
       <div class="container">
-        <!-- Tool Header -->
-        <div class="tool-header-compact">
-          <h1>Color Scheme Analyzer</h1>
+        <!-- Header -->
+        <div class="tool-header">
+          <h1>
+            Color
+            <span class="glitch-header" data-text="Scheme">Scheme</span>
+            Analyzer
+          </h1>
           <p>
-            Test color combinations for accessibility and WCAG compliance with
-            detailed contrast analysis
+            Test color combinations for WCAG accessibility, contrast ratios, and
+            color blindness simulation
           </p>
         </div>
 
-        <!-- Main Analyzer Container -->
-        <div class="analyzer-container">
-          <!-- Left Side: Color Input & Controls -->
-          <div class="analyzer-controls">
-            <div class="control-section">
-              <h3><i class="fas fa-eye-dropper"></i> Color Input</h3>
-              <div class="color-pair-inputs">
-                <div class="color-input-group">
-                  <label for="foreground">Foreground Color</label>
-                  <div class="color-input-row">
-                    <input type="color" id="foreground" value="#000000" />
-                    <input
-                      type="text"
-                      id="foreground-hex"
-                      value="#000000"
-                      placeholder="#000000"
-                      maxlength="7"
-                    />
-                    <button
-                      class="btn-swap-colors"
-                      id="swap-colors"
-                      title="Swap colors"
-                    >
-                      <i class="fas fa-exchange-alt"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="color-input-group">
-                  <label for="background">Background Color</label>
-                  <div class="color-input-row">
-                    <input type="color" id="background" value="#ffffff" />
-                    <input
-                      type="text"
-                      id="background-hex"
-                      value="#ffffff"
-                      placeholder="#ffffff"
-                      maxlength="7"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="quick-presets">
-                <h4>Quick Presets</h4>
-                <div class="preset-buttons">
-                  <button
-                    class="preset-btn"
-                    data-fg="#000000"
-                    data-bg="#ffffff"
-                  >
-                    Black on White
-                  </button>
-                  <button
-                    class="preset-btn"
-                    data-fg="#ffffff"
-                    data-bg="#000000"
-                  >
-                    White on Black
-                  </button>
-                  <button
-                    class="preset-btn"
-                    data-fg="#f705d7"
-                    data-bg="#1a1a1a"
-                  >
-                    Pink on Dark
-                  </button>
-                  <button
-                    class="preset-btn"
-                    data-fg="#1a1a1a"
-                    data-bg="#f8f8f8"
-                  >
-                    Dark on Light
-                  </button>
-                </div>
+        <!-- Analyzer Grid -->
+        <div class="analyzer-grid">
+          <!-- Controls Sidebar -->
+          <div class="controls-sidebar">
+            <h3><i class="fas fa-eye-dropper"></i> Color Input</h3>
+
+            <div class="control-group">
+              <label for="foreground">Foreground</label>
+              <div class="color-input-row">
+                <input type="color" id="foreground" value="#000000" />
+                <input
+                  type="text"
+                  id="foreground-hex"
+                  value="#000000"
+                  placeholder="#000000"
+                />
+                <button class="btn-swap" id="swap-colors" title="Swap Colors">
+                  <i class="fas fa-exchange-alt"></i>
+                </button>
               </div>
             </div>
+
+            <div class="control-group">
+              <label for="background">Background</label>
+              <div class="color-input-row">
+                <input type="color" id="background" value="#ffffff" />
+                <input
+                  type="text"
+                  id="background-hex"
+                  value="#ffffff"
+                  placeholder="#ffffff"
+                />
+              </div>
+            </div>
+
+            <div class="quick-presets">
+              <h4>Quick Presets</h4>
+              <div class="preset-grid">
+                <button class="preset-btn" data-fg="#000000" data-bg="#ffffff">
+                  Black on White
+                </button>
+                <button class="preset-btn" data-fg="#ffffff" data-bg="#000000">
+                  White on Black
+                </button>
+                <button class="preset-btn" data-fg="#3b82f6" data-bg="#0a0508">
+                  Blue on Dark
+                </button>
+                <button class="preset-btn" data-fg="#1a102a" data-bg="#f5f0e8">
+                  Dark on Light
+                </button>
+              </div>
+            </div>
+
+            <!-- WCAG Info -->
+            <details class="info-panel">
+              <summary>
+                <i class="fas fa-universal-access"></i> Understanding WCAG
+              </summary>
+              <div class="info-content">
+                <p><strong>WCAG Contrast Requirements:</strong></p>
+                <ul>
+                  <li><strong>AA Normal:</strong> 4.5:1</li>
+                  <li><strong>AA Large:</strong> 3:1</li>
+                  <li><strong>AAA Normal:</strong> 7:1</li>
+                  <li><strong>AAA Large:</strong> 4.5:1</li>
+                </ul>
+              </div>
+            </details>
+
+            <!-- Color Blindness Info -->
+            <details class="info-panel">
+              <summary><i class="fas fa-eye"></i> Color Blindness</summary>
+              <div class="info-content">
+                <p><strong>Simulation Types:</strong></p>
+                <ul>
+                  <li><strong>Protanopia:</strong> Red-blind (~1% males)</li>
+                  <li>
+                    <strong>Deuteranopia:</strong> Green-blind (~5% males)
+                  </li>
+                  <li><strong>Tritanopia:</strong> Blue-blind (rare)</li>
+                </ul>
+              </div>
+            </details>
+
             <div class="action-buttons">
               <button id="analyze-btn" class="btn btn-primary">
-                <i class="fas fa-chart-bar"></i> Analyze Contrast
+                <i class="fas fa-chart-bar"></i> Analyze
               </button>
-              <button id="random-test-btn" class="btn btn-secondary">
-                <i class="fas fa-random"></i> Random Test
+              <button id="random-btn" class="btn btn-secondary">
+                <i class="fas fa-random"></i> Random
               </button>
-              <button id="save-combination-btn" class="btn btn-outline">
-                <i class="fas fa-heart"></i> Save Combination
+              <button id="save-btn" class="btn btn-outline">
+                <i class="fas fa-heart"></i> Save
               </button>
             </div>
           </div>
 
-          <!-- Right Side: Results & Analysis -->
-          <div class="analyzer-results">
+          <!-- Results Area -->
+          <div class="results-area">
             <!-- Visual Preview -->
             <div class="preview-section">
               <h3><i class="fas fa-palette"></i> Visual Preview</h3>
-              <div class="preview-container">
-                <div class="preview-box" id="preview-box">
-                  <div class="preview-text">
-                    <h4>Sample Heading Text</h4>
-                    <p>
-                      This is how your text will look with the current color
-                      combination. The quick brown fox jumps over the lazy dog.
-                    </p>
-                    <div class="preview-buttons">
-                      <button class="preview-btn">Sample Button</button>
-                      <button class="preview-btn secondary">Secondary</button>
-                    </div>
+              <div class="preview-box" id="preview-box">
+                <div class="preview-text">
+                  <h4>Sample Heading</h4>
+                  <p>
+                    The quick brown fox jumps over the lazy dog. This is how
+                    your text looks with these colors.
+                  </p>
+                  <div class="preview-buttons">
+                    <button class="preview-btn">Primary</button>
+                    <button class="preview-btn secondary">Secondary</button>
                   </div>
                 </div>
               </div>
@@ -435,37 +1797,35 @@
 
             <!-- Accessibility Results -->
             <div class="results-section">
-              <h3>
-                <i class="fas fa-universal-access"></i> Accessibility Analysis
-              </h3>
+              <h3><i class="fas fa-universal-access"></i> Accessibility</h3>
               <div class="contrast-results">
                 <div class="contrast-score">
                   <div class="score-value" id="contrast-ratio">4.5:1</div>
                   <div class="score-label">Contrast Ratio</div>
                 </div>
                 <div class="wcag-compliance">
-                  <div class="compliance-item" data-level="aa-normal">
+                  <div class="compliance-item pass">
                     <span class="compliance-icon"></span>
                     <span class="compliance-text">WCAG AA (Normal Text)</span>
                     <span class="compliance-status" id="wcag-aa-normal"
                       >Pass</span
                     >
                   </div>
-                  <div class="compliance-item" data-level="aa-large">
+                  <div class="compliance-item pass">
                     <span class="compliance-icon"></span>
                     <span class="compliance-text">WCAG AA (Large Text)</span>
                     <span class="compliance-status" id="wcag-aa-large"
                       >Pass</span
                     >
                   </div>
-                  <div class="compliance-item" data-level="aaa-normal">
+                  <div class="compliance-item pass">
                     <span class="compliance-icon"></span>
                     <span class="compliance-text">WCAG AAA (Normal Text)</span>
                     <span class="compliance-status" id="wcag-aaa-normal"
                       >Pass</span
                     >
                   </div>
-                  <div class="compliance-item" data-level="aaa-large">
+                  <div class="compliance-item pass">
                     <span class="compliance-icon"></span>
                     <span class="compliance-text">WCAG AAA (Large Text)</span>
                     <span class="compliance-status" id="wcag-aaa-large"
@@ -475,36 +1835,32 @@
                 </div>
               </div>
 
-              <!-- Color Blindness Simulation -->
+              <!-- Color Blindness -->
               <div class="color-blindness-section">
-                <h4>Color Blindness Simulation</h4>
+                <h4>
+                  <i class="fas fa-eye"></i> Color Blindness Simulation
+                  <span class="info-icon"
+                    ><i class="fas fa-info-circle"></i
+                  ></span>
+                </h4>
                 <div class="simulation-grid">
                   <div class="simulation-item">
                     <div class="simulation-preview normal" id="normal-preview">
-                      Normal Vision
+                      Normal
                     </div>
                   </div>
                   <div class="simulation-item">
-                    <div
-                      class="simulation-preview protanopia"
-                      id="protanopia-preview"
-                    >
+                    <div class="simulation-preview" id="protanopia-preview">
                       Protanopia
                     </div>
                   </div>
                   <div class="simulation-item">
-                    <div
-                      class="simulation-preview deuteranopia"
-                      id="deuteranopia-preview"
-                    >
+                    <div class="simulation-preview" id="deuteranopia-preview">
                       Deuteranopia
                     </div>
                   </div>
                   <div class="simulation-item">
-                    <div
-                      class="simulation-preview tritanopia"
-                      id="tritanopia-preview"
-                    >
+                    <div class="simulation-preview" id="tritanopia-preview">
                       Tritanopia
                     </div>
                   </div>
@@ -516,8 +1872,8 @@
                 <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
                 <div class="recommendations-list" id="recommendations">
                   <div class="recommendation-item">
-                    <i class="fas fa-check-circle"></i
-                    ><span>Great contrast ratio for normal text</span>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Great contrast ratio for normal text</span>
                   </div>
                 </div>
               </div>
@@ -525,109 +1881,717 @@
           </div>
         </div>
 
-        <!-- Saved Combinations Section -->
+        <!-- Saved Combinations -->
         <div class="saved-combinations-section">
           <div class="section-header">
             <h2><i class="fas fa-history"></i> Saved Combinations</h2>
-            <button
-              id="clear-saved-combinations"
-              class="btn btn-outline btn-small"
-            >
+            <button id="clear-saved" class="btn btn-outline btn-small">
               <i class="fas fa-trash"></i> Clear All
             </button>
           </div>
           <div class="saved-combinations-grid" id="saved-combinations">
             <div class="empty-state">
               <i class="fas fa-palette"></i>
-              <h3>No combinations saved yet</h3>
-              <p>
-                Analyze and save your first color combination to see it here!
-              </p>
+              <h3>No combinations saved</h3>
+              <p>Analyze and save your first color combination!</p>
             </div>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i></a
-              ><a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i></a
-              ><a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i></a
-              ><a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i></a
-              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
-              ><a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const particleCanvas = document.getElementById("particleCanvas");
+        if (particleCanvas) {
+          const ctx = particleCanvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * particleCanvas.width;
+              this.y = Math.random() * particleCanvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#3b82f6",
+                "#2563eb",
+                "#58ebfe",
+                "#60a5fa",
+                "#93bbfc",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > particleCanvas.width ||
+                this.y < 0 ||
+                this.y > particleCanvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#3b82f6";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#3b82f6";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== DOM REFS ======
+        const fgColorInput = document.getElementById("foreground");
+        const fgHexInput = document.getElementById("foreground-hex");
+        const bgColorInput = document.getElementById("background");
+        const bgHexInput = document.getElementById("background-hex");
+        const swapBtn = document.getElementById("swap-colors");
+        const analyzeBtn = document.getElementById("analyze-btn");
+        const randomBtn = document.getElementById("random-btn");
+        const saveBtn = document.getElementById("save-btn");
+        const clearBtn = document.getElementById("clear-saved");
+        const previewBox = document.getElementById("preview-box");
+        const contrastRatioEl = document.getElementById("contrast-ratio");
+        const wcagAA = document.getElementById("wcag-aa-normal");
+        const wcagAALarge = document.getElementById("wcag-aa-large");
+        const wcagAAA = document.getElementById("wcag-aaa-normal");
+        const wcagAAALarge = document.getElementById("wcag-aaa-large");
+        const normalPreview = document.getElementById("normal-preview");
+        const protanopiaPreview = document.getElementById("protanopia-preview");
+        const deuteranopiaPreview = document.getElementById(
+          "deuteranopia-preview",
+        );
+        const tritanopiaPreview = document.getElementById("tritanopia-preview");
+        const recommendationsEl = document.getElementById("recommendations");
+        const savedContainer = document.getElementById("saved-combinations");
+
+        // ====== STATE ======
+        let fgColor = "#000000";
+        let bgColor = "#ffffff";
+        let savedCombinations = JSON.parse(
+          localStorage.getItem("artisanHubSavedCombinations") || "[]",
+        );
+
+        // ====== COLOR UTILS ======
+        function hexToRgb(hex) {
+          const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return result
+            ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16),
+              }
+            : null;
+        }
+
+        function rgbToHex(r, g, b) {
+          return (
+            "#" +
+            [r, g, b]
+              .map((v) => Math.round(v).toString(16).padStart(2, "0"))
+              .join("")
+          );
+        }
+
+        function getLuminance(rgb) {
+          const [r, g, b] = [rgb.r, rgb.g, rgb.b].map((c) => {
+            c = c / 255;
+            return c <= 0.03928
+              ? c / 12.92
+              : Math.pow((c + 0.055) / 1.055, 2.4);
+          });
+          return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        }
+
+        function getContrastRatio(fg, bg) {
+          const lum1 = getLuminance(hexToRgb(fg));
+          const lum2 = getLuminance(hexToRgb(bg));
+          const lighter = Math.max(lum1, lum2);
+          const darker = Math.min(lum1, lum2);
+          return (lighter + 0.05) / (darker + 0.05);
+        }
+
+        function simulateColorBlindness(hex, type) {
+          const rgb = hexToRgb(hex);
+          let r = rgb.r,
+            g = rgb.g,
+            b = rgb.b;
+          switch (type) {
+            case "protanopia":
+              [r, g, b] = [
+                0.567 * r + 0.433 * g,
+                0.558 * r + 0.442 * g,
+                0.242 * g + 0.758 * b,
+              ];
+              break;
+            case "deuteranopia":
+              [r, g, b] = [
+                0.625 * r + 0.375 * g,
+                0.7 * r + 0.3 * g,
+                0.3 * g + 0.7 * b,
+              ];
+              break;
+            case "tritanopia":
+              [r, g, b] = [
+                0.95 * r + 0.05 * g,
+                0.433 * g + 0.567 * b,
+                0.475 * g + 0.525 * b,
+              ];
+              break;
+          }
+          return rgbToHex(
+            Math.max(0, Math.min(255, Math.round(r))),
+            Math.max(0, Math.min(255, Math.round(g))),
+            Math.max(0, Math.min(255, Math.round(b))),
+          );
+        }
+
+        function validateHex(hex) {
+          if (!hex.startsWith("#")) hex = "#" + hex;
+          const regex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+          if (regex.test(hex)) {
+            if (hex.length === 4)
+              hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+            return hex;
+          }
+          return null;
+        }
+
+        // ====== ANALYZE ======
+        function analyzeColors() {
+          const ratio = getContrastRatio(fgColor, bgColor);
+
+          // Preview
+          previewBox.style.backgroundColor = bgColor;
+          previewBox.style.color = fgColor;
+          const btns = previewBox.querySelectorAll(".preview-btn");
+          btns.forEach((btn) => {
+            if (btn.classList.contains("secondary")) {
+              btn.style.backgroundColor = "transparent";
+              btn.style.color = fgColor;
+              btn.style.borderColor = fgColor;
+            } else {
+              btn.style.backgroundColor = fgColor;
+              btn.style.color = bgColor;
+            }
+          });
+
+          // Contrast ratio
+          contrastRatioEl.textContent = ratio.toFixed(2) + ":1";
+          if (ratio >= 7) contrastRatioEl.style.color = "#4ff3a6";
+          else if (ratio >= 4.5) contrastRatioEl.style.color = "#fbbf24";
+          else contrastRatioEl.style.color = "#ff0040";
+
+          // WCAG
+          const levels = [
+            {
+              threshold: 4.5,
+              el: wcagAA,
+              parent: wcagAA.closest(".compliance-item"),
+            },
+            {
+              threshold: 3.0,
+              el: wcagAALarge,
+              parent: wcagAALarge.closest(".compliance-item"),
+            },
+            {
+              threshold: 7.0,
+              el: wcagAAA,
+              parent: wcagAAA.closest(".compliance-item"),
+            },
+            {
+              threshold: 4.5,
+              el: wcagAAALarge,
+              parent: wcagAAALarge.closest(".compliance-item"),
+            },
+          ];
+          levels.forEach(({ threshold, el, parent }) => {
+            const pass = ratio >= threshold;
+            el.textContent = pass ? "Pass" : "Fail";
+            parent.classList.remove("pass", "fail");
+            parent.classList.add(pass ? "pass" : "fail");
+          });
+
+          // Color Blindness
+          const types = ["normal", "protanopia", "deuteranopia", "tritanopia"];
+          const previews = [
+            normalPreview,
+            protanopiaPreview,
+            deuteranopiaPreview,
+            tritanopiaPreview,
+          ];
+          types.forEach((type, i) => {
+            const el = previews[i];
+            if (type === "normal") {
+              el.style.backgroundColor = bgColor;
+              el.style.color = fgColor;
+            } else {
+              const simBg = simulateColorBlindness(bgColor, type);
+              const simFg = simulateColorBlindness(fgColor, type);
+              el.style.backgroundColor = simBg;
+              el.style.color = simFg;
+            }
+          });
+
+          // Recommendations
+          let recs = [];
+          if (ratio < 3) {
+            recs.push({
+              icon: "fa-exclamation-triangle",
+              text: "Very low contrast — consider different colors",
+            });
+          }
+          if (ratio >= 3 && ratio < 4.5) {
+            recs.push({
+              icon: "fa-info-circle",
+              text: "Minimum contrast for large text only",
+            });
+          }
+          if (ratio >= 4.5 && ratio < 7) {
+            recs.push({
+              icon: "fa-check-circle",
+              text: "Good contrast for normal text (WCAG AA)",
+            });
+          }
+          if (ratio >= 7) {
+            recs.push({
+              icon: "fa-check-circle",
+              text: "Excellent contrast (WCAG AAA)",
+            });
+          }
+
+          recommendationsEl.innerHTML = recs.length
+            ? recs
+                .map(
+                  (r) =>
+                    `<div class="recommendation-item"><i class="fas ${r.icon}"></i><span>${r.text}</span></div>`,
+                )
+                .join("")
+            : `<div class="recommendation-item"><i class="fas fa-check-circle"></i><span>Colors are working well together</span></div>`;
+        }
+
+        // ====== SAVE / LOAD ======
+        function saveCombination() {
+          if (!fgColor || !bgColor) return;
+          const name = prompt(
+            "Enter a name for this combination:",
+            `Combo ${savedCombinations.length + 1}`,
+          );
+          if (name === null) return;
+
+          const ratio = getContrastRatio(fgColor, bgColor);
+          const combo = {
+            id: Date.now(),
+            name: name.trim() || `Combo ${savedCombinations.length + 1}`,
+            foreground: fgColor,
+            background: bgColor,
+            contrastRatio: ratio,
+            wcagAA: ratio >= 4.5,
+            wcagAAA: ratio >= 7,
+            createdAt: new Date().toISOString(),
+          };
+          savedCombinations.unshift(combo);
+          if (savedCombinations.length > 12)
+            savedCombinations = savedCombinations.slice(0, 12);
+          localStorage.setItem(
+            "artisanHubSavedCombinations",
+            JSON.stringify(savedCombinations),
+          );
+          renderSaved();
+          showToast(`"${combo.name}" saved!`);
+        }
+
+        function loadCombination(id) {
+          const combo = savedCombinations.find((c) => c.id === id);
+          if (!combo) return;
+          fgColor = combo.foreground;
+          bgColor = combo.background;
+          fgColorInput.value = fgColor;
+          fgHexInput.value = fgColor;
+          bgColorInput.value = bgColor;
+          bgHexInput.value = bgColor;
+          analyzeColors();
+          showToast(`"${combo.name}" loaded`);
+        }
+
+        function deleteCombination(id) {
+          savedCombinations = savedCombinations.filter((c) => c.id !== id);
+          localStorage.setItem(
+            "artisanHubSavedCombinations",
+            JSON.stringify(savedCombinations),
+          );
+          renderSaved();
+          showToast("Combination deleted");
+        }
+
+        function clearSaved() {
+          if (savedCombinations.length === 0) {
+            showToast("No combinations to clear");
+            return;
+          }
+          if (confirm("Clear all saved combinations?")) {
+            savedCombinations = [];
+            localStorage.setItem(
+              "artisanHubSavedCombinations",
+              JSON.stringify(savedCombinations),
+            );
+            renderSaved();
+            showToast("All cleared");
+          }
+        }
+
+        function renderSaved() {
+          if (savedCombinations.length === 0) {
+            savedContainer.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-palette"></i>
+                <h3>No combinations saved</h3>
+                <p>Analyze and save your first color combination!</p>
+              </div>
+            `;
+            return;
+          }
+          savedContainer.innerHTML = savedCombinations
+            .map(
+              (c) => `
+            <div class="saved-combination-card">
+              <div class="combination-preview" style="background-color:${c.background};">
+                <div class="combination-foreground" style="background-color:${c.foreground};color:${c.background};">
+                  Aa
+                </div>
+              </div>
+              <div class="combination-name">${c.name}</div>
+              <div class="combination-info">
+                <span class="combination-ratio">${c.contrastRatio.toFixed(1)}:1</span>
+                <span class="combination-status" style="background:${c.wcagAAA ? "#4ff3a6" : c.wcagAA ? "#fbbf24" : "#ff0040"};">
+                  ${c.wcagAAA ? "AAA" : c.wcagAA ? "AA" : "Fail"}
+                </span>
+              </div>
+              <div class="combination-card-actions">
+                <button class="palette-action-btn" data-action="load" data-id="${c.id}"><i class="fas fa-undo"></i> Load</button>
+                <button class="palette-action-btn delete" data-action="delete" data-id="${c.id}"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+
+          savedContainer
+            .querySelectorAll('[data-action="load"]')
+            .forEach((btn) => {
+              btn.addEventListener("click", () =>
+                loadCombination(parseInt(btn.dataset.id)),
+              );
+            });
+          savedContainer
+            .querySelectorAll('[data-action="delete"]')
+            .forEach((btn) => {
+              btn.addEventListener("click", () =>
+                deleteCombination(parseInt(btn.dataset.id)),
+              );
+            });
+        }
+
+        // ====== RANDOM ======
+        function randomTest() {
+          const randomHex = () =>
+            "#" +
+            Math.floor(Math.random() * 16777215)
+              .toString(16)
+              .padStart(6, "0");
+          fgColor = randomHex();
+          bgColor = randomHex();
+          let ratio = getContrastRatio(fgColor, bgColor);
+          let attempts = 0;
+          while (ratio < 1.5 && attempts < 10) {
+            bgColor = randomHex();
+            ratio = getContrastRatio(fgColor, bgColor);
+            attempts++;
+          }
+          fgColorInput.value = fgColor;
+          fgHexInput.value = fgColor;
+          bgColorInput.value = bgColor;
+          bgHexInput.value = bgColor;
+          analyzeColors();
+        }
+
+        // ====== TOAST ======
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        // ====== EVENTS ======
+        fgColorInput.addEventListener("input", () => {
+          fgColor = fgColorInput.value;
+          fgHexInput.value = fgColor;
+          analyzeColors();
+        });
+
+        bgColorInput.addEventListener("input", () => {
+          bgColor = bgColorInput.value;
+          bgHexInput.value = bgColor;
+          analyzeColors();
+        });
+
+        fgHexInput.addEventListener("input", () => {
+          const hex = validateHex(fgHexInput.value);
+          if (hex) {
+            fgColor = hex;
+            fgColorInput.value = hex;
+            analyzeColors();
+          }
+        });
+
+        bgHexInput.addEventListener("input", () => {
+          const hex = validateHex(bgHexInput.value);
+          if (hex) {
+            bgColor = hex;
+            bgColorInput.value = hex;
+            analyzeColors();
+          }
+        });
+
+        swapBtn.addEventListener("click", () => {
+          [fgColor, bgColor] = [bgColor, fgColor];
+          fgColorInput.value = fgColor;
+          fgHexInput.value = fgColor;
+          bgColorInput.value = bgColor;
+          bgHexInput.value = bgColor;
+          analyzeColors();
+        });
+
+        document.querySelectorAll(".preset-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            fgColor = btn.dataset.fg;
+            bgColor = btn.dataset.bg;
+            fgColorInput.value = fgColor;
+            fgHexInput.value = fgColor;
+            bgColorInput.value = bgColor;
+            bgHexInput.value = bgColor;
+            analyzeColors();
+          });
+        });
+
+        analyzeBtn.addEventListener("click", analyzeColors);
+        randomBtn.addEventListener("click", randomTest);
+        saveBtn.addEventListener("click", saveCombination);
+        clearBtn.addEventListener("click", clearSaved);
+
+        // ====== AUTH ======
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
           }
         }, 300);
+
+        // ====== INIT ======
+        analyzeColors();
+        renderSaved();
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <!-- Page Scripts -->
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/tools/color-scheme-analyzer.js"></script>
   </body>
 </html>

@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glitch Header Demo — Option 1</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+           THEME VARIABLES
+           ============================================================ */
+      :root {
+        --bg-body: #0a0508;
+        --neon-magenta: #f2ff00;
+        --neon-deep-purple: #ad03fc;
+        --neon-cyan: #ff9900;
+        --neon-gold: #ffc72e;
+        --neon-green: #4ff3a6;
+        --neon-pink: #ff66f2;
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --gradient-cyber: linear-gradient(135deg, #f2ff00, #ad03fc, #ff9900);
+        --glow-magenta:
+          0 0 40px rgba(255, 0, 234, 0.3), 0 0 80px rgba(255, 0, 234, 0.1);
+      }
+
+      /* ============================================================
+           BASE
+           ============================================================ */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-condensed);
+        background: var(--bg-body);
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Background effects */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 20% 30%,
+            rgba(255, 0, 234, 0.06),
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 80% 70%,
+            rgba(173, 3, 252, 0.06),
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 50% 50%,
+            rgba(88, 235, 254, 0.04),
+            transparent 40%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Scanlines */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 3px
+        );
+        pointer-events: none;
+        z-index: 9996;
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* Grid lines */
+      .grid-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9995;
+        background-image:
+          linear-gradient(rgba(255, 0, 234, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 0, 234, 0.02) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
+      /* ============================================================
+           DEMO CONTAINER
+           ============================================================ */
+      .demo-container {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 40px;
+        max-width: 900px;
+      }
+
+      /* ============================================================
+           GLITCH HEADER — OPTION 1 (MEDIUM)
+           ============================================================ */
+
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display, "Orbitron", sans-serif);
+        font-weight: 900;
+        font-size: 4.5rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(255, 0, 234, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--neon-cyan, #ff9900);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--neon-magenta, #f2ff00);
+      }
+
+      .glitch-header::after {
+        color: var(--neon-magenta, #f2ff00);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--neon-cyan, #ff9900);
+      }
+
+      /* ============================================================
+           KEYFRAMES — Medium Glitch
+           ============================================================ */
+
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+           SUBTITLE
+           ============================================================ */
+      .demo-subtitle {
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-top: 20px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        animation: subtitlePulse 2s ease-in-out infinite;
+      }
+
+      @keyframes subtitlePulse {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .demo-subtitle .highlight {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 30px rgba(88, 235, 254, 0.2);
+      }
+
+      /* ============================================================
+           BADGE / TAG
+           ============================================================ */
+      .demo-badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--neon-cyan);
+        padding: 6px 20px;
+        border: 1px solid rgba(88, 235, 254, 0.15);
+        border-radius: 99px;
+        background: rgba(88, 235, 254, 0.04);
+        margin-bottom: 24px;
+        box-shadow: 0 0 30px rgba(88, 235, 254, 0.05);
+      }
+
+      /* ============================================================
+           GLITCH INFO CARD
+           ============================================================ */
+      .glitch-info {
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+      }
+
+      .glitch-info .info-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 0, 234, 0.06);
+        border-radius: 4px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .glitch-info .info-card:hover {
+        border-color: rgba(88, 235, 254, 0.15);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .glitch-info .info-card .info-icon {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .glitch-info .info-card .info-label {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: block;
+      }
+
+      .glitch-info .info-card .info-value {
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        margin-top: 4px;
+        display: block;
+      }
+
+      .glitch-info .info-card .info-value .highlight-magenta {
+        color: var(--neon-magenta);
+      }
+
+      .glitch-info .info-card .info-value .highlight-cyan {
+        color: var(--neon-cyan);
+      }
+
+      .glitch-info .info-card .info-value .highlight-gold {
+        color: var(--neon-gold);
+      }
+
+      /* ============================================================
+           GLITCH LEVEL TOGGLE (visual indicator)
+           ============================================================ */
+      .glitch-level {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .glitch-level .level-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--text-muted);
+        opacity: 0.2;
+      }
+
+      .glitch-level .level-dot.active {
+        opacity: 1;
+        background: var(--neon-cyan);
+        box-shadow: 0 0 20px rgba(88, 235, 254, 0.3);
+      }
+
+      .glitch-level .level-label {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .glitch-level .level-label.active {
+        color: var(--neon-cyan);
+      }
+
+      /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+      @media (max-width: 768px) {
+        .glitch-header {
+          font-size: 2.8rem;
+          letter-spacing: 2px;
+        }
+
+        .glitch-info {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .demo-container {
+          padding: 20px;
+        }
+
+        .demo-badge {
+          font-size: 0.55rem;
+          padding: 4px 14px;
+        }
+
+        .glitch-level {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .glitch-header {
+          font-size: 2rem;
+          letter-spacing: 1px;
+        }
+
+        .demo-subtitle {
+          font-size: 0.7rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Grid Overlay -->
+    <div class="grid-overlay"></div>
+
+    <!-- Demo Container -->
+    <div class="demo-container">
+      <!-- Badge -->
+      <div class="demo-badge">✦ Option 1 — Medium Glitch</div>
+
+      <!-- Glitch Header -->
+      <h1>
+        <span class="glitch-header" data-text="Character Design Tutorials">
+          Character Design Tutorials
+        </span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="demo-subtitle">
+        <span class="highlight">✦</span> constant glitch effect
+        <span class="highlight">✦</span>
+        <br />
+        <span style="font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px">
+          position shift · cyan & magenta · infinite
+        </span>
+      </p>
+
+      <!-- Glitch Level Indicator -->
+      <div class="glitch-level">
+        <span class="level-label">Glitch Level</span>
+        <span class="level-dot" style="opacity: 0.2"></span>
+        <span class="level-dot active"></span>
+        <span class="level-dot" style="opacity: 0.2"></span>
+        <span class="level-label active" style="color: var(--neon-cyan)"
+          >MEDIUM</span
+        >
+      </div>
+
+      <!-- Glitch Info Cards -->
+      <div class="glitch-info">
+        <div class="info-card">
+          <span class="info-icon">⚡</span>
+          <span class="info-label">Intensity</span>
+          <span class="info-value"
+            ><span class="highlight-cyan">MEDIUM</span></span
+          >
+        </div>
+        <div class="info-card">
+          <span class="info-icon">🎨</span>
+          <span class="info-label">Colors</span>
+          <span class="info-value">
+            <span class="highlight-magenta">Magenta</span> ·
+            <span class="highlight-cyan">Cyan</span>
+          </span>
+        </div>
+        <div class="info-card">
+          <span class="info-icon">🔄</span>
+          <span class="info-label">Loop</span>
+          <span class="info-value"
+            ><span class="highlight-cyan">Infinite</span></span
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

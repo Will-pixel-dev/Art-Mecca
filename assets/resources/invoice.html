@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Template — Art Mecca</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* ================================================================
+       INVOICE TEMPLATE — NEON CYBERPUNK STYLE
+       ================================================================ */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0508;
+        --card: #0f0a18;
+        --glass: rgba(10, 5, 20, 0.9);
+        --border: rgba(255, 0, 234, 0.12);
+        --text: #f5eaff;
+        --text-muted: #5a3a6a;
+        --text-dim: #2a1a3a;
+        --accent: #ff00ea;
+        --accent-dim: rgba(255, 0, 234, 0.06);
+        --accent-glow: 0 0 40px rgba(255, 0, 234, 0.08);
+        --accent-secondary: #58ebfe;
+        --accent-green: #4ff3a6;
+
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, sans-serif;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      /* --- SCANLINES --- */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* --- INVOICE CONTAINER --- */
+      .invoice-container {
+        max-width: 900px;
+        width: 100%;
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 50px 60px;
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.8),
+          var(--accent-glow);
+        position: relative;
+        z-index: 1;
+      }
+
+      /* --- CORNER BRACKETS --- */
+      .invoice-container::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 20px;
+        height: 20px;
+        border-top: 2px solid var(--accent);
+        border-left: 2px solid var(--accent);
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      .invoice-container::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 20px;
+        height: 20px;
+        border-bottom: 2px solid var(--accent);
+        border-right: 2px solid var(--accent);
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      /* --- DOWNLOAD BUTTON --- */
+      .download-bar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 24px;
+        gap: 12px;
+      }
+
+      .btn-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 24px;
+        background: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: 2px;
+        font-family: var(--font-condensed);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: var(--accent-glow);
+        text-decoration: none;
+      }
+
+      .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 60px rgba(255, 0, 234, 0.2);
+      }
+
+      .btn-download i {
+        font-size: 0.9rem;
+      }
+
+      .btn-download-outline {
+        background: transparent;
+        color: var(--accent-secondary);
+        border: 1px solid var(--border);
+        box-shadow: none;
+      }
+
+      .btn-download-outline:hover {
+        background: var(--accent-dim);
+        border-color: var(--accent-secondary);
+        box-shadow: 0 0 40px rgba(88, 235, 254, 0.1);
+      }
+
+      /* --- INVOICE HEADER --- */
+      .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .invoice-header .logo {
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+      }
+
+      .invoice-header .logo span {
+        color: var(--accent);
+      }
+
+      .invoice-header .invoice-number {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        padding: 4px 16px;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        background: var(--accent-dim);
+      }
+
+      /* --- INVOICE INFO ROW --- */
+      .invoice-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 16px 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .info-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .info-group .label {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .info-group .value {
+        font-size: 0.9rem;
+        color: var(--text);
+      }
+
+      /* --- TABLE --- */
+      .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+      }
+
+      .invoice-table thead th {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        background: var(--accent-dim);
+      }
+
+      .invoice-table thead th:last-child {
+        text-align: right;
+      }
+
+      .invoice-table tbody td {
+        padding: 12px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .invoice-table tbody td:last-child {
+        text-align: right;
+        font-family: var(--font-mono);
+        color: var(--accent-green);
+      }
+
+      .invoice-table tbody tr:hover {
+        background: var(--accent-dim);
+      }
+
+      .invoice-table .item-desc {
+        color: var(--text);
+      }
+
+      /* --- TOTALS --- */
+      .invoice-totals {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .totals-box {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .totals-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        padding: 4px 0;
+      }
+
+      .totals-row.total {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--text);
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+        margin-top: 4px;
+      }
+
+      .totals-row.total .amount {
+        color: var(--accent-green);
+        text-shadow: 0 0 40px rgba(79, 243, 166, 0.1);
+      }
+
+      .totals-row .amount {
+        font-family: var(--font-mono);
+      }
+
+      /* --- NOTES --- */
+      .invoice-notes {
+        margin-top: 20px;
+        padding: 16px;
+        background: var(--accent-dim);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+      }
+
+      .invoice-notes .notes-label {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+      }
+
+      .invoice-notes p {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      /* --- PAYMENT INFO --- */
+      .payment-info {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+      }
+
+      .payment-item .label {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .payment-item .value {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text);
+        margin-top: 2px;
+      }
+
+      /* --- FOOTER --- */
+      .invoice-footer {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+      }
+
+      .invoice-footer span {
+        color: var(--accent);
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 768px) {
+        .invoice-container {
+          padding: 30px 24px;
+        }
+        .invoice-info {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .invoice-header .logo {
+          font-size: 1.4rem;
+        }
+        .payment-info {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+        .invoice-totals {
+          justify-content: stretch;
+        }
+        .totals-box {
+          width: 100%;
+        }
+        .download-bar {
+          flex-wrap: wrap;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .invoice-container {
+          padding: 20px 16px;
+        }
+        .invoice-header .logo {
+          font-size: 1.2rem;
+        }
+        .invoice-table thead th,
+        .invoice-table tbody td {
+          padding: 8px 8px;
+          font-size: 0.75rem;
+        }
+        .invoice-table .item-desc {
+          font-size: 0.75rem;
+        }
+        .totals-row {
+          font-size: 0.7rem;
+        }
+        .totals-row.total {
+          font-size: 0.95rem;
+        }
+      }
+
+      /* --- PRINT STYLES --- */
+      @media print {
+        .scanlines {
+          display: none;
+        }
+        .invoice-container {
+          background: #0a0508;
+          box-shadow: none;
+          border: 1px solid #1a0a2a;
+          padding: 30px 40px;
+        }
+        .invoice-container::before,
+        .invoice-container::after {
+          opacity: 0.05;
+        }
+        .download-bar {
+          display: none !important;
+        }
+        .btn-download {
+          display: none !important;
+        }
+        .invoice-table tbody tr:hover {
+          background: transparent;
+        }
+      }
+
+      /* --- EDITABLE FIELDS --- */
+      .editable {
+        border-bottom: 1px dashed var(--border);
+        padding: 2px 4px;
+        outline: none;
+        transition: all 0.3s ease;
+        cursor: text;
+      }
+
+      .editable:focus {
+        border-color: var(--accent);
+        background: var(--accent-dim);
+        box-shadow: 0 0 20px rgba(255, 0, 234, 0.05);
+      }
+
+      .editable-placeholder {
+        color: var(--text-muted);
+        opacity: 0.5;
+      }
+
+      .editable-placeholder:focus {
+        color: var(--text);
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scanlines"></div>
+
+    <div class="invoice-container">
+      <!-- Download Bar -->
+      <div class="download-bar">
+        <button
+          class="btn-download btn-download-outline"
+          onclick="window.print()"
+        >
+          <i class="fas fa-print"></i> Print
+        </button>
+        <button class="btn-download" onclick="exportPDF()">
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+      </div>
+
+      <!-- HEADER -->
+      <div class="invoice-header">
+        <div class="logo">✦ <span>ART MECCA</span></div>
+        <div class="invoice-number">
+          INVOICE # <span class="editable" contenteditable="true">001</span>
+        </div>
+      </div>
+
+      <!-- INVOICE INFO -->
+      <div class="invoice-info">
+        <div class="info-group">
+          <span class="label">From</span>
+          <span class="value editable" contenteditable="true">
+            Your Name<br />
+            your@email.com<br />
+            +1 234 567 890
+          </span>
+        </div>
+        <div class="info-group">
+          <span class="label">Bill To</span>
+          <span class="value editable" contenteditable="true">
+            Client Name<br />
+            client@email.com<br />
+            +1 234 567 890
+          </span>
+        </div>
+      </div>
+
+      <div class="invoice-info" style="border-bottom: none; padding-top: 0">
+        <div class="info-group">
+          <span class="label">Invoice Date</span>
+          <span class="value editable" contenteditable="true"
+            >January 15, 2026</span
+          >
+        </div>
+        <div class="info-group">
+          <span class="label">Payment Due</span>
+          <span class="value editable" contenteditable="true"
+            >February 15, 2026</span
+          >
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th style="width: 5%">#</th>
+            <th style="width: 40%">Description</th>
+            <th style="width: 15%; text-align: center">Qty</th>
+            <th style="width: 20%; text-align: right">Rate</th>
+            <th style="width: 20%; text-align: right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td class="item-desc editable" contenteditable="true">
+              Character Illustration — Fantasy Portrait
+            </td>
+            <td
+              style="text-align: center"
+              class="editable"
+              contenteditable="true"
+            >
+              1
+            </td>
+            <td
+              style="text-align: right"
+              class="editable"
+              contenteditable="true"
+            >
+              $450.00
+            </td>
+            <td style="text-align: right">$450.00</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td class="item-desc editable" contenteditable="true">
+              Commission — 3 Character Sketches
+            </td>
+            <td
+              style="text-align: center"
+              class="editable"
+              contenteditable="true"
+            >
+              3
+            </td>
+            <td
+              style="text-align: right"
+              class="editable"
+              contenteditable="true"
+            >
+              $75.00
+            </td>
+            <td style="text-align: right">$225.00</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td class="item-desc editable" contenteditable="true">
+              Commercial License — Brand Usage
+            </td>
+            <td
+              style="text-align: center"
+              class="editable"
+              contenteditable="true"
+            >
+              1
+            </td>
+            <td
+              style="text-align: right"
+              class="editable"
+              contenteditable="true"
+            >
+              $200.00
+            </td>
+            <td style="text-align: right">$200.00</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- TOTALS -->
+      <div class="invoice-totals">
+        <div class="totals-box">
+          <div class="totals-row">
+            <span>Subtotal</span>
+            <span class="amount">$875.00</span>
+          </div>
+          <div class="totals-row">
+            <span>Tax (0%)</span>
+            <span class="amount">$0.00</span>
+          </div>
+          <div class="totals-row">
+            <span>Shipping</span>
+            <span class="amount">$0.00</span>
+          </div>
+          <div class="totals-row total">
+            <span>Total</span>
+            <span class="amount">$875.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENT INFO -->
+      <div class="payment-info">
+        <div class="payment-item">
+          <div class="label">Payment Method</div>
+          <div class="value editable" contenteditable="true">
+            PayPal / Bank Transfer
+          </div>
+        </div>
+        <div class="payment-item">
+          <div class="label">Account Details</div>
+          <div class="value editable" contenteditable="true">
+            name@paypal.com
+          </div>
+        </div>
+        <div class="payment-item">
+          <div class="label">Reference</div>
+          <div class="value editable" contenteditable="true">INV-001</div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="invoice-notes">
+        <div class="notes-label">✦ Notes & Terms</div>
+        <p class="editable" contenteditable="true">
+          Payment due within 30 days. Please reference the invoice number when
+          making payment. Thank you for your business!
+        </p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="invoice-footer">✦ <span>KEEP IT FRESH</span> ✦</div>
+    </div>
+
+    <script>
+      function exportPDF() {
+        window.print();
+      }
+
+      // Auto-detect print and apply styles
+      document.addEventListener("DOMContentLoaded", function () {
+        // Make editable fields more user-friendly
+        const editables = document.querySelectorAll(".editable");
+        editables.forEach((el) => {
+          if (!el.textContent.trim()) {
+            el.classList.add("editable-placeholder");
+          }
+          el.addEventListener("focus", function () {
+            this.classList.remove("editable-placeholder");
+          });
+          el.addEventListener("blur", function () {
+            if (!this.textContent.trim()) {
+              this.classList.add("editable-placeholder");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

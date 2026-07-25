@@ -1,4 +1,5 @@
-// Artwork Detail Page - Complete with Verification Badge & Report Functionality
+// artwork-detail.js - Complete with Related Artworks & Username Display
+// Uses CommentSystem for all comment functionality
 
 class ArtworkDetail {
   constructor() {
@@ -7,6 +8,13 @@ class ArtworkDetail {
     this.currentUser = null;
     this.commentsCollapsed = false;
     this.isVerified = false;
+    this.relatedArtworks = [];
+    this.relatedPage = 1;
+    this.relatedLimit = 12;
+    this.hasMoreRelated = true;
+    this.isLoadingRelated = false;
+    this.userCache = {};
+    this.setupThemeToggle();
     this.init();
   }
 
@@ -44,13 +52,109 @@ class ArtworkDetail {
       // Add verification badge
       await this.addVerificationBadge();
 
-      // Setup comment click handlers AFTER comments are loaded
-      setTimeout(() => {
-        this.setupClickableComments();
-      }, 500);
+      // Initialize Comment System
+      this.initCommentSystem();
+
+      // Load related artworks
+      await this.loadRelatedArtworks();
     });
   }
 
+ // ============================================
+// INIT COMMENT SYSTEM
+// ============================================
+
+initCommentSystem() {
+  // Check if CommentSystem is available
+  if (typeof CommentSystem === 'undefined') {
+    console.warn('⚠️ CommentSystem not loaded yet, retrying...');
+    setTimeout(() => this.initCommentSystem(), 500);
+    return;
+  }
+
+  // Check if comment elements exist
+  const commentsList = document.getElementById('commentsList');
+  if (!commentsList) {
+    console.warn('Comments list not found');
+    return;
+  }
+
+  // Check if already initialized
+  if (window.commentSystem && window.commentSystem.artworkId === this.artworkId) {
+    return;
+  }
+
+  const isOwner = this.currentUser && this.artwork &&
+                  this.currentUser.uid === this.artwork.artistId;
+
+  // Get the artwork owner ID
+  const artworkArtistId = this.artwork?.artistId || null;
+
+  // Create comment system instance with artwork owner ID
+  window.commentSystem = new CommentSystem(
+    this.artworkId,
+    this.currentUser,
+    isOwner,
+    artworkArtistId  // ← PASS THE ARTWORK OWNER ID
+  );
+
+  // In artwork-detail.js, add this to the init method or after rendering
+
+// Check for comment parameter in URL
+const urlParams = new URLSearchParams(window.location.search);
+const commentId = urlParams.get('comment');
+
+if (commentId) {
+    // Wait for comments to load then scroll to the comment
+    setTimeout(() => {
+        const commentElement = document.querySelector(`.comment-item[data-id="${commentId}"]`);
+        if (commentElement) {
+            commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            commentElement.classList.add('highlight');
+            setTimeout(() => {
+                commentElement.classList.remove('highlight');
+            }, 3000);
+        }
+    }, 1500);
+}
+
+  console.log('✅ Comment System initialized');
+}
+
+  // ============================================
+  // THEME TOGGLE
+  // ============================================
+  setupThemeToggle() {
+    const toggleBtn = document.getElementById('themeToggle');
+    if (!toggleBtn) return;
+
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    this.applyTheme(savedTheme);
+
+    toggleBtn.addEventListener('click', () => {
+      const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      this.applyTheme(newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  }
+
+  applyTheme(theme) {
+    const body = document.body;
+    const toggleBtn = document.getElementById('themeToggle');
+
+    if (theme === 'light') {
+      body.classList.remove('dark-mode');
+      body.classList.add('light-mode');
+    } else {
+      body.classList.remove('light-mode');
+      body.classList.add('dark-mode');
+    }
+  }
+
+  // ============================================
+  // LOAD ARTWORK
+  // ============================================
   async loadArtwork() {
     const loadingState = document.getElementById("loadingState");
     const artworkContent = document.getElementById("artworkContent");
@@ -69,7 +173,7 @@ class ArtworkDetail {
       }
 
       this.artwork = { id: doc.id, ...doc.data() };
-      this.renderArtwork();
+      await this.renderArtwork();
 
       loadingState.style.display = "none";
       artworkContent.style.display = "block";
@@ -79,7 +183,7 @@ class ArtworkDetail {
     }
   }
 
-  renderArtwork() {
+  async renderArtwork() {
     document.title = `${this.artwork.title} | Art Mecca`;
 
     const artworkImage = document.getElementById("artworkImage");
@@ -92,23 +196,56 @@ class ArtworkDetail {
     const cheersCountEl = document.getElementById("cheersCount");
     const commentCountEl = document.getElementById("commentCount");
 
+    // Get artist name from user document
+    let displayName = this.artwork.artistName || "Anonymous Artist";
+    let avatarInitial = displayName.charAt(0).toUpperCase();
+
+    if (this.artwork.artistId) {
+      try {
+        if (this.userCache[this.artwork.artistId]) {
+          const cachedUser = this.userCache[this.artwork.artistId];
+          displayName = cachedUser.username || cachedUser.fullname || this.artwork.artistName || "Anonymous Artist";
+          avatarInitial = displayName.charAt(0).toUpperCase();
+        } else {
+          const userDoc = await firebase.firestore()
+            .collection('users')
+            .doc(this.artwork.artistId)
+            .get();
+
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            this.userCache[this.artwork.artistId] = userData;
+            displayName = userData.username || userData.fullname || this.artwork.artistName || 'Anonymous Artist';
+            avatarInitial = displayName.charAt(0).toUpperCase();
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching artist name:', error);
+      }
+    }
+
+    // Set image
     if (artworkImage) artworkImage.src = this.artwork.imageUrl;
+
+    // Set title
     if (artworkTitle) artworkTitle.textContent = this.artwork.title;
 
-    const artistName = this.artwork.artistName || "Anonymous Artist";
-    if (artistNameEl) artistNameEl.textContent = artistName;
-    if (artistAvatarEl)
-      artistAvatarEl.textContent = artistName.charAt(0).toUpperCase();
+    // Set artist name and avatar
+    if (artistNameEl) artistNameEl.textContent = displayName;
+    if (artistAvatarEl) artistAvatarEl.textContent = avatarInitial;
 
-    if (artworkDescriptionEl)
-      artworkDescriptionEl.textContent =
-        this.artwork.description || "No description provided.";
-    if (postTimeEl)
-      postTimeEl.textContent = this.formatTimeAgo(this.artwork.createdAt);
+    // Set description
+    if (artworkDescriptionEl) {
+      artworkDescriptionEl.textContent = this.artwork.description || "No description provided.";
+    }
+
+    // Set post time
+    if (postTimeEl) postTimeEl.textContent = this.formatTimeAgo(this.artwork.createdAt);
+
+    // Set counts
     if (likeCountEl) likeCountEl.textContent = this.artwork.likes || 0;
     if (cheersCountEl) cheersCountEl.textContent = this.artwork.cheers || 0;
-    if (commentCountEl)
-      commentCountEl.textContent = this.artwork.comments?.length || 0;
+    if (commentCountEl) commentCountEl.textContent = this.artwork.comments?.length || 0;
 
     // Check if NSFW and add badge
     if (this.artwork.isNSFW) {
@@ -116,23 +253,12 @@ class ArtworkDetail {
       if (titleEl) {
         const nsfwBadge = document.createElement("span");
         nsfwBadge.className = "nsfw-badge";
-        nsfwBadge.style.cssText = `
-          display: inline-block;
-          background: #ef4444;
-          color: white;
-          padding: 2px 10px;
-          border-radius: 4px;
-          font-size: 0.7rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          margin-left: 10px;
-          vertical-align: middle;
-        `;
         nsfwBadge.textContent = "🔞 Mature Content";
         titleEl.appendChild(nsfwBadge);
       }
     }
 
+    // Render tags
     if (this.artwork.tags && this.artwork.tags.length > 0) {
       const tagsHtml = this.artwork.tags
         .map((tag) => `<span class="tag" data-tag="${tag}">#${tag}</span>`)
@@ -142,11 +268,166 @@ class ArtworkDetail {
       if (artworkTags) artworkTags.innerHTML = tagsHtml;
       if (imageTags) imageTags.innerHTML = tagsHtml;
     }
-
-    this.loadComments();
   }
 
-  // ========== VERIFICATION BADGE ==========
+  // ============================================
+  // RELATED ARTWORKS
+  // ============================================
+  async loadRelatedArtworks() {
+    if (this.isLoadingRelated || !this.hasMoreRelated) return;
+    this.isLoadingRelated = true;
+
+    const container = document.getElementById("relatedGrid");
+    const loadingEl = document.getElementById("relatedLoading");
+
+    if (loadingEl) loadingEl.style.display = "block";
+
+    try {
+      let query = firebase
+        .firestore()
+        .collection("artworks")
+        .where("status", "==", "published")
+        .orderBy("createdAt", "desc")
+        .limit(this.relatedLimit);
+
+      const snapshot = await query.get();
+
+      let artworks = [];
+      snapshot.forEach((doc) => {
+        if (doc.id !== this.artworkId) {
+          artworks.push({ id: doc.id, ...doc.data() });
+        }
+      });
+
+      const scoredArtworks = artworks.map((art) => {
+        let score = 0;
+
+        if (art.artistId === this.artwork.artistId) {
+          score += 50;
+        }
+
+        if (this.artwork.tags && art.tags) {
+          const matchCount = art.tags.filter((tag) =>
+            this.artwork.tags.includes(tag)
+          ).length;
+          score += matchCount * 10;
+        }
+
+        if (art.category === this.artwork.category) {
+          score += 5;
+        }
+
+        score += (art.likes || 0) * 0.1;
+
+        return { ...art, score };
+      });
+
+      scoredArtworks.sort((a, b) => b.score - a.score);
+
+      const topArtworks = scoredArtworks.slice(0, 12);
+      this.hasMoreRelated = scoredArtworks.length > 12;
+      this.relatedArtworks = topArtworks;
+
+      await this.fetchArtistUsernames(this.relatedArtworks);
+      this.renderRelatedArtworks();
+
+    } catch (error) {
+      console.error("Error loading related artworks:", error);
+    } finally {
+      this.isLoadingRelated = false;
+      if (loadingEl) loadingEl.style.display = "none";
+    }
+  }
+
+  async fetchArtistUsernames(artworks) {
+    const artistIds = [...new Set(artworks.map(art => art.artistId).filter(id => id))];
+    const uncachedIds = artistIds.filter(id => !this.userCache[id]);
+
+    if (uncachedIds.length > 0) {
+      try {
+        const userDocs = await Promise.all(
+          uncachedIds.map(id =>
+            firebase.firestore().collection('users').doc(id).get()
+          )
+        );
+        userDocs.forEach(doc => {
+          if (doc.exists) {
+            this.userCache[doc.id] = doc.data();
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching usernames:', error);
+      }
+    }
+  }
+
+  getUserDisplayName(artistId, fallbackName) {
+    if (artistId && this.userCache[artistId]) {
+      const userData = this.userCache[artistId];
+      return userData.username || userData.fullname || fallbackName || 'Anonymous';
+    }
+    return fallbackName || 'Anonymous';
+  }
+
+  renderRelatedArtworks() {
+    const container = document.getElementById("relatedGrid");
+    if (!container) return;
+
+    if (this.relatedArtworks.length === 0) {
+      container.innerHTML = `
+        <div class="related-empty" style="column-span: all;">
+          <i class="fas fa-palette"></i>
+          <p>No related artworks found</p>
+        </div>
+      `;
+      return;
+    }
+
+    const getRandomHeight = () => {
+      const heights = [200, 250, 280, 320, 350, 380, 420];
+      return heights[Math.floor(Math.random() * heights.length)];
+    };
+
+    const categoryNames = {
+      daily: "⚡ Daily",
+      weekly: "📅 Weekly",
+      monthly: "🌟 Monthly",
+      yearly: "🏆 Yearly",
+      random: "🎲 Random",
+      original: "🎨 Original",
+      trending: "🔥 Trending",
+      new: "🆕 New",
+      photography: "📷 Photography",
+      animation: "🎬 Animation",
+      "traditional-art": "🖌️ Traditional",
+    };
+
+    container.innerHTML = this.relatedArtworks.map((art) => {
+      const category = categoryNames[art.category] || art.category || "Artwork";
+      const randomHeight = getRandomHeight();
+      const displayName = this.getUserDisplayName(art.artistId, art.artistName);
+
+      return `
+        <div class="related-card" data-id="${art.id}" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
+          <div class="related-image-wrapper" style="height: ${randomHeight}px;">
+            <img src="${art.imageUrl}" alt="${art.title || 'Artwork'}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+            <span class="related-category">${category}</span>
+            <div class="related-overlay">
+              <i class="fas fa-expand"></i>
+            </div>
+          </div>
+          <div class="related-info">
+            <div class="related-title">${this.escapeHtml(art.title || 'Untitled')}</div>
+            <div class="related-artist">${this.escapeHtml(displayName)}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ============================================
+  // VERIFICATION BADGE
+  // ============================================
   async addVerificationBadge() {
     if (!this.artwork || !this.artwork.artistId) return;
 
@@ -154,31 +435,26 @@ class ArtworkDetail {
     if (!artistInfo) return;
 
     try {
-      const doc = await firebase.firestore()
-        .collection('users')
-        .doc(this.artwork.artistId)
-        .get();
+      let userData = this.userCache[this.artwork.artistId];
 
-      if (doc.exists) {
-        const data = doc.data();
-        const isVerified = data.isAdult === true && data.ageVerified === true;
+      if (!userData) {
+        const doc = await firebase.firestore()
+          .collection('users')
+          .doc(this.artwork.artistId)
+          .get();
+
+        if (doc.exists) {
+          userData = doc.data();
+          this.userCache[this.artwork.artistId] = userData;
+        }
+      }
+
+      if (userData) {
+        const isVerified = userData.isAdult === true && userData.ageVerified === true;
 
         if (isVerified) {
           const badge = document.createElement('span');
-          badge.className = 'verification-badge verified small';
-          badge.style.cssText = `
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            margin-left: 8px;
-            vertical-align: middle;
-          `;
+          badge.className = 'verification-badge';
           badge.innerHTML = '<i class="fas fa-shield-alt"></i> Age Verified';
 
           const artistDetails = artistInfo.querySelector('.artist-details');
@@ -195,12 +471,13 @@ class ArtworkDetail {
     }
   }
 
-  // ========== REPORT BUTTON ==========
+  // ============================================
+  // REPORT BUTTON
+  // ============================================
   setupReportButton() {
     const reportBtn = document.getElementById("reportBtn");
     if (!reportBtn) return;
 
-    // Remove existing listener
     const newReportBtn = reportBtn.cloneNode(true);
     reportBtn.parentNode?.replaceChild(newReportBtn, reportBtn);
 
@@ -214,13 +491,11 @@ class ArtworkDetail {
         return;
       }
 
-      // Show report modal with reason options
       this.showReportModal();
     });
   }
 
   showReportModal() {
-    // Create modal
     const overlay = document.createElement('div');
     overlay.className = 'report-modal-overlay';
     overlay.style.cssText = `
@@ -241,14 +516,16 @@ class ArtworkDetail {
     const modal = document.createElement('div');
     modal.className = 'report-modal';
     modal.style.cssText = `
-      background: #1a1a2e;
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 16px;
       padding: 2rem;
       max-width: 500px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
-      border: 1px solid rgba(254, 103, 234, 0.2);
+      border: 1px solid rgba(138, 25, 225, 0.2);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     `;
 
@@ -262,39 +539,31 @@ class ArtworkDetail {
         </button>
       </div>
 
-      <p style="color: #c4b8ff; margin-bottom: 1.5rem; font-size: 0.9rem;">
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
         Please select a reason for reporting this artwork. Your report will be reviewed by our moderation team.
       </p>
 
-      <div class="report-reasons" style="display: flex; flex-direction: column; gap: 10px;">
-        <button class="report-reason-btn" data-reason="Untagged mature content (NSFW)"
-                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #c4b8ff; cursor: pointer; text-align: left; transition: all 0.2s;">
-          🔞 Untagged mature content (NSFW)
-        </button>
-        <button class="report-reason-btn" data-reason="Inappropriate content"
-                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #c4b8ff; cursor: pointer; text-align: left; transition: all 0.2s;">
-          🚫 Inappropriate content
-        </button>
-        <button class="report-reason-btn" data-reason="Harassment or bullying"
-                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #c4b8ff; cursor: pointer; text-align: left; transition: all 0.2s;">
-          👊 Harassment or bullying
-        </button>
-        <button class="report-reason-btn" data-reason="Copyright infringement"
-                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #c4b8ff; cursor: pointer; text-align: left; transition: all 0.2s;">
-          © Copyright infringement
-        </button>
-        <button class="report-reason-btn" data-reason="Spam or misleading"
-                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #c4b8ff; cursor: pointer; text-align: left; transition: all 0.2s;">
-          📨 Spam or misleading
-        </button>
-        <button class="report-reason-btn" data-reason="Other"
-                style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 12px 16px; color: #c4b8ff; cursor: pointer; text-align: left; transition: all 0.2s;">
-          ❓ Other
-        </button>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        ${['Untagged mature content (NSFW)', 'Inappropriate content', 'Harassment or bullying', 'Copyright infringement', 'Spam or misleading', 'Other'].map(reason => `
+          <button class="report-reason-btn" data-reason="${reason}" style="
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+          ">
+            ${reason}
+          </button>
+        `).join('')}
       </div>
 
       <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
-        <button id="cancelReportBtn" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #8b7aa8; cursor: pointer; font-weight: 500;">
+        <button id="cancelReportBtn" style="width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #8b7aa8; cursor: pointer; font-weight: 500; font-family: 'Inter', sans-serif;">
           Cancel
         </button>
       </div>
@@ -303,7 +572,6 @@ class ArtworkDetail {
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
-    // Add animations
     const style = document.createElement('style');
     style.textContent = `
       @keyframes fadeIn {
@@ -311,31 +579,25 @@ class ArtworkDetail {
         to { opacity: 1; transform: scale(1); }
       }
       .report-reason-btn:hover {
-        background: rgba(254, 103, 234, 0.15) !important;
-        border-color: #fe67ea !important;
+        background: rgba(138, 25, 225, 0.15) !important;
+        border-color: #8A19E1 !important;
         transform: translateX(4px);
       }
     `;
     document.head.appendChild(style);
-
-    // Handle close
-    const closeBtn = modal.querySelector('.close-report-modal');
-    const cancelBtn = document.getElementById('cancelReportBtn');
 
     const closeModal = () => {
       overlay.remove();
       style.remove();
     };
 
-    closeBtn?.addEventListener('click', closeModal);
-    cancelBtn?.addEventListener('click', closeModal);
+    modal.querySelector('.close-report-modal').addEventListener('click', closeModal);
+    document.getElementById('cancelReportBtn').addEventListener('click', closeModal);
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) closeModal();
     });
 
-    // Handle reason selection
-    const reasonBtns = modal.querySelectorAll('.report-reason-btn');
-    reasonBtns.forEach(btn => {
+    modal.querySelectorAll('.report-reason-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         const reason = btn.dataset.reason;
         closeModal();
@@ -351,23 +613,10 @@ class ArtworkDetail {
     }
 
     try {
-      // Use the global reportNSFWContent function if available
-      if (typeof window.reportNSFWContent === 'function') {
-        const result = await window.reportNSFWContent(this.artworkId, reason);
-        if (result.success) {
-          this.showToast("✅ Content reported successfully. Our moderation team will review it.");
-        } else {
-          this.showToast("❌ Error reporting content: " + (result.error || "Please try again."));
-        }
-        return;
-      }
-
-      // Fallback: Direct Firestore update
       const artworkRef = firebase.firestore()
         .collection('artworks')
         .doc(this.artworkId);
 
-      // Check if already reported by this user
       const reportDoc = await firebase.firestore()
         .collection('reports')
         .where('artworkId', '==', this.artworkId)
@@ -379,7 +628,6 @@ class ArtworkDetail {
         return;
       }
 
-      // Add report
       await firebase.firestore().collection('reports').add({
         artworkId: this.artworkId,
         userId: this.currentUser.uid,
@@ -388,7 +636,6 @@ class ArtworkDetail {
         status: 'pending'
       });
 
-      // Increment report count on artwork
       await artworkRef.update({
         reportCount: firebase.firestore.FieldValue.increment(1),
         nsfwReported: true
@@ -402,56 +649,27 @@ class ArtworkDetail {
     }
   }
 
-  // ========== CLICKABLE COMMENTS ==========
-  setupClickableComments() {
-    setTimeout(() => {
-      this.attachCommentClickHandlers();
-    }, 100);
-  }
+  // ============================================
+  // COMMENTS TOGGLE
+  // ============================================
+  setupCommentsToggle() {
+    const toggleBtn = document.getElementById("toggleCommentsBtn");
+    const commentBody = document.getElementById("commentBody");
 
-  attachCommentClickHandlers() {
-    const commentItems = document.querySelectorAll(".comment-item");
-
-    commentItems.forEach((item) => {
-      const authorId = item.getAttribute("data-author-id");
-      item.style.cursor = "pointer";
-
-      const newItem = item.cloneNode(true);
-      item.parentNode?.replaceChild(newItem, item);
-
-      newItem.addEventListener("click", async (e) => {
-        e.stopPropagation();
-
-        let userId = newItem.getAttribute("data-author-id");
-
-        if (userId && userId !== "undefined" && userId !== "null" && userId !== "") {
-          window.location.href = `/pages/community/profiles.html?user=${userId}`;
-          return;
-        }
-
-        const authorName = newItem.querySelector(".comment-author")?.textContent;
-        if (!authorName) return;
-
-        try {
-          const usersSnapshot = await firebase
-            .firestore()
-            .collection("users")
-            .where("fullname", "==", authorName)
-            .limit(1)
-            .get();
-
-          if (!usersSnapshot.empty) {
-            userId = usersSnapshot.docs[0].id;
-            window.location.href = `/pages/community/profiles.html?user=${userId}`;
-          }
-        } catch (error) {
-          console.error("Error finding user:", error);
+    if (toggleBtn && commentBody) {
+      toggleBtn.addEventListener("click", () => {
+        this.commentsCollapsed = !this.commentsCollapsed;
+        if (this.commentsCollapsed) {
+          commentBody.classList.add("collapsed");
+          toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+        } else {
+          commentBody.classList.remove("collapsed");
+          toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
         }
       });
-    });
+    }
   }
 
-  // ========== CLICKABLE ARTIST AVATAR ==========
   setupClickableAvatar() {
     const artistInfo = document.getElementById("artistInfo");
     if (artistInfo && this.artwork && this.artwork.artistId) {
@@ -466,7 +684,9 @@ class ArtworkDetail {
     }
   }
 
-  // ========== SAVE ARTWORK ==========
+  // ============================================
+  // SAVE ARTWORK
+  // ============================================
   async updateSaveButton() {
     if (!this.currentUser || this.currentUser.uid === this.artwork.artistId)
       return;
@@ -559,7 +779,9 @@ class ArtworkDetail {
     }
   }
 
-  // ========== SHADOW ==========
+  // ============================================
+  // SHADOW
+  // ============================================
   async updateShadowButton() {
     if (!this.currentUser || this.currentUser.uid === this.artwork.artistId)
       return;
@@ -646,7 +868,9 @@ class ArtworkDetail {
     }
   }
 
-  // ========== LIKE ==========
+  // ============================================
+  // LIKE
+  // ============================================
   async toggleLike() {
     if (!this.currentUser) {
       alert("Please login to like artworks");
@@ -720,7 +944,9 @@ class ArtworkDetail {
     }
   }
 
-  // ========== CHEERS ==========
+  // ============================================
+  // CHEERS
+  // ============================================
   async toggleCheers() {
     if (!this.currentUser) {
       alert("Please login to cheer for this artwork");
@@ -794,119 +1020,16 @@ class ArtworkDetail {
     }
   }
 
-  // ========== COMMENTS ==========
-  async postComment() {
-    if (!this.currentUser) {
-      alert("Please login to comment");
-      return;
-    }
-
-    const commentInput = document.getElementById("commentInput");
-    const commentText = commentInput?.value.trim();
-    if (!commentText) return;
-
-    const newComment = {
-      id: Date.now().toString(),
-      author:
-        this.currentUser.displayName || this.currentUser.email.split("@")[0],
-      authorAvatar: this.currentUser.email.charAt(0).toUpperCase(),
-      authorId: this.currentUser.uid,
-      text: commentText,
-      timestamp: new Date().toISOString(),
-    };
-
-    try {
-      const artworkRef = firebase
-        .firestore()
-        .collection("artworks")
-        .doc(this.artworkId);
-      const comments = this.artwork.comments || [];
-      comments.push(newComment);
-
-      await artworkRef.update({ comments: comments });
-
-      this.artwork.comments = comments;
-      if (commentInput) commentInput.value = "";
-      this.loadComments();
-      const commentCountEl = document.getElementById("commentCount");
-      if (commentCountEl) commentCountEl.textContent = comments.length;
-
-      setTimeout(() => {
-        this.attachCommentClickHandlers();
-      }, 100);
-
-      if (this.currentUser.uid !== this.artwork.artistId) {
-        await authManager.createNotification(this.artwork.artistId, "comment", {
-          artworkId: this.artworkId,
-          artworkTitle: this.artwork.title,
-          userId: this.currentUser.uid,
-          userName:
-            this.currentUser.displayName ||
-            this.currentUser.email.split("@")[0],
-          comment: commentText.substring(0, 100),
-        });
-      }
-    } catch (error) {
-      console.error("Error posting comment:", error);
-    }
-  }
-
-  loadComments() {
-    const container = document.getElementById("commentsList");
-    const comments = this.artwork.comments || [];
-
-    if (comments.length === 0) {
-      if (container)
-        container.innerHTML =
-          '<p class="no-comments">No comments yet. Be the first!</p>';
-      return;
-    }
-
-    if (container) {
-      container.innerHTML = comments
-        .map(
-          (c) => `
-              <div class="comment-item" data-author-id="${c.authorId || ""}" data-author-name="${this.escapeHtml(c.author)}" style="cursor: pointer;">
-                  <div class="comment-avatar">${c.authorAvatar || "👤"}</div>
-                  <div class="comment-content">
-                      <div class="comment-author">${this.escapeHtml(c.author)}</div>
-                      <div class="comment-text">${this.escapeHtml(c.text)}</div>
-                      <div class="comment-time">${this.formatTimeAgo(c.timestamp)}</div>
-                  </div>
-              </div>
-          `,
-        )
-        .join("");
-    }
-  }
-
-  // ========== COMMENTS TOGGLE ==========
-  setupCommentsToggle() {
-    const toggleBtn = document.getElementById("toggleCommentsBtn");
-    const commentBody = document.getElementById("commentBody");
-
-    if (toggleBtn && commentBody) {
-      toggleBtn.addEventListener("click", () => {
-        this.commentsCollapsed = !this.commentsCollapsed;
-        if (this.commentsCollapsed) {
-          commentBody.classList.add("collapsed");
-          toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
-        } else {
-          commentBody.classList.remove("collapsed");
-          toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-        }
-      });
-    }
-  }
-
-  // ========== SHARE & DOWNLOAD ==========
+  // ============================================
+  // SHARE & DOWNLOAD
+  // ============================================
   shareArtwork() {
     const url = window.location.href;
     if (navigator.share) {
       navigator.share({ title: this.artwork.title, url: url });
     } else {
       navigator.clipboard.writeText(url);
-      alert("Link copied!");
+      this.showToast("Link copied!");
     }
   }
 
@@ -915,9 +1038,12 @@ class ArtworkDetail {
     link.href = this.artwork.imageUrl;
     link.download = `${this.artwork.title.replace(/\s+/g, "_")}.jpg`;
     link.click();
+    this.showToast("Downloading...");
   }
 
-  // ========== EVENT LISTENERS ==========
+  // ============================================
+  // EVENT LISTENERS
+  // ============================================
   setupEventListeners() {
     const likeBtn = document.getElementById("likeBtn");
     const cheersBtn = document.getElementById("cheersBtn");
@@ -925,7 +1051,6 @@ class ArtworkDetail {
     const saveBtn = document.getElementById("saveBtn");
     const shareBtn = document.getElementById("shareBtn");
     const downloadBtn = document.getElementById("downloadBtn");
-    const postCommentBtn = document.getElementById("postCommentBtn");
 
     if (likeBtn) likeBtn.addEventListener("click", () => this.toggleLike());
     if (cheersBtn)
@@ -945,19 +1070,6 @@ class ArtworkDetail {
     if (shareBtn) shareBtn.addEventListener("click", () => this.shareArtwork());
     if (downloadBtn)
       downloadBtn.addEventListener("click", () => this.downloadImage());
-    if (postCommentBtn)
-      postCommentBtn.addEventListener("click", () => this.postComment());
-
-    // Enter key for comments
-    const commentInput = document.getElementById("commentInput");
-    if (commentInput) {
-      commentInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-          e.preventDefault();
-          this.postComment();
-        }
-      });
-    }
 
     document.querySelectorAll(".tag").forEach((tag) => {
       tag.addEventListener("click", () => {
@@ -966,17 +1078,53 @@ class ArtworkDetail {
     });
   }
 
-  // ========== UTILITY ==========
+  // ============================================
+  // UTILITY
+  // ============================================
   showToast(message) {
-    const toast = document.getElementById("toastNotification");
-    const toastMessage = document.getElementById("toastMessage");
-    if (toast && toastMessage) {
-      toastMessage.textContent = message;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3000);
-    } else {
-      alert(message);
+    let toast = document.getElementById("toastNotification");
+    let toastMessage = document.getElementById("toastMessage");
+
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "toastNotification";
+      toast.className = "toast-notification";
+      toast.innerHTML = `<i class="fas fa-check-circle"></i><span id="toastMessage"></span>`;
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 12px 24px;
+        box-shadow: var(--shadow-card), var(--glow-purple);
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 10000;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        opacity: 0;
+        pointer-events: none;
+        max-width: 90%;
+      `;
+      document.body.appendChild(toast);
+      toastMessage = document.getElementById("toastMessage");
     }
+
+    if (toastMessage) toastMessage.textContent = message;
+    toast.style.opacity = "1";
+    toast.style.transform = "translateX(-50%) translateY(0)";
+
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(-50%) translateY(20px)";
+    }, 3000);
   }
 
   showError() {
@@ -990,6 +1138,7 @@ class ArtworkDetail {
   formatTimeAgo(timestamp) {
     if (!timestamp) return "Recently";
     let date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    if (isNaN(date.getTime())) return "Recently";
     const seconds = Math.floor((new Date() - date) / 1000);
     if (seconds < 60) return "Just now";
     const minutes = Math.floor(seconds / 60);
@@ -1002,110 +1151,10 @@ class ArtworkDetail {
   }
 
   escapeHtml(text) {
+    if (!text) return "";
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
-  }
-}
-
-// ============================================
-// GLOBAL REPORT FUNCTION (for nsfw-moderation.js)
-// ============================================
-window.reportNSFWContent = async function(artworkId, reason) {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return { success: false, error: 'Please login to report content' };
-  }
-
-  try {
-    // Check if already reported by this user
-    const existingReports = await firebase.firestore()
-      .collection('reports')
-      .where('artworkId', '==', artworkId)
-      .where('userId', '==', user.uid)
-      .get();
-
-    if (!existingReports.empty) {
-      return { success: false, error: 'You have already reported this artwork' };
-    }
-
-    // Add report
-    await firebase.firestore().collection('reports').add({
-      artworkId: artworkId,
-      userId: user.uid,
-      reason: reason,
-      reportedAt: firebase.firestore.FieldValue.serverTimestamp(),
-      status: 'pending',
-      userName: user.displayName || user.email.split('@')[0]
-    });
-
-    // Update artwork
-    const artworkRef = firebase.firestore()
-      .collection('artworks')
-      .doc(artworkId);
-
-    // Get current report count
-    const artworkDoc = await artworkRef.get();
-    if (artworkDoc.exists) {
-      const data = artworkDoc.data();
-      const currentReports = data.reportCount || 0;
-
-      await artworkRef.update({
-        reportCount: currentReports + 1,
-        nsfwReported: true,
-        lastReportedAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      // If more than 3 reports, flag for review
-      if (currentReports + 1 >= 3) {
-        await artworkRef.update({
-          nsfwStatus: 'flagged',
-          nsfwFlaggedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        // Notify moderators
-        await notifyModerators(artworkId, data.title || 'Untitled');
-      }
-    }
-
-    return { success: true };
-
-  } catch (error) {
-    console.error('Report error:', error);
-    return { success: false, error: error.message };
-  }
-};
-
-// Helper function to notify moderators
-async function notifyModerators(artworkId, title) {
-  try {
-    const adminsSnapshot = await firebase.firestore()
-      .collection('users')
-      .where('role', 'in', ['admin', 'moderator'])
-      .get();
-
-    const notifications = [];
-    adminsSnapshot.forEach(doc => {
-      notifications.push({
-        userId: doc.id,
-        type: 'nsfw_flagged',
-        message: `🚨 Artwork "${title}" has been flagged for review after multiple reports.`,
-        artworkId: artworkId,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        read: false,
-        priority: 'high'
-      });
-    });
-
-    const batch = firebase.firestore().batch();
-    notifications.forEach(notification => {
-      const ref = firebase.firestore().collection('notifications').doc();
-      batch.set(ref, notification);
-    });
-    await batch.commit();
-
-  } catch (error) {
-    console.error('Error notifying moderators:', error);
   }
 }
 

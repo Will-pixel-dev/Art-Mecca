@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages — Art Mecca</title>
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/messages.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <canvas id="particleCanvas"></canvas>
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✦</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="messages-main" id="messagesMain">
+      <div class="container">
+        <!-- Hero -->
+        <section class="messages-hero">
+          <div class="messages-hero-content">
+            <span class="messages-hero-icon">✉</span>
+            <h1 class="glitch-hero" data-text="MESSAGES">MESSAGES</h1>
+            <p class="messages-subtitle">
+              Connect with fellow <span class="gradient-text">artists</span>
+            </p>
+            <div class="hero-graffiti-tag">✧ INBOX ✧</div>
+          </div>
+        </section>
+
+        <!-- Messages Container -->
+        <div class="messages-container glass-panel" id="messagesContainer">
+          <!-- Conversation List -->
+          <div class="conversation-list" id="conversationList">
+            <div class="conversation-loading">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Loading conversations...</p>
+            </div>
+          </div>
+
+          <!-- Message Thread -->
+          <div class="message-thread" id="messageThread">
+            <!-- Thread Header -->
+            <div class="thread-header" id="threadHeader">
+              <div class="thread-user-info">
+                <div class="thread-avatar" id="threadAvatar">U</div>
+                <div>
+                  <h3 id="threadUserName">Select a conversation</h3>
+                  <div class="thread-user-status-wrapper">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span class="thread-user-status" id="threadUserStatus"
+                      >Offline</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="thread-actions">
+                <button
+                  class="thread-action-btn"
+                  id="threadProfileBtn"
+                  title="View Profile"
+                >
+                  <i class="fas fa-user"></i>
+                </button>
+                <button class="thread-back-btn" id="threadBackBtn">
+                  <i class="fas fa-arrow-left"></i> Back
+                </button>
+              </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="thread-messages" id="threadMessages">
+              <div class="thread-placeholder">
+                <i class="fas fa-comments"></i>
+                <p>Select a conversation to start messaging</p>
+              </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div
+              class="typing-indicator"
+              id="typingIndicator"
+              style="display: none"
+            >
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-text" id="typingText"
+                >Someone is typing...</span
+              >
+            </div>
+
+            <!-- Thread Input -->
+            <div class="thread-input" id="threadInput">
+              <div class="thread-input-wrapper">
+                <button
+                  class="input-action-btn"
+                  id="emojiToggleBtn"
+                  title="Add emoji"
+                >
+                  <i class="fas fa-smile"></i>
+                </button>
+                <textarea
+                  id="messageInput"
+                  placeholder="Type a message..."
+                  rows="1"
+                  maxlength="2000"
+                ></textarea>
+                <button class="btn-send" id="sendMessageBtn" disabled>
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+              <div class="thread-input-actions">
+                <span class="char-count"
+                  ><span id="msgCharCount">0</span>/2000</span
+                >
+              </div>
+              <!-- Emoji Picker (simple) -->
+              <div class="emoji-picker" id="emojiPicker" style="display: none">
+                <div class="emoji-grid">
+                  <span class="emoji-option">😊</span>
+                  <span class="emoji-option">😂</span>
+                  <span class="emoji-option">❤️</span>
+                  <span class="emoji-option">🔥</span>
+                  <span class="emoji-option">🎨</span>
+                  <span class="emoji-option">✨</span>
+                  <span class="emoji-option">👏</span>
+                  <span class="emoji-option">💯</span>
+                  <span class="emoji-option">🤔</span>
+                  <span class="emoji-option">😍</span>
+                  <span class="emoji-option">🤩</span>
+                  <span class="emoji-option">🙌</span>
+                  <span class="emoji-option">💪</span>
+                  <span class="emoji-option">🎉</span>
+                  <span class="emoji-option">👀</span>
+                  <span class="emoji-option">😤</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== PALETTE PICKER (FLOATING) ====== -->
+    <div class="palette-picker" id="palettePicker">
+      <button
+        class="palette-toggle"
+        id="paletteToggle"
+        title="Change accent color"
+      >
+        <i class="fas fa-palette"></i>
+      </button>
+      <div class="palette-grid" id="paletteGrid">
+        <button
+          class="palette-swatch"
+          data-color="#e90c0c"
+          style="background: #e90c0c"
+          title="Red"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#ff9500"
+          style="background: #ff9500"
+          title="Orange"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#fbf304"
+          style="background: #fbf304"
+          title="Yellow"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#00e025"
+          style="background: #00e025"
+          title="Green"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#00e1ff"
+          style="background: #00e1ff"
+          title="Cyan"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#0008fa"
+          style="background: #0008fa"
+          title="Blue"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#ff00ea"
+          style="background: #ff00ea"
+          title="Magenta"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#ff00bb"
+          style="background: #ff00bb"
+          title="Pink"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#6b00b3"
+          style="background: #6b00b3"
+          title="Purple"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#dde7ee"
+          style="background: #dde7ee"
+          title="Ice"
+        ></button>
+        <button
+          class="palette-swatch"
+          data-color="#0f0033"
+          style="background: #0f0033"
+          title="Deep"
+        ></button>
+      </div>
+    </div>
+
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== KEYBOARD SHORTCUTS HINT ====== -->
+    <div class="keyboard-hint" id="keyboardHint">
+      <kbd>1-5</kbd> navigate &nbsp;|&nbsp; <kbd>⌘K</kbd> search &nbsp;|&nbsp;
+      <kbd>⌘P</kbd> profile &nbsp;|&nbsp; <kbd>⌘N</kbd> new chat &nbsp;|&nbsp;
+      <kbd>⌘⇧C</kbd> color &nbsp;|&nbsp; <kbd>G</kbd> glitch &nbsp;|&nbsp;
+      <kbd>T</kbd> toast
+    </div>
+
+    <!-- ====== FLOATING ACTION BUTTON (New Chat) ====== -->
+    <button class="fab-new-chat" id="fabNewChat" title="New Conversation">
+      <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- ====== TOAST NOTIFICATION ====== -->
+    <div
+      id="toastNotification"
+      class="toast-notification"
+      style="display: none"
+    >
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMessage">Toast message</span>
+    </div>
+
+    <!-- ====== QUICK PROFILE PREVIEW MODAL ====== -->
+    <div class="modal-overlay" id="profilePreviewModal" style="display: none">
+      <div class="modal-container profile-preview-modal">
+        <div class="modal-header">
+          <h3>
+            <i class="fas fa-user"></i> <span id="previewName">User</span>
+          </h3>
+          <button class="modal-close" id="closePreviewModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="preview-avatar" id="previewAvatar">U</div>
+          <div class="preview-username" id="previewUsername">@username</div>
+          <div class="preview-bio" id="previewBio">No bio available</div>
+          <div class="preview-stats">
+            <div><span id="previewArtworks">0</span> Artworks</div>
+            <div><span id="previewFollowers">0</span> Followers</div>
+          </div>
+          <button
+            class="btn-primary preview-view-profile"
+            id="previewViewProfile"
+          >
+            <i class="fas fa-external-link-alt"></i> View Full Profile
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span
+              ><span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span
+              ><span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+    <script src="/js/auth/page-redirect.js"></script>
+    <script src="/js/community/messages.js"></script>
+
+    <script>
+      // ============================================================
+      // PARTICLES — PURPLE
+      // ============================================================
+      (function initParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouseX = -1000;
+        let mouseY = -1000;
+        const particleCount = 60;
+        let animationId = null;
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        class Particle {
+          constructor() {
+            this.reset();
+          }
+          reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.2;
+            this.speedY = (Math.random() - 0.5) * 0.2;
+            this.opacity = Math.random() * 0.2 + 0.02;
+            const colors = [
+              "#8a19e1",
+              "#ad03fc",
+              "#c84dff",
+              "#6b00b3",
+              "#a855f7",
+            ];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+          }
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 200) {
+              const force = ((200 - dist) / 200) * 0.008;
+              this.speedX += (dx / dist) * force;
+              this.speedY += (dy / dist) * force;
+            }
+            this.speedX *= 0.999;
+            this.speedY *= 0.999;
+            const maxSpeed = 0.8;
+            const speed = Math.sqrt(
+              this.speedX * this.speedX + this.speedY * this.speedY,
+            );
+            if (speed > maxSpeed) {
+              this.speedX = (this.speedX / speed) * maxSpeed;
+              this.speedY = (this.speedY / speed) * maxSpeed;
+            }
+            if (
+              this.x < 0 ||
+              this.x > canvas.width ||
+              this.y < 0 ||
+              this.y > canvas.height
+            )
+              this.reset();
+          }
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 6;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function drawConnections() {
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 120) {
+                const opacity = (1 - dist / 120) * 0.03;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = "#8a19e1";
+                ctx.globalAlpha = opacity;
+                ctx.lineWidth = 0.3;
+                ctx.shadowColor = "#8a19e1";
+                ctx.shadowBlur = 2;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+              }
+            }
+          }
+        }
+
+        function animateParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+          drawConnections();
+          animationId = requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        window.addEventListener("beforeunload", () => {
+          if (animationId) cancelAnimationFrame(animationId);
+        });
+      })();
+
+      // ============================================================
+      // THEME TOGGLE
+      // ============================================================
+      (function initThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (!themeToggle) return;
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        const icon = themeToggle.querySelector(".toggle-icon");
+        const label = themeToggle.querySelector(".toggle-label");
+
+        if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+        if (label) label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+        themeToggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          const current = document.documentElement.getAttribute("data-theme");
+          const next = current === "dark" ? "light" : "dark";
+
+          document.documentElement.setAttribute("data-theme", next);
+          localStorage.setItem("theme", next);
+
+          const iconEl = this.querySelector(".toggle-icon");
+          const labelEl = this.querySelector(".toggle-label");
+          if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+          if (labelEl) labelEl.textContent = next === "dark" ? "Dark" : "Light";
+        });
+      })();
+
+      // ============================================================
+      // NOISE OVERLAY TOGGLE
+      // ============================================================
+      (function initNoiseToggle() {
+        const noiseOverlay = document.getElementById("noiseOverlay");
+        if (noiseOverlay) {
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "g" || e.key === "G") {
+              noiseOverlay.classList.add("active");
+              setTimeout(() => noiseOverlay.classList.remove("active"), 500);
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

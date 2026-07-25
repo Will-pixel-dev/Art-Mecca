@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Header Debug — Art Mecca</title>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/components/header.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #0a0508;
+        color: #f5eaff;
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .debug-panel {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 30px;
+        margin-top: 40px;
+      }
+
+      .debug-panel h2 {
+        color: #58ebfe;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        font-family: "Orbitron", monospace;
+        letter-spacing: 2px;
+      }
+
+      .debug-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      .debug-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 8px;
+        padding: 16px;
+      }
+
+      .debug-item .label {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+
+      .debug-item .value {
+        color: #fff;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.9rem;
+        word-break: break-all;
+      }
+
+      .debug-item .value.found {
+        color: #4ff3a6;
+      }
+      .debug-item .value.missing {
+        color: #ff0040;
+      }
+      .debug-item .value.info {
+        color: #58ebfe;
+      }
+
+      .debug-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+
+      .debug-btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .debug-btn:hover {
+        background: rgba(255, 0, 234, 0.1);
+        border-color: #ff00ea;
+        transform: translateY(-2px);
+      }
+
+      .debug-btn.primary {
+        background: rgba(255, 0, 234, 0.15);
+        border-color: #ff00ea;
+      }
+
+      .debug-btn.primary:hover {
+        background: rgba(255, 0, 234, 0.25);
+      }
+
+      .debug-log {
+        margin-top: 20px;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 8px;
+        padding: 16px;
+        max-height: 300px;
+        overflow-y: auto;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .debug-log .log-entry {
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .debug-log .log-entry .time {
+        color: rgba(255, 255, 255, 0.2);
+        margin-right: 12px;
+      }
+
+      .debug-log .log-entry.success {
+        color: #4ff3a6;
+      }
+      .debug-log .log-entry.error {
+        color: #ff0040;
+      }
+      .debug-log .log-entry.info {
+        color: #58ebfe;
+      }
+      .debug-log .log-entry.warning {
+        color: #ffc72e;
+      }
+
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 0, 234, 0.3);
+        border-radius: 2px;
+      }
+
+      /* Force nav actions to stay on the right */
+      .nav-actions {
+        display: flex !important;
+        flex-shrink: 0 !important;
+        margin-left: auto !important;
+      }
+
+      /* Force logo to stay left */
+      .nav-brand {
+        flex-shrink: 0 !important;
+      }
+
+      /* Ensure nav links don't push actions off screen */
+      .nav-links {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+      }
+
+      /* Hide any overflow that might clip the actions */
+      .navbar {
+        overflow: visible !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .main-header {
+        overflow: visible !important;
+      }
+
+      .main-header .container {
+        overflow: visible !important;
+        width: 100% !important;
+        padding: 0 1rem !important;
+      }
+
+      /* Responsive fix for mobile */
+      @media (max-width: 768px) {
+        .hybrid-status {
+          display: none !important;
+        }
+      }
+
+      .auth-status {
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .auth-status .status-label {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .auth-status .status-value {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.85rem;
+      }
+
+      .auth-status .status-value.logged-in {
+        color: #4ff3a6;
+      }
+
+      .auth-status .status-value.logged-out {
+        color: #ff0040;
+      }
+
+      .auth-status .user-email {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ====== HEADER (Hard-coded) ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/" class="nav-link" data-section="home" id="navHome"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >🎨 Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >💡 Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >🖌️ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >😌 Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >💻 Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙️ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html"
+                    >📚 Full Catalogue</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+              >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >⚖️ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >🎨 Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >🔍 Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >🤖 Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >🔥 Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >🔍 Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >📰 Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html"
+                    >📄 CV Template</a
+                  >
+                </li>
+                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+              >
+                Truly Yours ✨
+                <span class="sparkle">✦</span>
+                <span class="sparkle">✦</span>
+                <span class="sparkle">✦</span>
+              </a>
+            </li>
+          </ul>
+
+          <!-- RIGHT SIDE: Nav Actions -->
+          <div class="nav-actions">
+            <!-- Notification Bell -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Button -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Hybrid Status -->
+            <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+
+            <!-- Avatar - This is where avatar-manager will render -->
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <!-- Auth Buttons -->
+            <div class="auth-buttons" id="authButtons">
+              <a
+                href="/pages/auth/login.html"
+                class="btn btn-outline btn-sm"
+                id="loginBtn"
+                >Log In</a
+              >
+              <a
+                href="/pages/auth/register.html"
+                class="btn btn-primary btn-sm"
+                id="registerBtn"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Search Overlay -->
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== AUTH STATUS ====== -->
+    <div style="max-width: 1200px; margin: 20px auto">
+      <div class="auth-status" id="authStatus">
+        <span class="status-label">Auth Status:</span>
+        <span class="status-value logged-out" id="authStatusValue"
+          >Not Logged In</span
+        >
+        <span class="user-email" id="authUserEmail"></span>
+      </div>
+    </div>
+
+    <!-- ====== DEBUG PANEL ====== -->
+    <div class="debug-panel">
+      <h2>✦ HEADER DEBUG CONSOLE ✦</h2>
+
+      <div class="debug-grid" id="debugGrid">
+        <!-- Populated by JavaScript -->
+      </div>
+
+      <div class="debug-buttons">
+        <button class="debug-btn primary" onclick="checkElements()">
+          🔍 Check Elements
+        </button>
+        <button class="debug-btn" onclick="testNotification()">
+          🔔 Toggle Notification
+        </button>
+        <button class="debug-btn" onclick="testAvatar()">
+          👤 Toggle Avatar
+        </button>
+        <button class="debug-btn" onclick="clearLog()">🗑️ Clear Log</button>
+      </div>
+
+      <div class="debug-log" id="debugLog">
+        <div class="log-entry info">
+          <span class="time">[INIT]</span> Debug console ready. Waiting for
+          Firebase auth...
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- SCRIPTS                                                    -->
+    <!-- ========================================================== -->
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <!-- Firebase Config -->
+    <script src="config/firebase-config.js"></script>
+
+    <!-- Auth Manager - This handles auth state and UI updates -->
+    <script src="js/auth/auth-manager.js"></script>
+
+    <!-- Avatar Manager - This handles avatar rendering -->
+    <script src="js/components/avatar-manager.js"></script>
+
+    <!-- Search functionality (for the search overlay) -->
+    <script src="js/search.js"></script>
+
+    <script>
+      // ============================================================
+      // DEBUG LOGGER
+      // ============================================================
+      const logContainer = document.getElementById("debugLog");
+
+      function addLog(message, type = "info") {
+        const entry = document.createElement("div");
+        entry.className = `log-entry ${type}`;
+        const time = new Date().toLocaleTimeString();
+        entry.innerHTML = `<span class="time">[${time}]</span> ${message}`;
+        logContainer.appendChild(entry);
+        logContainer.scrollTop = logContainer.scrollHeight;
+        console.log(`[${type.toUpperCase()}]`, message);
+      }
+
+      function clearLog() {
+        logContainer.innerHTML = "";
+        addLog("Log cleared", "info");
+      }
+
+      // ============================================================
+      // ELEMENT CHECKER
+      // ============================================================
+      function checkElements() {
+        addLog("🔍 Checking DOM elements...", "info");
+
+        const elements = {
+          "Main Header": document.getElementById("main-header"),
+          "Notification Button": document.getElementById("notificationBtn"),
+          "Notification Dropdown": document.getElementById(
+            "notificationDropdown",
+          ),
+          "Avatar Container": document.getElementById("navAvatar"),
+          "Avatar Wrapper": document.querySelector(".avatar-wrapper"),
+          "Avatar Dropdown": document.getElementById("avatarDropdown"),
+          "Mobile Menu": document.getElementById("mobile-menu-btn"),
+          "Nav Links": document.getElementById("nav-links"),
+          "Hybrid Status": document.getElementById("hybridStatus"),
+          "Auth Buttons": document.getElementById("authButtons"),
+        };
+
+        const grid = document.getElementById("debugGrid");
+        grid.innerHTML = "";
+
+        let foundCount = 0;
+        let totalCount = 0;
+
+        for (const [name, element] of Object.entries(elements)) {
+          totalCount++;
+          const isFound = !!element;
+          if (isFound) foundCount++;
+
+          const item = document.createElement("div");
+          item.className = "debug-item";
+          item.innerHTML = `
+            <div class="label">${name}</div>
+            <div class="value ${isFound ? "found" : "missing"}">
+              ${isFound ? "✅ Found" : "❌ Missing"}
+              ${isFound && element.id ? `(#${element.id})` : ""}
+              ${isFound && element.className ? `(.${element.className.split(" ")[0]})` : ""}
+            </div>
+          `;
+          grid.appendChild(item);
+
+          if (isFound) {
+            addLog(`✅ ${name}: Found`, "success");
+          } else {
+            addLog(`❌ ${name}: Not found`, "error");
+          }
+        }
+
+        addLog(
+          `📊 Summary: ${foundCount}/${totalCount} elements found`,
+          foundCount === totalCount ? "success" : "warning",
+        );
+      }
+
+      // ============================================================
+      // TEST FUNCTIONS
+      // ============================================================
+      function testNotification() {
+        const btn = document.getElementById("notificationBtn");
+        const dropdown = document.getElementById("notificationDropdown");
+
+        if (!btn) {
+          addLog("❌ Notification button not found!", "error");
+          return;
+        }
+
+        addLog("🔔 Clicking notification button...", "info");
+        btn.click();
+
+        setTimeout(() => {
+          if (dropdown) {
+            const isVisible = dropdown.style.display === "block";
+            addLog(
+              `📋 Notification dropdown is now ${isVisible ? "VISIBLE" : "HIDDEN"}`,
+              isVisible ? "success" : "info",
+            );
+          }
+        }, 200);
+      }
+
+      function testAvatar() {
+        const wrapper = document.querySelector(".avatar-wrapper");
+        const dropdown = document.getElementById("avatarDropdown");
+
+        if (!wrapper) {
+          addLog(
+            "❌ Avatar wrapper not found! (You need to be logged in)",
+            "error",
+          );
+          return;
+        }
+
+        addLog("👤 Clicking avatar...", "info");
+        wrapper.click();
+
+        setTimeout(() => {
+          if (dropdown) {
+            const isVisible = dropdown.style.display === "block";
+            addLog(
+              `📋 Avatar dropdown is now ${isVisible ? "VISIBLE" : "HIDDEN"}`,
+              isVisible ? "success" : "info",
+            );
+          }
+        }, 200);
+      }
+
+      // ============================================================
+      // UPDATE AUTH STATUS DISPLAY
+      // ============================================================
+      function updateAuthStatus(user) {
+        const statusValue = document.getElementById("authStatusValue");
+        const userEmail = document.getElementById("authUserEmail");
+
+        if (user) {
+          statusValue.textContent = "✅ Logged In";
+          statusValue.className = "status-value logged-in";
+          userEmail.textContent = user.email || user.displayName || "";
+        } else {
+          statusValue.textContent = "❌ Not Logged In";
+          statusValue.className = "status-value logged-out";
+          userEmail.textContent = "";
+        }
+      }
+
+      // ============================================================
+      // NOTIFICATION SYSTEM - Complete initialization
+      // ============================================================
+
+      function initNotificationSystem() {
+        console.log("🔔 Initializing notification system...");
+
+        const notificationBtn = document.getElementById("notificationBtn");
+        const notificationDropdown = document.getElementById(
+          "notificationDropdown",
+        );
+        const notificationList = document.getElementById("notificationList");
+        const notificationBadge = document.getElementById("notificationBadge");
+        const markAllReadBtn = document.getElementById("markAllReadBtn");
+
+        if (!notificationBtn) {
+          console.error("❌ Notification button not found");
+          return;
+        }
+
+        if (!notificationDropdown) {
+          console.error("❌ Notification dropdown not found");
+          return;
+        }
+
+        console.log("✅ Notification elements found");
+
+        // Remove any existing listeners by cloning
+        const newBtn = notificationBtn.cloneNode(true);
+        notificationBtn.parentNode.replaceChild(newBtn, notificationBtn);
+
+        // Add click handler to toggle dropdown
+        newBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          console.log("🔔 Notification bell clicked");
+
+          // Close avatar dropdown if open
+          const avatarDropdown = document.getElementById("avatarDropdown");
+          if (avatarDropdown) {
+            avatarDropdown.style.display = "none";
+            avatarDropdown.classList.remove("active");
+          }
+
+          // Toggle notification dropdown
+          const isVisible = notificationDropdown.style.display === "block";
+          notificationDropdown.style.display = isVisible ? "none" : "block";
+          notificationDropdown.classList.toggle("active", !isVisible);
+
+          console.log(
+            `📋 Notification dropdown ${isVisible ? "closed" : "opened"}`,
+          );
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function (e) {
+          const container = e.target.closest(".notification-container");
+          if (!container) {
+            notificationDropdown.style.display = "none";
+            notificationDropdown.classList.remove("active");
+          }
+        });
+
+        // Mark all as read
+        if (markAllReadBtn) {
+          markAllReadBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            console.log("📋 Mark all as read clicked");
+            markAllNotificationsRead();
+          });
+        }
+
+        // Load notifications if user is logged in
+        const user = firebase.auth().currentUser;
+        if (user) {
+          console.log("👤 User logged in, loading notifications");
+          loadNotifications(user.uid);
+        } else {
+          console.log("👤 No user logged in, notifications disabled");
+          if (notificationBadge) notificationBadge.style.display = "none";
+          if (notificationList) {
+            notificationList.innerHTML = `
+                <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>Log in to see notifications</p>
+                </div>
+            `;
+          }
+        }
+
+        console.log("✅ Notification system initialized");
+      }
+
+      // ============================================================
+      // LOAD NOTIFICATIONS FROM FIRESTORE
+      // ============================================================
+
+      async function loadNotifications(userId) {
+        const notificationList = document.getElementById("notificationList");
+        const notificationBadge = document.getElementById("notificationBadge");
+
+        if (!notificationList) return;
+
+        try {
+          console.log("📥 Loading notifications for user:", userId);
+
+          // Get notifications from Firestore
+          const snapshot = await firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("notifications")
+            .orderBy("createdAt", "desc")
+            .limit(10)
+            .get();
+
+          const notifications = [];
+          snapshot.forEach((doc) => {
+            notifications.push({
+              id: doc.id,
+              ...doc.data(),
+              read: doc.data().read || false,
+            });
+          });
+
+          console.log(`📥 Loaded ${notifications.length} notifications`);
+
+          // Update badge
+          const unreadCount = notifications.filter((n) => !n.read).length;
+          if (notificationBadge) {
+            if (unreadCount > 0) {
+              notificationBadge.textContent =
+                unreadCount > 9 ? "9+" : unreadCount;
+              notificationBadge.style.display = "flex";
+            } else {
+              notificationBadge.style.display = "none";
+            }
+          }
+
+          // Render notifications
+          renderNotifications(notifications);
+        } catch (error) {
+          console.error("❌ Error loading notifications:", error);
+          notificationList.innerHTML = `
+            <div class="notification-empty">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Error loading notifications</p>
+            </div>
+        `;
+        }
+      }
+
+      // ============================================================
+      // RENDER NOTIFICATIONS
+      // ============================================================
+
+      function renderNotifications(notifications) {
+        const notificationList = document.getElementById("notificationList");
+        if (!notificationList) return;
+
+        if (notifications.length === 0) {
+          notificationList.innerHTML = `
+            <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>No notifications yet</p>
+            </div>
+        `;
+          return;
+        }
+
+        notificationList.innerHTML = notifications
+          .map((notif) => {
+            const type = notif.type || "like";
+            const data = notif.data || {};
+            const timeAgo = formatTimeAgo(notif.createdAt);
+            const unreadClass = notif.read ? "" : "unread";
+
+            let iconClass = "like";
+            let iconHtml = '<i class="fas fa-heart"></i>';
+            let text = "New notification";
+            let link = "#";
+
+            switch (type) {
+              case "like":
+                iconClass = "like";
+                iconHtml = '<i class="fas fa-heart"></i>';
+                text = `<strong>${escapeHtml(data.userName || "Someone")}</strong> liked your artwork`;
+                link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+                break;
+              case "cheer":
+                iconClass = "cheer";
+                iconHtml = '<i class="fas fa-glass-cheers"></i>';
+                text = `<strong>${escapeHtml(data.userName || "Someone")}</strong> cheered for your artwork`;
+                link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+                break;
+              case "shadow":
+                iconClass = "shadow";
+                iconHtml = '<i class="fas fa-eye"></i>';
+                text = `<strong>${escapeHtml(data.userName || "Someone")}</strong> started shadowing you`;
+                link = `/pages/community/profile.html?user=${data.userId || ""}`;
+                break;
+              case "comment":
+                iconClass = "comment";
+                iconHtml = '<i class="fas fa-comment"></i>';
+                text = `<strong>${escapeHtml(data.userName || "Someone")}</strong> commented on your artwork`;
+                link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+                break;
+            }
+
+            return `
+            <a href="${link}" class="notification-item ${unreadClass}" data-id="${notif.id}" data-read="${notif.read}">
+                <div class="notification-icon ${iconClass}">
+                    ${iconHtml}
+                </div>
+                <div class="notification-content">
+                    <div class="notification-text">${text}</div>
+                    <div class="notification-time">${timeAgo}</div>
+                </div>
+            </a>
+        `;
+          })
+          .join("");
+
+        // Add click handlers to mark as read
+        document
+          .querySelectorAll(".notification-item.unread")
+          .forEach((item) => {
+            item.addEventListener("click", function (e) {
+              const id = this.dataset.id;
+              if (id) {
+                markNotificationRead(id);
+                this.classList.remove("unread");
+                // Update badge
+                const badge = document.getElementById("notificationBadge");
+                if (badge) {
+                  const current = parseInt(badge.textContent) || 0;
+                  if (current > 0) {
+                    badge.textContent = current - 1;
+                    if (badge.textContent === "0") badge.style.display = "none";
+                  }
+                }
+              }
+            });
+          });
+      }
+
+      // ============================================================
+      // MARK NOTIFICATION AS READ
+      // ============================================================
+
+      async function markNotificationRead(notificationId) {
+        try {
+          const user = firebase.auth().currentUser;
+          if (!user) return;
+
+          await firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("notifications")
+            .doc(notificationId)
+            .update({ read: true });
+
+          console.log("✅ Notification marked as read:", notificationId);
+        } catch (error) {
+          console.error("❌ Error marking notification as read:", error);
+        }
+      }
+
+      // ============================================================
+      // MARK ALL AS READ
+      // ============================================================
+
+      async function markAllNotificationsRead() {
+        try {
+          const user = firebase.auth().currentUser;
+          if (!user) return;
+
+          const snapshot = await firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid)
+            .collection("notifications")
+            .where("read", "==", false)
+            .get();
+
+          const batch = firebase.firestore().batch();
+          snapshot.docs.forEach((doc) => {
+            batch.update(doc.ref, { read: true });
+          });
+          await batch.commit();
+
+          console.log("✅ All notifications marked as read");
+
+          // Update UI
+          document
+            .querySelectorAll(".notification-item.unread")
+            .forEach((item) => {
+              item.classList.remove("unread");
+            });
+
+          const badge = document.getElementById("notificationBadge");
+          if (badge) {
+            badge.style.display = "none";
+          }
+        } catch (error) {
+          console.error("❌ Error marking all as read:", error);
+        }
+      }
+
+      // ============================================================
+      // UTILITY FUNCTIONS
+      // ============================================================
+
+      function formatTimeAgo(timestamp) {
+        if (!timestamp) return "Just now";
+
+        let date;
+        if (timestamp && timestamp.toDate) {
+          date = timestamp.toDate();
+        } else if (timestamp && timestamp.seconds) {
+          date = new Date(timestamp.seconds * 1000);
+        } else if (timestamp instanceof Date) {
+          date = timestamp;
+        } else {
+          date = new Date(timestamp);
+        }
+
+        if (isNaN(date.getTime())) return "Just now";
+
+        const seconds = Math.floor((new Date() - date) / 1000);
+        if (seconds < 60) return "Just now";
+
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return `${minutes} min ago`;
+
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+
+        const days = Math.floor(hours / 24);
+        if (days < 7) return `${days} day${days === 1 ? "" : "s"} ago`;
+
+        const weeks = Math.floor(days / 7);
+        if (weeks < 4) return `${weeks} week${weeks === 1 ? "" : "s"} ago`;
+
+        const months = Math.floor(days / 30);
+        if (months < 12) return `${months} month${months === 1 ? "" : "s"} ago`;
+
+        const years = Math.floor(days / 365);
+        return `${years} year${years === 1 ? "" : "s"} ago`;
+      }
+
+      function escapeHtml(text) {
+        if (!text) return "";
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // ============================================================
+      // INIT ON PAGE LOAD
+      // ============================================================
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize notification system after a delay
+        setTimeout(() => {
+          initNotificationSystem();
+        }, 800);
+
+        // Also re-initialize when auth state changes
+        if (typeof firebase !== "undefined" && firebase.auth) {
+          firebase.auth().onAuthStateChanged(function (user) {
+            console.log(
+              "🔔 Auth state changed, reinitializing notifications...",
+            );
+            setTimeout(() => {
+              initNotificationSystem();
+            }, 500);
+          });
+        }
+      });
+
+      // ============================================================
+      // EXPOSE FUNCTIONS TO WINDOW
+      // ============================================================
+      window.checkElements = checkElements;
+      window.testNotification = testNotification;
+      window.testAvatar = testAvatar;
+      window.clearLog = clearLog;
+      window.addLog = addLog;
+
+      // ============================================================
+      // INIT ON PAGE LOAD
+      // ============================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        addLog("📄 Page loaded", "info");
+
+        // Initialize notification system
+        setTimeout(() => {
+          initNotifications();
+        }, 500);
+
+        // Listen for Firebase auth state changes
+        if (typeof firebase !== "undefined" && firebase.auth) {
+          firebase.auth().onAuthStateChanged(function (user) {
+            updateAuthStatus(user);
+            if (user) {
+              addLog(`👤 User logged in: ${user.email || user.uid}`, "success");
+
+              // Update hybrid status
+              const hybridStatus = document.getElementById("hybridStatus");
+              if (hybridStatus) {
+                hybridStatus.textContent = "● ONLINE";
+                hybridStatus.classList.remove("offline");
+              }
+            } else {
+              addLog("👤 User logged out", "info");
+
+              // Update hybrid status
+              const hybridStatus = document.getElementById("hybridStatus");
+              if (hybridStatus) {
+                hybridStatus.textContent = "● OFFLINE";
+                hybridStatus.classList.add("offline");
+              }
+            }
+
+            // Check elements after auth state change
+            setTimeout(checkElements, 500);
+          });
+        } else {
+          addLog("⚠️ Firebase auth not available", "warning");
+        }
+
+        // Check elements after everything loads
+        setTimeout(() => {
+          addLog("⏳ Checking elements...", "info");
+          checkElements();
+        }, 1500);
+      });
+
+      console.log(
+        "🐛 Debug mode enabled. Login with real Firebase auth to test dropdowns.",
+      );
+    </script>
+  </body>
+</html>

@@ -8,14 +8,22 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -33,253 +41,939 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
-      .analytics-main {
-        padding: 2rem 0;
-        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
-        min-height: 100vh;
+      /* ============================================ */
+      /* ANALYTICS - SCI-FI CYBERPUNK                 */
+      /* Pink/Purple + Blue/Green toggles            */
+      /* ============================================ */
+
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --glass-blur: blur(20px);
+        --text-primary: #e8e0f0;
+        --text-secondary: #a090b8;
+        --text-muted: #6a5a7a;
+        --bg-primary: #0a0810;
+        --bg-secondary: #12101f;
+        --neon-purple: #8a19e1;
+        --neon-cyan: #58ebfe;
+        --neon-pink: #ff00ea;
+        --neon-green: #4ff3a6;
+        --neon-gold: #ffc72e;
+        --neon-orange: #ff6b00;
+        --neon-red: #ff0040;
+        --purple-glow: rgba(138, 25, 225, 0.3);
+        --cyan-glow: rgba(88, 235, 254, 0.15);
+        --shadow-glow: 0 8px 40px rgba(0, 0, 0, 0.6);
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 20px;
+        --font-mono: "Share Tech Mono", "Courier New", monospace;
+        --font-display: "Orbitron", "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        --accent-1: #ff00ea;
+        --accent-2: #8a19e1;
+        --accent-3: #ff69b4;
+        --accent-gradient: linear-gradient(135deg, #ff00ea, #8a19e1);
+        --chart-color-1: #ff00ea;
+        --chart-color-2: #8a19e1;
       }
+
+      /* Blue/Green theme */
+      body.blue-green {
+        --accent-1: #58ebfe;
+        --accent-2: #4ff3a6;
+        --accent-3: #3b82f6;
+        --accent-gradient: linear-gradient(135deg, #58ebfe, #4ff3a6);
+        --chart-color-1: #58ebfe;
+        --chart-color-2: #4ff3a6;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ============================================ */
+      /* GRADIENT BACKGROUND                          */
+      /* ============================================ */
+
+      .gradient-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        background:
+          radial-gradient(
+            ellipse at 0% 0%,
+            var(--accent-2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 100% 100%,
+            var(--accent-1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 50% 50%,
+            var(--accent-3) 0%,
+            transparent 60%
+          );
+        background-size: 200% 200%;
+        animation: gradientWarm 25s ease-in-out infinite alternate;
+        opacity: 0.2;
+        pointer-events: none;
+        transition: background 0.8s ease;
+      }
+
+      @keyframes gradientWarm {
+        0%,
+        100% {
+          background-position: 0% 0%;
+          opacity: 0.15;
+        }
+        50% {
+          background-position: 100% 100%;
+          opacity: 0.25;
+        }
+      }
+
+      body.blue-green .gradient-bg {
+        background:
+          radial-gradient(ellipse at 0% 0%, #58ebfe 0%, transparent 50%),
+          radial-gradient(ellipse at 100% 100%, #4ff3a6 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, #3b82f6 0%, transparent 60%);
+      }
+
+      /* ============================================ */
+      /* SCANLINE OVERLAY                            */
+      /* ============================================ */
+
+      .scanline-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9997;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 3px
+        );
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
+
+      .scanline-overlay:not(.active) {
+        opacity: 0;
+      }
+
+      body.hud-mode .scanline-overlay {
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(88, 235, 254, 0.015) 2px,
+          rgba(88, 235, 254, 0.015) 3px,
+          transparent 3px,
+          transparent 5px,
+          rgba(138, 25, 225, 0.015) 5px,
+          rgba(138, 25, 225, 0.015) 6px
+        );
+        animation: scanMove 0.5s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(6px);
+        }
+      }
+
+      /* ============================================ */
+      /* GRID OVERLAY                                */
+      /* ============================================ */
+
+      .grid-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9996;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        background-image:
+          linear-gradient(rgba(88, 235, 254, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(88, 235, 254, 0.06) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      body.grid-mode .grid-overlay {
+        opacity: 1;
+      }
+
+      /* ============================================ */
+      /* PARTICLES                                   */
+      /* ============================================ */
+
+      .particle-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        opacity: 0.3;
+      }
+
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: var(--accent-1);
+        border-radius: 50%;
+        animation: floatParticle 20s infinite linear;
+        opacity: 0;
+        box-shadow: 0 0 10px var(--accent-1);
+        transition: background 0.8s ease;
+      }
+
+      .particle:nth-child(1) {
+        left: 10%;
+        animation-delay: 0s;
+        animation-duration: 22s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(2) {
+        left: 20%;
+        animation-delay: 2s;
+        animation-duration: 18s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(3) {
+        left: 30%;
+        animation-delay: 4s;
+        animation-duration: 25s;
+        background: var(--accent-3);
+      }
+      .particle:nth-child(4) {
+        left: 40%;
+        animation-delay: 1s;
+        animation-duration: 20s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(5) {
+        left: 50%;
+        animation-delay: 3s;
+        animation-duration: 23s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(6) {
+        left: 60%;
+        animation-delay: 5s;
+        animation-duration: 19s;
+        background: var(--accent-3);
+      }
+      .particle:nth-child(7) {
+        left: 70%;
+        animation-delay: 2s;
+        animation-duration: 21s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(8) {
+        left: 80%;
+        animation-delay: 4s;
+        animation-duration: 24s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(9) {
+        left: 15%;
+        animation-delay: 6s;
+        animation-duration: 17s;
+        background: var(--accent-3);
+      }
+      .particle:nth-child(10) {
+        left: 45%;
+        animation-delay: 3s;
+        animation-duration: 26s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(11) {
+        left: 75%;
+        animation-delay: 5s;
+        animation-duration: 22s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(12) {
+        left: 90%;
+        animation-delay: 7s;
+        animation-duration: 20s;
+        background: var(--accent-3);
+      }
+
+      @keyframes floatParticle {
+        0% {
+          top: -10%;
+          opacity: 0;
+          transform: translateX(0) scale(0);
+        }
+        10% {
+          opacity: 0.8;
+          transform: translateX(10px) scale(1);
+        }
+        90% {
+          opacity: 0.8;
+          transform: translateX(-10px) scale(1);
+        }
+        100% {
+          top: 110%;
+          opacity: 0;
+          transform: translateX(0) scale(0);
+        }
+      }
+
+      body.light-mode .particle-overlay {
+        opacity: 0.1;
+      }
+
+      /* ============================================ */
+      /* HUD CORNERS                                 */
+      /* ============================================ */
+
+      body.hud-mode::before {
+        content: "";
+        position: fixed;
+        inset: 20px;
+        pointer-events: none;
+        z-index: 9998;
+        border: 1px solid rgba(88, 235, 254, 0.05);
+        border-radius: 4px;
+      }
+
+      body.hud-mode::after {
+        content: "⏣ SYS: ONLINE  |  ANALYTICS: 0  |  HUD: v2.1";
+        position: fixed;
+        bottom: 80px;
+        right: 30px;
+        font-family: var(--font-mono);
+        font-size: 0.45rem;
+        color: rgba(88, 235, 254, 0.15);
+        letter-spacing: 2px;
+        z-index: 9998;
+        pointer-events: none;
+      }
+
+      /* ============================================ */
+      /* THEME CONTROLS                              */
+      /* ============================================ */
+
+      .theme-controls {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(13, 11, 21, 0.85);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        padding: 6px 10px;
+        border-radius: 40px;
+        border: 1px solid rgba(138, 25, 225, 0.15);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .theme-controls button {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgba(138, 25, 225, 0.12);
+        background: rgba(138, 25, 225, 0.06);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .theme-controls button:hover {
+        background: rgba(138, 25, 225, 0.15);
+        transform: scale(1.05);
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+      }
+
+      .theme-controls button.active {
+        background: var(--accent-gradient);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 0 20px rgba(138, 25, 225, 0.25);
+      }
+
+      .theme-controls .separator {
+        width: 1px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* ============================================ */
+      /* MAIN CONTENT                                */
+      /* ============================================ */
+
+      .analytics-main {
+        padding-top: 90px;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+
+      .analytics-main .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* ============================================ */
+      /* PAGE HEADER                                 */
+      /* ============================================ */
 
       .page-header {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        padding: 1rem 0;
       }
 
       .page-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        font-size: 2.5rem;
+        font-weight: 800;
+        font-family: var(--font-display);
+        letter-spacing: 2px;
+        background: var(--accent-gradient);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
         margin-bottom: 0.5rem;
+        text-shadow: none;
+        filter: drop-shadow(0 0 40px rgba(138, 25, 225, 0.15));
+        transition: background 0.8s ease;
+      }
+
+      .page-header h1 i {
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
 
       .page-header p {
-        color: #6b7280;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
       }
 
-      /* Stats Grid */
+      /* ============================================ */
+      /* AUTH REQUIRED                               */
+      /* ============================================ */
+
+      .auth-required {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(13, 11, 21, 0.5);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-glow);
+        max-width: 500px;
+        margin: 3rem auto;
+      }
+
+      body.light-mode .auth-required {
+        background: rgba(255, 255, 255, 0.6);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .auth-required i {
+        font-size: 3.5rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+        display: block;
+        opacity: 0.6;
+      }
+
+      .auth-required h3 {
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        font-family: var(--font-display);
+        margin-bottom: 0.5rem;
+      }
+
+      .auth-required p {
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .btn-login {
+        display: inline-block;
+        padding: 0.7rem 2rem;
+        border-radius: var(--radius-sm);
+        background: var(--accent-gradient);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: var(--font-mono);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(138, 25, 225, 0.2);
+      }
+
+      .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(138, 25, 225, 0.3);
+      }
+
+      /* ============================================ */
+      /* PERIOD SELECTOR                             */
+      /* ============================================ */
+
+      .period-selector {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .period-btn {
+        padding: 0.4rem 1.2rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        background: rgba(13, 11, 21, 0.3);
+        color: var(--text-secondary);
+        font-size: 0.7rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: var(--font-mono);
+      }
+
+      body.light-mode .period-btn {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .period-btn:hover {
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+        transform: translateY(-2px);
+      }
+
+      .period-btn.active {
+        background: rgba(138, 25, 225, 0.12);
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+        box-shadow: 0 0 20px rgba(138, 25, 225, 0.05);
+      }
+
+      /* ============================================ */
+      /* STATS GRID                                  */
+      /* ============================================ */
+
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
       }
 
       .stat-card {
-        background: white;
-        border-radius: 1rem;
-        padding: 1.2rem;
+        background: rgba(13, 11, 21, 0.4);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
         text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        box-shadow: var(--shadow-glow);
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      body.light-mode .stat-card {
+        background: rgba(255, 255, 255, 0.4);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--accent-gradient);
+        opacity: 0.3;
+        transition: opacity 0.3s ease;
+      }
+
+      .stat-card:hover::before {
+        opacity: 0.8;
       }
 
       .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(254, 103, 234, 0.12);
+        transform: translateY(-4px);
+        border-color: rgba(88, 235, 254, 0.12);
+        box-shadow:
+          var(--shadow-glow),
+          0 0 40px rgba(138, 25, 225, 0.03);
       }
 
-      .stat-icon {
-        font-size: 2rem;
+      .stat-card .stat-icon {
+        font-size: 1.5rem;
         margin-bottom: 0.5rem;
+        display: block;
       }
 
-      .stat-value {
+      .stat-card .stat-value {
         font-size: 2rem;
-        font-weight: 800;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        font-weight: 700;
+        font-family: var(--font-display);
+        background: var(--accent-gradient);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
+        display: block;
+        transition: background 0.8s ease;
       }
 
-      .stat-label {
-        font-size: 0.8rem;
-        color: #6b7280;
+      .stat-card .stat-label {
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 0.2rem;
       }
 
-      /* Chart Containers */
+      /* ============================================ */
+      /* CHARTS ROW                                  */
+      /* ============================================ */
+
       .charts-row {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .charts-row {
+          grid-template-columns: 1fr;
+        }
       }
 
       .chart-card {
-        background: white;
-        border-radius: 1rem;
-        padding: 1rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: rgba(13, 11, 21, 0.3);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-glow);
+        transition: all 0.3s ease;
+      }
+
+      body.light-mode .chart-card {
+        background: rgba(255, 255, 255, 0.4);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .chart-card:hover {
+        border-color: rgba(88, 235, 254, 0.1);
       }
 
       .chart-card h3 {
-        font-size: 1rem;
+        font-size: 0.85rem;
         font-weight: 600;
+        color: var(--text-secondary);
         margin-bottom: 1rem;
-        color: #1f2937;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        font-family: var(--font-mono);
+      }
+
+      .chart-card h3 i {
+        color: var(--accent-1);
       }
 
       .chart-container {
         position: relative;
-        height: 300px;
+        height: 250px;
       }
 
-      canvas {
-        max-height: 300px;
-        width: 100%;
-      }
+      /* ============================================ */
+      /* TOP ARTWORKS                                */
+      /* ============================================ */
 
-      /* Top Artworks Section */
       .top-artworks-section {
-        background: white;
-        border-radius: 1rem;
-        padding: 1rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: rgba(13, 11, 21, 0.3);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-glow);
+        transition: all 0.3s ease;
       }
 
-      .section-header {
+      body.light-mode .top-artworks-section {
+        background: rgba(255, 255, 255, 0.4);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .top-artworks-section:hover {
+        border-color: rgba(88, 235, 254, 0.1);
+      }
+
+      .top-artworks-section .section-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #f0eef2;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(88, 235, 254, 0.06);
       }
 
-      .section-header h3 {
-        font-size: 1rem;
+      .top-artworks-section .section-header h3 {
+        font-size: 0.85rem;
         font-weight: 600;
-        color: #1f2937;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
       }
 
-      .section-header a {
-        font-size: 0.8rem;
-        color: #fe67ea;
+      .top-artworks-section .section-header h3 i {
+        color: var(--accent-3);
+      }
+
+      .top-artworks-section .section-header a {
+        font-size: 0.65rem;
+        color: var(--accent-1);
         text-decoration: none;
+        font-family: var(--font-mono);
+        transition: color 0.3s ease;
+      }
+
+      .top-artworks-section .section-header a:hover {
+        color: var(--accent-3);
       }
 
       .top-artworks-list {
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 0.5rem;
       }
 
       .top-artwork-item {
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        transition: background 0.3s ease;
+        padding: 0.75rem;
+        border-radius: var(--radius-sm);
+        background: rgba(13, 11, 21, 0.2);
+        transition: all 0.3s ease;
         cursor: pointer;
+        border: 1px solid transparent;
+      }
+
+      body.light-mode .top-artwork-item {
+        background: rgba(255, 255, 255, 0.2);
       }
 
       .top-artwork-item:hover {
-        background: #f8f8f8;
+        background: rgba(13, 11, 21, 0.4);
+        border-color: rgba(88, 235, 254, 0.08);
+        transform: translateX(4px);
       }
 
-      .artwork-rank {
-        width: 30px;
+      body.light-mode .top-artwork-item:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      .top-artwork-item .artwork-rank {
+        width: 32px;
         font-weight: 700;
-        color: #fe67ea;
-      }
-
-      .artwork-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 0.5rem;
-        object-fit: cover;
-      }
-
-      .artwork-info {
-        flex: 1;
-      }
-
-      .artwork-title {
-        font-weight: 600;
-        font-size: 0.9rem;
-        color: #1f2937;
-      }
-
-      .artwork-stats {
-        display: flex;
-        gap: 1rem;
-        font-size: 0.7rem;
-        color: #6b7280;
-      }
-
-      .artwork-score {
-        font-weight: 700;
-        color: #fe67ea;
-      }
-
-      /* Engagement Rate Card */
-      .engagement-card {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        border-radius: 1rem;
-        padding: 1rem;
+        font-size: 1rem;
+        color: var(--accent-3);
         text-align: center;
-        color: white;
+        flex-shrink: 0;
+        font-family: var(--font-display);
       }
 
-      .engagement-value {
-        font-size: 2rem;
-        font-weight: 800;
+      .top-artwork-item .artwork-img {
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-sm);
+        object-fit: cover;
+        flex-shrink: 0;
+        border: 1px solid rgba(88, 235, 254, 0.06);
       }
 
-      .engagement-label {
+      .top-artwork-item .artwork-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .top-artwork-item .artwork-title {
+        font-weight: 600;
         font-size: 0.8rem;
-        opacity: 0.9;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: var(--font-display);
+        letter-spacing: 0.5px;
       }
 
-      /* Time Period Selector */
-      .period-selector {
+      .top-artwork-item .artwork-stats {
         display: flex;
-        justify-content: flex-end;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
+        gap: 0.75rem;
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        margin-top: 0.15rem;
+        font-family: var(--font-mono);
       }
 
-      .period-btn {
-        background: #f3f4f6;
-        border: none;
-        padding: 0.3rem 1rem;
-        border-radius: 50px;
-        font-size: 0.7rem;
-        cursor: pointer;
+      .top-artwork-item .artwork-stats i {
+        margin-right: 2px;
+      }
+
+      .top-artwork-item .artwork-stats .likes {
+        color: #ef4444;
+      }
+
+      .top-artwork-item .artwork-stats .cheers {
+        color: var(--accent-3);
+      }
+
+      .top-artwork-item .engagement-score {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: var(--accent-1);
+        flex-shrink: 0;
+        font-family: var(--font-display);
+      }
+
+      /* ============================================ */
+      /* ENGAGEMENT TOTAL                            */
+      /* ============================================ */
+
+      .engagement-card {
+        background: rgba(13, 11, 21, 0.3);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-glow);
         transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
       }
 
-      .period-btn:hover {
-        background: #fe67ea;
-        color: white;
+      body.light-mode .engagement-card {
+        background: rgba(255, 255, 255, 0.4);
+        border-color: rgba(0, 0, 0, 0.06);
       }
 
-      .period-btn.active {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        color: white;
+      .engagement-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--accent-gradient);
+        opacity: 0.03;
+        pointer-events: none;
+        transition: opacity 0.8s ease;
       }
 
-      /* Loading & Empty States */
+      .engagement-card:hover {
+        border-color: rgba(88, 235, 254, 0.1);
+      }
+
+      .engagement-card .engagement-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        font-family: var(--font-display);
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: block;
+        transition: background 0.8s ease;
+      }
+
+      .engagement-card .engagement-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
+        margin-top: 0.3rem;
+      }
+
+      /* ============================================ */
+      /* LOADING & ERROR                             */
+      /* ============================================ */
+
       .loading-state {
         text-align: center;
         padding: 3rem;
+        color: var(--text-secondary);
       }
 
-      .spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid #e5e7eb;
-        border-top-color: #fe67ea;
+      .loading-state .spinner {
+        width: 36px;
+        height: 36px;
+        border: 2px solid rgba(88, 235, 254, 0.06);
+        border-top-color: var(--accent-1);
         border-radius: 50%;
-        animation: spin 1s linear infinite;
+        animation: spin 0.8s linear infinite;
         margin: 0 auto 1rem;
+        transition: border-top-color 0.8s ease;
       }
 
       @keyframes spin {
@@ -288,175 +982,436 @@
         }
       }
 
-      .auth-required {
-        text-align: center;
-        padding: 3rem;
-        background: white;
-        border-radius: 1rem;
+      .loading-state p {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
       }
 
-      .auth-required i {
-        font-size: 3rem;
-        color: #fe67ea;
-        margin-bottom: 1rem;
+      .error-state {
+        text-align: center;
+        padding: 3rem;
+        background: rgba(239, 68, 68, 0.05);
+        border: 1px solid rgba(239, 68, 68, 0.1);
+        border-radius: var(--radius-md);
+        color: #ef4444;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+      }
+
+      .error-state i {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: 0.5rem;
         opacity: 0.5;
       }
 
+      .empty-state-analytics {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--text-secondary);
+      }
+
+      .empty-state-analytics i {
+        font-size: 3rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+        display: block;
+        opacity: 0.5;
+      }
+
+      .empty-state-analytics h4 {
+        color: var(--text-primary);
+        font-size: 1rem;
+        font-family: var(--font-display);
+        margin-bottom: 0.3rem;
+      }
+
+      .empty-state-analytics p {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+      }
+
+      .btn-upload {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.5rem;
+        border-radius: var(--radius-sm);
+        background: var(--accent-gradient);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.7rem;
+        font-family: var(--font-mono);
+        transition: all 0.3s ease;
+      }
+
+      .btn-upload:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(138, 25, 225, 0.2);
+      }
+
+      /* ============================================ */
+      /* LIGHT MODE                                  */
+      /* ============================================ */
+      /* Ensure data-theme works with existing styles */
+      [data-theme="light"] {
+        --bg-primary: #f0ecf5;
+        --bg-secondary: #e8e0f0;
+        --text-primary: #1a1028;
+        --text-secondary: #5a4a70;
+        --text-muted: #8a7a9a;
+        --glass-bg: rgba(255, 255, 255, 0.5);
+        --glass-border: rgba(0, 0, 0, 0.06);
+        --shadow-glow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      }
+
+      body.light-mode {
+        --bg-primary: #f0ecf5;
+        --bg-secondary: #e8e0f0;
+        --text-primary: #1a1028;
+        --text-secondary: #5a4a70;
+        --text-muted: #8a7a9a;
+      }
+
+      body.light-mode .gradient-bg {
+        opacity: 0.08;
+      }
+
+      body.light-mode .theme-controls {
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      body.light-mode .theme-controls button {
+        color: var(--text-secondary);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      body.light-mode .theme-controls button:hover {
+        background: rgba(138, 25, 225, 0.08);
+        color: var(--accent-1);
+      }
+
+      body.light-mode .theme-controls button.active {
+        background: var(--accent-gradient);
+        color: white;
+      }
+
+      /* ============================================ */
+      /* RESPONSIVE                                  */
+      /* ============================================ */
+
       @media (max-width: 768px) {
-        .charts-row {
-          grid-template-columns: 1fr;
+        .analytics-main {
+          padding-top: 80px;
+        }
+
+        .analytics-main .container {
+          padding: 0 16px;
+        }
+
+        .page-header h1 {
+          font-size: 2rem;
         }
 
         .stats-grid {
           grid-template-columns: repeat(2, 1fr);
         }
 
-        .period-selector {
-          justify-content: center;
+        .stat-card .stat-value {
+          font-size: 1.5rem;
         }
+
+        .period-selector {
+          gap: 0.3rem;
+        }
+
+        .period-btn {
+          padding: 0.3rem 0.8rem;
+          font-size: 0.6rem;
+        }
+
+        .charts-row {
+          grid-template-columns: 1fr;
+        }
+
+        .chart-container {
+          height: 200px;
+        }
+
+        .top-artwork-item {
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .top-artwork-item .artwork-title {
+          white-space: normal;
+          font-size: 0.7rem;
+        }
+
+        .engagement-card .engagement-value {
+          font-size: 2rem;
+        }
+
+        body.hud-mode::before {
+          inset: 10px;
+        }
+
+        body.hud-mode::after {
+          bottom: 70px;
+          right: 20px;
+          font-size: 0.35rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .analytics-main {
+          padding-top: 70px;
+        }
+
+        .page-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .page-header p {
+          font-size: 0.9rem;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 0.5rem;
+        }
+
+        .stat-card {
+          padding: 1rem;
+        }
+
+        .stat-card .stat-value {
+          font-size: 1.2rem;
+        }
+
+        .theme-controls {
+          bottom: 16px;
+          right: 16px;
+          padding: 4px 8px;
+        }
+
+        .theme-controls button {
+          width: 28px;
+          height: 28px;
+          font-size: 0.6rem;
+        }
+
+        .top-artwork-item .artwork-img {
+          width: 36px;
+          height: 36px;
+        }
+      }
+
+      /* ============================================ */
+      /* CHART THEME OVERRIDES                       */
+      /* ============================================ */
+
+      /* These will be applied via JS when theme changes */
+      .chart-card canvas {
+        transition: all 0.8s ease;
       }
     </style>
   </head>
   <body>
+    <!-- ====== BACKGROUND EFFECTS ====== -->
+    <div class="gradient-bg"></div>
+    <div class="scanline-overlay active" id="scanlineOverlay"></div>
+    <div class="grid-overlay" id="gridOverlay"></div>
+
+    <!-- ====== PARTICLES ====== -->
+    <div class="particle-overlay" id="particleOverlay">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
             <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+              <span class="logo-icon">✦</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
           <ul class="nav-links" id="nav-links">
             <li>
-              <a href="../../index.html" class="nav-link" data-section="home"
+              <a href="/index.html" class="nav-link" data-section="home"
                 >Home</a
               >
             </li>
             <li>
-              <a
-                href="../../index.html#about"
-                class="nav-link"
-                data-section="about"
+              <a href="/index.html#about" class="nav-link" data-section="about"
                 >About</a
               >
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="../tutorials/tutorials.html" class="nav-link"
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
                 >Tutorials <span class="dropdown-arrow">▼</span></a
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="../tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="../tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="../tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="../tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="../tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="../tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="../tutorials/tutorials.html">📚 Full Catalogue</a>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="software">
-              <a href="../software/software-comparison.html" class="nav-link"
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
                 >Software <span class="dropdown-arrow">▼</span></a
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="../software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="../tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--accent-1)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="../tools/tools.html" class="nav-link"
+              <a href="/pages/tools/tools.html" class="nav-link"
                 >Tools <span class="dropdown-arrow">▼</span></a
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="../tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
-                  <a href="../tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
-                  <a href="../tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="hub.html" class="nav-link active"
+              <a href="/pages/community/hub.html" class="nav-link active"
                 >Community <span class="dropdown-arrow">▼</span></a
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="hub.html#daily-challenge">🔥 Daily Challenge</a>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
                 </li>
-                <li><a href="gallery.html">🖼️ Gallery</a></li>
-                <li><a href="search-users.html">🔍 Find Artists</a></li>
-                <li><a href="activity-feed.html">📰 Activity Feed</a></li>
-                <li><a href="challenges.html">🏆 Challenges</a></li>
-                <li><a href="analytics.html">📊 Analytics</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="../Equip/Equip.html" class="nav-link"
+              <a href="/pages/Equip/Equip.html" class="nav-link"
                 >Equip <span class="dropdown-arrow">▼</span></a
               >
               <ul class="dropdown-menu">
-                <li><a href="../Equip/Equip.html">📁 Portfolio Template</a></li>
                 <li>
-                  <a href="../Equip/price-comparison.html">📄 CV Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
-                <li><a href="../Equip/earn.html">💰 Earn</a></li>
-                <li><a href="../Equip/blog.html">📝 Blog</a></li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
               <a
-                href="../truly-yours/truly-yours-project.html"
+                href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
+                >Truly Yours ✦</a
               >
             </li>
           </ul>
           <div class="nav-actions">
-            <!-- Bell icon (notifications) - now to the LEFT of search -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -484,18 +1439,15 @@
                 </div>
                 <div class="notification-list" id="notificationList">
                   <div class="notification-empty">
-                    <i class="far fa-bell-slash"></i>
+                    <i class="fas fa-bell-slash"></i>
                     <p>No notifications yet</p>
                   </div>
                 </div>
                 <div class="notification-footer">
-                  <a href="/pages/community/notifications.html"
-                    >View all activity</a
-                  >
+                  <a href="/pages/community/notifications.html">View All</a>
                 </div>
               </div>
             </div>
-            <!-- Search button -->
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -503,9 +1455,22 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
-          <button class="mobile-menu-btn" id="mobile-menu-btn">
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
             <span></span><span></span><span></span>
           </button>
         </nav>
@@ -533,10 +1498,9 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN CONTENT ====== -->
     <main class="analytics-main">
       <div class="container">
         <div class="page-header">
@@ -544,27 +1508,32 @@
           <p>Track your artwork performance and watch your art journey grow</p>
         </div>
 
+        <!-- Auth Required -->
         <div id="authRequired" class="auth-required" style="display: none">
           <i class="fas fa-lock"></i>
-          <h3>Please Login</h3>
+          <h3>Authentication Required</h3>
           <p>You need to be logged in to view your analytics.</p>
-          <a
-            href="/pages/auth/login.html"
-            class="btn-primary"
-            style="
-              display: inline-block;
-              margin-top: 1rem;
-              background: linear-gradient(135deg, #fe67ea, #63dbee);
-              color: white;
-              padding: 0.6rem 1.5rem;
-              border-radius: 50px;
-              text-decoration: none;
-            "
-            >Login</a
-          >
+          <a href="/pages/auth/login.html" class="btn-login">Login</a>
         </div>
 
+        <!-- Analytics Content -->
         <div id="analyticsContent" style="display: none">
+          <!-- Loading -->
+          <div
+            id="analyticsLoading"
+            class="loading-state"
+            style="display: none"
+          >
+            <div class="spinner"></div>
+            <p>Loading your analytics data...</p>
+          </div>
+
+          <!-- Error -->
+          <div id="analyticsError" class="error-state" style="display: none">
+            <i class="fas fa-exclamation-circle"></i>
+            <span></span>
+          </div>
+
           <!-- Period Selector -->
           <div class="period-selector">
             <button class="period-btn active" data-period="week">
@@ -575,26 +1544,26 @@
             <button class="period-btn" data-period="all">All Time</button>
           </div>
 
-          <!-- Stats Cards -->
+          <!-- Stats Grid -->
           <div class="stats-grid" id="statsGrid">
             <div class="stat-card">
-              <div class="stat-icon">🎨</div>
-              <div class="stat-value" id="totalArtworks">0</div>
+              <span class="stat-icon">🎨</span>
+              <span class="stat-value" id="totalArtworks">0</span>
               <div class="stat-label">Total Artworks</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon">❤️</div>
-              <div class="stat-value" id="totalLikes">0</div>
+              <span class="stat-icon">❤️</span>
+              <span class="stat-value" id="totalLikes">0</span>
               <div class="stat-label">Total Likes</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon">🥂</div>
-              <div class="stat-value" id="totalCheers">0</div>
+              <span class="stat-icon">🥂</span>
+              <span class="stat-value" id="totalCheers">0</span>
               <div class="stat-label">Total Cheers</div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon">👁️</div>
-              <div class="stat-value" id="avgEngagement">0</div>
+              <span class="stat-icon">📈</span>
+              <span class="stat-value" id="avgEngagement">0</span>
               <div class="stat-label">Avg Engagement</div>
             </div>
           </div>
@@ -602,10 +1571,7 @@
           <!-- Charts -->
           <div class="charts-row">
             <div class="chart-card">
-              <h3>
-                <i class="fas fa-heart" style="color: #fe67ea"></i> Likes &
-                Cheers Over Time
-              </h3>
+              <h3><i class="fas fa-heart"></i> Likes &amp; Cheers Over Time</h3>
               <div class="chart-container">
                 <canvas id="engagementChart"></canvas>
               </div>
@@ -621,23 +1587,17 @@
           <!-- Top Artworks -->
           <div class="top-artworks-section">
             <div class="section-header">
-              <h3>
-                <i class="fas fa-trophy" style="color: #f59e0b"></i> Top
-                Performing Artworks
-              </h3>
+              <h3><i class="fas fa-trophy"></i> Top Performing Artworks</h3>
               <a href="/pages/community/gallery.html">View Gallery →</a>
             </div>
             <div id="topArtworksList" class="top-artworks-list">
-              <div class="loading-state">
-                <div class="spinner"></div>
-                <p>Loading...</p>
-              </div>
+              <!-- Rendered by JavaScript -->
             </div>
           </div>
 
           <!-- Engagement Card -->
           <div class="engagement-card">
-            <div class="engagement-value" id="totalEngagement">0</div>
+            <span class="engagement-value" id="totalEngagement">0</span>
             <div class="engagement-label">
               Total Engagement (Likes + Cheers)
             </div>
@@ -646,71 +1606,127 @@
       </div>
     </main>
 
-    <footer class="tutorial-footer">
+    <!-- ====== THEME CONTROLS ====== -->
+    <div class="theme-controls">
+      <!-- Color Theme Toggles -->
+      <button id="themePinkPurple" class="active" title="Pink/Purple Theme">
+        <i class="fas fa-fill-drip" style="color: #ff00ea"></i>
+      </button>
+      <button id="themeBlueGreen" title="Blue/Green Theme">
+        <i class="fas fa-fill-drip" style="color: #58ebfe"></i>
+      </button>
+      <span class="separator"></span>
+      <!-- Dark/Light Toggles -->
+      <button id="themeDark" class="active" title="Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="themeLight" title="Light Mode">
+        <i class="fas fa-sun"></i>
+      </button>
+      <span class="separator"></span>
+      <!-- HUD Controls -->
+      <button id="hudToggle" class="active" title="HUD Mode (H)">
+        <i class="fas fa-vr-cardboard"></i>
+      </button>
+      <button id="scanlineToggle" class="active" title="Scanlines (S)">
+        <i class="fas fa-grip-lines"></i>
+      </button>
+      <button id="gridToggle" class="active" title="Grid Overlay (G)">
+        <i class="fas fa-th"></i>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i></a
-              ><a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i></a
-              ><a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i></a
-              ><a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i></a
-              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
-              ><a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
     </footer>
 
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) - MUST load before other scripts that might use it -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/community/analytics.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Apply saved theme
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        if (savedTheme === "light") {
+          document.body.classList.add("light-mode");
+        } else {
+          document.body.classList.remove("light-mode");
+        }
+
+        // Apply saved color theme
+        const savedColorTheme =
+          localStorage.getItem("colorTheme") || "pink-purple";
+        if (savedColorTheme === "blue-green") {
+          document.body.classList.add("blue-green");
+        } else {
+          document.body.classList.remove("blue-green");
+        }
+
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
@@ -718,10 +1734,5 @@
         }, 300);
       });
     </script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/components/avatar-manager.js"></script>
-    <script src="/js/community/analytics.js"></script>
   </body>
 </html>

@@ -18,6 +18,61 @@ class NSFWModeration {
     });
   }
 
+  showToast(message) {
+    let toast = document.getElementById('toastNotification');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toastNotification';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(10, 5, 8, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 64, 0.1);
+            border-radius: 6px;
+            padding: 12px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 0, 64, 0.05);
+            color: var(--text-primary);
+            font-family: var(--font-condensed);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+            pointer-events: none;
+            max-width: 90%;
+        `;
+        document.body.appendChild(toast);
+    }
+
+    const icon = toast.querySelector('i') || document.createElement('i');
+    if (!toast.querySelector('i')) {
+        icon.style.cssText = 'font-size: 1.2rem;';
+        toast.prepend(icon);
+    }
+
+    const span = toast.querySelector('span') || document.createElement('span');
+    if (!toast.querySelector('span')) {
+        toast.appendChild(span);
+    }
+
+    icon.className = 'fas fa-check-circle';
+    icon.style.color = '#ff0040';
+    span.textContent = message;
+
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 3000);
+}
+
   /**
    * Check if a user has untagged NSFW content
    * @param {string} userId - User ID to check

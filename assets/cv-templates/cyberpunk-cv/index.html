@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyberpunk CV — Artist Name</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* ================================================================
+       CYBERPUNK CV — NEON HUD STYLE
+       ================================================================ */
+
+      /* --- RESET --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* --- ROOT --- */
+      :root {
+        --bg: #0a0508;
+        --glass: rgba(10, 5, 20, 0.85);
+        --border: rgba(255, 0, 234, 0.15);
+        --text: #f5eaff;
+        --text-muted: #5a3a6a;
+        --text-dim: #2a1a3a;
+        --accent: #ff00ea;
+        --accent-dim: rgba(255, 0, 234, 0.08);
+        --accent-glow: 0 0 40px rgba(255, 0, 234, 0.1);
+        --accent-secondary: #58ebfe;
+
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, sans-serif;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      /* --- SCANLINES --- */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* --- NOISE --- */
+      .noise {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9995;
+        opacity: 0.02;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      /* --- CV CONTAINER --- */
+      .cv-container {
+        max-width: 900px;
+        width: 100%;
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 50px 60px;
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.8),
+          var(--accent-glow);
+        position: relative;
+        z-index: 1;
+      }
+
+      /* --- CORNER BRACKETS --- */
+      .cv-container::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 20px;
+        height: 20px;
+        border-top: 2px solid var(--accent);
+        border-left: 2px solid var(--accent);
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      .cv-container::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 20px;
+        height: 20px;
+        border-bottom: 2px solid var(--accent);
+        border-right: 2px solid var(--accent);
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      /* --- HEADER --- */
+      .cv-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .cv-header .name {
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-shadow: 0 0 40px rgba(255, 0, 234, 0.1);
+      }
+
+      .cv-header .name span {
+        color: var(--accent);
+      }
+
+      .cv-header .title {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--accent-secondary);
+        letter-spacing: 2px;
+        background: var(--accent-dim);
+        padding: 4px 16px;
+        border: 1px solid rgba(88, 235, 254, 0.1);
+        border-radius: 2px;
+      }
+
+      /* --- CONTACT BAR --- */
+      .contact-bar {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 12px 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      .contact-bar span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .contact-bar i {
+        color: var(--accent-secondary);
+        font-size: 0.6rem;
+      }
+
+      /* --- GRID LAYOUT --- */
+      .cv-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 30px;
+      }
+
+      /* --- LEFT COLUMN --- */
+      .cv-left {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .cv-section-title {
+        font-family: var(--font-display);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent-secondary);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .cv-section-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      .cv-section {
+        margin-bottom: 16px;
+      }
+
+      .cv-section:last-child {
+        margin-bottom: 0;
+      }
+
+      /* --- SKILLS --- */
+      .skill-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        font-size: 0.8rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      }
+
+      .skill-item .skill-name {
+        color: var(--text);
+      }
+
+      .skill-item .skill-level {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+      }
+
+      /* --- PROGRESS BARS --- */
+      .skill-bar {
+        width: 100%;
+        height: 2px;
+        background: var(--text-dim);
+        margin-top: 2px;
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .skill-bar .fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 2px;
+        box-shadow: 0 0 20px rgba(255, 0, 234, 0.2);
+      }
+
+      /* --- RIGHT COLUMN --- */
+      .cv-right {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* --- EXPERIENCE / EDUCATION ITEMS --- */
+      .exp-item {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      }
+
+      .exp-item:last-child {
+        border-bottom: none;
+      }
+
+      .exp-item .exp-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-bottom: 2px;
+      }
+
+      .exp-item .exp-role {
+        font-family: var(--font-condensed);
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .exp-item .exp-date {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+      }
+
+      .exp-item .exp-company {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--accent-secondary);
+      }
+
+      .exp-item .exp-desc {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin-top: 4px;
+        padding-left: 12px;
+        border-left: 1px solid var(--accent);
+      }
+
+      /* --- EXHIBITIONS --- */
+      .exh-item {
+        padding: 6px 0;
+        font-size: 0.8rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .exh-item .exh-name {
+        color: var(--text);
+      }
+
+      .exh-item .exh-year {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+      }
+
+      /* --- PORTFOLIO LINK --- */
+      .portfolio-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--accent-dim);
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        color: var(--accent-secondary);
+        text-decoration: none;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        transition: all 0.3s ease;
+        margin-top: 4px;
+      }
+
+      .portfolio-link:hover {
+        border-color: var(--accent);
+        box-shadow: var(--accent-glow);
+      }
+
+      /* --- FOOTER --- */
+      .cv-footer {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+      }
+
+      .cv-footer span {
+        color: var(--accent);
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 768px) {
+        .cv-container {
+          padding: 30px 24px;
+        }
+        .cv-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .cv-header .name {
+          font-size: 1.8rem;
+        }
+        .contact-bar {
+          gap: 12px;
+          font-size: 0.6rem;
+          flex-wrap: wrap;
+        }
+        .exp-item .exp-header {
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .cv-container {
+          padding: 20px 16px;
+        }
+        .cv-header .name {
+          font-size: 1.4rem;
+        }
+        .cv-header .title {
+          font-size: 0.6rem;
+        }
+        .contact-bar {
+          font-size: 0.5rem;
+          gap: 8px;
+        }
+        .exp-item .exp-role {
+          font-size: 0.85rem;
+        }
+      }
+
+      /* --- PRINT STYLES --- */
+      @media print {
+        .scanlines,
+        .noise {
+          display: none;
+        }
+        .cv-container {
+          background: #0a0508;
+          box-shadow: none;
+          border: 1px solid #1a0a2a;
+        }
+        .cv-container::before,
+        .cv-container::after {
+          opacity: 0.05;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+
+    <div class="cv-container">
+      <!-- HEADER -->
+      <div class="cv-header">
+        <div>
+          <div class="name">✦ <span>ARTIST</span> NAME</div>
+        </div>
+        <div class="title">DIGITAL ARTIST</div>
+      </div>
+
+      <!-- CONTACT BAR -->
+      <div class="contact-bar">
+        <span><i class="fas fa-envelope"></i> email@artist.com</span>
+        <span><i class="fas fa-phone"></i> +1 234 567 890</span>
+        <span><i class="fas fa-map-marker-alt"></i> City, Country</span>
+        <span><i class="fas fa-globe"></i> yourportfolio.com</span>
+      </div>
+
+      <!-- CV GRID -->
+      <div class="cv-grid">
+        <!-- LEFT COLUMN -->
+        <div class="cv-left">
+          <!-- Skills -->
+          <div class="cv-section">
+            <div class="cv-section-title">✦ Skills</div>
+            <div class="skill-item">
+              <span class="skill-name">Digital Painting</span>
+              <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-bar">
+              <div class="fill" style="width: 95%"></div>
+            </div>
+
+            <div class="skill-item">
+              <span class="skill-name">Illustration</span>
+              <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-bar">
+              <div class="fill" style="width: 90%"></div>
+            </div>
+
+            <div class="skill-item">
+              <span class="skill-name">Concept Art</span>
+              <span class="skill-level">Advanced</span>
+            </div>
+            <div class="skill-bar">
+              <div class="fill" style="width: 80%"></div>
+            </div>
+
+            <div class="skill-item">
+              <span class="skill-name">Photoshop</span>
+              <span class="skill-level">Expert</span>
+            </div>
+            <div class="skill-bar">
+              <div class="fill" style="width: 95%"></div>
+            </div>
+
+            <div class="skill-item">
+              <span class="skill-name">Procreate</span>
+              <span class="skill-level">Advanced</span>
+            </div>
+            <div class="skill-bar">
+              <div class="fill" style="width: 85%"></div>
+            </div>
+          </div>
+
+          <!-- Languages -->
+          <div class="cv-section">
+            <div class="cv-section-title">✦ Languages</div>
+            <div class="skill-item">
+              <span class="skill-name">English</span>
+              <span class="skill-level">Native</span>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Spanish</span>
+              <span class="skill-level">Fluent</span>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">French</span>
+              <span class="skill-level">Intermediate</span>
+            </div>
+          </div>
+
+          <!-- Portfolio -->
+          <div class="cv-section">
+            <div class="cv-section-title">✦ Portfolio</div>
+            <a href="#" class="portfolio-link">
+              <i class="fas fa-folder-open"></i> View My Portfolio
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="cv-right">
+          <!-- Profile -->
+          <div class="cv-section">
+            <div class="cv-section-title">✦ Profile</div>
+            <p
+              style="
+                font-size: 0.85rem;
+                color: var(--text-muted);
+                line-height: 1.6;
+              "
+            >
+              Passionate digital artist with 5+ years of experience in
+              illustration, concept art, and character design. Specializing in
+              cyberpunk and futuristic themes with a unique neon aesthetic.
+            </p>
+          </div>
+
+          <!-- Experience -->
+          <div class="cv-section">
+            <div class="cv-section-title">✦ Experience</div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="exp-role">Senior Digital Artist</span>
+                <span class="exp-date">2022 — Present</span>
+              </div>
+              <div class="exp-company">Neon Studios — Remote</div>
+              <div class="exp-desc">
+                Leading a team of 5 artists on AAA game projects. Responsible
+                for character design, environment art, and art direction.
+              </div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="exp-role">Junior Illustrator</span>
+                <span class="exp-date">2020 — 2022</span>
+              </div>
+              <div class="exp-company">Creative Studio — City, Country</div>
+              <div class="exp-desc">
+                Created illustrations for clients across gaming, publishing, and
+                advertising. Developed a distinct style recognized by the
+                industry.
+              </div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="exp-role">Freelance Artist</span>
+                <span class="exp-date">2018 — 2020</span>
+              </div>
+              <div class="exp-company">Self-Employed</div>
+              <div class="exp-desc">
+                Worked with 20+ clients on commissions ranging from character
+                design to full illustration projects.
+              </div>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="cv-section">
+            <div class="cv-section-title">✦ Education</div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="exp-role">BFA in Digital Art</span>
+                <span class="exp-date">2016 — 2020</span>
+              </div>
+              <div class="exp-company">Art University — City, Country</div>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <span class="exp-role">Advanced Character Design</span>
+                <span class="exp-date">2019</span>
+              </div>
+              <div class="exp-company">School of Visual Arts — Online</div>
+            </div>
+          </div>
+
+          <!-- Exhibitions -->
+          <div class="cv-section">
+            <div class="cv-section-title">✦ Exhibitions</div>
+            <div class="exh-item">
+              <span class="exh-name">Cyberpunk Art Show</span>
+              <span class="exh-year">2025</span>
+            </div>
+            <div class="exh-item">
+              <span class="exh-name">Digital Dreams Exhibition</span>
+              <span class="exh-year">2024</span>
+            </div>
+            <div class="exh-item">
+              <span class="exh-name">Group Show: Future Visions</span>
+              <span class="exh-year">2023</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="cv-footer">✦ <span>KEEP IT FRESH</span> ✦</div>
+    </div>
+  </body>
+</html>

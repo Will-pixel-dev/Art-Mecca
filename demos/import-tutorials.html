@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Import Tutorials to Firestore</title>
+    <style>
+      body {
+        background: #0a0508;
+        color: #f5eaff;
+        font-family: "Inter", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 800px;
+        width: 100%;
+        background: rgba(173, 3, 252, 0.06);
+        border: 1px solid rgba(173, 3, 252, 0.15);
+        border-radius: 8px;
+        padding: 40px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      }
+      h1 {
+        font-family: "Orbitron", monospace;
+        font-size: 1.8rem;
+        color: #ad03fc;
+        margin-top: 0;
+      }
+      .status {
+        padding: 12px 16px;
+        border-radius: 4px;
+        margin: 12px 0;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.8rem;
+      }
+      .status.success {
+        background: rgba(79, 243, 166, 0.1);
+        border: 1px solid rgba(79, 243, 166, 0.2);
+        color: #4ff3a6;
+      }
+      .status.error {
+        background: rgba(255, 45, 149, 0.1);
+        border: 1px solid rgba(255, 45, 149, 0.2);
+        color: #ff2d95;
+      }
+      .status.info {
+        background: rgba(88, 235, 254, 0.1);
+        border: 1px solid rgba(88, 235, 254, 0.2);
+        color: #58ebfe;
+      }
+      .status.warning {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        color: #f59e0b;
+      }
+      .progress {
+        width: 100%;
+        height: 4px;
+        background: rgba(173, 3, 252, 0.1);
+        border-radius: 2px;
+        margin: 16px 0;
+        overflow: hidden;
+      }
+      .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #ad03fc, #00d4ff);
+        width: 0%;
+        transition: width 0.3s ease;
+        border-radius: 2px;
+      }
+      button {
+        background: linear-gradient(135deg, #ad03fc, #00d4ff);
+        color: white;
+        border: none;
+        padding: 14px 32px;
+        border-radius: 4px;
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 40px rgba(173, 3, 252, 0.2);
+      }
+      button:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 0 60px rgba(173, 3, 252, 0.3);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .log {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        padding: 16px;
+        max-height: 300px;
+        overflow-y: auto;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.75rem;
+        color: rgba(245, 234, 255, 0.6);
+        margin-top: 16px;
+        border: 1px solid rgba(173, 3, 252, 0.05);
+      }
+      .log::-webkit-scrollbar {
+        width: 3px;
+      }
+      .log::-webkit-scrollbar-track {
+        background: rgba(173, 3, 252, 0.05);
+      }
+      .log::-webkit-scrollbar-thumb {
+        background: #ad03fc;
+        border-radius: 2px;
+      }
+      .log-entry {
+        padding: 2px 0;
+        border-bottom: 1px solid rgba(173, 3, 252, 0.03);
+      }
+      .log-entry.success {
+        color: #4ff3a6;
+      }
+      .log-entry.error {
+        color: #ff2d95;
+      }
+      .log-entry.info {
+        color: #58ebfe;
+      }
+      .log-entry.warning {
+        color: #f59e0b;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin: 16px 0;
+      }
+      .stat {
+        background: rgba(173, 3, 252, 0.04);
+        border: 1px solid rgba(173, 3, 252, 0.08);
+        border-radius: 4px;
+        padding: 12px;
+        text-align: center;
+      }
+      .stat-number {
+        font-family: "Orbitron", monospace;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #ad03fc;
+      }
+      .stat-label {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.6rem;
+        color: rgba(245, 234, 255, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 4px;
+      }
+      .path-hint {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 12px 16px;
+        border-radius: 4px;
+        margin: 12px 0;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.75rem;
+        color: rgba(245, 234, 255, 0.4);
+        border: 1px solid rgba(173, 3, 252, 0.05);
+      }
+      .path-hint code {
+        color: #58ebfe;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🚀 Import Tutorials to Firestore</h1>
+      <p style="color: rgba(245, 234, 255, 0.5); margin-bottom: 24px">
+        This will import all tutorials from <code>tutorial-data.js</code> into
+        your Firestore database.
+      </p>
+
+      <div class="path-hint">
+        📁 Loading from:
+        <code id="scriptPath">/js/tutorials/tutorial-data.js</code>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number" id="totalTutorials">0</div>
+          <div class="stat-label">Total Tutorials</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="importedCount">0</div>
+          <div class="stat-label">Imported</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="failedCount">0</div>
+          <div class="stat-label">Failed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="categoryCount">0</div>
+          <div class="stat-label">Categories</div>
+        </div>
+      </div>
+
+      <div id="statusMessage" class="status info">
+        ⏳ Loading tutorial data...
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <button id="importBtn" disabled>⏳ Loading...</button>
+
+      <div class="log" id="logContainer">
+        <div class="log-entry info">⏳ Initializing...</div>
+      </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script src="/config/firebase-config.js"></script>
+
+    <!-- ============================================================
+    TUTORIAL DATA - CORRECT PATH: /js/tutorials/tutorial-data.js
+    ============================================================ -->
+    <script src="/js/tutorials/tutorial-data.js"></script>
+
+    <!-- ============================================================
+    MAIN SCRIPT
+    ============================================================ -->
+    <script>
+      // ============================================================
+      // IMPORT SCRIPT
+      // ============================================================
+
+      const logContainer = document.getElementById("logContainer");
+      const progressBar = document.getElementById("progressBar");
+      const statusMessage = document.getElementById("statusMessage");
+      const importBtn = document.getElementById("importBtn");
+      const totalTutorialsEl = document.getElementById("totalTutorials");
+      const importedCountEl = document.getElementById("importedCount");
+      const failedCountEl = document.getElementById("failedCount");
+      const categoryCountEl = document.getElementById("categoryCount");
+
+      let importedCount = 0;
+      let failedCount = 0;
+      let totalTutorials = 0;
+
+      function addLog(message, type = "info") {
+        const entry = document.createElement("div");
+        entry.className = `log-entry ${type}`;
+        const timestamp = new Date().toLocaleTimeString();
+        entry.textContent = `[${timestamp}] ${message}`;
+        logContainer.appendChild(entry);
+        logContainer.scrollTop = logContainer.scrollHeight;
+      }
+
+      function updateStatus(message, type = "info") {
+        statusMessage.textContent = message;
+        statusMessage.className = `status ${type}`;
+      }
+
+      function updateProgress(percent) {
+        progressBar.style.width = `${Math.min(100, percent)}%`;
+      }
+
+      function updateStats() {
+        totalTutorialsEl.textContent = totalTutorials;
+        importedCountEl.textContent = importedCount;
+        failedCountEl.textContent = failedCount;
+        categoryCountEl.textContent = window.tutorialData
+          ? window.tutorialData.getAllCategories().length
+          : 0;
+      }
+
+      // ============================================================
+      // WAIT FOR TUTORIAL DATA
+      // ============================================================
+
+      function waitForTutorialData() {
+        return new Promise((resolve) => {
+          let attempts = 0;
+          const maxAttempts = 30;
+
+          const check = () => {
+            attempts++;
+            if (
+              typeof window.tutorialData !== "undefined" &&
+              window.tutorialData !== null
+            ) {
+              resolve(true);
+              return;
+            }
+            if (attempts >= maxAttempts) {
+              resolve(false);
+              return;
+            }
+            setTimeout(check, 300);
+          };
+          check();
+        });
+      }
+
+      // ============================================================
+      // MAIN IMPORT FUNCTION
+      // ============================================================
+
+      async function importTutorials() {
+        importBtn.disabled = true;
+        importBtn.textContent = "⏳ Importing...";
+
+        addLog("🚀 Starting import process...", "info");
+        updateStatus("Importing tutorials...", "info");
+
+        const db = firebase.firestore();
+
+        // Double-check tutorial data is available
+        if (typeof window.tutorialData === "undefined") {
+          addLog("❌ Tutorial data still not available!", "error");
+          updateStatus("❌ Tutorial data not found!", "error");
+          importBtn.textContent = "❌ Error";
+          importBtn.disabled = false;
+          return;
+        }
+
+        const tutorials = window.tutorialData.getAllTutorials();
+        totalTutorials = tutorials.length;
+        updateStats();
+
+        addLog(`📚 Found ${totalTutorials} tutorials to import`, "info");
+
+        if (totalTutorials === 0) {
+          addLog("❌ No tutorials found in tutorial-data.js!", "error");
+          updateStatus("No tutorials found!", "error");
+          importBtn.textContent = "❌ No Data";
+          importBtn.disabled = true;
+          return;
+        }
+
+        // Check if user is authenticated
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          addLog(
+            "⚠️ You are not logged in. Firestore rules may block writes.",
+            "warning",
+          );
+          addLog(
+            "💡 If your rules require authentication, please log in first.",
+            "warning",
+          );
+        }
+
+        let successCount = 0;
+        let failCount = 0;
+
+        for (let i = 0; i < tutorials.length; i++) {
+          const tutorial = tutorials[i];
+          const progress = ((i + 1) / tutorials.length) * 100;
+          updateProgress(progress);
+
+          try {
+            // Prepare data for Firestore
+            const data = {
+              title: tutorial.title || "Untitled",
+              description: tutorial.description || "",
+              category: tutorial.category || "general",
+              difficulty: tutorial.difficulty || "beginner",
+              duration: tutorial.duration || 30,
+              image: tutorial.image || "",
+              file: tutorial.file || "",
+              author: tutorial.author || "Unknown",
+              date: tutorial.date || new Date().toISOString().split("T")[0],
+              tags: tutorial.tags || [],
+              status: "published",
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            };
+
+            // Add related tutorials if they exist
+            if (
+              tutorial.relatedTutorials &&
+              tutorial.relatedTutorials.length > 0
+            ) {
+              data.relatedTutorials = tutorial.relatedTutorials;
+            }
+            if (tutorial.nextTutorial) {
+              data.nextTutorial = tutorial.nextTutorial;
+            }
+            if (tutorial.prevTutorial) {
+              data.prevTutorial = tutorial.prevTutorial;
+            }
+
+            // Use the tutorial ID as the document ID
+            await db.collection("tutorials").doc(tutorial.id).set(data);
+
+            successCount++;
+            importedCount = successCount;
+            addLog(
+              `✅ Imported: ${tutorial.title} (${tutorial.id})`,
+              "success",
+            );
+            updateStats();
+          } catch (error) {
+            failCount++;
+            failedCount = failCount;
+            addLog(
+              `❌ Failed to import ${tutorial.title}: ${error.message}`,
+              "error",
+            );
+            updateStats();
+          }
+
+          // Update stats every few items
+          if (i % 5 === 0 || i === tutorials.length - 1) {
+            importedCountEl.textContent = successCount;
+            failedCountEl.textContent = failCount;
+          }
+        }
+
+        // Final update
+        updateProgress(100);
+
+        if (failCount === 0) {
+          addLog(
+            `🎉 Successfully imported all ${successCount} tutorials!`,
+            "success",
+          );
+          updateStatus(
+            `✅ Import complete! ${successCount} tutorials added.`,
+            "success",
+          );
+          importBtn.textContent = "✅ Done!";
+        } else {
+          addLog(
+            `⚠️ Import complete: ${successCount} succeeded, ${failCount} failed`,
+            "warning",
+          );
+          updateStatus(
+            `⚠️ ${successCount} imported, ${failCount} failed`,
+            "warning",
+          );
+          importBtn.textContent = "⚠️ Partial Success";
+        }
+
+        // Log category summary
+        const categories = window.tutorialData.getAllCategories();
+        addLog(
+          `📂 Categories: ${categories.map((c) => c.name).join(", ")}`,
+          "info",
+        );
+
+        importBtn.disabled = false;
+      }
+
+      // ============================================================
+      // INITIALIZE
+      // ============================================================
+
+      async function init() {
+        addLog(
+          "⏳ Loading tutorial data from /js/tutorials/tutorial-data.js...",
+          "info",
+        );
+        updateStatus("Loading tutorial data...", "info");
+
+        try {
+          // Wait for script to load
+          await waitForTutorialData();
+
+          if (typeof window.tutorialData === "undefined") {
+            addLog(
+              "❌ Tutorial data not found at /js/tutorials/tutorial-data.js!",
+              "error",
+            );
+            addLog(
+              "💡 Make sure the file exists at: /js/tutorials/tutorial-data.js",
+              "warning",
+            );
+            updateStatus("❌ Tutorial data not found!", "error");
+            importBtn.textContent = "❌ Error";
+            importBtn.disabled = true;
+            return;
+          }
+
+          const tutorials = window.tutorialData.getAllTutorials();
+          totalTutorials = tutorials.length;
+          updateStats();
+
+          addLog(`✅ Found ${totalTutorials} tutorials`, "success");
+          addLog(
+            `📂 Categories: ${window.tutorialData
+              .getAllCategories()
+              .map((c) => c.name)
+              .join(", ")}`,
+            "info",
+          );
+
+          updateStatus(`Ready to import ${totalTutorials} tutorials`, "info");
+          importBtn.textContent = "🚀 Start Import";
+          importBtn.disabled = false;
+
+          // Check Firebase auth status
+          firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              addLog(`🔐 Logged in as: ${user.email}`, "info");
+            } else {
+              addLog(
+                "⚠️ Not logged in. If your Firestore rules require auth, imports may fail.",
+                "warning",
+              );
+            }
+          });
+        } catch (error) {
+          addLog(`❌ Initialization error: ${error.message}`, "error");
+          updateStatus("❌ Failed to initialize", "error");
+          importBtn.textContent = "❌ Error";
+          importBtn.disabled = true;
+        }
+      }
+
+      // ============================================================
+      // EVENT LISTENERS
+      // ============================================================
+
+      importBtn.addEventListener("click", importTutorials);
+
+      // ============================================================
+      // START
+      // ============================================================
+
+      // Wait for DOM
+      if (document.readyState === "complete") {
+        init();
+      } else {
+        window.addEventListener("load", init);
+      }
+
+      console.log("📚 Import script loaded. Click the button to start!");
+    </script>
+  </body>
+</html>

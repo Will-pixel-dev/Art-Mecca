@@ -1,17 +1,77 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Skin Rendering Techniques | Art Mecca</title>
+    <meta
+      name="description"
+      content="Master the art of rendering realistic skin in digital art. Step-by-step tutorial covering texture, subsurface scattering, color variation, and more."
+    />
+    <meta
+      name="keywords"
+      content="skin rendering, realistic skin, digital painting, portrait tutorial, skin texture, subsurface scattering"
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Skin Rendering Techniques - Step-by-Step Guide"
+    />
+    <meta
+      property="og:description"
+      content="Master the art of rendering realistic skin in digital art. Step-by-step tutorial covering texture, subsurface scattering, and color variation."
+    />
+    <meta property="og:image" content="/images/tutorials/skin-hero.jpg" />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/tutorials/facial-features/skin-rendering-tutorial.html"
+    />
+    <meta property="og:type" content="article" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Skin Rendering Techniques - Step-by-Step Guide"
+    />
+    <meta
+      name="twitter:description"
+      content="Master the art of rendering realistic skin in digital art."
+    />
+    <meta name="twitter:image" content="/images/tutorials/skin-hero.jpg" />
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -24,426 +84,668 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
-      /* ============================================
-           SKIN RENDERING TUTORIAL - PINK THEME
-           Colors: #ff69b4, #ff1493, #ff85c1, #ffb6c1, #ffc0cb
-           ============================================ */
+      /* ================================================================
+         SKIN RENDERING TUTORIAL — CYBERPUNK PINK AESTHETIC
+         ================================================================ */
 
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
       :root {
-        --tutorial-primary: #ff69b4;
-        --tutorial-primary-dark: #ff1493;
-        --tutorial-primary-light: #ff85c1;
-        --tutorial-primary-lighter: #ffb6c1;
-        --tutorial-primary-lightest: #ffc0cb;
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(254, 103, 234, 0.06);
+        --bg-card-hover: rgba(254, 103, 234, 0.12);
+        --bg-elevated: rgba(254, 103, 234, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(254, 103, 234, 0.15);
+
+        /* Theme Colors - Pink */
+        --color-pink: #fe67ea;
+        --color-pink-dark: #e237ce;
+        --color-pink-darker: #f705d7;
+        --color-pink-light: #ff99f0;
+        --color-pink-lighter: #ffc4f5;
+        --color-pink-mid: #fe67ea;
+
+        /* Glitch Colors - Pink Only */
+        --color-glitch-a: #f705d7;
+        --color-glitch-b: #fe67ea;
+        --color-glitch-c: #ad03fc;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-magenta: #ff00ea;
+
+        /* Spray */
+        --color-spray-pink: #fe67ea;
+        --color-spray-red: #ff0040;
+
+        /* Gradients */
+        --gradient-pink: linear-gradient(135deg, #fe67ea, #e237ce, #f705d7);
+        --gradient-cyber: linear-gradient(135deg, #f705d7, #ad03fc, #fe67ea);
+        --gradient-neon: linear-gradient(135deg, #fe67ea, #e237ce);
+
+        /* Glows */
+        --glow-pink:
+          0 0 40px rgba(254, 103, 234, 0.3),
+          0 0 80px rgba(254, 103, 234, 0.1);
+        --glow-pink-dark:
+          0 0 40px rgba(226, 55, 206, 0.3),
+          0 0 80px rgba(226, 55, 206, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
-      /* ============================================
-           CUSTOM PINK THEME NAVBAR
-           ============================================ */
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
 
-      .main-header {
-        background: white;
-        box-shadow:
-          0 8px 32px rgba(255, 105, 180, 0.15),
-          0 2px 8px rgba(0, 0, 0, 0.05);
-        position: sticky;
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(254, 103, 234, 0.2);
+
+        --glow-pink:
+          0 0 40px rgba(254, 103, 234, 0.08),
+          0 0 80px rgba(254, 103, 234, 0.03);
+        --glow-pink-dark:
+          0 0 40px rgba(226, 55, 206, 0.08),
+          0 0 80px rgba(226, 55, 206, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
         top: 0;
-        z-index: 1000;
-        border-bottom: 1px solid rgba(255, 105, 180, 0.2);
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
       }
 
-      .main-header .logo {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
       }
 
-      .main-header .logo-icon {
-        font-size: 2rem;
-        background: linear-gradient(135deg, #ff69b4, #ff1493, #ff85c1);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        animation: logoPulse 3s ease-in-out infinite;
+      .noise-overlay.active {
+        opacity: 1;
       }
 
-      @keyframes logoPulse {
-        0%,
-        100% {
-          filter: drop-shadow(0 0 0px rgba(255, 105, 180, 0.3));
-        }
-        50% {
-          filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.6));
-        }
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
       }
 
-      .main-header .logo-text {
-        font-size: 1.3rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #ff69b4, #ff1493, #ff85c1, #ffb6c1);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        background-size: 200% auto;
-        animation: shimmer 3s linear infinite;
-      }
-
-      @keyframes shimmer {
+      @keyframes scanMove {
         0% {
-          background-position: 0% center;
+          transform: translateY(0);
         }
         100% {
-          background-position: 200% center;
+          transform: translateY(3px);
         }
       }
 
-      .main-header .nav-link {
-        color: #4a5568;
-        font-weight: 500;
-        transition: all 0.3s ease;
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition: background 0.4s ease, color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .tutorial-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
         position: relative;
+        z-index: 2;
       }
 
-      .main-header .nav-link:hover {
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         background-clip: text;
-        color: transparent;
-        transform: translateY(-2px);
+        filter: drop-shadow(0 0 60px rgba(254, 103, 234, 0.2));
+        line-height: 1.1;
       }
 
-      .main-header .nav-link.active {
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-weight: 600;
-      }
-
-      .main-header .nav-link.active::after {
-        content: "";
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
         position: absolute;
-        bottom: -4px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60%;
-        height: 3px;
-        background: linear-gradient(90deg, #ff69b4, #ff1493);
-        border-radius: 3px;
-        animation: underlineGlow 2s ease-in-out infinite;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
       }
 
-      @keyframes underlineGlow {
-        0%,
-        100% {
-          opacity: 0.6;
-          width: 60%;
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
         }
         50% {
-          opacity: 1;
-          width: 80%;
-          box-shadow: 0 0 6px #ff69b4;
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
         }
       }
 
-      .main-header .dropdown-arrow {
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         BREADCRUMB — CYBER HUD
+         ============================================================ */
+      .breadcrumb {
+        font-family: var(--font-mono);
         font-size: 0.7rem;
-        transition: transform 0.3s ease;
-        color: #ff1493;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
       }
 
-      .nav-dropdown:hover .dropdown-arrow {
-        transform: rotate(180deg);
+      .breadcrumb a {
+        color: var(--color-pink);
+        text-decoration: none;
+        transition: all var(--transition);
       }
 
-      .main-header .dropdown-menu {
-        background: white;
-        border: none;
-        border-radius: 12px;
-        box-shadow:
-          0 12px 32px rgba(255, 105, 180, 0.2),
-          0 4px 12px rgba(0, 0, 0, 0.1);
-        margin-top: 0.5rem;
+      .breadcrumb a:hover {
+        color: var(--color-pink-light);
+        text-shadow: 0 0 30px rgba(254, 103, 234, 0.2);
+      }
+
+      .breadcrumb .sep {
+        color: var(--text-muted);
+        opacity: 0.3;
+        margin: 0 8px;
+      }
+
+      /* ============================================================
+         TUTORIAL HERO — GLASS PINK
+         ============================================================ */
+      .tutorial-hero {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 3rem;
+        margin: 2rem 0;
+        box-shadow: var(--shadow-card), var(--glow-pink);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5rem;
+        position: relative;
         overflow: hidden;
       }
 
-      .main-header .dropdown-menu::before {
-        content: "";
+      .tutorial-hero::before {
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #ff69b4, #ff1493, #ff85c1, #ffb6c1);
+        background: var(--gradient-pink);
+        opacity: 0.6;
       }
 
-      .main-header .dropdown-item {
-        padding: 0.75rem 1.5rem;
-        color: #4a5568;
-        transition: all 0.3s ease;
-        font-weight: 500;
-      }
-
-      .main-header .dropdown-item:hover {
-        background: linear-gradient(90deg, #ffc0cb, white);
-        color: #ff1493;
-        padding-left: 1.8rem;
-      }
-
-      .main-header .search-btn {
-        color: #4a5568;
-        transition: all 0.3s ease;
-      }
-
-      .main-header .search-btn:hover {
-        color: #ff69b4;
-        transform: scale(1.05);
-      }
-
-      .main-header .user-btn {
-        color: #4a5568;
-        transition: all 0.3s ease;
-      }
-
-      .main-header .user-btn:hover {
-        color: #ff69b4;
-        transform: scale(1.05);
-      }
-
-      .main-header .signup-btn {
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
-        color: white;
-        border: none;
-        padding: 0.5rem 1.2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(255, 105, 180, 0.3);
-      }
-
-      .main-header .signup-btn:hover {
-        background: linear-gradient(135deg, #ff1493, #ff69b4);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(255, 105, 180, 0.4);
-      }
-
-      .user-dropdown {
-        border-top: 3px solid #ff69b4;
-        border-radius: 12px;
-        box-shadow: 0 12px 32px rgba(255, 105, 180, 0.2);
-      }
-
-      .user-dropdown .dropdown-item:hover {
-        background: #ffc0cb;
-        color: #ff1493;
-      }
-
-      .mobile-menu-btn span {
-        background: #ff1493;
-      }
-
-      /* ============================================
-           TUTORIAL CONTENT STYLES
-           ============================================ */
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: #f8f8f8;
-        color: #1a1a1a;
-        line-height: 1.6;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1.5rem;
-      }
-
-      /* Tutorial Hero Section */
-      .tutorial-hero {
-        background: linear-gradient(135deg, #ffc0cb, white);
-        padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin: 2rem 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
+      .tutorial-hero::after {
+        content: '✦ GO MECCA STAR ✦';
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-pink);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
       }
 
       .tutorial-info {
         flex: 1;
         min-width: 280px;
+        position: relative;
+        z-index: 1;
       }
 
-      .breadcrumb {
+      .tutorial-info h1 {
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 900;
+        color: var(--text-primary);
         margin-bottom: 1rem;
-        font-size: 0.9rem;
-        color: #666;
-      }
-
-      .breadcrumb a {
-        color: #ff1493;
-        text-decoration: none;
-      }
-
-      .breadcrumb a:hover {
-        text-decoration: underline;
-      }
-
-      h1 {
-        font-size: 2.2rem;
-        color: #ff1493;
-        margin-bottom: 1rem;
+        letter-spacing: 1px;
         line-height: 1.2;
       }
 
+      .tutorial-info h1 .highlight {
+        background: var(--gradient-pink);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
       .tutorial-description {
-        font-size: 1.1rem;
-        margin: 1rem 0;
-        color: #333;
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        font-family: var(--font-condensed);
       }
 
       .tutorial-meta {
         display: flex;
         gap: 1.5rem;
-        margin: 1.5rem 0;
-        color: #ff69b4;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
       }
 
       .meta-item {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
-      .difficulty {
+      .meta-item i {
+        color: var(--color-pink);
+        font-size: 0.8rem;
+      }
+
+      .difficulty-badge-tutorial {
         display: inline-block;
         padding: 0.3rem 1rem;
-        border-radius: 50px;
-        font-size: 0.8rem;
+        border-radius: 20px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: rgba(254, 103, 234, 0.1);
+        color: var(--color-pink);
+        border: 1px solid rgba(254, 103, 234, 0.15);
+        margin-bottom: 1rem;
+      }
+
+      /* ============================================================
+         TUTORIAL ACTIONS — SAVE & COMPLETE
+         ============================================================ */
+      .tutorial-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 1.5rem 0;
+      }
+
+      .btn-save-tutorial {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+        font-size: 0.75rem;
         font-weight: 600;
-        margin-top: 0.5rem;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
-      .advanced {
-        background: #ff69b4;
-        color: white;
+      .btn-save-tutorial:hover {
+        border-color: var(--color-pink);
+        color: var(--text-primary);
+        transform: translateY(-2px);
       }
 
+      .btn-save-tutorial.saved {
+        background: var(--gradient-pink);
+        color: var(--text-inverse);
+        border-color: var(--color-pink);
+        box-shadow: var(--glow-pink);
+      }
+
+      .completion-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-condensed);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .completion-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--color-pink);
+        cursor: pointer;
+      }
+
+      /* ============================================================
+         TOOLS REQUIRED
+         ============================================================ */
       .tools-required {
         margin-top: 1.5rem;
       }
 
       .tools-required h3 {
-        font-size: 1.1rem;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
         margin-bottom: 0.5rem;
       }
 
       .tools-required ul {
-        margin-left: 1.5rem;
-        color: #555;
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
       }
 
+      .tools-required ul li {
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .tools-required ul li::before {
+        content: '◆';
+        color: var(--color-pink);
+        font-size: 0.5rem;
+      }
+
+      /* ============================================================
+         TUTORIAL IMAGE
+         ============================================================ */
       .tutorial-image {
         flex: 1;
         min-width: 280px;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
+        position: relative;
       }
 
-      .tutorial-image img {
+      .tutorial-image .image-placeholder {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient-pink);
+        opacity: 0.8;
+        color: white;
+        font-size: 4rem;
+        padding: 2rem;
+        text-align: center;
       }
 
-      .tutorial-image:hover img {
-        transform: scale(1.02);
+      .tutorial-image .image-placeholder p {
+        font-family: var(--font-condensed);
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        opacity: 0.8;
       }
 
       .image-caption {
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         text-align: center;
-        font-style: italic;
-        font-size: 0.8rem;
-        background: #f5f5f5;
-        color: #666;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        background: var(--bg-elevated);
+        border-top: 1px solid var(--border-color);
+        letter-spacing: 0.5px;
       }
 
-      /* Progress Bar */
+      /* ============================================================
+         PROGRESS BAR — CYBER HUD
+         ============================================================ */
       .progress-container {
-        background: white;
-        padding: 1.5rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
         margin-bottom: 2rem;
         position: sticky;
         top: 80px;
         z-index: 100;
+        box-shadow: var(--shadow-card), var(--glow-pink);
       }
 
       .progress-bar {
-        height: 8px;
-        background: #e0e0e0;
-        border-radius: 4px;
+        height: 6px;
+        background: var(--bg-elevated);
+        border-radius: 3px;
         overflow: hidden;
+        border: 1px solid var(--border-color);
+        position: relative;
       }
 
       .progress {
         height: 100%;
-        background: linear-gradient(90deg, #ff69b4, #ff1493);
+        background: var(--gradient-pink);
         width: 0%;
         transition: width 0.3s ease;
+        box-shadow: 0 0 20px rgba(254, 103, 234, 0.2);
       }
 
       .progress-stats {
         display: flex;
         justify-content: space-between;
         margin-top: 0.5rem;
-        font-size: 0.8rem;
-        color: #666;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
       }
 
-      /* Tutorial Content */
+      /* ============================================================
+         TUTORIAL CONTENT
+         ============================================================ */
       .tutorial-content {
-        background: white;
-        padding: 2rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 2.5rem;
         margin-bottom: 2rem;
-      }
-
-      h2 {
-        font-size: 1.8rem;
-        color: #ff1493;
-        margin: 2rem 0 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #e5e5e5;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      h3 {
-        font-size: 1.2rem;
-        color: #333;
-        margin: 1rem 0 0.5rem;
+        box-shadow: var(--shadow-card), var(--glow-pink);
       }
 
       .step {
         margin-bottom: 3rem;
         padding-bottom: 2rem;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--border-color);
+        position: relative;
       }
 
       .step:last-child {
@@ -452,113 +754,252 @@
         padding-bottom: 0;
       }
 
+      .step h2 {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        color: var(--text-primary);
+        margin: 0 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        letter-spacing: 1px;
+      }
+
       .step-number {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
+        min-width: 36px;
         height: 36px;
-        background: #ff69b4;
-        color: white;
-        border-radius: 50%;
-        font-size: 1rem;
-        font-weight: bold;
-      }
-
-      .step-content {
-        margin-left: 0.5rem;
+        background: var(--gradient-pink);
+        color: var(--text-inverse);
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        flex-shrink: 0;
+        box-shadow: var(--glow-pink);
       }
 
       .step-content p {
-        line-height: 1.7;
-        color: #444;
+        font-size: 1rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+        margin-bottom: 1rem;
       }
 
-      /* Tutorial Visual Aid - Full Width (800px x 300px) */
+      .step-content h3 {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        margin: 1.5rem 0 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .step-content ul {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 1rem;
+      }
+
+      .step-content ul li {
+        font-family: var(--font-condensed);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        padding: 0.3rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        line-height: 1.6;
+      }
+
+      .step-content ul li::before {
+        content: '◈';
+        color: var(--color-pink);
+        font-size: 0.6rem;
+        margin-top: 0.3rem;
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+         TIPS — GLASS PINK
+         ============================================================ */
+      .tips {
+        background: rgba(254, 103, 234, 0.06);
+        border: 1px solid rgba(254, 103, 234, 0.15);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-left: 4px solid var(--color-pink);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tips::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(circle, rgba(254, 103, 234, 0.04), transparent);
+        pointer-events: none;
+      }
+
+      .tips h4 {
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        color: var(--color-pink);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .tips p {
+        font-family: var(--font-condensed);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      /* ============================================================
+         TUTORIAL VISUAL AID — FULL WIDTH
+         ============================================================ */
       .tutorial-visual {
         margin: 1.5rem 0;
         border-radius: 12px;
         overflow: hidden;
-        background: #f8f8f8;
-        border: 1px solid #e5e5e5;
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
       }
 
       .visual-placeholder {
         width: 100%;
-        height: 300px;
-        background: linear-gradient(135deg, #f8f8f8, #e0e0e0);
+        min-height: 250px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
         padding: 2rem;
+        background: var(--bg-elevated);
       }
 
       .visual-placeholder i {
-        font-size: 3rem;
-        color: #ff69b4;
+        font-size: 3.5rem;
+        color: var(--color-pink);
         margin-bottom: 1rem;
-        opacity: 0.6;
+        opacity: 0.3;
       }
 
       .visual-placeholder p {
-        color: #888;
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
         font-size: 0.9rem;
       }
 
       .visual-placeholder .placeholder-note {
-        font-size: 0.7rem;
-        color: #aaa;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
         margin-top: 0.5rem;
-      }
-
-      .tutorial-visual img {
-        width: 100%;
-        height: 300px;
-        object-fit: cover;
-        display: block;
+        opacity: 0.5;
+        letter-spacing: 0.5px;
       }
 
       .visual-caption {
         padding: 0.5rem 1rem;
         text-align: center;
-        font-style: italic;
-        font-size: 0.8rem;
-        background: #f5f5f5;
-        color: #666;
-        border-top: 1px solid #e5e5e5;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        background: var(--bg-elevated);
+        border-top: 1px solid var(--border-color);
+        letter-spacing: 0.5px;
       }
 
-      .tips {
-        background: #ffc0cb;
-        padding: 1.5rem;
+      /* ============================================================
+         COMPLETION MESSAGE
+         ============================================================ */
+      .completion-message {
+        background: var(--gradient-pink);
         border-radius: 12px;
-        margin: 1.5rem 0;
-        border-left: 4px solid #ff69b4;
+        padding: 2.5rem;
+        text-align: center;
+        margin-top: 2rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--glow-pink);
       }
 
-      .tips h4 {
-        color: #ff1493;
-        margin-bottom: 0.5rem;
+      .completion-message::before {
+        content: '✦ GO MECCA STAR ✦';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-6deg);
+        font-family: var(--font-tag);
+        font-size: 6rem;
+        color: rgba(255, 255, 255, 0.03);
+        pointer-events: none;
+        letter-spacing: 8px;
+      }
+
+      .completion-message h3 {
+        font-family: var(--font-display);
+        color: white;
+        font-size: 1.8rem;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        justify-content: center;
+        gap: 0.75rem;
       }
 
-      /* Video Section */
+      .completion-message p {
+        font-family: var(--font-condensed);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.05rem;
+        position: relative;
+        z-index: 1;
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* ============================================================
+         VIDEO SECTION
+         ============================================================ */
       .video-section {
-        background: white;
-        padding: 2rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 2.5rem;
         margin-bottom: 2rem;
         text-align: center;
+        box-shadow: var(--shadow-card), var(--glow-pink);
       }
 
       .video-section h2 {
-        text-align: center;
-        margin-bottom: 1rem;
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .video-section > p {
+        font-family: var(--font-condensed);
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
       }
 
       .video-container {
@@ -568,410 +1009,509 @@
         margin: 0 auto;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card);
       }
 
       .video-placeholder {
         width: 100%;
         height: 400px;
-        background: linear-gradient(135deg, #ff85c1, #ff1493);
+        background: var(--gradient-pink);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         color: white;
         cursor: pointer;
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .video-placeholder::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.05) 2px,
+          rgba(0, 0, 0, 0.05) 4px
+        );
+        pointer-events: none;
+      }
+
+      .video-placeholder:hover {
+        transform: scale(1.01);
       }
 
       .video-placeholder i {
         font-size: 4rem;
         margin-bottom: 1rem;
+        filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.2));
+        position: relative;
+        z-index: 1;
       }
 
       .video-placeholder p {
+        font-family: var(--font-condensed);
         font-size: 1.1rem;
+        position: relative;
+        z-index: 1;
+        opacity: 0.9;
       }
 
-      /* Tutorial Navigation */
+      .video-placeholder small {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        opacity: 0.6;
+      }
+
+      /* ============================================================
+         TUTORIAL NAVIGATION
+         ============================================================ */
       .tutorial-navigation {
         display: flex;
         justify-content: space-between;
+        gap: 1rem;
         margin: 2rem 0;
+        flex-wrap: wrap;
       }
 
       .nav-btn {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.8rem 1.5rem;
-        background: white;
-        border: 2px solid #ff69b4;
-        border-radius: 50px;
-        color: #ff1493;
+        padding: 0.8rem 1.8rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
         font-weight: 600;
+        font-size: 0.85rem;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card);
       }
 
       .nav-btn:hover {
-        background: #ff69b4;
-        color: white;
+        border-color: var(--color-pink);
+        color: var(--text-primary);
         transform: translateY(-2px);
+        box-shadow: var(--shadow-card-hover), var(--glow-pink);
       }
 
-      .completion-message {
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
-        color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        text-align: center;
-        margin-top: 2rem;
-      }
-
-      .completion-message h3 {
-        color: white;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-
-      /* Related Tutorials */
+      /* ============================================================
+         RELATED TUTORIALS
+         ============================================================ */
       .related-tutorials {
         margin: 3rem 0;
-        padding: 2rem;
-        background: #f8f8f8;
-        border-radius: 16px;
+        position: relative;
+        z-index: 2;
       }
 
       .related-tutorials h2 {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        color: var(--text-primary);
         text-align: center;
         margin-bottom: 2rem;
+        letter-spacing: 2px;
+      }
+
+      .related-tutorials h2 .highlight {
+        background: var(--gradient-pink);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .tutorial-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 1.5rem;
+        max-width: 900px;
+        margin: 0 auto;
       }
 
-      .tutorial-card {
-        background: white;
+      .tutorial-card-related {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-      }
-
-      .tutorial-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-      }
-
-      .tutorial-card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-      }
-
-      .card-content {
-        padding: 1.5rem;
-      }
-
-      .card-content h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-        color: #333;
-      }
-
-      .card-link {
-        display: inline-block;
-        margin-top: 0.8rem;
-        color: #ff69b4;
-        font-weight: 600;
+        box-shadow: var(--shadow-card), var(--glow-pink);
+        transition: all var(--transition-slow);
         text-decoration: none;
-      }
-
-      .card-link:hover {
-        text-decoration: underline;
-      }
-
-      /* Footer */
-      .tutorial-footer {
-        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-        color: white;
-        padding: 3rem 0 1rem 0;
-        margin-top: 3rem;
-      }
-
-      .tutorial-footer .container {
-        max-width: 1200px;
+        display: block;
+        color: inherit;
+        max-width: 320px;
         margin: 0 auto;
-        padding: 0 20px;
+        width: 100%;
       }
 
-      .footer-content {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-bottom: 2rem;
+      .tutorial-card-related:hover {
+        transform: translateY(-6px);
+        border-color: rgba(254, 103, 234, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-pink-dark);
       }
 
-      .footer-section h3 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, #ff69b4, #ff1493);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      .footer-section h4 {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-        color: #a0aec0;
-      }
-
-      .footer-section p {
-        color: #cbd5e0;
-        line-height: 1.6;
-      }
-
-      .footer-section ul {
-        list-style: none;
-        padding: 0;
-      }
-
-      .footer-section ul li {
-        margin-bottom: 0.5rem;
-      }
-
-      .footer-section ul li a {
-        color: #cbd5e0;
-        text-decoration: none;
-        transition: all 0.3s ease;
-      }
-
-      .footer-section ul li a:hover {
-        color: #ff69b4;
-      }
-
-      .social-links {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .social-link {
+      .tutorial-card-related .card-image-related {
+        width: 100%;
+        height: 160px;
+        background: var(--gradient-pink);
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
+        font-size: 2.5rem;
         color: white;
+        opacity: 0.7;
+      }
+
+      .tutorial-card-related .card-content {
+        padding: 1.25rem;
+      }
+
+      .tutorial-card-related .card-content h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .tutorial-card-related .card-content p {
+        font-family: var(--font-condensed);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .card-link {
+        color: var(--color-pink);
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.8rem;
         text-decoration: none;
-        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all var(--transition);
       }
 
-      .social-link:hover {
-        background: #ff69b4;
-        transform: translateY(-3px);
+      .card-link:hover {
+        color: var(--color-pink-light);
+        gap: 0.8rem;
+        text-shadow: 0 0 30px rgba(254, 103, 234, 0.2);
       }
 
-      .footer-bottom {
-        text-align: center;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        color: #a0aec0;
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
       }
 
-      /* Responsive */
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-pink);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-pink-dark);
+        border-color: var(--color-pink);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST NOTIFICATION
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-pink);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-pink);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
       @media (max-width: 768px) {
         .tutorial-hero {
           flex-direction: column;
+          padding: 2rem 1.5rem;
         }
 
-        h1 {
+        .tutorial-info h1 {
           font-size: 1.6rem;
         }
 
-        h2 {
+        .step h2 {
           font-size: 1.3rem;
         }
 
         .tutorial-navigation {
           flex-direction: column;
-          gap: 1rem;
         }
 
         .nav-btn {
           justify-content: center;
         }
 
+        .tutorial-content {
+          padding: 1.5rem;
+        }
+
+        .tutorial-container {
+          padding: 0 1rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .completion-message::before {
+          font-size: 3rem;
+        }
+
         .video-placeholder {
           height: 250px;
+        }
+
+        .tutorial-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn-save-tutorial {
+          justify-content: center;
+        }
+
+        .completion-checkbox {
+          justify-content: center;
+        }
+
+        .tutorial-grid {
+          grid-template-columns: 1fr;
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tutorial-hero {
+          padding: 1.5rem 1rem;
+        }
+
+        .tutorial-content {
+          padding: 1rem;
+        }
+
+        .completion-message h3 {
+          font-size: 1.3rem;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Header with Reverse Pink Theme -->
-    <header class="main-header">
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
-            <li><a href="/index.html" class="nav-link">Home</a></li>
-            <li class="nav-dropdown">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li><a href="/#about" class="nav-link" data-section="about">About</a></li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
-                <li>
-                  <a href="/pages/tutorials/digital-painting.html"
-                    >Digital Painting</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tutorials/character-design.html"
-                    >Character Design</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tutorials/eye-render-tutorial.html"
-                    >Eye render</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >Facial Anatomy</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tutorials/lip-rendering.html"
-                    >Lip Rendering</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tutorials/nose-rendering.html"
-                    >Nose Rendering</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tutorials/skin-render-tutorial.html"
-                    >Skin Rendering</a
-                  >
-                </li>
-                <li><a href="/pages/tutorials/tutorials.html">Catalogue</a></li>
+                <li><a href="/pages/tutorials/character-design/character-design-tutorials.html">◈ Character Design</a></li>
+                <li><a href="/pages/tutorials/color-lighting/color-lighting-tutorials.html">✦ Color & Lighting</a></li>
+                <li><a href="/pages/tutorials/digital-painting/digital-painting-tutorials.html">◆ Digital Painting</a></li>
+                <li><a href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html">◈ Facial Features</a></li>
+                <li><a href="/pages/tutorials/software-guides/software-guides-tutorials.html">⌘ Software Guide</a></li>
+                <li><a href="/pages/tutorials/workflow-process/workflow-process-tutorials.html">⚙ Workflow Process</a></li>
+                <li><a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a></li>
               </ul>
             </li>
-            <li class="nav-dropdown">
-              <a href="/pages/tools/tools.html" class="nav-link"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+            <li class="nav-dropdown" data-section="software">
+              <a href="/pages/software/software-comparison.html" class="nav-link">
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
-                <li>
-                  <a href="/pages/tools/color-palette-generator.html"
-                    >Color Palette Generator</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tools/color-scheme-analyzer.html"
-                    >Color Scheme Analyzer</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tools/prompt-generator.html"
-                    >Character Prompt Generator</a
-                  >
-                </li>
-                <li>
-                  <a href="/pages/tools/software-quiz.html">Software Quiz</a>
-                </li>
+                <li><a href="/pages/software/software-comparison.html">◈ Software Comparison</a></li>
+                <li><a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a></li>
               </ul>
             </li>
-            <li class="nav-dropdown">
-              <a
-                href="/pages/software/software-comparison.html"
-                class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
-              >
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
-                <li>
-                  <a href="/pages/software/software-comparison.html"
-                    >Software Comparison</a
-                  >
-                </li>
+                <li><a href="/pages/tools/color-palette-generator.html">◈ Color Palette Generator</a></li>
+                <li><a href="/pages/tools/color-scheme-analyzer.html">✦ Color Scheme Analyzer</a></li>
+                <li><a href="/pages/tools/prompt-generator.html">◆ Character Prompt Generator</a></li>
               </ul>
             </li>
-            <li class="nav-dropdown">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
-                <li>
-                  <a href="/pages/community/hub.html#daily-challenge"
-                    >Daily Challenge</a
-                  >
-                </li>
-                <li><a href="/pages/community/gallery.html">Gallery</a></li>
+                <li><a href="/pages/community/hub.html#daily-challenge">◆ Daily Challenge</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li><a href="/pages/community/search-users.html">✦ Find Artists</a></li>
+                <li><a href="/pages/community/activity-feed.html">⌘ Activity Feed</a></li>
+                <li><a href="/pages/community/challenges.html">◈ Challenges</a></li>
+                <li><a href="/pages/community/analytics.html">◆ Analytics</a></li>
               </ul>
             </li>
-            <li class="nav-dropdown">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
-                <li>
-                  <a href="/pages/Equip/Equip.html">Portfolio Template</a>
-                </li>
-                <li>
-                  <a href="/pages/Equip/price-comparison.html">CV Template</a>
-                </li>
+                <li><a href="/pages/Equip/Equip.html">◈ Portfolio Template</a></li>
+                <li><a href="/pages/Equip/price-comparison.html">✦ CV Template</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
-              <a
-                href="/pages/truly-yours/truly-yours-project.html"
-                class="nav-link"
-                >Truly Yours</a
-              >
+              <a href="/pages/truly-yours/truly-yours-project.html" class="nav-link truly-yours-link" data-section="truly-yours">
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <button
-              class="btn-icon search-btn"
-              id="search-btn"
-              aria-label="Search"
-            >
+            <div class="notification-container">
+              <button class="btn-icon notification-btn" id="notificationBtn" aria-label="Notifications">
+                <i class="fas fa-bell"></i>
+              </button>
+              <span class="notification-badge" id="notificationBadge" style="display: none">0</span>
+              <div class="notification-dropdown" id="notificationDropdown" style="display: none">
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">Mark all read</button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-icon search-btn" id="search-btn" aria-label="Search">
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm">Log In</a>
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm">Sign Up</a>
+            </div>
           </div>
-          <button class="mobile-menu-btn" id="mobile-menu-btn">
+
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
             <span></span><span></span><span></span>
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
             <div class="search-input-wrapper">
-              <i class="fas fa-search search-icon"></i
-              ><input
-                type="text"
-                placeholder="Search tutorials, tools, artists..."
-                id="search-input"
-                autocomplete="off"
-              />
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" placeholder="Search tutorials, tools, artists..." id="search-input" autocomplete="off" />
             </div>
             <button class="btn-icon search-close" id="search-close">
               <i class="fas fa-times"></i>
@@ -984,26 +1524,28 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
-    <!-- Tutorial Content -->
+    <!-- ====== MAIN ====== -->
     <main>
-      <div class="container">
-        <!-- Tutorial Header -->
+      <div class="tutorial-container">
+        <!-- Tutorial Hero -->
         <section class="tutorial-hero">
           <div class="tutorial-info">
             <div class="breadcrumb">
-              <a href="/index.html">Home</a> &gt;
-              <a href="/pages/tutorials/tutorials.html">Tutorials</a> &gt;
-              <a href="/pages/tutorials/tutorials.html#facial-features"
-                >Facial Features</a
-              >
-              &gt;
+              <a href="/">Home</a>
+              <span class="sep">◆</span>
+              <a href="/pages/tutorials/tutorials.html">Tutorials</a>
+              <span class="sep">◆</span>
+              <a href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html">Facial Features</a>
+              <span class="sep">◆</span>
               <span>Skin Rendering</span>
             </div>
-            <h1>How to Render Realistic Skin in 10 Steps</h1>
+
+            <h1>
+              <span class="highlight">Skin Rendering</span> Techniques
+            </h1>
+
             <p class="tutorial-description">
               Master the art of creating lifelike, dimensional skin with this
               comprehensive digital painting tutorial covering texture,
@@ -1011,16 +1553,23 @@
             </p>
 
             <div class="tutorial-meta">
-              <div class="meta-item">
-                <i class="fas fa-clock"></i> 35 min read
-              </div>
-              <div class="meta-item"><i class="fas fa-user"></i> Alex Chen</div>
-              <div class="meta-item">
-                <i class="fas fa-calendar"></i> April 15, 2024
-              </div>
+              <span class="meta-item"><i class="fas fa-clock"></i> 35 min read</span>
+              <span class="meta-item"><i class="fas fa-user"></i> Alex Chen</span>
+              <span class="meta-item"><i class="fas fa-calendar"></i> April 15, 2024</span>
             </div>
 
-            <div class="difficulty advanced">Advanced</div>
+            <span class="difficulty-badge-tutorial">✦ Advanced</span>
+
+            <div class="tutorial-actions">
+              <button class="btn-save-tutorial" id="saveTutorialBtn">
+                <i class="far fa-bookmark" id="saveIcon"></i>
+                <span id="saveText">Save Tutorial</span>
+              </button>
+              <div class="completion-checkbox">
+                <input type="checkbox" id="markCompleted" />
+                <label for="markCompleted">Mark as completed</label>
+              </div>
+            </div>
 
             <div class="tools-required">
               <h3>Tools Required</h3>
@@ -1035,13 +1584,11 @@
           </div>
 
           <div class="tutorial-image">
-            <img
-              src="/images/tutorials/skin-hero.jpg"
-              alt="Skin Rendering Process"
-            />
-            <div class="image-caption">
-              From flat base to realistic skin texture
+            <div class="image-placeholder">
+              <i class="fas fa-hand-peace"></i>
+              <p>Skin Rendering Process</p>
             </div>
+            <div class="image-caption">From flat base to realistic skin texture</div>
           </div>
         </section>
 
@@ -1051,8 +1598,8 @@
             <div class="progress" id="reading-progress"></div>
           </div>
           <div class="progress-stats">
-            <span>0% complete</span
-            ><span id="time-remaining">~12 min remaining</span>
+            <span>0% complete</span>
+            <span id="time-remaining">~12 min remaining</span>
           </div>
         </section>
 
@@ -1061,8 +1608,8 @@
           <!-- Step 1 -->
           <div class="step" id="step-1">
             <h2>
-              <span class="step-number">1</span>Establish Base Skin Tone and
-              Values
+              <span class="step-number">1</span>
+              Establish Base Skin Tone and Values
             </h2>
             <div class="step-content">
               <p>
@@ -1082,23 +1629,18 @@
             <div class="tutorial-visual">
               <div class="visual-placeholder">
                 <i class="fas fa-fill-drip"></i>
-                <p>📷 Base Skin Tone & Values</p>
-                <div class="placeholder-note">
-                  Replace with your base tone demonstration (recommended:
-                  800x300px)
-                </div>
+                <p>📷 Base Skin Tone &amp; Values</p>
+                <div class="placeholder-note">Replace with your base tone demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 1.1 - Establishing the foundation with base color and value
-                structure
-              </div>
+              <div class="visual-caption">Fig 1.1 - Establishing the foundation with base color and value structure</div>
             </div>
           </div>
 
           <!-- Step 2 -->
           <div class="step" id="step-2">
             <h2>
-              <span class="step-number">2</span>Define Major Forms and Planes
+              <span class="step-number">2</span>
+              Define Major Forms and Planes
             </h2>
             <div class="step-content">
               <p>
@@ -1117,22 +1659,19 @@
             <div class="tutorial-visual">
               <div class="visual-placeholder">
                 <i class="fas fa-cube"></i>
-                <p>📷 Facial Planes & Forms</p>
-                <div class="placeholder-note">
-                  Replace with your planes demonstration (recommended:
-                  800x300px)
-                </div>
+                <p>📷 Facial Planes &amp; Forms</p>
+                <div class="placeholder-note">Replace with your planes demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 2.1 - Mapping out the anatomical planes and how light
-                affects each surface
-              </div>
+              <div class="visual-caption">Fig 2.1 - Mapping out the anatomical planes and how light affects each surface</div>
             </div>
           </div>
 
           <!-- Step 3 -->
           <div class="step" id="step-3">
-            <h2><span class="step-number">3</span>Add Subsurface Scattering</h2>
+            <h2>
+              <span class="step-number">3</span>
+              Add Subsurface Scattering
+            </h2>
             <div class="step-content">
               <p>
                 Introduce the subtle glow of light passing through skin, known
@@ -1152,20 +1691,18 @@
               <div class="visual-placeholder">
                 <i class="fas fa-lightbulb"></i>
                 <p>📷 Subsurface Scattering</p>
-                <div class="placeholder-note">
-                  Replace with your SSS demonstration (recommended: 800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your SSS demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 3.1 - Creating the translucent quality of skin with
-                subsurface scattering
-              </div>
+              <div class="visual-caption">Fig 3.1 - Creating the translucent quality of skin with subsurface scattering</div>
             </div>
           </div>
 
           <!-- Step 4 -->
           <div class="step" id="step-4">
-            <h2><span class="step-number">4</span>Develop Color Variation</h2>
+            <h2>
+              <span class="step-number">4</span>
+              Develop Color Variation
+            </h2>
             <div class="step-content">
               <p>
                 Skin is never a single flat color. Introduce subtle color
@@ -1184,21 +1721,17 @@
               <div class="visual-placeholder">
                 <i class="fas fa-palette"></i>
                 <p>📷 Skin Color Zones</p>
-                <div class="placeholder-note">
-                  Replace with your color variation demonstration (recommended:
-                  800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your color variation demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 4.1 - Adding natural color variation to break up monotony
-              </div>
+              <div class="visual-caption">Fig 4.1 - Adding natural color variation to break up monotony</div>
             </div>
           </div>
 
           <!-- Step 5 -->
           <div class="step" id="step-5">
             <h2>
-              <span class="step-number">5</span>Create Pore and Texture Base
+              <span class="step-number">5</span>
+              Create Pore and Texture Base
             </h2>
             <div class="step-content">
               <p>
@@ -1219,22 +1752,17 @@
               <div class="visual-placeholder">
                 <i class="fas fa-waveform"></i>
                 <p>📷 Skin Texture Base</p>
-                <div class="placeholder-note">
-                  Replace with your texture demonstration (recommended:
-                  800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your texture demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 5.1 - Laying the groundwork for realistic skin texture
-              </div>
+              <div class="visual-caption">Fig 5.1 - Laying the groundwork for realistic skin texture</div>
             </div>
           </div>
 
           <!-- Step 6 -->
           <div class="step" id="step-6">
             <h2>
-              <span class="step-number">6</span>Refine Texture with Directional
-              Strokes
+              <span class="step-number">6</span>
+              Refine Texture with Directional Strokes
             </h2>
             <div class="step-content">
               <p>
@@ -1254,21 +1782,17 @@
               <div class="visual-placeholder">
                 <i class="fas fa-arrows-alt"></i>
                 <p>📷 Directional Strokes</p>
-                <div class="placeholder-note">
-                  Replace with your stroke direction demonstration (recommended:
-                  800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your stroke direction demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 6.1 - Building organic texture that follows facial anatomy
-              </div>
+              <div class="visual-caption">Fig 6.1 - Building organic texture that follows facial anatomy</div>
             </div>
           </div>
 
           <!-- Step 7 -->
           <div class="step" id="step-7">
             <h2>
-              <span class="step-number">7</span>Add Imperfections and Character
+              <span class="step-number">7</span>
+              Add Imperfections and Character
             </h2>
             <div class="step-content">
               <p>
@@ -1289,22 +1813,17 @@
               <div class="visual-placeholder">
                 <i class="fas fa-dot-circle"></i>
                 <p>📷 Skin Imperfections</p>
-                <div class="placeholder-note">
-                  Replace with your imperfections demonstration (recommended:
-                  800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your imperfections demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 7.1 - Strategic imperfections that enhance realism without
-                distraction
-              </div>
+              <div class="visual-caption">Fig 7.1 - Strategic imperfections that enhance realism without distraction</div>
             </div>
           </div>
 
           <!-- Step 8 -->
           <div class="step" id="step-8">
             <h2>
-              <span class="step-number">8</span>Enhance Specular Highlights
+              <span class="step-number">8</span>
+              Enhance Specular Highlights
             </h2>
             <div class="step-content">
               <p>
@@ -1325,21 +1844,18 @@
               <div class="visual-placeholder">
                 <i class="fas fa-star"></i>
                 <p>📷 Specular Highlights</p>
-                <div class="placeholder-note">
-                  Replace with your highlights demonstration (recommended:
-                  800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your highlights demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 8.1 - Strategic highlights that define skin's surface
-                quality
-              </div>
+              <div class="visual-caption">Fig 8.1 - Strategic highlights that define skin's surface quality</div>
             </div>
           </div>
 
           <!-- Step 9 -->
           <div class="step" id="step-9">
-            <h2><span class="step-number">9</span>Refine Edge Transitions</h2>
+            <h2>
+              <span class="step-number">9</span>
+              Refine Edge Transitions
+            </h2>
             <div class="step-content">
               <p>
                 Polish the transitions between different values and colors.
@@ -1359,21 +1875,17 @@
               <div class="visual-placeholder">
                 <i class="fas fa-blender"></i>
                 <p>📷 Edge Transitions</p>
-                <div class="placeholder-note">
-                  Replace with your edge control demonstration (recommended:
-                  800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your edge control demonstration (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 9.1 - Mastering edge control for realistic form definition
-              </div>
+              <div class="visual-caption">Fig 9.1 - Mastering edge control for realistic form definition</div>
             </div>
           </div>
 
           <!-- Step 10 -->
           <div class="step" id="step-10">
             <h2>
-              <span class="step-number">10</span>Final Polish and Color Harmony
+              <span class="step-number">10</span>
+              Final Polish and Color Harmony
             </h2>
             <div class="step-content">
               <p>
@@ -1394,15 +1906,9 @@
               <div class="visual-placeholder">
                 <i class="fas fa-magic"></i>
                 <p>📷 Final Rendered Skin</p>
-                <div class="placeholder-note">
-                  Replace with your completed skin rendering (recommended:
-                  800x300px)
-                </div>
+                <div class="placeholder-note">Replace with your completed skin rendering (recommended: 800x300px)</div>
               </div>
-              <div class="visual-caption">
-                Fig 10.1 - Completed realistic skin rendering with all elements
-                harmonized
-              </div>
+              <div class="visual-caption">Fig 10.1 - Completed realistic skin rendering with all elements harmonized</div>
             </div>
           </div>
 
@@ -1428,209 +1934,516 @@
             <div class="video-placeholder">
               <i class="fab fa-youtube"></i>
               <p>Skin Rendering Tutorial Video</p>
-              <p><small>Click to watch the demonstration</small></p>
+              <small>Click to watch the demonstration</small>
             </div>
           </div>
           <p style="margin-top: 1rem">
-            <a href="#" style="color: #ff69b4; text-decoration: none"
-              >View more texture and rendering tutorials on our YouTube channel
-              →</a
-            >
+            <a href="#" style="color: var(--color-pink); text-decoration: none; font-family: var(--font-condensed);">
+              View more texture and rendering tutorials on our YouTube channel →
+            </a>
           </p>
         </section>
 
         <!-- Tutorial Navigation -->
         <section class="tutorial-navigation">
-          <a href="/pages/tutorials/nose-rendering.html" class="nav-btn"
-            ><i class="fas fa-arrow-left"></i> Previous Tutorial</a
-          >
-          <a href="/pages/tutorials/tutorials.html" class="nav-btn"
-            >Back to Tutorials <i class="fas fa-arrow-right"></i
-          ></a>
+          <a href="/pages/tutorials/facial-features/nose-rendering-tutorial.html" class="nav-btn">
+            <i class="fas fa-arrow-left"></i> Previous Tutorial
+          </a>
+          <a href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html" class="nav-btn">
+            Back to Tutorials <i class="fas fa-arrow-right"></i>
+          </a>
         </section>
 
         <!-- Related Tutorials -->
         <section class="related-tutorials">
-          <h2>Continue Learning</h2>
-          <div class="tutorial-grid">
-            <div class="tutorial-card">
-              <img src="/images/tutorials/eye-render.jpg" alt="Eye Render" />
-              <div class="card-content">
-                <h3>Realistic Eye Rendering</h3>
-                <p>Master the art of painting realistic eyes step by step.</p>
-                <a
-                  href="/pages/tutorials/eye-render-tutorial.html"
-                  class="card-link"
-                  >Read Tutorial →</a
-                >
-              </div>
-            </div>
-            <div class="tutorial-card">
-              <img
-                src="/images/tutorials/lip-rendering.jpg"
-                alt="Lip Rendering"
-              />
-              <div class="card-content">
-                <h3>Lip Rendering Techniques</h3>
-                <p>Learn to paint soft, dimensional lips.</p>
-                <a href="/pages/tutorials/lip-rendering.html" class="card-link"
-                  >Read Tutorial →</a
-                >
-              </div>
-            </div>
-            <div class="tutorial-card">
-              <img
-                src="/images/tutorials/portrait-techniques.jpg"
-                alt="Portrait Techniques"
-              />
-              <div class="card-content">
-                <h3>Digital Portrait Techniques</h3>
-                <p>Master the art of painting realistic faces.</p>
-                <a
-                  href="/pages/tutorials/portrait-techniques.html"
-                  class="card-link"
-                  >Read Tutorial →</a
-                >
-              </div>
+          <h2>
+            Continue <span class="highlight">Learning</span>
+          </h2>
+          <div class="tutorial-grid" id="relatedTutorialsGrid">
+            <!-- Rendered by JavaScript -->
+            <div class="loading-state" style="text-align: center; padding: 40px; width: 100%; grid-column: 1/-1;">
+              <div class="spinner" style="width: 40px; height: 40px; border: 2px solid rgba(254, 103, 234, 0.15); border-top-color: #fe67ea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+              <p style="color: var(--text-muted);">Loading related tutorials...</p>
             </div>
           </div>
         </section>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i></a
-              ><a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i></a
-              ><a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i></a
-              ><a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i></a
-              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
-              ><a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/_trulyyours26" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"><i class="fab fa-tiktok"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"><i class="fab fa-pinterest"></i></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Auth Scripts -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-          if (typeof authManager !== "undefined") {
-            authManager.updateUI();
-          }
-        }, 300);
-      });
-    </script>
+    <script src="/js/navbar-active.js"></script>
     <script src="/js/components/avatar-manager.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/tutorials/tutorials-data.js"></script>
     <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Progress tracking
-        const progressBar = document.getElementById("reading-progress");
-        const progressStats = document.querySelector(
-          ".progress-stats span:first-child",
-        );
-        const timeRemaining = document.getElementById("time-remaining");
+      document.addEventListener("DOMContentLoaded", function() {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
 
-        // Video placeholder
-        const videoPlaceholder = document.querySelector(".video-placeholder");
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label) label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function(e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl) labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = ["#fe67ea", "#e237ce", "#f705d7", "#58ebfe", "#4ff3a6"];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#fe67ea";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#fe67ea";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => { p.update(); p.draw(); });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== PROGRESS TRACKING ======
+        const progressBar = document.getElementById("reading-progress");
+        const progressStats = document.querySelector(".progress-stats span:first-child");
+        const timeRemaining = document.getElementById("time-remaining");
 
         function updateProgress() {
           const windowHeight = window.innerHeight;
-          const documentHeight =
-            document.documentElement.scrollHeight - windowHeight;
-          const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop;
-          const scrollPercent = (scrollTop / documentHeight) * 100;
+          const documentHeight = document.documentElement.scrollHeight - windowHeight;
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollPercent = Math.min(Math.round((scrollTop / documentHeight) * 100), 100);
 
           if (progressBar) progressBar.style.width = scrollPercent + "%";
-          if (progressStats)
-            progressStats.textContent =
-              Math.round(scrollPercent) + "% complete";
+          if (progressStats) progressStats.textContent = scrollPercent + "% complete";
 
           if (timeRemaining) {
             const estimatedTotalTime = 12;
-            const timeRemainingValue = Math.max(
-              0,
-              Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100),
-            );
+            const timeRemainingValue = Math.max(0, Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100));
             timeRemaining.textContent = `~${timeRemainingValue} min remaining`;
           }
+
+          // Save progress to localStorage
+          if (scrollPercent > 0) {
+            localStorage.setItem("tutorial_progress_skin-rendering-tutorial", scrollPercent);
+          }
+        }
+
+        // Load saved progress
+        const savedProgress = localStorage.getItem("tutorial_progress_skin-rendering-tutorial");
+        if (savedProgress) {
+          const progress = parseInt(savedProgress);
+          if (progressBar) progressBar.style.width = progress + "%";
+          if (progressStats) progressStats.textContent = progress + "% complete";
         }
 
         window.addEventListener("scroll", updateProgress);
         updateProgress();
 
-        // Video placeholder click
+        // ====== VIDEO PLACEHOLDER ======
+        const videoPlaceholder = document.querySelector(".video-placeholder");
         if (videoPlaceholder) {
-          videoPlaceholder.addEventListener("click", function () {
-            alert(
-              "🎬 This would open a YouTube video demonstrating skin rendering techniques",
-            );
+          videoPlaceholder.addEventListener("click", function() {
+            alert("🎬 This would open a YouTube video demonstrating skin rendering techniques");
           });
         }
 
-        // Add smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-          anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute("href");
-            if (targetId === "#") return;
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-              window.scrollTo({
-                top: targetElement.offsetTop - 100,
-                behavior: "smooth",
-              });
+        // ====== LOAD RELATED TUTORIALS ======
+        function loadRelatedTutorials() {
+          const container = document.getElementById('relatedTutorialsGrid');
+          if (!container) return;
+
+          if (typeof window.tutorialData === 'undefined') {
+            container.innerHTML = `
+              <div class="no-results" style="text-align: center; padding: 2rem; grid-column: 1/-1;">
+                <p style="color: var(--text-muted);">Tutorial data not loaded</p>
+              </div>
+            `;
+            return;
+          }
+
+          const currentTutorialId = 'skin-rendering-tutorial';
+          const relatedTutorials = window.tutorialData.getRelatedTutorials(currentTutorialId, 3);
+
+          if (relatedTutorials.length === 0) {
+            container.innerHTML = `
+              <div class="no-results" style="text-align: center; padding: 2rem; grid-column: 1/-1;">
+                <p style="color: var(--text-muted);">No related tutorials found</p>
+              </div>
+            `;
+            return;
+          }
+
+          container.innerHTML = relatedTutorials.map(tutorial => {
+            const category = window.tutorialData.categories.get(tutorial.category);
+            const color = category ? category.color : '#fe67ea';
+            const icon = category && category.icon ? category.icon : 'fas fa-book';
+
+            return `
+              <a href="${tutorial.file}" class="tutorial-card-related">
+                <div class="card-image-related" style="background: ${color};">
+                  <i class="${icon}"></i>
+                </div>
+                <div class="card-content">
+                  <h3>${tutorial.title}</h3>
+                  <p>${tutorial.description}</p>
+                  <span class="card-link">Read Tutorial →</span>
+                </div>
+              </a>
+            `;
+          }).join('');
+        }
+
+        loadRelatedTutorials();
+
+        // ====== TUTORIAL DATA ======
+        const tutorialDataObj = {
+          id: "skin-rendering-tutorial",
+          title: "Skin Rendering Techniques",
+          category: "facial-features",
+          duration: "35 min",
+          difficulty: "advanced",
+          steps: 10
+        };
+
+        // ====== SAVE TUTORIAL ======
+        const saveBtn = document.getElementById("saveTutorialBtn");
+        const saveIcon = document.getElementById("saveIcon");
+        const saveText = document.getElementById("saveText");
+
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (!user) {
+            if (saveBtn) saveBtn.style.display = "none";
+            return;
+          }
+
+          if (saveBtn) saveBtn.style.display = "flex";
+
+          try {
+            const savedRef = firebase.firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("savedTutorials")
+              .doc(tutorialDataObj.id);
+
+            const doc = await savedRef.get();
+
+            if (doc.exists) {
+              saveIcon.className = "fas fa-bookmark";
+              saveText.textContent = "Saved";
+              saveBtn.classList.add("saved");
+            } else {
+              saveIcon.className = "far fa-bookmark";
+              saveText.textContent = "Save Tutorial";
+              saveBtn.classList.remove("saved");
+            }
+          } catch (error) {
+            console.error("Error loading saved status:", error);
+          }
+        });
+
+        if (saveBtn) {
+          saveBtn.addEventListener("click", async function() {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              alert("Please login to save tutorials");
+              window.location.href = "/pages/auth/login.html";
+              return;
+            }
+
+            this.disabled = true;
+            this.style.opacity = "0.7";
+
+            try {
+              const savedRef = firebase.firestore()
+                .collection("users")
+                .doc(user.uid)
+                .collection("savedTutorials")
+                .doc(tutorialDataObj.id);
+
+              const doc = await savedRef.get();
+
+              if (doc.exists) {
+                await savedRef.delete();
+                saveIcon.className = "far fa-bookmark";
+                saveText.textContent = "Save Tutorial";
+                this.classList.remove("saved");
+                showToast("Tutorial removed from saved");
+              } else {
+                await savedRef.set({
+                  tutorialId: tutorialDataObj.id,
+                  title: tutorialDataObj.title,
+                  category: tutorialDataObj.category,
+                  duration: tutorialDataObj.duration,
+                  difficulty: tutorialDataObj.difficulty,
+                  savedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                saveIcon.className = "fas fa-bookmark";
+                saveText.textContent = "Saved";
+                this.classList.add("saved");
+                showToast("Tutorial saved to your profile!");
+              }
+            } catch (error) {
+              console.error("Error saving tutorial:", error);
+              showToast("Error saving tutorial");
+            } finally {
+              this.disabled = false;
+              this.style.opacity = "1";
             }
           });
+        }
+
+        // ====== MARK COMPLETED ======
+        const completedCheckbox = document.getElementById("markCompleted");
+
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (!user) return;
+
+          try {
+            const progressDoc = await firebase.firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("tutorialProgress")
+              .doc(tutorialDataObj.id)
+              .get();
+
+            if (progressDoc.exists && progressDoc.data().completed) {
+              completedCheckbox.checked = true;
+            }
+          } catch (error) {
+            console.error("Error loading completed status:", error);
+          }
         });
+
+        if (completedCheckbox) {
+          completedCheckbox.addEventListener("change", async function(e) {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              alert("Please login to track progress");
+              e.target.checked = false;
+              return;
+            }
+
+            this.disabled = true;
+
+            try {
+              await firebase.firestore()
+                .collection("users")
+                .doc(user.uid)
+                .collection("tutorialProgress")
+                .doc(tutorialDataObj.id)
+                .set({
+                  tutorialId: tutorialDataObj.id,
+                  title: tutorialDataObj.title,
+                  category: tutorialDataObj.category,
+                  completed: e.target.checked,
+                  completedAt: e.target.checked ? firebase.firestore.FieldValue.serverTimestamp() : null,
+                  lastViewed: firebase.firestore.FieldValue.serverTimestamp(),
+                  progress: parseInt(progressBar?.style.width || "0")
+                }, { merge: true });
+
+              showToast(e.target.checked ? "Marked as completed! 🎉" : "Marked as incomplete");
+            } catch (error) {
+              console.error("Error saving progress:", error);
+            } finally {
+              this.disabled = false;
+            }
+          });
+        }
+
+        // ====== TOAST ======
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        // ====== AUTH ======
+        setTimeout(function() {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
       });
     </script>
   </body>

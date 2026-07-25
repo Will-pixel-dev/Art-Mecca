@@ -1,12 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Equip For Artists - Art Mecca</title>
+    <meta name="robots" content="noindex, follow" />
+    <title>Equip — Art Mecca Armory</title>
+
+    <!-- SEO -->
     <meta
       name="description"
-      content="Essential resources for artists including portfolio templates, CV templates, career advice, and interviews with professional artists. Level up your art career."
+      content="Essential resources for artists including portfolio templates, CV templates, career advice, and interviews with professional artists."
     />
     <meta
       name="keywords"
@@ -41,92 +44,126 @@
     />
     <meta name="twitter:image" content="/images/og-equip.jpg" />
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="/css/variables.css" />
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
-    <link rel="stylesheet" href="/css/equip.css" />
-    <link rel="stylesheet" href="/css/search.css" />
-    <link rel="stylesheet" href="/css/avatar.css" />
-
-    <!-- Fonts -->
+    <!-- ===== FONTS ===== -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- Firebase SDKs -->
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/equip.css" />
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   </head>
-  <body>
-    <!-- Header - Updated with working notification system -->
+  <body class="equip-page">
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
+          <!-- Logo -->
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
+          <!-- Navigation Links -->
           <ul class="nav-links" id="nav-links">
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
+              <a href="/" class="nav-link" data-section="home" id="navHome"
                 >Home</a
               >
             </li>
             <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -134,85 +171,89 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link active"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link active">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
-                </li>
-                <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
+                  <a href="/pages/Equip/portfolio-mode.html"
+                    >◈ Portfolio Template</a
                   >
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/cv-templates.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -220,12 +261,15 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
+          <!-- Nav Actions -->
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM (correct IDs for notifications.js) -->
+            <!-- Notification Bell -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -262,7 +306,8 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
+            <!-- Search -->
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -270,8 +315,25 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <!-- Hybrid Status -->
+            <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+
+            <!-- Avatar -->
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <!-- Auth Buttons -->
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
+
+          <!-- Mobile Menu Button -->
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -281,6 +343,8 @@
           </button>
         </nav>
       </div>
+
+      <!-- Search Overlay -->
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -304,142 +368,262 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
-    <main>
-      <!-- Hero Section -->
-      <div class="equip-hero">
-        <div class="container">
-          <span class="hero-badge"
-            ><i class="fas fa-briefcase"></i> Equip Yourself</span
-          >
-          <h1>Equip For Artists</h1>
+    <!-- ============================================================ -->
+    <!-- EQUIP HERO — 3 LAYER SYSTEM                                   -->
+    <!-- ============================================================ -->
+    <section class="equip-hero">
+      <!-- LAYER 1: BACKGROUND -->
+      <div class="equip-hero-layer-1">
+        <img
+          src="#"
+          alt="Equip Hero Background"
+          class="hero-bg-image"
+          onload="this.classList.add('loaded')"
+          onerror="this.style.display = 'none'"
+        />
+        <div class="hero-bg-fallback"></div>
+      </div>
+
+      <!-- LAYER 2: OVERLAY / AMBIENT EFFECTS -->
+      <div class="equip-hero-layer-2">
+        <div class="equip-neon-orb"></div>
+        <div class="equip-grid-overlay"></div>
+        <span class="equip-graffiti-tag tag-top-left">✧ ARMORY</span>
+        <span class="equip-graffiti-tag tag-bottom-right">★ EQUIP</span>
+        <div class="equip-scan-line"></div>
+      </div>
+
+      <!-- LAYER 3: GLASS UI CONTENT -->
+      <div class="equip-hero-layer-3">
+        <div class="equip-hero-content glass-panel">
+          <span class="hero-badge">
+            <i class="fas fa-briefcase"></i> EQUIP YOURSELF
+          </span>
+          <h1>
+            <span class="glitch-header" data-text="Equip For Artists">
+              Equip For <span class="gradient-text">Artists</span>
+              <span class="glitch-layer" data-text="Equip For Artists"></span>
+              <span class="rgb-split" data-text="Equip For Artists"></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h1>
           <p class="hero-subhead">
             Discover the essential tools and resources every artist needs to
             thrive in their creative journey. From high-quality templates for
             portfolios and job application CVs, to our tips, advice column, and
             blog interviews from the internet's favourite professional artists!
           </p>
+
+          <!-- Hero Stats -->
+          <div class="equip-hero-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="resourceCount">8</span>
+              <span class="stat-label">Resources</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="articleCount">24</span>
+              <span class="stat-label">Articles</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="interviewCount">12</span>
+              <span class="stat-label">Interviews</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="templateCount">4</span>
+              <span class="stat-label">Templates</span>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <span class="scroll-text">▼ SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- RESOURCES GRID                                               -->
+    <!-- ============================================================ -->
+    <section class="equip-resources">
       <div class="container">
-        <!-- Featured Resources Grid -->
+        <div class="equip-section-header">
+          <div class="section-badge">✦ RESOURCES ✦</div>
+          <h2>
+            <span class="glitch-header" data-text="The Artist's Armory">
+              The Artist's <span class="gradient-text">Armory</span>
+              <span class="glitch-layer" data-text="The Artist's Armory"></span>
+              <span class="rgb-split" data-text="The Artist's Armory"></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h2>
+          <p>Everything you need to level up your art career</p>
+        </div>
+
         <div class="resources-grid">
-          <div class="resource-card">
+          <!-- Portfolio Template -->
+          <div class="resource-card glass-panel">
+            <span class="card-corner-tl"></span>
+            <div class="card-scanline"></div>
             <div class="resource-icon"><i class="fas fa-folder-open"></i></div>
             <h3>Portfolio Template</h3>
             <p>
               Showcase your artwork professionally with our curated portfolio
               templates. Perfect for job applications and client proposals.
             </p>
-            <a href="/pages/Equip/portfolio-template.html" class="btn-resource"
-              >Explore Template <i class="fas fa-arrow-right"></i
-            ></a>
+            <a
+              href="/pages/Equip/portfolio-templates.html"
+              class="btn-resource"
+            >
+              Explore <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
 
-          <div class="resource-card">
+          <!-- CV Template -->
+          <div class="resource-card glass-panel">
+            <span class="card-corner-tl"></span>
+            <div class="card-scanline"></div>
             <div class="resource-icon"><i class="fas fa-file-alt"></i></div>
             <h3>CV Template</h3>
             <p>
               Stand out from the competition with our artist-friendly CV
               templates designed specifically for creative professionals.
             </p>
-            <a href="/pages/Equip/price-comparison.html" class="btn-resource"
-              >View CV Templates <i class="fas fa-arrow-right"></i
-            ></a>
+            <a href="/pages/Equip/cv-templates.html" class="btn-resource">
+              View Templates <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
 
-          <div class="resource-card">
+          <!-- Art Blog -->
+          <div class="resource-card glass-panel">
+            <span class="card-corner-tl"></span>
+            <div class="card-scanline"></div>
             <div class="resource-icon"><i class="fas fa-blog"></i></div>
             <h3>Art Blog</h3>
             <p>
               Read exclusive interviews, tips, and advice from professional
               artists about marketing, commissions, and career growth.
             </p>
-            <a href="/pages/Equip/blog.html" class="btn-resource"
-              >Read Articles <i class="fas fa-arrow-right"></i
-            ></a>
+            <a href="/pages/Equip/blog.html" class="btn-resource">
+              Read Articles <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
 
-          <div class="resource-card">
+          <!-- Earn -->
+          <div class="resource-card glass-panel">
+            <span class="card-corner-tl"></span>
+            <div class="card-scanline"></div>
             <div class="resource-icon"><i class="fas fa-chart-line"></i></div>
             <h3>Earn As An Artist</h3>
             <p>
               Learn how to monetize your art through commissions,
               print-on-demand, digital products, and freelance opportunities.
             </p>
-            <a href="/pages/Equip/earn.html" class="btn-resource"
-              >Start Earning <i class="fas fa-arrow-right"></i
-            ></a>
+            <a href="/pages/Equip/earn.html" class="btn-resource">
+              Start Earning <i class="fas fa-arrow-right"></i>
+            </a>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Career Advice Section -->
-        <div class="career-advice-section">
-          <div class="section-header">
-            <h2>Career Advice for Artists</h2>
-            <p>Expert insights to help you navigate your creative career</p>
-          </div>
-          <div class="advice-grid">
-            <div class="advice-card">
-              <div class="advice-icon"><i class="fas fa-bullhorn"></i></div>
-              <h3>Marketing Yourself</h3>
-              <p>
-                Learn how to build your personal brand, grow your social media
-                presence, and attract the right clients.
-              </p>
-              <button class="btn-read-more">
-                Read More <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-            <div class="advice-card">
-              <div class="advice-icon"><i class="fas fa-handshake"></i></div>
-              <h3>Finding Commissions</h3>
-              <p>
-                Where to find commission opportunities, how to price your work,
-                and how to deliver exceptional results.
-              </p>
-              <button class="btn-read-more">
-                Read More <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-            <div class="advice-card">
-              <div class="advice-icon"><i class="fas fa-briefcase"></i></div>
-              <h3>Job Pipeline</h3>
-              <p>
-                Understanding the creative industry job pipeline - from
-                portfolio to interview to landing your dream role.
-              </p>
-              <button class="btn-read-more">
-                Read More <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-            <div class="advice-card">
-              <div class="advice-icon"><i class="fas fa-store"></i></div>
-              <h3>Setting Up Shop</h3>
-              <p>
-                How to start your own freelance business, set up an online
-                store, and manage your finances.
-              </p>
-              <button class="btn-read-more">
-                Read More <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
+    <!-- ============================================================ -->
+    <!-- CAREER ADVICE                                                -->
+    <!-- ============================================================ -->
+    <section class="equip-advice">
+      <div class="container">
+        <div class="equip-section-header">
+          <div class="section-badge">✦ ADVICE ✦</div>
+          <h2>
+            <span class="glitch-header" data-text="Career Wisdom">
+              Career <span class="gradient-text">Wisdom</span>
+              <span class="glitch-layer" data-text="Career Wisdom"></span>
+              <span class="rgb-split" data-text="Career Wisdom"></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h2>
+          <p>Expert insights to help you navigate your creative career</p>
         </div>
 
-        <!-- Interview Spotlight -->
-        <div class="interview-spotlight">
+        <div class="advice-grid">
+          <a
+            href="/pages/Equip/blog/marketing-yourself.html"
+            class="advice-card glass-panel"
+          >
+            <div class="advice-icon"><i class="fas fa-bullhorn"></i></div>
+            <h3>Marketing Yourself</h3>
+            <p>
+              Build your personal brand, grow your social media presence, and
+              attract the right clients.
+            </p>
+            <span class="btn-read-more">
+              Read More <i class="fas fa-arrow-right"></i>
+            </span>
+          </a>
+
+          <a
+            href="/pages/Equip/blog/finding-commissions.html"
+            class="advice-card glass-panel"
+          >
+            <div class="advice-icon"><i class="fas fa-handshake"></i></div>
+            <h3>Finding Commissions</h3>
+            <p>
+              Where to find commission opportunities, how to price your work,
+              and deliver exceptional results.
+            </p>
+            <span class="btn-read-more">
+              Read More <i class="fas fa-arrow-right"></i>
+            </span>
+          </a>
+
+          <a
+            href="/pages/Equip/blog/job-pipeline.html"
+            class="advice-card glass-panel"
+          >
+            <div class="advice-icon"><i class="fas fa-briefcase"></i></div>
+            <h3>Job Pipeline</h3>
+            <p>
+              Understanding the creative industry job pipeline — from portfolio
+              to interview to landing your dream role.
+            </p>
+            <span class="btn-read-more">
+              Read More <i class="fas fa-arrow-right"></i>
+            </span>
+          </a>
+
+          <a
+            href="/pages/Equip/blog/setting-up-shop.html"
+            class="advice-card glass-panel"
+          >
+            <div class="advice-icon"><i class="fas fa-store"></i></div>
+            <h3>Setting Up Shop</h3>
+            <p>
+              How to start your own freelance business, set up an online store,
+              and manage your finances.
+            </p>
+            <span class="btn-read-more">
+              Read More <i class="fas fa-arrow-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- ============================================================ -->
+    <!-- INTERVIEW SPOTLIGHT                                           -->
+    <!-- ============================================================ -->
+    <section class="equip-interview">
+      <div class="container">
+        <div class="interview-spotlight glass-panel">
           <div class="interview-content">
             <div class="interview-text">
-              <span class="interview-badge"
-                ><i class="fas fa-microphone-alt"></i> Artist Spotlight</span
-              >
+              <span class="interview-badge">
+                <i class="fas fa-microphone-alt"></i> ARTIST SPOTLIGHT
+              </span>
               <h2>Interview with <span class="highlight">Mira Chen</span></h2>
-              <p>
+              <p class="interview-quote">
                 "The biggest lesson I learned was that consistency beats talent.
                 Showing up every day and putting in the work transformed my art
                 career from a hobby to a full-time profession."
@@ -447,12 +631,17 @@
               <div class="interview-meta">
                 <span><i class="fas fa-chart-line"></i> 15K+ Followers</span>
                 <span><i class="fas fa-palette"></i> 8 Years Experience</span>
+                <span><i class="fas fa-award"></i> Featured Artist</span>
               </div>
-              <a href="#" class="btn-interview"
-                >Read Full Interview <i class="fas fa-arrow-right"></i
-              ></a>
+              <a
+                href="/pages/Equip/blog/interview-mira-chen.html"
+                class="btn-interview"
+              >
+                Read Full Interview <i class="fas fa-arrow-right"></i>
+              </a>
             </div>
             <div class="interview-image">
+              <div class="glitch-overlay"></div>
               <div class="interview-placeholder">
                 <i class="fas fa-user-circle"></i>
                 <p>Featured Artist</p>
@@ -460,134 +649,439 @@
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Quick Links Section -->
-        <div class="quick-links-section">
-          <h2>Popular Resources</h2>
-          <div class="quick-links-grid">
-            <a href="#" class="quick-link">
-              <i class="fas fa-file-pdf"></i>
-              <span>Portfolio Guide PDF</span>
-              <i class="fas fa-download"></i>
-            </a>
-            <a href="#" class="quick-link">
-              <i class="fas fa-chart-simple"></i>
-              <span>Commission Price Calculator</span>
-              <i class="fas fa-external-link"></i>
-            </a>
-            <a href="#" class="quick-link">
-              <i class="fas fa-calendar"></i>
-              <span>Content Calendar Template</span>
-              <i class="fas fa-download"></i>
-            </a>
-            <a href="#" class="quick-link">
-              <i class="fas fa-file-invoice-dollar"></i>
-              <span>Invoice Template</span>
-              <i class="fas fa-download"></i>
-            </a>
-          </div>
+    <!-- ============================================================ -->
+    <!-- QUICK LINKS                                                  -->
+    <!-- ============================================================ -->
+    <section class="equip-quick-links">
+      <div class="container">
+        <div class="equip-section-header">
+          <div class="section-badge">✦ POPULAR ✦</div>
+          <h2>
+            <span class="glitch-header" data-text="Top Resources">
+              Top <span class="gradient-text">Resources</span>
+              <span class="glitch-layer" data-text="Top Resources"></span>
+              <span class="rgb-split" data-text="Top Resources"></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h2>
+          <p>Most downloaded and viewed resources</p>
         </div>
 
-        <!-- CTA Section -->
-        <div class="equip-cta">
-          <h2>Ready to take the next step in your art career?</h2>
+        <div class="quick-links-grid">
+          <a
+            href="/assets/guides/portfolio-guide.html"
+            class="quick-link glass-panel"
+          >
+            <span class="ql-glow"></span>
+            <span class="ql-icon"><i class="fas fa-file-pdf"></i></span>
+            <span>Portfolio Guide PDF</span>
+            <span class="ql-arrow"><i class="fas fa-download"></i></span>
+          </a>
+
+          <!-- Commission Price Calculator — Coming Soon -->
+          <a
+            href="#"
+            class="quick-link glass-panel"
+            style="opacity: 0.7; position: relative"
+          >
+            <span class="ql-glow"></span>
+            <span class="ql-icon"><i class="fas fa-chart-simple"></i></span>
+            <span>Commission Price Calculator</span>
+            <span class="ql-arrow">
+              <span
+                style="
+                  font-family: var(--font-mono);
+                  font-size: 0.5rem;
+                  color: var(--accent-secondary);
+                  background: rgba(88, 235, 254, 0.1);
+                  padding: 2px 8px;
+                  border-radius: 2px;
+                  border: 1px solid rgba(88, 235, 254, 0.15);
+                  margin-right: 6px;
+                "
+                >Coming Soon</span
+              >
+              <i class="fas fa-clock"></i>
+            </span>
+          </a>
+          <a
+            href="/assets/resources/content-calander-template.html"
+            class="quick-link glass-panel"
+          >
+            <span class="ql-glow"></span>
+            <span class="ql-icon"><i class="fas fa-calendar"></i></span>
+            <span>Content Calendar Template</span>
+            <span class="ql-arrow"><i class="fas fa-download"></i></span>
+          </a>
+
+          <a
+            href="/assets/resources/invoice.html"
+            class="quick-link glass-panel"
+          >
+            <span class="ql-glow"></span>
+            <span class="ql-icon"
+              ><i class="fas fa-file-invoice-dollar"></i
+            ></span>
+            <span>Invoice Template</span>
+            <span class="ql-arrow"><i class="fas fa-download"></i></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CTA SECTION                                                  -->
+    <!-- ============================================================ -->
+    <section class="equip-cta-section">
+      <div class="container">
+        <div class="equip-cta glass-panel">
+          <div class="cta-glow"></div>
+          <span class="cta-graffiti-tag tag-1">✧ JOIN THE MOVEMENT ✧</span>
+          <span class="cta-graffiti-tag tag-2">★ CREATE SOMETHING ★</span>
+
+          <h2>
+            <span class="glitch-header" data-text="Ready to Level Up?">
+              Ready to <span class="gradient-text">Level Up</span>?
+              <span class="glitch-layer" data-text="Ready to Level Up?"></span>
+              <span class="rgb-split" data-text="Ready to Level Up?"></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h2>
           <p>
             Join thousands of artists who have transformed their passion into a
-            profession.
+            profession. Start building your career today.
           </p>
           <div class="cta-buttons">
-            <a href="/pages/auth/register.html" class="btn-primary-cta"
-              >Get Started Free <i class="fas fa-arrow-right"></i
-            ></a>
-            <a href="/pages/community/gallery.html" class="btn-outline-cta"
-              >View Success Stories <i class="fas fa-users"></i
-            ></a>
+            <a href="/pages/auth/register.html" class="btn-primary-cta">
+              Get Started Free <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="/pages/community/gallery.html" class="btn-outline-cta">
+              View Success Stories <i class="fas fa-users"></i>
+            </a>
           </div>
         </div>
       </div>
-    </main>
+    </section>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ============================================================ -->
+    <!-- THEME TOGGLE — BOTTOM RIGHT                                  -->
+    <!-- ============================================================ -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html#cookies">Cookie Policy</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ============================================================ -->
+    <!-- SCRIPTS                                                      -->
+    <!-- ============================================================ -->
+
+    <!-- 1. Firebase Config -->
     <script src="/config/firebase-config.js"></script>
+
+    <!-- 2. Auth -->
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
 
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
+    <!-- 3. Components -->
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+
+    <!-- 4. Navbar -->
     <script src="/js/navbar-active.js"></script>
 
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <!-- 5. Search -->
+    <script src="/js/search.js"></script>
 
+    <!-- 6. SEO -->
+    <script src="/js/utils/seo.js"></script>
+
+    <!-- 7. Page Redirect -->
+    <script src="/js/auth/page-redirect.js"></script>
+
+    <!-- 8. Equip Page (stats counter animation) -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-          if (typeof authManager !== "undefined") {
-            authManager.updateUI();
+        // ============================================================
+        // THEME TOGGLE
+        // ============================================================
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ============================================================
+        // PARTICLE CANVAS
+        // ============================================================
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const particleCount = 60;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
           }
-        }, 300);
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.25 + 0.05;
+              const colors = [
+                "#ff00ea",
+                "#ad03fc",
+                "#58ebfe",
+                "#4ff3a6",
+                "#ffc72e",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < particleCount; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.04;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#ff00ea";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#ff00ea";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ============================================================
+        // STATS COUNTER ANIMATION
+        // ============================================================
+        function animateCounter(element, target, duration = 1500) {
+          if (!element) return;
+          const start = 0;
+          const startTime = performance.now();
+
+          function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(start + (target - start) * eased);
+            element.textContent = current;
+
+            if (progress < 1) {
+              requestAnimationFrame(update);
+            } else {
+              element.textContent = target;
+            }
+          }
+
+          requestAnimationFrame(update);
+        }
+
+        // Animate stats on load
+        const stats = {
+          resourceCount: 8,
+          articleCount: 24,
+          interviewCount: 12,
+          templateCount: 4,
+        };
+
+        Object.entries(stats).forEach(([id, value]) => {
+          const el = document.getElementById(id);
+          if (el) {
+            animateCounter(el, value);
+          }
+        });
+
+        // ============================================================
+        // NOISE OVERLAY TOGGLE (for glitch effect)
+        // ============================================================
+        document.addEventListener("keydown", (e) => {
+          if (e.key.toLowerCase() === "g") {
+            const noise = document.getElementById("noiseOverlay");
+            if (noise) {
+              noise.classList.add("active");
+              setTimeout(() => noise.classList.remove("active"), 500);
+            }
+          }
+        });
+
+        console.log("⚡ Equip page initialized!");
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
+    <!-- Cookie Banner -->
+    <script src="/js/components/cookie-banner.js"></script>
   </body>
 </html>

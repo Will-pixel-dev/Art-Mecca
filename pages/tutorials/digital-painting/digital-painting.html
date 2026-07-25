@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digital Painting Tutorial - Art Mecca</title>
+    <title>Digital Painting Fundamentals | Art Mecca</title>
     <meta
       name="description"
       content="Learn digital painting fundamentals from scratch. Master brushes, layers, color theory, and rendering techniques in this comprehensive beginner's guide."
@@ -50,10 +50,34 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -66,416 +90,665 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
-      /* ============================================
-           DIGITAL PAINTING TUTORIAL - GREEN THEME
-           Colors: #05f5ad, #119c72, #19e1a5, #5aedc1, #9ff4db
-           ============================================ */
+      /* ================================================================
+         DIGITAL PAINTING TUTORIAL — CYBERPUNK GREEN AESTHETIC
+         ================================================================ */
 
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
       :root {
-        --tutorial-primary: #05f5ad;
-        --tutorial-primary-dark: #119c72;
-        --tutorial-primary-light: #19e1a5;
-        --tutorial-primary-lighter: #5aedc1;
-        --tutorial-primary-lightest: #9ff4db;
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(67, 234, 162, 0.06);
+        --bg-card-hover: rgba(67, 234, 162, 0.12);
+        --bg-elevated: rgba(67, 234, 162, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(67, 234, 162, 0.15);
+
+        /* Theme Colors - Green */
+        --color-green: #43eaa2;
+        --color-green-dark: #2ecc71;
+        --color-green-darker: #27ae60;
+        --color-green-darkest: #1b8c4a;
+        --color-green-light: #6ef0b8;
+        --color-green-mid: #43eaa2;
+
+        /* Glitch Colors - Green Only */
+        --color-glitch-a: #029b78;
+        --color-glitch-b: #43eaa2;
+        --color-glitch-c: #ad03fc;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+
+        /* Spray */
+        --color-spray-green: #43eaa2;
+        --color-spray-red: #ff0040;
+
+        /* Gradients */
+        --gradient-green: linear-gradient(135deg, #43eaa2, #2ecc71, #27ae60);
+        --gradient-cyber: linear-gradient(135deg, #00eaff, #029566, #43eaa2);
+        --gradient-neon: linear-gradient(135deg, #43eaa2, #2ecc71);
+
+        /* Glows */
+        --glow-green:
+          0 0 40px rgba(67, 234, 162, 0.3), 0 0 80px rgba(67, 234, 162, 0.1);
+        --glow-green-dark:
+          0 0 40px rgba(46, 204, 113, 0.3), 0 0 80px rgba(46, 204, 113, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
-      /* ============================================
-           CUSTOM GREEN THEME NAVBAR
-           ============================================ */
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
 
-      /* Header Container with Shadow */
-      .main-header {
-        background: white;
-        box-shadow:
-          0 8px 32px rgba(5, 245, 173, 0.15),
-          0 2px 8px rgba(0, 0, 0, 0.05);
-        position: sticky;
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(67, 234, 162, 0.2);
+
+        --glow-green:
+          0 0 40px rgba(67, 234, 162, 0.08), 0 0 80px rgba(67, 234, 162, 0.03);
+        --glow-green-dark:
+          0 0 40px rgba(46, 204, 113, 0.08), 0 0 80px rgba(46, 204, 113, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
         top: 0;
-        z-index: 1000;
-        border-bottom: 1px solid rgba(5, 245, 173, 0.2);
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
       }
 
-      /* Logo with Green Gradient */
-      .main-header .logo {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
       }
 
-      .main-header .logo-icon {
-        font-size: 2rem;
-        background: linear-gradient(135deg, #05f5ad, #119c72, #19e1a5);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        animation: logoPulse 3s ease-in-out infinite;
+      .noise-overlay.active {
+        opacity: 1;
       }
 
-      @keyframes logoPulse {
-        0%,
-        100% {
-          filter: drop-shadow(0 0 0px rgba(5, 245, 173, 0.3));
-        }
-        50% {
-          filter: drop-shadow(0 0 8px rgba(5, 245, 173, 0.6));
-        }
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
       }
 
-      .main-header .logo-text {
-        font-size: 1.3rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #05f5ad, #119c72, #19e1a5, #5aedc1);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        background-size: 200% auto;
-        animation: shimmer 3s linear infinite;
-      }
-
-      @keyframes shimmer {
+      @keyframes scanMove {
         0% {
-          background-position: 0% center;
+          transform: translateY(0);
         }
         100% {
-          background-position: 200% center;
+          transform: translateY(3px);
         }
       }
 
-      /* Nav Links with Green Gradient Text */
-      .main-header .nav-link {
-        color: #4a5568;
-        font-weight: 500;
-        transition: all 0.3s ease;
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .tutorial-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
         position: relative;
+        z-index: 2;
       }
 
-      .main-header .nav-link:hover {
-        background: linear-gradient(135deg, #05f5ad, #119c72);
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         background-clip: text;
-        color: transparent;
-        transform: translateY(-2px);
+        filter: drop-shadow(0 0 60px rgba(67, 234, 162, 0.2));
+        line-height: 1.1;
       }
 
-      .main-header .nav-link.active {
-        background: linear-gradient(135deg, #05f5ad, #119c72);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-weight: 600;
-      }
-
-      .main-header .nav-link.active::after {
-        content: "";
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
         position: absolute;
-        bottom: -4px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60%;
-        height: 3px;
-        background: linear-gradient(90deg, #05f5ad, #119c72);
-        border-radius: 3px;
-        animation: underlineGlow 2s ease-in-out infinite;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
       }
 
-      @keyframes underlineGlow {
-        0%,
-        100% {
-          opacity: 0.6;
-          width: 60%;
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
         }
         50% {
-          opacity: 1;
-          width: 80%;
-          box-shadow: 0 0 6px #05f5ad;
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
         }
       }
 
-      /* Dropdown Arrow */
-      .main-header .dropdown-arrow {
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         BREADCRUMB — CYBER HUD
+         ============================================================ */
+      .breadcrumb {
+        font-family: var(--font-mono);
         font-size: 0.7rem;
-        transition: transform 0.3s ease;
-        color: #119c72;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
       }
 
-      .nav-dropdown:hover .dropdown-arrow {
-        transform: rotate(180deg);
+      .breadcrumb a {
+        color: var(--color-green);
+        text-decoration: none;
+        transition: all var(--transition);
       }
 
-      /* Dropdown Menu - Green Themed */
-      .main-header .dropdown-menu {
-        background: white;
-        border: none;
-        border-radius: 12px;
-        box-shadow:
-          0 12px 32px rgba(5, 245, 173, 0.2),
-          0 4px 12px rgba(0, 0, 0, 0.1);
-        margin-top: 0.5rem;
+      .breadcrumb a:hover {
+        color: var(--color-green-light);
+        text-shadow: 0 0 30px rgba(67, 234, 162, 0.2);
+      }
+
+      .breadcrumb .sep {
+        color: var(--text-muted);
+        opacity: 0.3;
+        margin: 0 8px;
+      }
+
+      /* ============================================================
+         TUTORIAL HERO — GLASS GREEN
+         ============================================================ */
+      .tutorial-hero {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 3rem;
+        margin: 2rem 0;
+        box-shadow: var(--shadow-card), var(--glow-green);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5rem;
+        position: relative;
         overflow: hidden;
       }
 
-      .main-header .dropdown-menu::before {
+      .tutorial-hero::before {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, #05f5ad, #119c72, #19e1a5, #5aedc1);
+        background: var(--gradient-green);
+        opacity: 0.6;
       }
 
-      .main-header .dropdown-item {
-        padding: 0.75rem 1.5rem;
-        color: #4a5568;
-        transition: all 0.3s ease;
-        font-weight: 500;
-      }
-
-      .main-header .dropdown-item:hover {
-        background: linear-gradient(90deg, #9ff4db, white);
-        color: #119c72;
-        padding-left: 1.8rem;
-      }
-
-      /* Search Button */
-      .main-header .search-btn {
-        color: #4a5568;
-        transition: all 0.3s ease;
-      }
-
-      .main-header .search-btn:hover {
-        color: #05f5ad;
-        transform: scale(1.05);
-      }
-
-      /* Auth Buttons - User Icon */
-      .main-header .user-btn {
-        color: #4a5568;
-        transition: all 0.3s ease;
-      }
-
-      .main-header .user-btn:hover {
-        color: #05f5ad;
-        transform: scale(1.05);
-      }
-
-      /* Sign Up Button - Green Gradient */
-      .main-header .signup-btn {
-        background: linear-gradient(135deg, #05f5ad, #119c72);
-        color: white;
-        border: none;
-        padding: 0.5rem 1.2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(5, 245, 173, 0.3);
-      }
-
-      .main-header .signup-btn:hover {
-        background: linear-gradient(135deg, #119c72, #05f5ad);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(5, 245, 173, 0.4);
-      }
-
-      /* User Dropdown Menu */
-      .user-dropdown {
-        border-top: 3px solid #05f5ad;
-        border-radius: 12px;
-        box-shadow: 0 12px 32px rgba(5, 245, 173, 0.2);
-      }
-
-      .user-dropdown .dropdown-item {
-        transition: all 0.3s ease;
-      }
-
-      .user-dropdown .dropdown-item:hover {
-        background: #9ff4db;
-        color: #119c72;
-      }
-
-      /* Mobile Menu Button */
-      .mobile-menu-btn span {
-        background: #119c72;
-      }
-
-      /* Tutorial Container */
-      .tutorial-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 20px;
-      }
-
-      /* Breadcrumb */
-      .breadcrumb {
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-      }
-
-      .breadcrumb a {
-        color: var(--tutorial-primary-dark);
-        text-decoration: none;
-      }
-
-      .breadcrumb a:hover {
-        text-decoration: underline;
-      }
-
-      /* Tutorial Hero Section */
-      .tutorial-hero {
-        background: linear-gradient(
-          135deg,
-          var(--tutorial-primary-lightest),
-          white
-        );
-        padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin-bottom: 2rem;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
+      .tutorial-hero::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-green);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
       }
 
       .tutorial-info {
         flex: 1;
         min-width: 280px;
+        position: relative;
+        z-index: 1;
       }
 
       .tutorial-info h1 {
-        font-size: 2.2rem;
-        color: var(--tutorial-primary-dark);
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 900;
+        color: var(--text-primary);
         margin-bottom: 1rem;
+        letter-spacing: 1px;
+        line-height: 1.2;
+      }
+
+      .tutorial-info h1 .highlight {
+        background: var(--gradient-green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .tutorial-description {
-        font-size: 1.1rem;
-        color: #333;
-        margin: 1rem 0;
-        line-height: 1.6;
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        font-family: var(--font-condensed);
       }
 
       .tutorial-meta {
         display: flex;
         gap: 1.5rem;
-        margin: 1.5rem 0;
-        color: var(--tutorial-primary-dark);
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
       }
 
       .meta-item {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
-      .difficulty {
+      .meta-item i {
+        color: var(--color-green);
+        font-size: 0.8rem;
+      }
+
+      .difficulty-badge-tutorial {
         display: inline-block;
         padding: 0.3rem 1rem;
-        border-radius: 50px;
-        font-size: 0.8rem;
+        border-radius: 20px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: rgba(67, 234, 162, 0.1);
+        color: var(--color-green);
+        border: 1px solid rgba(67, 234, 162, 0.15);
+        margin-bottom: 1rem;
+      }
+
+      /* ============================================================
+         TUTORIAL ACTIONS — SAVE & COMPLETE
+         ============================================================ */
+      .tutorial-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 1.5rem 0;
+      }
+
+      .btn-save-tutorial {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+        font-size: 0.75rem;
         font-weight: 600;
-        margin-top: 0.5rem;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
-      .intermediate {
-        background: var(--tutorial-primary);
-        color: #1a1a1a;
+      .btn-save-tutorial:hover {
+        border-color: var(--color-green);
+        color: var(--text-primary);
+        transform: translateY(-2px);
       }
 
+      .btn-save-tutorial.saved {
+        background: var(--gradient-green);
+        color: var(--text-inverse);
+        border-color: var(--color-green);
+        box-shadow: var(--glow-green);
+      }
+
+      .completion-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-condensed);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .completion-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--color-green);
+        cursor: pointer;
+      }
+
+      /* ============================================================
+         TOOLS REQUIRED
+         ============================================================ */
       .tools-required {
         margin-top: 1.5rem;
       }
 
       .tools-required h3 {
-        font-size: 1.1rem;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
         margin-bottom: 0.5rem;
-        color: var(--tutorial-primary-dark);
       }
 
       .tools-required ul {
-        margin-left: 1.5rem;
-        color: #555;
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
       }
 
+      .tools-required ul li {
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .tools-required ul li::before {
+        content: "◆";
+        color: var(--color-green);
+        font-size: 0.5rem;
+      }
+
+      /* ============================================================
+         TUTORIAL IMAGE
+         ============================================================ */
       .tutorial-image {
         flex: 1;
         min-width: 280px;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
+        position: relative;
       }
 
-      .tutorial-image img {
+      .tutorial-image .image-placeholder {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient-green);
+        opacity: 0.8;
+        color: white;
+        font-size: 4rem;
+        padding: 2rem;
+        text-align: center;
       }
 
-      .tutorial-image:hover img {
-        transform: scale(1.02);
+      .tutorial-image .image-placeholder p {
+        font-family: var(--font-condensed);
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        opacity: 0.8;
       }
 
       .image-caption {
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         text-align: center;
-        font-style: italic;
-        font-size: 0.8rem;
-        background: #f5f5f5;
-        color: #666;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        background: var(--bg-elevated);
+        border-top: 1px solid var(--border-color);
+        letter-spacing: 0.5px;
       }
 
-      /* Progress Bar */
+      /* ============================================================
+         PROGRESS BAR — CYBER HUD
+         ============================================================ */
       .progress-container {
-        background: white;
-        padding: 1.5rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
         margin-bottom: 2rem;
         position: sticky;
         top: 80px;
         z-index: 100;
+        box-shadow: var(--shadow-card), var(--glow-green);
       }
 
       .progress-bar {
-        height: 8px;
-        background: #e0e0e0;
-        border-radius: 4px;
+        height: 6px;
+        background: var(--bg-elevated);
+        border-radius: 3px;
         overflow: hidden;
+        border: 1px solid var(--border-color);
+        position: relative;
       }
 
       .progress {
         height: 100%;
-        background: linear-gradient(
-          90deg,
-          var(--tutorial-primary),
-          var(--tutorial-primary-dark)
-        );
+        background: var(--gradient-green);
         width: 0%;
         transition: width 0.3s ease;
+        box-shadow: 0 0 20px rgba(67, 234, 162, 0.2);
       }
 
       .progress-stats {
         display: flex;
         justify-content: space-between;
         margin-top: 0.5rem;
-        font-size: 0.8rem;
-        color: #666;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
       }
 
-      /* Tutorial Content */
+      /* ============================================================
+         TUTORIAL CONTENT
+         ============================================================ */
       .tutorial-content {
-        background: white;
-        padding: 2rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        padding: 2.5rem;
         margin-bottom: 2rem;
+        box-shadow: var(--shadow-card), var(--glow-green);
       }
 
       .step {
         margin-bottom: 3rem;
         padding-bottom: 2rem;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--border-color);
+        position: relative;
       }
 
       .step:last-child {
@@ -485,245 +758,561 @@
       }
 
       .step h2 {
+        font-family: var(--font-display);
         font-size: 1.6rem;
-        color: var(--tutorial-primary-dark);
-        margin-bottom: 1rem;
+        color: var(--text-primary);
+        margin: 0 0 1rem 0;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
+        letter-spacing: 1px;
       }
 
       .step-number {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
+        min-width: 36px;
         height: 36px;
-        background: var(--tutorial-primary);
-        color: #1a1a1a;
-        border-radius: 50%;
-        font-size: 1rem;
-        font-weight: bold;
-      }
-
-      .step-content {
-        margin-left: 0.5rem;
+        background: var(--gradient-green);
+        color: var(--text-inverse);
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        flex-shrink: 0;
+        box-shadow: var(--glow-green);
       }
 
       .step-content p {
-        line-height: 1.7;
-        color: #444;
+        font-size: 1rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+        margin-bottom: 1rem;
       }
 
-      .step-image {
-        margin: 1.5rem 0;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      .step-content h3 {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        margin: 1.5rem 0 0.5rem;
+        letter-spacing: 0.5px;
       }
 
-      .step-image img {
-        width: 100%;
-        display: block;
+      .step-content ul {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 1rem;
       }
 
+      .step-content ul li {
+        font-family: var(--font-condensed);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        padding: 0.3rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        line-height: 1.6;
+      }
+
+      .step-content ul li::before {
+        content: "◈";
+        color: var(--color-green);
+        font-size: 0.6rem;
+        margin-top: 0.3rem;
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+         TIPS — GLASS GREEN
+         ============================================================ */
       .tips {
-        background: var(--tutorial-primary-lightest);
-        padding: 1.5rem;
+        background: rgba(67, 234, 162, 0.06);
+        border: 1px solid rgba(67, 234, 162, 0.15);
         border-radius: 12px;
+        padding: 1.5rem;
         margin: 1.5rem 0;
-        border-left: 4px solid var(--tutorial-primary);
+        border-left: 4px solid var(--color-green);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tips::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(
+          circle,
+          rgba(67, 234, 162, 0.04),
+          transparent
+        );
+        pointer-events: none;
       }
 
       .tips h4 {
-        color: var(--tutorial-primary-dark);
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        color: var(--color-green);
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        letter-spacing: 0.5px;
       }
 
-      .settings-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1rem;
+      .tips p {
+        font-family: var(--font-condensed);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      /* ============================================================
+         TUTORIAL VISUAL AID — FULL WIDTH
+         ============================================================ */
+      .tutorial-visual {
         margin: 1.5rem 0;
-      }
-
-      .setting-item {
-        background: #f8f9fa;
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 3px solid var(--tutorial-primary);
-      }
-
-      .setting-item h4 {
-        color: var(--tutorial-primary-dark);
-        margin-bottom: 0.5rem;
-      }
-
-      .interactive-demo {
-        background: var(--tutorial-primary-lightest);
-        padding: 1.5rem;
         border-radius: 12px;
-        margin: 1.5rem 0;
-        text-align: center;
-      }
-
-      .color-scheme-preview {
-        display: flex;
-        margin: 1rem 0;
-        border-radius: 8px;
         overflow: hidden;
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
       }
 
-      .color-box {
-        flex: 1;
-        height: 50px;
-      }
-
-      .generate-btn {
-        background: var(--tutorial-primary);
-        color: #1a1a1a;
-        border: none;
-        padding: 0.6rem 1.5rem;
-        border-radius: 50px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      }
-
-      .generate-btn:hover {
-        background: var(--tutorial-primary-dark);
-        color: white;
-        transform: translateY(-2px);
-      }
-
-      .completion-message {
-        background: linear-gradient(
-          135deg,
-          var(--tutorial-primary),
-          var(--tutorial-primary-dark)
-        );
-        color: white;
+      .visual-placeholder {
+        width: 100%;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
         padding: 2rem;
+        background: var(--bg-elevated);
+      }
+
+      .visual-placeholder i {
+        font-size: 3.5rem;
+        color: var(--color-green);
+        margin-bottom: 1rem;
+        opacity: 0.3;
+      }
+
+      .visual-placeholder p {
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .visual-placeholder .placeholder-note {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+        opacity: 0.5;
+        letter-spacing: 0.5px;
+      }
+
+      .visual-caption {
+        padding: 0.5rem 1rem;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        background: var(--bg-elevated);
+        border-top: 1px solid var(--border-color);
+        letter-spacing: 0.5px;
+      }
+
+      /* ============================================================
+         COMPLETION MESSAGE
+         ============================================================ */
+      .completion-message {
+        background: var(--gradient-green);
         border-radius: 12px;
+        padding: 2.5rem;
         text-align: center;
         margin-top: 2rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--glow-green);
+      }
+
+      .completion-message::before {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-6deg);
+        font-family: var(--font-tag);
+        font-size: 6rem;
+        color: rgba(255, 255, 255, 0.03);
+        pointer-events: none;
+        letter-spacing: 8px;
       }
 
       .completion-message h3 {
-        margin-bottom: 1rem;
+        font-family: var(--font-display);
+        color: white;
+        font-size: 1.8rem;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
       }
 
-      .cta-button {
-        background: white;
-        color: var(--tutorial-primary-dark);
-        border: none;
-        padding: 0.6rem 1.5rem;
-        border-radius: 50px;
-        font-weight: 600;
-        margin-top: 1rem;
+      .completion-message p {
+        font-family: var(--font-condensed);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.05rem;
+        position: relative;
+        z-index: 1;
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* ============================================================
+         VIDEO SECTION
+         ============================================================ */
+      .video-section {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-card), var(--glow-green);
+      }
+
+      .video-section h2 {
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .video-section > p {
+        font-family: var(--font-condensed);
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+      }
+
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card);
+      }
+
+      .video-placeholder {
+        width: 100%;
+        height: 400px;
+        background: var(--gradient-green);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
       }
 
-      .cta-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      .video-placeholder::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.05) 2px,
+          rgba(0, 0, 0, 0.05) 4px
+        );
+        pointer-events: none;
       }
 
-      /* Tutorial Navigation */
+      .video-placeholder:hover {
+        transform: scale(1.01);
+      }
+
+      .video-placeholder i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.2));
+        position: relative;
+        z-index: 1;
+      }
+
+      .video-placeholder p {
+        font-family: var(--font-condensed);
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 1;
+        opacity: 0.9;
+      }
+
+      .video-placeholder small {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        opacity: 0.6;
+      }
+
+      /* ============================================================
+         TUTORIAL NAVIGATION
+         ============================================================ */
       .tutorial-navigation {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 3rem;
+        gap: 1rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
       }
 
       .nav-btn {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.8rem 1.5rem;
-        background: white;
-        border: 2px solid var(--tutorial-primary);
-        border-radius: 50px;
-        color: var(--tutorial-primary-dark);
+        padding: 0.8rem 1.8rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
         font-weight: 600;
+        font-size: 0.85rem;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card);
       }
 
       .nav-btn:hover {
-        background: var(--tutorial-primary);
-        color: #1a1a1a;
+        border-color: var(--color-green);
+        color: var(--text-primary);
         transform: translateY(-2px);
+        box-shadow: var(--shadow-card-hover), var(--glow-green);
       }
 
-      /* Related Tutorials */
+      /* ============================================================
+         RELATED TUTORIALS
+         ============================================================ */
+      .related-tutorials {
+        margin: 3rem 0;
+        position: relative;
+        z-index: 2;
+      }
+
       .related-tutorials h2 {
-        font-size: 1.8rem;
-        color: var(--tutorial-primary-dark);
-        margin-bottom: 1.5rem;
+        font-family: var(--font-display);
+        font-size: 2rem;
+        color: var(--text-primary);
         text-align: center;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+      }
+
+      .related-tutorials h2 .highlight {
+        background: var(--gradient-green);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .tutorial-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
         gap: 1.5rem;
-        margin-bottom: 2rem;
+        max-width: 900px;
+        margin: 0 auto;
       }
 
-      .tutorial-card {
-        background: white;
+      .tutorial-card-related {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-      }
-
-      .tutorial-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-      }
-
-      .tutorial-card img {
+        box-shadow: var(--shadow-card), var(--glow-green);
+        transition: all var(--transition-slow);
+        text-decoration: none;
+        display: block;
+        color: inherit;
+        max-width: 320px;
+        margin: 0 auto;
         width: 100%;
-        height: 180px;
-        object-fit: cover;
       }
 
-      .card-content {
-        padding: 1.5rem;
+      .tutorial-card-related:hover {
+        transform: translateY(-6px);
+        border-color: rgba(67, 234, 162, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-green-dark);
       }
 
-      .card-content h3 {
-        font-size: 1.2rem;
+      .tutorial-card-related .card-image-related {
+        width: 100%;
+        height: 160px;
+        background: var(--gradient-green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: white;
+        opacity: 0.7;
+      }
+
+      .tutorial-card-related .card-content {
+        padding: 1.25rem;
+      }
+
+      .tutorial-card-related .card-content h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        color: var(--text-primary);
         margin-bottom: 0.5rem;
-        color: #333;
+        letter-spacing: 0.5px;
+      }
+
+      .tutorial-card-related .card-content p {
+        font-family: var(--font-condensed);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
       .card-link {
-        display: inline-block;
-        margin-top: 0.8rem;
-        color: var(--tutorial-primary-dark);
+        color: var(--color-green);
+        font-family: var(--font-condensed);
         font-weight: 600;
+        font-size: 0.8rem;
         text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all var(--transition);
       }
 
       .card-link:hover {
-        text-decoration: underline;
+        color: var(--color-green-light);
+        gap: 0.8rem;
+        text-shadow: 0 0 30px rgba(67, 234, 162, 0.2);
       }
 
-      /* Responsive */
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-green);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-green-dark);
+        border-color: var(--color-green);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST NOTIFICATION
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-green);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-green);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
       @media (max-width: 768px) {
         .tutorial-hero {
           flex-direction: column;
+          padding: 2rem 1.5rem;
         }
 
         .tutorial-info h1 {
@@ -736,82 +1325,133 @@
 
         .tutorial-navigation {
           flex-direction: column;
-          gap: 1rem;
         }
 
         .nav-btn {
           justify-content: center;
         }
+
+        .tutorial-content {
+          padding: 1.5rem;
+        }
+
+        .tutorial-container {
+          padding: 0 1rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .completion-message::before {
+          font-size: 3rem;
+        }
+
+        .video-placeholder {
+          height: 250px;
+        }
+
+        .tutorial-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn-save-tutorial {
+          justify-content: center;
+        }
+
+        .completion-checkbox {
+          justify-content: center;
+        }
+
+        .tutorial-grid {
+          grid-template-columns: 1fr;
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tutorial-hero {
+          padding: 1.5rem 1rem;
+        }
+
+        .tutorial-content {
+          padding: 1rem;
+        }
+
+        .completion-message h3 {
+          font-size: 1.3rem;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Header with Green Theme - Updated Navbar -->
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a
                     href="/pages/tutorials/character-design/character-design-tutorials.html"
-                    >🎨 Character Design</a
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
                   <a
                     href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
-                    >💡 Color & Lighting</a
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
                   <a
                     href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
-                    >🖌️ Digital Painting</a
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
                   <a
-                    href="/pages/tutorials/facial-anatomy/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
                   <a
-                    href="/pages/tutorials/software-guides/software-guides-landing.html"
-                    >💻 Software Guide</a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
                   <a
-                    href="/pages/tutorials/workflow-process/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -819,85 +1459,84 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -905,12 +1544,13 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -947,7 +1587,7 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -955,13 +1595,30 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
-          <button class="mobile-menu-btn" id="mobile-menu-btn">
+
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
             <span></span><span></span><span></span>
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -985,41 +1642,61 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN ====== -->
     <main>
       <div class="tutorial-container">
         <!-- Tutorial Hero -->
         <section class="tutorial-hero">
           <div class="tutorial-info">
             <div class="breadcrumb">
-              <a href="/pages/tutorials/tutorials.html">Tutorials</a> &gt;
+              <a href="/">Home</a>
+              <span class="sep">◆</span>
+              <a href="/pages/tutorials/tutorials.html">Tutorials</a>
+              <span class="sep">◆</span>
               <a
                 href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
                 >Digital Painting</a
               >
-              &gt;
+              <span class="sep">◆</span>
               <span>Digital Painting Fundamentals</span>
             </div>
-            <h1>Digital Painting Fundamentals</h1>
+
+            <h1>
+              <span class="highlight">Digital Painting</span> Fundamentals
+            </h1>
+
             <p class="tutorial-description">
               Learn the essential techniques for creating stunning digital
               artwork from scratch.
             </p>
+
             <div class="tutorial-meta">
-              <div class="meta-item">
-                <i class="fas fa-clock"></i> 45 min read
-              </div>
-              <div class="meta-item">
-                <i class="fas fa-user"></i> Sarah Johnson
-              </div>
-              <div class="meta-item">
-                <i class="fas fa-calendar"></i> March 15, 2023
+              <span class="meta-item"
+                ><i class="fas fa-clock"></i> 25 min read</span
+              >
+              <span class="meta-item"
+                ><i class="fas fa-user"></i> Alex Chen</span
+              >
+              <span class="meta-item"
+                ><i class="fas fa-calendar"></i> May 10, 2023</span
+              >
+            </div>
+
+            <span class="difficulty-badge-tutorial">✦ Beginner</span>
+
+            <div class="tutorial-actions">
+              <button class="btn-save-tutorial" id="saveTutorialBtn">
+                <i class="far fa-bookmark" id="saveIcon"></i>
+                <span id="saveText">Save Tutorial</span>
+              </button>
+              <div class="completion-checkbox">
+                <input type="checkbox" id="markCompleted" />
+                <label for="markCompleted">Mark as completed</label>
               </div>
             </div>
-            <div class="difficulty intermediate">Intermediate</div>
+
             <div class="tools-required">
               <h3>Tools Required</h3>
               <ul>
@@ -1029,11 +1706,12 @@
               </ul>
             </div>
           </div>
+
           <div class="tutorial-image">
-            <img
-              src="/images/tutorials/digital-painting-hero.jpg"
-              alt="Digital Painting Process"
-            />
+            <div class="image-placeholder">
+              <i class="fas fa-paintbrush-fine"></i>
+              <p>Digital Painting Process</p>
+            </div>
             <div class="image-caption">
               Step-by-step digital painting process
             </div>
@@ -1046,16 +1724,18 @@
             <div class="progress" id="reading-progress"></div>
           </div>
           <div class="progress-stats">
-            <span>0% complete</span
-            ><span id="time-remaining">~10 min remaining</span>
+            <span>0% complete</span>
+            <span id="time-remaining">~10 min remaining</span>
           </div>
         </section>
 
         <!-- Tutorial Content -->
         <section class="tutorial-content">
+          <!-- Step 1 -->
           <div class="step" id="step-1">
             <h2>
-              <span class="step-number">1</span>Introduction to Digital Painting
+              <span class="step-number">1</span>
+              Introduction to Digital Painting
             </h2>
             <div class="step-content">
               <p>
@@ -1072,10 +1752,26 @@
                 </p>
               </div>
             </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-laptop"></i>
+                <p>📷 Digital Painting Setup</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 1.1 - Setting up your digital painting workspace
+              </div>
+            </div>
           </div>
 
+          <!-- Step 2 -->
           <div class="step" id="step-2">
-            <h2><span class="step-number">2</span>Setting Up Your Workspace</h2>
+            <h2>
+              <span class="step-number">2</span>
+              Setting Up Your Workspace
+            </h2>
             <div class="step-content">
               <p>
                 An organized workspace is crucial for efficient digital
@@ -1102,11 +1798,25 @@
                 </li>
               </ul>
             </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-desktop"></i>
+                <p>📷 Workspace Organization</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 2.1 - Organizing your digital workspace for efficiency
+              </div>
+            </div>
           </div>
 
+          <!-- Step 3 -->
           <div class="step" id="step-3">
             <h2>
-              <span class="step-number">3</span>Brush Techniques and Settings
+              <span class="step-number">3</span>
+              Brush Techniques and Settings
             </h2>
             <div class="step-content">
               <p>
@@ -1114,24 +1824,6 @@
                 paintings. Understand how different brush settings affect your
                 strokes.
               </p>
-              <div class="settings-grid">
-                <div class="setting-item">
-                  <h4>Opacity</h4>
-                  <p>Controls transparency of your strokes</p>
-                </div>
-                <div class="setting-item">
-                  <h4>Flow</h4>
-                  <p>Determines how quickly paint is applied</p>
-                </div>
-                <div class="setting-item">
-                  <h4>Hardness</h4>
-                  <p>Controls edge softness</p>
-                </div>
-                <div class="setting-item">
-                  <h4>Spacing</h4>
-                  <p>Affects stroke continuity</p>
-                </div>
-              </div>
               <div class="tips">
                 <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
                 <p>
@@ -1140,30 +1832,31 @@
                 </p>
               </div>
             </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-brush"></i>
+                <p>📷 Brush Settings Guide</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 3.1 - Understanding brush settings and techniques
+              </div>
+            </div>
           </div>
 
+          <!-- Step 4 -->
           <div class="step" id="step-4">
             <h2>
-              <span class="step-number">4</span>Color Theory and Application
+              <span class="step-number">4</span>
+              Color Theory and Application
             </h2>
             <div class="step-content">
               <p>
                 Understanding color relationships will dramatically improve your
                 digital paintings. Learn how to create harmonious color schemes.
               </p>
-              <div class="interactive-demo">
-                <h4>Try It: Color Scheme Generator</h4>
-                <div class="color-scheme-preview">
-                  <div class="color-box" style="background: #05f5ad"></div>
-                  <div class="color-box" style="background: #119c72"></div>
-                  <div class="color-box" style="background: #19e1a5"></div>
-                  <div class="color-box" style="background: #5aedc1"></div>
-                  <div class="color-box" style="background: #9ff4db"></div>
-                </div>
-                <button class="generate-btn" id="generate-colors">
-                  Generate New Scheme
-                </button>
-              </div>
               <div class="tips">
                 <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
                 <p>
@@ -1172,10 +1865,26 @@
                 </p>
               </div>
             </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-palette"></i>
+                <p>📷 Color Theory Examples</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 4.1 - Applying color theory in digital painting
+              </div>
+            </div>
           </div>
 
+          <!-- Step 5 -->
           <div class="step" id="step-5">
-            <h2><span class="step-number">5</span>Lighting and Shadow</h2>
+            <h2>
+              <span class="step-number">5</span>
+              Lighting and Shadow
+            </h2>
             <div class="step-content">
               <p>
                 Proper lighting gives your paintings depth and dimension. Learn
@@ -1189,235 +1898,689 @@
                 </p>
               </div>
             </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-lightbulb"></i>
+                <p>📷 Lighting Techniques</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 5.1 - Creating depth with lighting and shadow
+              </div>
+            </div>
           </div>
 
+          <!-- Step 6 -->
           <div class="step" id="step-6">
-            <h2><span class="step-number">6</span>Putting It All Together</h2>
+            <h2>
+              <span class="step-number">6</span>
+              Putting It All Together
+            </h2>
             <div class="step-content">
               <p>
                 Now let's apply all the techniques we've learned to create a
                 complete digital painting from start to finish.
               </p>
-              <div class="completion-message">
-                <h3><i class="fas fa-trophy"></i> Congratulations!</h3>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
                 <p>
-                  You've completed the Digital Painting Fundamentals tutorial.
-                  Practice these techniques regularly to develop your skills.
+                  Always step back and evaluate your work. Use a mirror or flip
+                  your canvas horizontally to see it with fresh eyes.
                 </p>
-                <button class="cta-button" id="download-exercises">
-                  Download Practice Exercises
-                </button>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-rocket"></i>
+                <p>📷 Complete Digital Painting</p>
+                <div class="placeholder-note">
+                  Replace this placeholder with your own demonstration image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 6.1 - The final digital painting from start to finish
               </div>
             </div>
           </div>
+
+          <!-- Completion Message -->
+          <div class="completion-message">
+            <h3><i class="fas fa-trophy"></i> Congratulations!</h3>
+            <p>
+              You've completed the Digital Painting Fundamentals tutorial.
+              Practice these techniques regularly to develop your skills.
+            </p>
+          </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="video-section">
+          <h2>Watch the Process</h2>
+          <p>
+            See these digital painting techniques in action with our
+            step-by-step video guide.
+          </p>
+          <div class="video-container">
+            <div class="video-placeholder">
+              <i class="fab fa-youtube"></i>
+              <p>Digital Painting Process Video</p>
+              <small>Click to watch the demonstration</small>
+            </div>
+          </div>
+          <p style="margin-top: 1rem">
+            <a
+              href="#"
+              style="
+                color: var(--color-green);
+                text-decoration: none;
+                font-family: var(--font-condensed);
+              "
+            >
+              View more digital painting tutorials on our YouTube channel →
+            </a>
+          </p>
         </section>
 
         <!-- Tutorial Navigation -->
         <section class="tutorial-navigation">
           <a
-            href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+            href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
             class="nav-btn"
-            ><i class="fas fa-arrow-left"></i> Previous Tutorial</a
           >
+            <i class="fas fa-arrow-left"></i> Back to Tutorials
+          </a>
           <a
-            href="/pages/tutorials/character-design/character-design-tutorials.html"
+            href="/pages/tutorials/character-design/character-design.html"
             class="nav-btn"
-            >Next Tutorial <i class="fas fa-arrow-right"></i
-          ></a>
+          >
+            Next Tutorial <i class="fas fa-arrow-right"></i>
+          </a>
         </section>
 
         <!-- Related Tutorials -->
         <section class="related-tutorials">
-          <h2>Related Tutorials</h2>
-          <div class="tutorial-grid">
-            <div class="tutorial-card">
-              <img
-                src="/images/tutorials/character-design.jpg"
-                alt="Character Design"
-              />
-              <div class="card-content">
-                <h3>Character Design Basics</h3>
-                <p>Learn to create memorable and unique characters</p>
-                <a
-                  href="/pages/tutorials/character-design/character-design-tutorials.html"
-                  class="card-link"
-                  >Read Tutorial →</a
-                >
-              </div>
-            </div>
-            <div class="tutorial-card">
-              <img src="/images/tutorials/eye-render.jpg" alt="Eye Render" />
-              <div class="card-content">
-                <h3>Realistic Eye Rendering</h3>
-                <p>Master the art of painting realistic eyes</p>
-                <a
-                  href="/pages/tutorials/facial-features/eye-render-tutorial.html"
-                  class="card-link"
-                  >Read Tutorial →</a
-                >
-              </div>
-            </div>
-            <div class="tutorial-card">
-              <img
-                src="/images/tutorials/portrait-techniques.jpg"
-                alt="Portrait Techniques"
-              />
-              <div class="card-content">
-                <h3>Digital Portrait Techniques</h3>
-                <p>Master the art of painting realistic faces</p>
-                <a
-                  href="/pages/tutorials/facial-features/facial-anatomy-basics.html"
-                  class="card-link"
-                  >Read Tutorial →</a
-                >
-              </div>
+          <h2>Continue <span class="highlight">Learning</span></h2>
+          <div class="tutorial-grid" id="relatedTutorialsGrid">
+            <!-- Rendered by JavaScript -->
+            <div
+              class="loading-state"
+              style="
+                text-align: center;
+                padding: 40px;
+                width: 100%;
+                grid-column: 1/-1;
+              "
+            >
+              <div
+                class="spinner"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border: 2px solid rgba(67, 234, 162, 0.15);
+                  border-top-color: #43eaa2;
+                  border-radius: 50%;
+                  animation: spin 1s linear infinite;
+                  margin: 0 auto 1rem;
+                "
+              ></div>
+              <p style="color: var(--text-muted)">
+                Loading related tutorials...
+              </p>
             </div>
           </div>
         </section>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i></a
-              ><a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i></a
-              ><a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i></a
-              ><a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i></a
-              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
-              ><a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection -->
     <script src="/js/navbar-active.js"></script>
-
     <script src="/js/components/avatar-manager.js"></script>
-
-    <!-- Notifications System -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/tutorials/tutorials-data.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#43eaa2",
+                "#2ecc71",
+                "#27ae60",
+                "#58ebfe",
+                "#4ff3a6",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#43eaa2";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#43eaa2";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== PROGRESS TRACKING ======
+        const progressBar = document.getElementById("reading-progress");
+        const progressStats = document.querySelector(
+          ".progress-stats span:first-child",
+        );
+        const timeRemaining = document.getElementById("time-remaining");
+
+        function updateProgress() {
+          const windowHeight = window.innerHeight;
+          const documentHeight =
+            document.documentElement.scrollHeight - windowHeight;
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+          const scrollPercent = Math.min(
+            Math.round((scrollTop / documentHeight) * 100),
+            100,
+          );
+
+          if (progressBar) progressBar.style.width = scrollPercent + "%";
+          if (progressStats)
+            progressStats.textContent = scrollPercent + "% complete";
+
+          if (timeRemaining) {
+            const estimatedTotalTime = 10;
+            const timeRemainingValue = Math.max(
+              0,
+              Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100),
+            );
+            timeRemaining.textContent = `~${timeRemainingValue} min remaining`;
+          }
+
+          // Save progress to localStorage
+          if (scrollPercent > 0) {
+            localStorage.setItem(
+              "tutorial_progress_digital-painting-basics",
+              scrollPercent,
+            );
+          }
+        }
+
+        // Load saved progress
+        const savedProgress = localStorage.getItem(
+          "tutorial_progress_digital-painting-basics",
+        );
+        if (savedProgress) {
+          const progress = parseInt(savedProgress);
+          if (progressBar) progressBar.style.width = progress + "%";
+          if (progressStats)
+            progressStats.textContent = progress + "% complete";
+        }
+
+        window.addEventListener("scroll", updateProgress);
+        updateProgress();
+
+        // ====== VIDEO PLACEHOLDER ======
+        const videoPlaceholder = document.querySelector(".video-placeholder");
+        if (videoPlaceholder) {
+          videoPlaceholder.addEventListener("click", function () {
+            alert(
+              "🎬 This would open a YouTube video demonstrating digital painting techniques",
+            );
+          });
+        }
+
+        // ====== LOAD RELATED TUTORIALS ======
+        function loadRelatedTutorials() {
+          const container = document.getElementById("relatedTutorialsGrid");
+          if (!container) return;
+
+          if (typeof window.tutorialData === "undefined") {
+            container.innerHTML = `
+              <div class="no-results" style="text-align: center; padding: 2rem; grid-column: 1/-1;">
+                <p style="color: var(--text-muted);">Tutorial data not loaded</p>
+              </div>
+            `;
+            return;
+          }
+
+          const currentTutorialId = "digital-painting-basics";
+          const relatedTutorials = window.tutorialData.getRelatedTutorials(
+            currentTutorialId,
+            3,
+          );
+
+          if (relatedTutorials.length === 0) {
+            container.innerHTML = `
+              <div class="no-results" style="text-align: center; padding: 2rem; grid-column: 1/-1;">
+                <p style="color: var(--text-muted);">No related tutorials found</p>
+              </div>
+            `;
+            return;
+          }
+
+          container.innerHTML = relatedTutorials
+            .map((tutorial) => {
+              const category = window.tutorialData.categories.get(
+                tutorial.category,
+              );
+              const color = category ? category.color : "#43eaa2";
+              const icon =
+                category && category.icon ? category.icon : "fas fa-book";
+
+              return `
+              <a href="${tutorial.file}" class="tutorial-card-related">
+                <div class="card-image-related" style="background: ${color};">
+                  <i class="${icon}"></i>
+                </div>
+                <div class="card-content">
+                  <h3>${tutorial.title}</h3>
+                  <p>${tutorial.description}</p>
+                  <span class="card-link">Read Tutorial →</span>
+                </div>
+              </a>
+            `;
+            })
+            .join("");
+        }
+
+        loadRelatedTutorials();
+
+        // ====== TUTORIAL DATA ======
+        const tutorialDataObj = {
+          id: "digital-painting-basics",
+          title: "Digital Painting Fundamentals",
+          category: "digital-painting",
+          duration: "25 min",
+          difficulty: "beginner",
+          steps: 6,
+        };
+
+        // ====== SAVE TUTORIAL ======
+        const saveBtn = document.getElementById("saveTutorialBtn");
+        const saveIcon = document.getElementById("saveIcon");
+        const saveText = document.getElementById("saveText");
+
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (!user) {
+            if (saveBtn) saveBtn.style.display = "none";
+            return;
+          }
+
+          if (saveBtn) saveBtn.style.display = "flex";
+
+          try {
+            const savedRef = firebase
+              .firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("savedTutorials")
+              .doc(tutorialDataObj.id);
+
+            const doc = await savedRef.get();
+
+            if (doc.exists) {
+              saveIcon.className = "fas fa-bookmark";
+              saveText.textContent = "Saved";
+              saveBtn.classList.add("saved");
+            } else {
+              saveIcon.className = "far fa-bookmark";
+              saveText.textContent = "Save Tutorial";
+              saveBtn.classList.remove("saved");
+            }
+          } catch (error) {
+            console.error("Error loading saved status:", error);
+          }
+        });
+
+        if (saveBtn) {
+          saveBtn.addEventListener("click", async function () {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              alert("Please login to save tutorials");
+              window.location.href = "/pages/auth/login.html";
+              return;
+            }
+
+            this.disabled = true;
+            this.style.opacity = "0.7";
+
+            try {
+              const savedRef = firebase
+                .firestore()
+                .collection("users")
+                .doc(user.uid)
+                .collection("savedTutorials")
+                .doc(tutorialDataObj.id);
+
+              const doc = await savedRef.get();
+
+              if (doc.exists) {
+                await savedRef.delete();
+                saveIcon.className = "far fa-bookmark";
+                saveText.textContent = "Save Tutorial";
+                this.classList.remove("saved");
+                showToast("Tutorial removed from saved");
+              } else {
+                await savedRef.set({
+                  tutorialId: tutorialDataObj.id,
+                  title: tutorialDataObj.title,
+                  category: tutorialDataObj.category,
+                  duration: tutorialDataObj.duration,
+                  difficulty: tutorialDataObj.difficulty,
+                  savedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+                saveIcon.className = "fas fa-bookmark";
+                saveText.textContent = "Saved";
+                this.classList.add("saved");
+                showToast("Tutorial saved to your profile!");
+              }
+            } catch (error) {
+              console.error("Error saving tutorial:", error);
+              showToast("Error saving tutorial");
+            } finally {
+              this.disabled = false;
+              this.style.opacity = "1";
+            }
+          });
+        }
+
+        // ====== MARK COMPLETED ======
+        const completedCheckbox = document.getElementById("markCompleted");
+
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (!user) return;
+
+          try {
+            const progressDoc = await firebase
+              .firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("tutorialProgress")
+              .doc(tutorialDataObj.id)
+              .get();
+
+            if (progressDoc.exists && progressDoc.data().completed) {
+              completedCheckbox.checked = true;
+            }
+          } catch (error) {
+            console.error("Error loading completed status:", error);
+          }
+        });
+
+        if (completedCheckbox) {
+          completedCheckbox.addEventListener("change", async function (e) {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              alert("Please login to track progress");
+              e.target.checked = false;
+              return;
+            }
+
+            this.disabled = true;
+
+            try {
+              await firebase
+                .firestore()
+                .collection("users")
+                .doc(user.uid)
+                .collection("tutorialProgress")
+                .doc(tutorialDataObj.id)
+                .set(
+                  {
+                    tutorialId: tutorialDataObj.id,
+                    title: tutorialDataObj.title,
+                    category: tutorialDataObj.category,
+                    completed: e.target.checked,
+                    completedAt: e.target.checked
+                      ? firebase.firestore.FieldValue.serverTimestamp()
+                      : null,
+                    lastViewed: firebase.firestore.FieldValue.serverTimestamp(),
+                    progress: parseInt(progressBar?.style.width || "0"),
+                  },
+                  { merge: true },
+                );
+
+              showToast(
+                e.target.checked
+                  ? "Marked as completed! 🎉"
+                  : "Marked as incomplete",
+              );
+            } catch (error) {
+              console.error("Error saving progress:", error);
+            } finally {
+              this.disabled = false;
+            }
+          });
+        }
+
+        // ====== TOAST ======
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        // ====== AUTH ======
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
           }
         }, 300);
       });
-    </script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-
-    <script>
-      // Progress tracking
-      const progressBar = document.getElementById("reading-progress");
-      const progressStats = document.querySelector(
-        ".progress-stats span:first-child",
-      );
-      const timeRemaining = document.getElementById("time-remaining");
-
-      function updateProgress() {
-        const windowHeight = window.innerHeight;
-        const documentHeight =
-          document.documentElement.scrollHeight - windowHeight;
-        const scrollTop =
-          window.pageYOffset || document.documentElement.scrollTop;
-        const scrollPercent = (scrollTop / documentHeight) * 100;
-        if (progressBar) progressBar.style.width = scrollPercent + "%";
-        if (progressStats)
-          progressStats.textContent = Math.round(scrollPercent) + "% complete";
-        if (timeRemaining) {
-          const estimatedTotalTime = 10;
-          const timeRemainingValue = Math.max(
-            0,
-            Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100),
-          );
-          timeRemaining.textContent = `~${timeRemainingValue} min remaining`;
-        }
-      }
-
-      // Color generator
-      const generateBtn = document.getElementById("generate-colors");
-      const colorBoxes = document.querySelectorAll(".color-box");
-      const greenColors = [
-        "#05f5ad",
-        "#119c72",
-        "#19e1a5",
-        "#5aedc1",
-        "#9ff4db",
-      ];
-
-      function generateColorScheme() {
-        const shuffled = [...greenColors].sort(() => Math.random() - 0.5);
-        colorBoxes.forEach((box, index) => {
-          if (box)
-            box.style.backgroundColor = shuffled[index % shuffled.length];
-        });
-      }
-
-      window.addEventListener("scroll", updateProgress);
-      if (generateBtn)
-        generateBtn.addEventListener("click", generateColorScheme);
-      if (typeof generateColorScheme === "function") generateColorScheme();
-
-      // Download button
-      const downloadBtn = document.getElementById("download-exercises");
-      if (downloadBtn) {
-        downloadBtn.addEventListener("click", function () {
-          alert(
-            "Download starting... Practice exercises will be available soon!",
-          );
-        });
-      }
     </script>
   </body>
 </html>

@@ -8,14 +8,23 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/challenges.css" />
 
     <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -28,320 +37,36 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-
-    <style>
-      .challenges-main {
-        padding: 2rem 0;
-        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
-        min-height: 100vh;
-      }
-
-      .page-header {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-
-      .page-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        margin-bottom: 0.5rem;
-      }
-
-      .page-header p {
-        color: #6b7280;
-      }
-
-      /* Challenge Tabs */
-      .challenge-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
-      }
-
-      .tab-btn {
-        background: white;
-        border: 2px solid #e5e7eb;
-        padding: 0.6rem 1.5rem;
-        border-radius: 50px;
-        font-weight: 600;
-        color: #4b5563;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .tab-btn:hover {
-        border-color: #fe67ea;
-        color: #fe67ea;
-      }
-
-      .tab-btn.active {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        border-color: transparent;
-        color: white;
-      }
-
-      /* Challenges Grid */
-      .challenges-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 1.5rem;
-      }
-
-      /* Challenge Card */
-      .challenge-card {
-        background: white;
-        border-radius: 1rem;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-        position: relative;
-      }
-
-      .challenge-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(254, 103, 234, 0.15);
-      }
-
-      /* Card Gradient Border on Hover */
-      .challenge-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 1rem;
-        padding: 2px;
-        background: linear-gradient(135deg, #fe67ea, #63dbee, #8b5cf6);
-        -webkit-mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-      }
-
-      .challenge-card:hover::before {
-        opacity: 1;
-      }
-
-      /* Challenge Header */
-      .challenge-header {
-        padding: 1rem;
-        text-align: center;
-        position: relative;
-      }
-
-      .challenge-icon {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .challenge-type {
-        display: inline-block;
-        padding: 0.2rem 1rem;
-        border-radius: 50px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-
-      .type-daily {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-      }
-      .type-weekly {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        color: white;
-      }
-      .type-monthly {
-        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-        color: white;
-      }
-      .type-yearly {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-        color: white;
-      }
-
-      /* Challenge Content */
-      .challenge-content {
-        padding: 1rem 1.5rem 1.5rem;
-      }
-
-      .challenge-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: #1f2937;
-      }
-
-      .challenge-description {
-        font-size: 0.85rem;
-        color: #6b7280;
-        line-height: 1.5;
-        margin-bottom: 1rem;
-      }
-
-      /* Challenge Stats */
-      .challenge-stats {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-        padding: 0.5rem 0;
-        border-top: 1px solid #f0eef2;
-        border-bottom: 1px solid #f0eef2;
-      }
-
-      .stat {
-        text-align: center;
-      }
-
-      .stat-value {
-        display: block;
-        font-weight: 700;
-        color: #fe67ea;
-        font-size: 1rem;
-      }
-
-      .stat-label {
-        font-size: 0.65rem;
-        color: #9ca3af;
-      }
-
-      /* Time Left */
-      .time-left {
-        background: #f3f4f6;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        text-align: center;
-        margin-bottom: 1rem;
-      }
-
-      .time-left span {
-        font-weight: 600;
-        color: #fe67ea;
-      }
-
-      /* Prize Badge */
-      .prize-badge {
-        background: linear-gradient(135deg, #fef3c7, #fffbeb);
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        text-align: center;
-        margin-bottom: 1rem;
-        border: 1px solid #fde68a;
-      }
-
-      .prize-badge i {
-        color: #f59e0b;
-        margin-right: 0.3rem;
-      }
-
-      .prize-badge span {
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: #b45309;
-      }
-
-      /* Join Button */
-      .join-btn {
-        width: 100%;
-        padding: 0.7rem;
-        border-radius: 50px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: center;
-      }
-
-      .join-btn.active {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-        border: none;
-      }
-
-      .join-btn:not(.active) {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        color: white;
-        border: none;
-      }
-
-      .join-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(254, 103, 234, 0.3);
-      }
-
-      /* Loading & Empty States */
-      .loading-state {
-        text-align: center;
-        padding: 3rem;
-      }
-
-      .spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid #e5e7eb;
-        border-top-color: #fe67ea;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 1rem;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .empty-state {
-        text-align: center;
-        padding: 3rem;
-        background: white;
-        border-radius: 1rem;
-      }
-
-      .empty-state i {
-        font-size: 3rem;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        margin-bottom: 1rem;
-      }
-
-      @media (max-width: 768px) {
-        .challenges-grid {
-          grid-template-columns: 1fr;
-          margin: 0 1rem;
-        }
-
-        .challenge-tabs {
-          gap: 0.5rem;
-        }
-
-        .tab-btn {
-          padding: 0.4rem 1rem;
-          font-size: 0.8rem;
-        }
-      }
-    </style>
   </head>
   <body>
-    <!-- Header - Updated Navbar -->
+    <!-- ====== BACKGROUND EFFECTS ====== -->
+    <div class="gradient-bg"></div>
+    <div class="scanline-overlay active" id="scanlineOverlay"></div>
+    <div class="grid-overlay" id="gridOverlay"></div>
+
+    <!-- ====== PARTICLES ====== -->
+    <div class="particle-overlay" id="particleOverlay">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
             <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+              <span class="logo-icon">✦</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
@@ -362,39 +87,43 @@
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -407,11 +136,18 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--accent-1)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
@@ -422,17 +158,17 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
@@ -444,25 +180,25 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
@@ -472,15 +208,13 @@
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -488,12 +222,11 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
+                >Truly Yours ✦</a
               >
             </li>
           </ul>
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -530,7 +263,6 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -538,7 +270,16 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
           <button
             class="mobile-menu-btn"
@@ -572,10 +313,9 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN CONTENT ====== -->
     <main class="challenges-main">
       <div class="container">
         <div class="page-header">
@@ -584,12 +324,24 @@
         </div>
 
         <div class="challenge-tabs">
-          <button class="tab-btn active" data-type="all">All Challenges</button>
-          <button class="tab-btn" data-type="daily">⚡ Daily</button>
-          <button class="tab-btn" data-type="weekly">📅 Weekly</button>
-          <button class="tab-btn" data-type="monthly">🌟 Monthly</button>
-          <button class="tab-btn" data-type="yearly">🏆 Yearly</button>
-          <button class="tab-btn" data-type="my">📋 My Challenges</button>
+          <button class="tab-btn active" data-type="all">
+            <i class="fas fa-th-large"></i> <span>All</span>
+          </button>
+          <button class="tab-btn" data-type="daily">
+            <i class="fas fa-bolt"></i> <span>Daily</span>
+          </button>
+          <button class="tab-btn" data-type="weekly">
+            <i class="fas fa-calendar-week"></i> <span>Weekly</span>
+          </button>
+          <button class="tab-btn" data-type="monthly">
+            <i class="fas fa-calendar-alt"></i> <span>Monthly</span>
+          </button>
+          <button class="tab-btn" data-type="yearly">
+            <i class="fas fa-calendar-check"></i> <span>Yearly</span>
+          </button>
+          <button class="tab-btn" data-type="my">
+            <i class="fas fa-user-check"></i> <span>My Challenges</span>
+          </button>
         </div>
 
         <div id="challengesGrid" class="challenges-grid">
@@ -598,79 +350,137 @@
             <p>Loading challenges...</p>
           </div>
         </div>
+
+        <!-- Points CTA -->
+        <div class="points-cta">
+          <a href="/pages/community/points.html" class="btn-points">
+            <i class="fas fa-coins"></i> View All Prizes &amp; Rewards
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
       </div>
     </main>
 
-    <footer class="tutorial-footer">
+    <!-- ====== THEME CONTROLS ====== -->
+    <div class="theme-controls">
+      <button id="themePinkPurple" class="active" title="Pink/Purple Theme">
+        <i class="fas fa-fill-drip" style="color: #ff00ea"></i>
+      </button>
+      <button id="themeBlueGreen" title="Blue/Green Theme">
+        <i class="fas fa-fill-drip" style="color: #58ebfe"></i>
+      </button>
+      <span class="separator"></span>
+      <button id="themeDark" class="active" title="Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="themeLight" title="Light Mode">
+        <i class="fas fa-sun"></i>
+      </button>
+      <span class="separator"></span>
+      <button id="hudToggle" class="active" title="HUD Mode (H)">
+        <i class="fas fa-vr-cardboard"></i>
+      </button>
+      <button id="scanlineToggle" class="active" title="Scanlines (S)">
+        <i class="fas fa-grip-lines"></i>
+      </button>
+      <button id="gridToggle" class="active" title="Grid Overlay (G)">
+        <i class="fas fa-th"></i>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/community/challenges.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Apply saved theme for header/footer
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        if (savedTheme === "light") {
+          document.body.classList.add("light-mode");
+        } else {
+          document.body.classList.remove("light-mode");
+        }
+
+        // Apply saved color theme
+        const savedColorTheme =
+          localStorage.getItem("colorTheme") || "pink-purple";
+        if (savedColorTheme === "blue-green") {
+          document.body.classList.add("blue-green");
+        } else {
+          document.body.classList.remove("blue-green");
+        }
+
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
@@ -678,10 +488,5 @@
         }, 300);
       });
     </script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/components/avatar-manager.js"></script>
-    <script src="/js/community/challenges.js"></script>
   </body>
 </html>

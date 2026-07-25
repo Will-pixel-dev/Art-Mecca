@@ -1,368 +1,458 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile - Art Mecca</title>
+    <title>Profile — Art Mecca</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/css/variables.css" />
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
-    <link rel="stylesheet" href="/css/profile-enhanced.css" />
-    <link rel="stylesheet" href="/css/avatar.css" />
-
-    <!-- Fonts -->
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <!-- Firebase SDKs -->
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   </head>
-  <body>
-    <main class="profile-hero-main" id="profileContent" style="display: none">
-      <!-- LAYER 1: BACKGROUND -->
+  <body class="profile-page sticky-header">
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✦</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i
+              ><input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== PROFILE MAIN ====== -->
+    <main class="profile-main" id="profileContent" style="display: none">
+      <!-- ====== LAYER 1: BACKGROUND ====== -->
       <div class="hero-layer-1" id="layer1Container">
         <div id="layer1Content">
-          <div
-            style="
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            "
-          ></div>
+          <div class="layer-default-bg"></div>
         </div>
         <div class="layer-overlay"></div>
       </div>
 
-      <!-- LAYER 1 UPLOAD CONTROLS - MOVED OUTSIDE layer-1 -->
-      <div class="layer-1-controls" id="layer1Controls" style="display: none">
-        <label class="upload-btn">
-          <i class="fas fa-image"></i> Change Background
-          <input type="file" id="layer1Upload" accept="image/*,video/*" />
-        </label>
-      </div>
-
-      <!-- LAYER 2: TRANSPARENT OVERLAY -->
+      <!-- ====== LAYER 2: OVERLAY ====== -->
       <div class="hero-layer-2" id="layer2Container">
         <div id="layer2Content">
-          <div
-            style="
-              width: 200px;
-              height: 200px;
-              border-radius: 50%;
-              background: linear-gradient(135deg, #fe67ea, #63dbee);
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 4rem;
-              color: white;
-              font-weight: bold;
-              opacity: 0.8;
-            "
-          >
-            🎨
-          </div>
+          <div class="layer-default-avatar">🎨</div>
         </div>
       </div>
 
-      <!-- LAYER 2 UPLOAD CONTROLS - MOVED OUTSIDE layer-2 -->
-      <div class="layer-2-controls" id="layer2Controls" style="display: none">
-        <label class="upload-btn">
-          <i class="fas fa-user"></i> Change Overlay
-          <input type="file" id="layer2Upload" accept="image/*,video/*" />
-        </label>
-      </div>
-      <!-- LAYER 3: GLASS UI -->
-      <div class="hero-layer-3 hero-theme-dark">
-        <!-- Top Bar: Nav -->
-        <div class="hero-top-bar">
-          <nav class="hero-nav">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
-              Art Mecca
-            </a>
-            <!-- Toggle Button - Add this -->
-            <button
-              class="nav-toggle-btn"
-              id="navToggleBtn"
-              aria-label="Toggle navigation"
-            >
-              <i class="fas fa-bars"></i>
-            </button>
-            <ul class="nav-links" id="nav-links">
-              <li>
-                <a href="/index.html" class="nav-link" data-section="home"
-                  >Home</a
-                >
-              </li>
-              <li>
-                <a
-                  href="/index.html#about"
-                  class="nav-link"
-                  data-section="about"
-                  >About</a
-                >
-              </li>
-              <li class="nav-dropdown" data-section="tutorials">
-                <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                  >Tutorials <span class="dropdown-arrow">▼</span></a
-                >
-                <ul class="dropdown-menu">
-                  <li>
-                    <a
-                      href="/pages/tutorials/character-design/character-design-tutorials.html"
-                      >🎨 Character Design</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
-                      >💡 Color & Lighting</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
-                      >🖌️ Digital Painting</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
-                      >😌 Facial Features</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="/pages/tutorials/software-guides/software-guides-tutorials.html"
-                      >💻 Software Guide</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
-                      >⚙️ Workflow Process</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/pages/tutorials/tutorials.html"
-                      >📚 Full Catalogue</a
-                    >
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-dropdown" data-section="software">
-                <a
-                  href="/pages/software/software-comparison.html"
-                  class="nav-link"
-                  >Software <span class="dropdown-arrow">▼</span></a
-                >
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="/pages/software/software-comparison.html"
-                      >⚖️ Software Comparison</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/pages/tools/software-quiz.html"
-                      >📝 Software Quiz</a
-                    >
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-dropdown" data-section="tools">
-                <a href="/pages/tools/tools.html" class="nav-link"
-                  >Tools <span class="dropdown-arrow">▼</span></a
-                >
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="/pages/tools/color-palette-generator.html"
-                      >🎨 Color Palette Generator</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/pages/tools/color-scheme-analyzer.html"
-                      >🔍 Color Scheme Analyzer</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/pages/tools/prompt-generator.html"
-                      >🤖 Character Prompt Generator</a
-                    >
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-dropdown" data-section="community">
-                <a href="/pages/community/hub.html" class="nav-link"
-                  >Community <span class="dropdown-arrow">▼</span></a
-                >
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="/pages/community/hub.html#daily-challenge"
-                      >🔥 Daily Challenge</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/pages/community/gallery.html">🖼️ Gallery</a>
-                  </li>
-                  <li>
-                    <a href="/pages/community/search-users.html"
-                      >🔍 Find Artists</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/pages/community/activity-feed.html"
-                      >📰 Activity Feed</a
-                    >
-                  </li>
-                  <li>
-                    <a href="/pages/community/challenges.html">🏆 Challenges</a>
-                  </li>
-                  <li>
-                    <a href="/pages/community/analytics.html">📊 Analytics</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-dropdown" data-section="equip">
-                <a href="/pages/Equip/Equip.html" class="nav-link"
-                  >Equip <span class="dropdown-arrow">▼</span></a
-                >
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
-                  </li>
-                  <li>
-                    <a href="/pages/Equip/price-comparison.html"
-                      >📄 CV Template</a
-                    >
-                  </li>
-                  <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                  <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
-                </ul>
-              </li>
-              <li>
-                <a
-                  href="/pages/truly-yours/truly-yours-project.html"
-                  class="nav-link truly-yours-link"
-                  data-section="truly-yours"
-                  >Truly Yours ✨</a
-                >
-              </li>
-            </ul>
-            <div class="auth-buttons">
-              <button class="btn-icon search-btn">
-                <i class="fas fa-search"></i>
-              </button>
-              <div class="auth-buttons-container"></div>
-              <!-- Avatar container - add this where you want the avatar to appear -->
-              <div class="nav-avatar-container" id="navAvatar"></div>
-            </div>
-            <!-- Profile Avatar Section - Add this near the top of your profile content -->
-            <div class="profile-avatar-section" id="profileAvatarSection">
-              <div class="avatar-wrapper avatar-xxl" id="profileAvatarWrapper">
-                <span class="avatar-initials" id="profileAvatarInitials"
-                  >JD</span
-                >
-              </div>
-              <div class="avatar-info">
-                <h3 id="profileAvatarName">Your Name</h3>
-                <p id="profileAvatarUsername">@username</p>
-                <button class="btn-change-avatar" id="changeAvatarBtn">
-                  <i class="fas fa-camera"></i> Change Profile Picture
-                </button>
-                <input
-                  type="file"
-                  id="avatarUpload"
-                  accept="image/*"
-                  style="display: none"
-                />
-              </div>
-            </div>
-          </nav>
-        </div>
-
-        <!-- Right Sidebar Icons -->
-        <div class="hero-right-sidebar">
-          <a
-            href="#"
-            class="sidebar-icon"
-            data-action="notifications"
-            title="Notifications"
+      <!-- ====== LAYER 3: GLASS UI ====== -->
+      <div class="hero-layer-3">
+        <!-- Right Sidebar -->
+        <div class="hero-sidebar">
+          <button
+            class="sidebar-btn"
+            data-action="palette"
+            title="Color Palette"
           >
-            <i class="fas fa-bell"></i>
-          </a>
-          <a
-            href="#"
-            class="sidebar-icon"
-            data-action="settings"
-            title="Settings"
-          >
+            <i class="fas fa-palette"></i>
+          </button>
+          <button class="sidebar-btn" data-action="settings" title="Settings">
             <i class="fas fa-cog"></i>
-          </a>
-          <a href="#" class="sidebar-icon" data-action="cv" title="CV">
+          </button>
+          <button class="sidebar-btn" data-action="share" title="Share Profile">
+            <i class="fas fa-share-alt"></i>
+          </button>
+          <button class="sidebar-btn" data-action="message" title="Message">
+            <i class="fas fa-envelope"></i>
+          </button>
+          <button class="sidebar-btn" data-action="block" title="Block">
+            <i class="fas fa-ban"></i>
+          </button>
+          <button class="sidebar-btn" data-action="cv" title="Download CV">
             <i class="fas fa-file-alt"></i>
-          </a>
-          <a
-            href="#"
-            class="sidebar-icon"
-            data-action="edit"
-            title="Edit Profile"
-          >
-            <i class="fas fa-pen"></i>
-          </a>
+          </button>
         </div>
 
         <!-- Main Content -->
-        <div class="hero-content-left">
-          <!-- Name Section -->
-          <div class="hero-name-section-left">
-            <h1 class="artist-name">Artist Name</h1>
-            <p class="artist-username">@username</p>
-            <div class="hero-badges">
-              <span class="hero-badge artist"
+        <div class="hero-content">
+          <!-- Name & Badges -->
+          <div class="hero-header">
+            <h1 class="hero-name" id="profileName">Artist Name</h1>
+            <p class="hero-username" id="profileUsername">@username</p>
+            <div class="hero-badges" id="heroBadges">
+              <span class="badge artist"
                 ><i class="fas fa-palette"></i> Artist</span
               >
             </div>
           </div>
 
+          <!-- NEW: Artist Name / Title in Hero -->
+          <div class="hero-artist-title" id="heroArtistTitle">
+            <span class="artist-title-icon">✦</span>
+            <span class="artist-title-text" id="artistTitleText"
+              >Digital Artist</span
+            >
+            <span class="artist-title-icon">✦</span>
+          </div>
+
           <!-- Stats -->
-          <div class="hero-stats-left">
-            <div class="hero-stat">
+          <div class="hero-stats" id="heroStats">
+            <div class="stat">
               <span class="stat-value" data-stat="artworks">0</span>
               <span class="stat-label">Artworks</span>
             </div>
-            <div class="hero-stat">
+            <div class="stat">
               <span class="stat-value" data-stat="followers">0</span>
               <span class="stat-label">Followers</span>
             </div>
-            <div class="hero-stat">
+            <div class="stat">
               <span class="stat-value" data-stat="following">0</span>
               <span class="stat-label">Following</span>
             </div>
-            <div class="hero-stat">
+            <div class="stat">
               <span class="stat-value" data-stat="likes">0</span>
               <span class="stat-label">Likes</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" data-stat="points">0</span>
+              <span class="stat-label">◈ Points</span>
             </div>
           </div>
 
           <!-- Bio -->
-          <div class="hero-bio-left collapsed">
+          <div class="hero-bio" id="profileBio">
             <p class="bio-text">No bio yet. Click to expand.</p>
             <button class="bio-toggle">Show more ▼</button>
           </div>
 
-          <!-- ARTIST BADGE SECTION - ADDED -->
-          <div class="artist-badge-section" id="artistBadgeSection">
+          <!-- Badge Modal -->
+          <div class="modal-overlay" id="badgeModal">
+            <div class="modal-container badge-modal">
+              <div class="modal-header">
+                <h3><i class="fas fa-award"></i> Edit Artist Badge</h3>
+                <button class="modal-close" id="closeBadgeModal">
+                  &times;
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="badgeForm">
+                  <!-- Artist Type -->
+                  <div class="badge-field">
+                    <label>Artist Type <span class="required">*</span></label>
+                    <select id="artistType" class="badge-select">
+                      <option value="">Select your style</option>
+                      <option value="digital">🎨 Digital Artist</option>
+                      <option value="traditional">🖌️ Traditional Artist</option>
+                      <option value="mixed">🎭 Mixed Media Artist</option>
+                      <option value="3d">🧊 3D Artist</option>
+                      <option value="photography">📷 Photographer</option>
+                      <option value="animation">🎬 Animator</option>
+                    </select>
+                    <small class="badge-helper"
+                      >Choose the category that best describes your primary art
+                      style</small
+                    >
+                  </div>
+
+                  <!-- Specialties -->
+                  <div class="badge-field">
+                    <label
+                      >Specialties
+                      <span class="badge-count-label">(up to 4)</span></label
+                    >
+                    <div class="badge-checkbox-grid" id="specialtiesGrid"></div>
+                    <small class="badge-helper"
+                      >Select up to 4 specialties that represent your
+                      skills</small
+                    >
+                  </div>
+
+                  <!-- Mediums -->
+                  <div class="badge-field">
+                    <label
+                      >Mediums
+                      <span class="badge-count-label">(up to 3)</span></label
+                    >
+                    <div class="badge-checkbox-grid" id="mediumGrid"></div>
+                    <small class="badge-helper"
+                      >Select up to 3 tools or mediums you work with</small
+                    >
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button class="btn-outline" id="cancelBadgeBtn">Cancel</button>
+                <button class="btn-primary" id="saveBadgeBtn">
+                  <i class="fas fa-save"></i> Save Badge
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artist Badge -->
+          <div class="artist-badge" id="artistBadge">
             <div class="badge-header">
               <h3><i class="fas fa-award"></i> Artist Badge</h3>
               <button
@@ -370,187 +460,742 @@
                 id="editBadgeBtn"
                 style="display: none"
               >
-                <i class="fas fa-pen"></i> Edit Badge
+                <i class="fas fa-pen"></i> Edit
               </button>
             </div>
-
-            <!-- Badge Display -->
-            <div class="badge-display" id="badgeDisplay">
-              <div class="badge-container">
-                <div class="badge-icon">
-                  <i class="fas fa-palette" id="badgeIcon"></i>
+            <div class="badge-display">
+              <div class="badge-icon">
+                <i class="fas fa-palette" id="badgeIcon"></i>
+              </div>
+              <div class="badge-info">
+                <div class="badge-row">
+                  <span class="badge-label">Artist Type</span
+                  ><span class="badge-value" id="badgeArtistType">Not set</span>
                 </div>
-                <div class="badge-info">
-                  <div class="badge-primary">
-                    <span class="badge-label">Artist Type</span>
-                    <span class="badge-value" id="badgeArtistType"
-                      >Not set</span
-                    >
+                <div class="badge-row">
+                  <span class="badge-label">Specialties</span>
+                  <div class="badge-tags" id="badgeSpecialties">
+                    <span class="tag">Not set</span>
                   </div>
-                  <div class="badge-secondary">
-                    <span class="badge-label">Specialties</span>
-                    <div class="badge-tags" id="badgeSpecialties">
-                      <span class="badge-tag">Not set</span>
-                    </div>
-                  </div>
-                  <div class="badge-medium">
-                    <span class="badge-label">Medium</span>
-                    <div class="badge-tags" id="badgeMediumTags">
-                      <span class="badge-tag">Not set</span>
-                    </div>
+                </div>
+                <div class="badge-row">
+                  <span class="badge-label">Medium</span>
+                  <div class="badge-tags" id="badgeMediumTags">
+                    <span class="tag">Not set</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Bottom Bar -->
-        <div class="hero-bottom-bar-horizontal">
-          <div class="hero-social-links"></div>
-          <button class="hero-shadow-btn">
+          <!-- Social Links -->
+          <div class="hero-social" id="heroSocial">
+            <button class="btn-edit-social" id="editSocialBtn">
+              <i class="fas fa-pen"></i> Edit Links
+            </button>
+            <div class="social-icons" id="socialIcons"></div>
+          </div>
+
+          <!-- Shadow Button -->
+          <button class="hero-shadow-btn" id="shadowBtn">
+            <span class="shadow-icon"></span>
             <span class="shadow-text">Shadow</span>
           </button>
         </div>
       </div>
 
-      <!-- Theme Toggle -->
-      <button class="hero-theme-toggle" title="Toggle Theme">
+      <!-- ====== PALETTE PICKER ====== -->
+      <div class="palette-picker" id="palettePicker">
+        <button class="palette-toggle" id="paletteToggle">
+          <i class="fas fa-palette"></i>
+        </button>
+        <div class="palette-grid" id="paletteGrid">
+          <button
+            class="palette-swatch"
+            data-color="#e90c0c"
+            style="background: #e90c0c"
+            title="Red"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#ff9500"
+            style="background: #ff9500"
+            title="Orange"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#fbf304"
+            style="background: #fbf304"
+            title="Yellow"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#00e025"
+            style="background: #00e025"
+            title="Green"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#00e1ff"
+            style="background: #00e1ff"
+            title="Cyan"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#0008fa"
+            style="background: #0008fa"
+            title="Blue"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#ff00ea"
+            style="background: #ff00ea"
+            title="Magenta"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#ff00bb"
+            style="background: #ff00bb"
+            title="Pink"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#6b00b3"
+            style="background: #6b00b3"
+            title="Purple"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#dde7ee"
+            style="background: #dde7ee"
+            title="Ice"
+          ></button>
+          <button
+            class="palette-swatch"
+            data-color="#0f0033"
+            style="background: #0f0033"
+            title="Deep"
+          ></button>
+        </div>
+      </div>
+
+      <!-- ====== THEME TOGGLE ====== -->
+      <button class="theme-toggle-btn" id="themeToggle" title="Toggle Theme">
         <i class="fas fa-sun"></i>
       </button>
 
-      <!-- Upload Loading -->
-      <div
-        id="uploadLoading"
-        style="
-          display: none;
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 9999;
-          background: rgba(0, 0, 0, 0.8);
-          padding: 20px 30px;
-          border-radius: 12px;
-          color: white;
-          font-weight: 600;
-        "
-      >
-        <i class="fas fa-spinner fa-spin"></i> Uploading...
+      <!-- ====== LAYER UPLOAD CONTROLS ====== -->
+      <div class="layer-controls" id="layerControls" style="display: none">
+        <button class="layer-toggle" id="layerToggle">
+          <i class="fas fa-layer-group"></i>
+        </button>
+        <div class="layer-options" id="layerOptions">
+          <label class="layer-option">
+            <span>🎨 Background</span>
+            <input type="file" id="bgUpload" accept="image/*,video/*" />
+            <button class="layer-remove" id="bgRemove" style="display: none">
+              <i class="fas fa-times"></i>
+            </button>
+          </label>
+          <label class="layer-option">
+            <span>🖼️ Overlay</span>
+            <input type="file" id="overlayUpload" accept="image/*,video/*" />
+            <button
+              class="layer-remove"
+              id="overlayRemove"
+              style="display: none"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </label>
+        </div>
       </div>
 
-      <!-- SOCIAL LINKS MODAL -->
-      <div class="modal-overlay" id="socialLinksModal">
-        <div class="modal-container social-modal">
+      <!-- ====== PROFILE SECTIONS ====== -->
+      <div class="profile-sections" id="profileSections">
+        <!-- Tabs -->
+        <div class="profile-tabs" id="profileTabs">
+          <button class="tab active" data-tab="about">
+            <i class="fas fa-user"></i> About
+          </button>
+          <button class="tab" data-tab="portfolio">
+            <i class="fas fa-folder-open"></i> Portfolio
+          </button>
+          <button class="tab" data-tab="uploads">
+            <i class="fas fa-upload"></i> Uploads
+          </button>
+          <button class="tab" data-tab="liked">
+            <i class="fas fa-heart"></i> Liked
+          </button>
+          <button class="tab" data-tab="saved">
+            <i class="fas fa-bookmark"></i> Saved
+          </button>
+          <button class="tab" data-tab="tutorials">
+            <i class="fas fa-graduation-cap"></i> Tutorials
+          </button>
+          <button class="tab" data-tab="challenges">
+            <i class="fas fa-trophy"></i> Challenges
+          </button>
+          <button class="tab" data-tab="badges">
+            <i class="fas fa-award"></i> Badges
+          </button>
+          <button class="tab" data-tab="blog">
+            <i class="fas fa-blog"></i> Blog
+          </button>
+          <button class="tab" data-tab="commission">
+            <i class="fas fa-briefcase"></i> Commission
+          </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content active" id="tab-about">
+          <div class="about-grid">
+            <div class="about-card">
+              <h3><i class="fas fa-id-card"></i> Personal Details</h3>
+              <div class="field">
+                <label>Birthday</label><input type="date" id="aboutBirthday" />
+              </div>
+              <div class="field">
+                <label>Age</label><span id="aboutAge">—</span>
+              </div>
+              <div class="field">
+                <label>Star Sign</label
+                ><input type="text" id="aboutStarSign" placeholder="e.g. Leo" />
+              </div>
+              <div class="field">
+                <label>MBTI</label
+                ><input type="text" id="aboutMbti" placeholder="e.g. INFP" />
+              </div>
+            </div>
+            <div class="about-card">
+              <h3><i class="fas fa-star"></i> Favorites</h3>
+              <div class="field">
+                <label>📖 Book</label
+                ><input
+                  type="text"
+                  id="aboutBook"
+                  placeholder="Favorite book"
+                />
+              </div>
+              <div class="field">
+                <label>🎬 Movie</label
+                ><input
+                  type="text"
+                  id="aboutMovie"
+                  placeholder="Favorite movie"
+                />
+              </div>
+              <div class="field">
+                <label>📺 Show</label
+                ><input
+                  type="text"
+                  id="aboutShow"
+                  placeholder="Favorite show"
+                />
+              </div>
+              <div class="field">
+                <label>🎨 Colour</label
+                ><input
+                  type="text"
+                  id="aboutColour"
+                  placeholder="Favorite colour"
+                />
+              </div>
+              <div class="field">
+                <label>🍽️ Food</label
+                ><input
+                  type="text"
+                  id="aboutFood"
+                  placeholder="Favorite food"
+                />
+              </div>
+              <div class="field">
+                <label>🎯 Hobby</label
+                ><input
+                  type="text"
+                  id="aboutHobby"
+                  placeholder="Favorite hobby"
+                />
+              </div>
+              <div class="field">
+                <label>🎵 Song</label
+                ><input
+                  type="text"
+                  id="aboutSong"
+                  placeholder="Song on repeat"
+                />
+              </div>
+              <div class="field">
+                <label>💬 Quote</label
+                ><input
+                  type="text"
+                  id="aboutQuote"
+                  placeholder="Favorite quote"
+                />
+              </div>
+              <div class="field">
+                <label>🚫 Dislikes</label
+                ><textarea
+                  id="aboutDislikes"
+                  rows="2"
+                  placeholder="Things you dislike..."
+                ></textarea>
+              </div>
+              <button class="btn-save" id="saveAboutBtn">
+                <i class="fas fa-save"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-portfolio">
+          <div class="portfolio-container">
+            <div class="portfolio-header glass-panel">
+              <span class="portfolio-badge"
+                ><i class="fas fa-folder-open"></i> PORTFOLIO MODE</span
+              >
+              <h2>Your Art Portfolio</h2>
+              <p>
+                Share this link with clients, galleries, or on social media.
+              </p>
+              <div class="portfolio-actions">
+                <!-- NEW: Toggle Button -->
+                <button class="btn-toggle-portfolio" id="togglePortfolioBtn">
+                  <i class="fas fa-eye"></i>
+                  <span id="portfolioToggleText">Enable Portfolio Mode</span>
+                </button>
+                <button class="btn-share" id="sharePortfolioBtn">
+                  <i class="fas fa-share-alt"></i> Share
+                </button>
+                <button class="btn-copy" id="copyPortfolioBtn">
+                  <i class="fas fa-link"></i> Copy Link
+                </button>
+                <button class="btn-switch" id="switchProfileBtn">
+                  <i class="fas fa-arrow-left"></i> Switch to Profile
+                </button>
+              </div>
+            </div>
+            <div id="portfolioContent">
+              <div class="portfolio-loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading portfolio...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-uploads">
+          <div class="uploads-section">
+            <button class="floating-upload" id="floatingUploadBtn">
+              <i class="fas fa-plus"></i>
+            </button>
+            <div class="collections-section">
+              <div class="section-header">
+                <h3><i class="fas fa-folder"></i> Collections</h3>
+                <button class="btn-new" id="newCollectionBtn">
+                  <i class="fas fa-plus"></i> New
+                </button>
+              </div>
+              <div class="collections-grid" id="collectionsGrid"></div>
+            </div>
+            <div class="gallery-section">
+              <div class="section-header">
+                <h3><i class="fas fa-palette"></i> My Artworks</h3>
+                <button class="btn-view-all" id="viewAllUploadsBtn">
+                  View All <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="masonry-grid" id="uploadsMasonry"></div>
+              <div class="scroll-trigger" id="uploadsScrollTrigger"></div>
+              <div
+                class="loading-spinner"
+                id="uploadsLoading"
+                style="display: none"
+              >
+                <i class="fas fa-spinner fa-spin"></i> Loading...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-liked">
+          <div class="liked-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-heart" style="color: #fe67ea"></i> Liked
+                Artworks
+              </h3>
+            </div>
+            <div class="masonry-grid" id="likedMasonry"></div>
+            <div class="scroll-trigger" id="likedScrollTrigger"></div>
+            <div
+              class="loading-spinner"
+              id="likedLoading"
+              style="display: none"
+            >
+              <i class="fas fa-spinner fa-spin"></i> Loading...
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-saved">
+          <div class="saved-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-bookmark" style="color: #63dbee"></i> Saved
+                Artworks
+              </h3>
+            </div>
+            <div class="masonry-grid" id="savedMasonry"></div>
+            <div class="scroll-trigger" id="savedScrollTrigger"></div>
+            <div
+              class="loading-spinner"
+              id="savedLoading"
+              style="display: none"
+            >
+              <i class="fas fa-spinner fa-spin"></i> Loading...
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-tutorials">
+          <div class="tutorials-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-graduation-cap" style="color: #f59e0b"></i>
+                Saved Tutorials
+              </h3>
+            </div>
+            <div class="tutorials-grid" id="savedTutorialsGrid"></div>
+            <div
+              class="loading-spinner"
+              id="tutorialsLoading"
+              style="display: none"
+            >
+              <i class="fas fa-spinner fa-spin"></i> Loading...
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-challenges">
+          <div class="challenges-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-trophy" style="color: #f59e0b"></i> Challenges
+                Joined
+              </h3>
+              <a href="/pages/community/challenges.html" class="btn-view-all"
+                >View All <i class="fas fa-arrow-right"></i
+              ></a>
+            </div>
+            <div class="challenges-grid" id="joinedChallengesContainer">
+              <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-badges">
+          <div class="badges-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-award" style="color: #f59e0b"></i> Badges
+                Earned
+              </h3>
+              <span class="badge-count" id="badgeCount">0 badges</span>
+            </div>
+            <div class="badges-grid" id="badgesContainer">
+              <div class="empty-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-blog">
+          <div class="blog-section">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-blog" style="color: #8b5cf6"></i> Saved Blog
+                Posts
+              </h3>
+            </div>
+            <div class="blog-collections">
+              <div class="section-header">
+                <h4><i class="fas fa-folder"></i> Collections</h4>
+                <button class="btn-new" id="newBlogCollectionBtn">
+                  <i class="fas fa-plus"></i> New
+                </button>
+              </div>
+              <div class="blog-collections-grid" id="blogCollectionsGrid"></div>
+            </div>
+            <div class="blog-posts">
+              <h4><i class="fas fa-bookmark"></i> Saved Posts</h4>
+              <div class="blog-posts-grid" id="savedBlogPostsGrid"></div>
+            </div>
+            <div class="loading-spinner" id="blogLoading" style="display: none">
+              <i class="fas fa-spinner fa-spin"></i> Loading...
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-commission">
+          <div class="commission-section">
+            <div class="commission-card">
+              <h3><i class="fas fa-briefcase"></i> Commission Info</h3>
+              <div class="commission-grid">
+                <div>
+                  <div class="field">
+                    <label>Contact Info</label
+                    ><input
+                      type="text"
+                      id="commissionContact"
+                      placeholder="Email or phone"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Website</label
+                    ><input
+                      type="url"
+                      id="commissionWebsite"
+                      placeholder="https://yourwebsite.com"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Shop Link</label
+                    ><input
+                      type="url"
+                      id="commissionShop"
+                      placeholder="https://shop.com/yourstore"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Work Experience</label
+                    ><textarea
+                      id="commissionExperience"
+                      rows="3"
+                      placeholder="Your work experience..."
+                    ></textarea>
+                  </div>
+                </div>
+                <div>
+                  <div class="field">
+                    <label>Expertise</label
+                    ><textarea
+                      id="commissionExpertise"
+                      rows="3"
+                      placeholder="Describe your expertise..."
+                    ></textarea>
+                  </div>
+                  <div class="field">
+                    <label>Current Projects</label
+                    ><textarea
+                      id="commissionProjects"
+                      rows="2"
+                      placeholder="What you're working on..."
+                    ></textarea>
+                  </div>
+                  <div class="field">
+                    <label>Rates</label
+                    ><input
+                      type="text"
+                      id="commissionRates"
+                      placeholder="e.g. $50/hr or project-based"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>CV / Resume</label>
+                    <div class="cv-upload" id="cvUploadArea">
+                      <input
+                        type="file"
+                        id="cvFileInput"
+                        accept=".pdf,.doc,.docx"
+                      />
+                      <div class="cv-drop-zone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop your CV here</p>
+                        <span class="cv-types">PDF, DOC, DOCX (max 5MB)</span>
+                      </div>
+                      <div
+                        class="cv-preview"
+                        id="cvPreview"
+                        style="display: none"
+                      >
+                        <i class="fas fa-file-pdf"></i
+                        ><span id="cvFileName">resume.pdf</span
+                        ><button class="cv-remove" id="cvRemoveBtn">
+                          <i class="fas fa-times"></i></button
+                        ><button class="cv-download" id="cvDownloadBtn">
+                          <i class="fas fa-download"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="btn-save" id="saveCommissionBtn">
+                <i class="fas fa-save"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== MODALS ====== -->
+      <!-- Upload Modal -->
+      <div class="modal-overlay" id="uploadModal">
+        <div class="modal-container upload-modal">
           <div class="modal-header">
-            <h3><i class="fas fa-link"></i> Edit Social Links</h3>
-            <button class="modal-close" id="closeSocialModal">&times;</button>
+            <h3><i class="fas fa-upload"></i> Upload Artwork</h3>
+            <button class="modal-close" id="closeUploadModal">&times;</button>
           </div>
           <div class="modal-body">
-            <p style="color: #a0aec0; margin-bottom: 1rem">
-              Add your social media links. Leave empty to remove.
-            </p>
-            <form id="socialLinksForm">
-              <div class="social-input-group">
-                <label
-                  ><i class="fab fa-instagram" style="color: #e4405f"></i>
-                  Instagram</label
+            <form id="uploadForm">
+              <div class="upload-drop-zone" id="uploadDropZone">
+                <input type="file" id="uploadFile" accept="image/*" />
+                <div class="upload-placeholder">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>Drag & drop your artwork</p>
+                  <span>or click to browse</span
+                  ><small>PNG, JPG, WebP (max 10MB)</small>
+                </div>
+                <div
+                  class="upload-preview"
+                  id="uploadPreview"
+                  style="display: none"
                 >
-                <input
-                  type="url"
-                  id="socialInstagram"
-                  placeholder="https://instagram.com/yourusername"
+                  <img id="uploadPreviewImg" src="" alt="Preview" /><button
+                    class="remove-preview"
+                    id="removePreviewBtn"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="field">
+                <label>Title <span class="required">*</span></label
+                ><input
+                  type="text"
+                  id="uploadTitle"
+                  placeholder="Enter artwork title"
+                  required
                 />
               </div>
-              <div class="social-input-group">
-                <label
-                  ><i class="fab fa-tiktok" style="color: #000000"></i>
-                  TikTok</label
-                >
-                <input
-                  type="url"
-                  id="socialTikTok"
-                  placeholder="https://tiktok.com/@yourusername"
-                />
+              <div class="field">
+                <label>Description</label
+                ><textarea
+                  id="uploadDescription"
+                  rows="2"
+                  placeholder="Describe your artwork..."
+                ></textarea>
               </div>
-              <div class="social-input-group">
-                <label
-                  ><i class="fab fa-youtube" style="color: #ff0000"></i>
-                  YouTube</label
-                >
-                <input
-                  type="url"
-                  id="socialYouTube"
-                  placeholder="https://youtube.com/@yourusername"
-                />
+              <div class="field-row">
+                <div class="field half">
+                  <label>Category</label
+                  ><select id="uploadCategory">
+                    <option value="original">Original</option>
+                    <option value="fanart">Fanart</option>
+                    <option value="sketch">Sketch</option>
+                    <option value="digital">Digital</option>
+                    <option value="traditional">Traditional</option>
+                    <option value="3d">3D</option>
+                    <option value="photography">Photography</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="field half">
+                  <label>Software</label
+                  ><input
+                    type="text"
+                    id="uploadSoftware"
+                    placeholder="e.g. Photoshop"
+                  />
+                </div>
               </div>
-              <div class="social-input-group">
-                <label
-                  ><i class="fab fa-pinterest" style="color: #e60023"></i>
-                  Pinterest</label
-                >
-                <input
-                  type="url"
-                  id="socialPinterest"
-                  placeholder="https://pinterest.com/yourusername"
-                />
+              <div class="field">
+                <label>Tags</label>
+                <div class="tags-input">
+                  <input
+                    type="text"
+                    id="uploadTags"
+                    placeholder="Press Enter to add tags"
+                  />
+                  <div class="tags-display" id="uploadTagsDisplay"></div>
+                </div>
               </div>
-              <div class="social-input-group">
-                <label
-                  ><i class="fab fa-discord" style="color: #5865f2"></i>
-                  Discord</label
-                >
-                <input
-                  type="url"
-                  id="socialDiscord"
-                  placeholder="https://discord.gg/invitecode"
-                />
+              <div class="nsfw-toggle">
+                <label class="toggle"
+                  ><input type="checkbox" id="uploadNSFW" /><span
+                    class="slider"
+                  ></span></label
+                ><span>🔞 Mature content</span>
               </div>
-              <div class="social-input-group">
-                <label
-                  ><i class="fab fa-x-twitter" style="color: #000000"></i> X
-                  (Twitter)</label
-                >
-                <input
-                  type="url"
-                  id="socialX"
-                  placeholder="https://x.com/yourusername"
-                />
-              </div>
-              <div class="social-input-group">
-                <label
-                  ><i class="fas fa-user" style="color: #8b5cf6"></i>
-                  VGen</label
-                >
-                <input
-                  type="url"
-                  id="socialVGen"
-                  placeholder="https://vgen.co/yourusername"
-                />
-              </div>
-              <div class="social-input-group">
-                <label
-                  ><i class="fas fa-coffee" style="color: #ff813f"></i>
-                  Ko-Fi</label
-                >
-                <input
-                  type="url"
-                  id="socialKoFi"
-                  placeholder="https://ko-fi.com/yourusername"
-                />
+              <div class="field" id="nsfwCategory" style="display: none">
+                <label>NSFW Category</label
+                ><select id="uploadNSFWCategory">
+                  <option value="mature">Mature</option>
+                  <option value="explicit">Explicit</option>
+                  <option value="violent">Violent</option>
+                  <option value="suggestive">Suggestive</option>
+                </select>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-outline" id="cancelSocialBtn">Cancel</button>
-            <button class="btn btn-primary" id="saveSocialBtn">
-              <i class="fas fa-save"></i> Save Social Links
+            <button class="btn-outline" id="cancelUploadBtn">Cancel</button
+            ><button class="btn-primary" id="submitUploadBtn">
+              <i class="fas fa-upload"></i> Upload
             </button>
           </div>
         </div>
       </div>
 
-      <!-- ARTIST BADGE MODAL - ADDED -->
+      <!-- Collection Modal -->
+      <div class="modal-overlay" id="collectionModal">
+        <div class="modal-container">
+          <div class="modal-header">
+            <h3><i class="fas fa-folder"></i> New Collection</h3>
+            <button class="modal-close" id="closeCollectionModal">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="collectionForm">
+              <div class="field">
+                <label>Name <span class="required">*</span></label
+                ><input
+                  type="text"
+                  id="collectionName"
+                  placeholder="e.g. Fantasy Characters"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label>Description</label
+                ><textarea
+                  id="collectionDescription"
+                  rows="2"
+                  placeholder="What's this collection about?"
+                ></textarea>
+              </div>
+              <div class="field">
+                <label>Add Artworks</label>
+                <div class="collection-artworks" id="collectionArtworks"></div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-outline" id="cancelCollectionBtn">Cancel</button
+            ><button class="btn-primary" id="saveCollectionBtn">
+              <i class="fas fa-save"></i> Create
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge Modal -->
       <div class="modal-overlay" id="badgeModal">
         <div class="modal-container badge-modal">
           <div class="modal-header">
@@ -559,11 +1204,10 @@
           </div>
           <div class="modal-body">
             <form id="badgeForm">
-              <!-- Artist Type -->
-              <div class="form-group">
-                <label>Artist Type <span class="required">*</span></label>
-                <select id="artistType" required>
-                  <option value="">Select your primary style</option>
+              <div class="field">
+                <label>Artist Type <span class="required">*</span></label
+                ><select id="artistType">
+                  <option value="">Select your style</option>
                   <option value="digital">🎨 Digital Artist</option>
                   <option value="traditional">🖌️ Traditional Artist</option>
                   <option value="mixed">🎭 Mixed Media Artist</option>
@@ -572,281 +1216,111 @@
                   <option value="animation">🎬 Animator</option>
                 </select>
               </div>
-
-              <!-- Specialties -->
-              <div class="form-group">
-                <label>Specialties (Select up to 4)</label>
-                <div class="specialties-grid" id="specialtiesGrid">
-                  <div class="specialty-group" data-type="digital">
-                    <h4>Digital Art</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="character-design" />
-                      Character Design
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="portrait" /> Portrait Art
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="anatomy" /> Anatomy &
-                      Technical
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="landscape" /> Landscape &
-                      Environment
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="digital-painting" />
-                      Digital Painting
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="concept-art" /> Concept Art
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="illustration" />
-                      Illustration
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="manga" /> Manga & Comics
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="storyboarding" />
-                      Storyboarding
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="photo-manipulation" />
-                      Photo Manipulation
-                    </label>
-                  </div>
-
-                  <div class="specialty-group" data-type="traditional">
-                    <h4>Traditional Art</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="oil-painting" /> Oil
-                      Painting
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="watercolor" />
-                      Watercolor
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="acrylic" /> Acrylic
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="charcoal" /> Charcoal &
-                      Graphite
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="ink" /> Ink Drawing
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="pastel" /> Pastel Art
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="mixed-media" /> Mixed Media
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="collage" /> Collage
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="printmaking" />
-                      Printmaking
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="sketching" /> Sketching
-                    </label>
-                  </div>
-
-                  <div class="specialty-group" data-type="3d">
-                    <h4>3D Art</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="3d-modeling" /> 3D Modeling
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="sculpting" /> Sculpting
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="texturing" /> Texturing
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="rigging" /> Rigging
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="animation-3d" /> 3D
-                      Animation
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="game-art" /> Game Art
-                    </label>
-                  </div>
-
-                  <div class="specialty-group" data-type="photography">
-                    <h4>Photography</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="portrait-photography" />
-                      Portrait Photography
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="landscape-photography" />
-                      Landscape Photography
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="macro" /> Macro Photography
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="street" /> Street
-                      Photography
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="fine-art" /> Fine Art
-                      Photography
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="wildlife" /> Wildlife
-                      Photography
-                    </label>
-                  </div>
-
-                  <div class="specialty-group" data-type="animation">
-                    <h4>Animation</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="2d-animation" /> 2D
-                      Animation
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="stop-motion" /> Stop Motion
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="motion-graphics" />
-                      Motion Graphics
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="character-animation" />
-                      Character Animation
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="experimental" />
-                      Experimental Animation
-                    </label>
-                  </div>
-                </div>
-                <small class="helper-text">Select up to 4 specialties</small>
+              <div class="field">
+                <label>Specialties (up to 4)</label>
+                <div class="specialties-grid" id="specialtiesGrid"></div>
               </div>
-
-              <!-- Medium -->
-              <div class="form-group">
-                <label>Medium (Select up to 3)</label>
-                <div class="medium-grid" id="mediumGrid">
-                  <div class="medium-group" data-type="traditional">
-                    <h4>Traditional</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="watercolor" />
-                      Watercolor
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="acrylic" /> Acrylic
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="oil-paint" /> Oil Paint
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="ink" /> Ink
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="graphite" /> Graphite
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="charcoal-medium" />
-                      Charcoal
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="pastel-medium" /> Oil Pastel
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="gouache" /> Gouache
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="colored-pencil" />
-                      Colored Pencil
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="marker" /> Marker
-                    </label>
-                  </div>
-
-                  <div class="medium-group" data-type="digital">
-                    <h4>Digital</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="photoshop" /> Adobe
-                      Photoshop
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="procreate" /> Procreate
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="clip-studio" /> Clip Studio
-                      Paint EX/PRO
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="krita" /> Krita
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="ibis-paint" /> Ibis Paint
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="affinity" /> Affinity
-                      Designer/Photo
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="corel-painter" /> Corel
-                      Painter
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="blender" /> Blender
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="zbrush" /> ZBrush
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="maya" /> Maya
-                    </label>
-                  </div>
-
-                  <div class="medium-group" data-type="platform">
-                    <h4>Platform</h4>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="windows" /> Windows
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="mac" /> Mac OS
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="ipad" /> iPad
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="android" /> Android
-                    </label>
-                    <label class="checkbox-label">
-                      <input type="checkbox" value="linux" /> Linux
-                    </label>
-                  </div>
-                </div>
-                <small class="helper-text">Select up to 3 mediums</small>
+              <div class="field">
+                <label>Medium (up to 3)</label>
+                <div class="medium-grid" id="mediumGrid"></div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline" id="cancelBadgeBtn">
-              Cancel
+            <button class="btn-outline" id="cancelBadgeBtn">Cancel</button
+            ><button class="btn-primary" id="saveBadgeBtn">
+              <i class="fas fa-save"></i> Save
             </button>
-            <button type="submit" class="btn btn-primary" id="saveBadgeBtn">
-              <i class="fas fa-save"></i> Save Badge
+          </div>
+        </div>
+      </div>
+
+      <!-- Social Links Modal -->
+      <div class="modal-overlay" id="socialModal">
+        <div class="modal-container">
+          <div class="modal-header">
+            <h3><i class="fas fa-link"></i> Edit Social Links</h3>
+            <button class="modal-close" id="closeSocialModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="socialForm">
+              <div class="field">
+                <label><i class="fab fa-instagram"></i> Instagram</label
+                ><input
+                  type="url"
+                  id="socialInstagram"
+                  placeholder="https://instagram.com/yourusername"
+                />
+              </div>
+              <div class="field">
+                <label><i class="fab fa-tiktok"></i> TikTok</label
+                ><input
+                  type="url"
+                  id="socialTikTok"
+                  placeholder="https://tiktok.com/@yourusername"
+                />
+              </div>
+              <div class="field">
+                <label><i class="fab fa-youtube"></i> YouTube</label
+                ><input
+                  type="url"
+                  id="socialYouTube"
+                  placeholder="https://youtube.com/@yourusername"
+                />
+              </div>
+              <div class="field">
+                <label><i class="fab fa-pinterest"></i> Pinterest</label
+                ><input
+                  type="url"
+                  id="socialPinterest"
+                  placeholder="https://pinterest.com/yourusername"
+                />
+              </div>
+              <div class="field">
+                <label><i class="fab fa-discord"></i> Discord</label
+                ><input
+                  type="url"
+                  id="socialDiscord"
+                  placeholder="https://discord.gg/invitecode"
+                />
+              </div>
+              <div class="field">
+                <label><i class="fab fa-x-twitter"></i> X</label
+                ><input
+                  type="url"
+                  id="socialX"
+                  placeholder="https://x.com/yourusername"
+                />
+              </div>
+              <div class="field">
+                <label><i class="fas fa-user"></i> VGen</label
+                ><input
+                  type="url"
+                  id="socialVGen"
+                  placeholder="https://vgen.co/yourusername"
+                />
+              </div>
+              <div class="field">
+                <label><i class="fas fa-coffee"></i> Ko-Fi</label
+                ><input
+                  type="url"
+                  id="socialKoFi"
+                  placeholder="https://ko-fi.com/yourusername"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-outline" id="cancelSocialBtn">Cancel</button
+            ><button class="btn-primary" id="saveSocialBtn">
+              <i class="fas fa-save"></i> Save
             </button>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Loading State -->
+    <!-- ====== LOADING STATE ====== -->
     <div
       id="loadingState"
       style="
@@ -854,7 +1328,7 @@
         align-items: center;
         justify-content: center;
         min-height: 100vh;
-        background: #0f0f1c;
+        background: #0a0508;
         color: white;
         flex-direction: column;
         gap: 16px;
@@ -864,16 +1338,23 @@
         style="
           width: 40px;
           height: 40px;
-          border: 3px solid #2a2a3e;
-          border-top-color: #fe67ea;
+          border: 2px solid rgba(255, 0, 234, 0.15);
+          border-top-color: #ff00ea;
           border-radius: 50%;
           animation: spin 1s linear infinite;
         "
       ></div>
-      <p style="color: #a0aec0">Loading profile...</p>
+      <p
+        style="
+          color: rgba(255, 255, 255, 0.4);
+          font-family: &quot;Share Tech Mono&quot;, monospace;
+        "
+      >
+        Loading profile...
+      </p>
     </div>
 
-    <!-- Error State -->
+    <!-- ====== ERROR STATE ====== -->
     <div
       id="errorState"
       style="
@@ -881,7 +1362,7 @@
         align-items: center;
         justify-content: center;
         min-height: 100vh;
-        background: #0f0f1c;
+        background: #0a0508;
         color: white;
         flex-direction: column;
         gap: 16px;
@@ -893,33 +1374,25 @@
         style="font-size: 3rem; color: #ef4444"
       ></i>
       <h2>User Not Found</h2>
-      <p style="color: #a0aec0">
+      <p style="color: rgba(255, 255, 255, 0.4)">
         The profile you're looking for doesn't exist.
       </p>
-      <a href="/pages/community/gallery.html" style="color: #fe67ea"
+      <a href="/pages/community/gallery.html" style="color: #ff00ea"
         >Back to Gallery</a
       >
     </div>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer" style="display: none">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>Your creative universe.</p>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Scripts -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
     <script src="/js/components/avatar-manager.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/community/profile-enhanced.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+    <script src="/js/auth/page-redirect.js"></script>
+    <script src="/js/profile.js"></script>
 
     <style>
       @keyframes spin {

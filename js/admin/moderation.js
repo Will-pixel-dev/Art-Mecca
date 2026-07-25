@@ -1,5 +1,5 @@
 /**
- * Moderation Dashboard
+ * Moderation Dashboard — Cyberpunk Red/Pink
  * Handles reports, NSFW review, and user management
  */
 
@@ -24,8 +24,10 @@ class ModerationDashboard {
             await this.checkModeratorStatus(user.uid);
 
             if (!this.isModerator) {
-                alert('Access denied. Moderators only.');
-                window.location.href = '/index.html';
+                this.showToast('Access denied. Moderators only.', 'error');
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1500);
                 return;
             }
 
@@ -38,32 +40,53 @@ class ModerationDashboard {
 
             // Setup tabs
             this.setupTabs();
+
+            // Apply theme
+            this.applySavedTheme();
+
+            // Setup theme toggle
+            this.setupThemeToggle();
         });
     }
-    // Add to ModerationDashboard class
 
-async resetUserPassword(userId) {
-    // Get user's email
-    try {
-        const userDoc = await db.collection('users').doc(userId).get();
-        const email = userDoc.data()?.email;
+    // ============================================
+    // THEME TOGGLE
+    // ============================================
+    applySavedTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
 
-        if (!email) {
-            this.showToast('User has no email', 'error');
-            return;
+        const toggleBtn = document.getElementById('themeToggle');
+        if (toggleBtn) {
+            const icon = toggleBtn.querySelector('.toggle-icon');
+            const label = toggleBtn.querySelector('.toggle-label');
+            if (icon) icon.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+            if (label) label.textContent = savedTheme === 'dark' ? 'Dark' : 'Light';
         }
-
-        if (!confirm(`Send password reset email to ${email}?`)) return;
-
-        await firebase.auth().sendPasswordResetEmail(email);
-        this.showToast(`✅ Password reset email sent to ${email}`);
-
-    } catch (error) {
-        console.error('Error resetting password:', error);
-        this.showToast('Error sending reset email', 'error');
     }
-}
 
+    setupThemeToggle() {
+        const toggleBtn = document.getElementById('themeToggle');
+        if (!toggleBtn) return;
+
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+
+            const icon = this.querySelector('.toggle-icon');
+            const label = this.querySelector('.toggle-label');
+            if (icon) icon.textContent = next === 'dark' ? '🌙' : '☀️';
+            if (label) label.textContent = next === 'dark' ? 'Dark' : 'Light';
+        });
+    }
+
+    // ============================================
+    // MODERATOR STATUS
+    // ============================================
     async checkModeratorStatus(userId) {
         try {
             const doc = await db.collection('users').doc(userId).get();
@@ -76,13 +99,16 @@ async resetUserPassword(userId) {
         }
     }
 
+    // ============================================
+    // LOAD STATS
+    // ============================================
     async loadStats() {
         try {
             // Pending reports
             const reportsSnapshot = await db.collection('reports')
                 .where('status', '==', 'pending')
                 .get();
-            document.getElementById('pendingReports').textContent = reportsSnapshot.size;
+            this.updateElement('pendingReports', reportsSnapshot.size);
 
             // Pending NSFW reviews
             const nsfwSnapshot = await db.collection('artworks')
@@ -90,7 +116,7 @@ async resetUserPassword(userId) {
                 .where('nsfwVerified', '==', false)
                 .where('status', '==', 'published')
                 .get();
-            document.getElementById('pendingNSFW').textContent = nsfwSnapshot.size;
+            this.updateElement('pendingNSFW', nsfwSnapshot.size);
 
             // Approved this month
             const startOfMonth = new Date();
@@ -101,20 +127,29 @@ async resetUserPassword(userId) {
                 .where('nsfwVerified', '==', true)
                 .where('nsfwModeratedAt', '>=', startOfMonth)
                 .get();
-            document.getElementById('approvedCount').textContent = approvedSnapshot.size;
+            this.updateElement('approvedCount', approvedSnapshot.size);
 
             // Total users
             const usersSnapshot = await db.collection('users').get();
-            document.getElementById('totalUsers').textContent = usersSnapshot.size;
+            this.updateElement('totalUsers', usersSnapshot.size);
 
         } catch (error) {
             console.error('Error loading stats:', error);
         }
     }
 
+    updateElement(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
+
+    // ============================================
+    // LOAD REPORTS
+    // ============================================
     async loadReports() {
         const container = document.getElementById('reportsList');
         const countEl = document.getElementById('reportsCount');
+        const badgeEl = document.getElementById('reportsBadge');
 
         try {
             const snapshot = await db.collection('reports')
@@ -122,12 +157,14 @@ async resetUserPassword(userId) {
                 .orderBy('reportedAt', 'desc')
                 .get();
 
-            countEl.textContent = snapshot.size;
+            const count = snapshot.size;
+            if (countEl) countEl.textContent = count;
+            if (badgeEl) badgeEl.textContent = count;
 
             if (snapshot.empty) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                        <i class="fas fa-check-circle"></i>
                         <p>All clear! No pending reports.</p>
                     </div>
                 `;
@@ -153,17 +190,17 @@ async resetUserPassword(userId) {
                 html += `
                     <div class="report-item" data-report-id="${report.id}">
                         <div class="report-header">
-                            <span class="report-reason">🔞 ${report.reason}</span>
+                            <span class="report-reason"><i class="fas fa-flag"></i> ${this.escapeHtml(report.reason)}</span>
                             <span class="report-time">${timeAgo}</span>
                         </div>
                         <div class="report-details">
-                            <p><strong>Reported by:</strong> ${report.userName || 'Anonymous'}</p>
+                            <p><strong>Reported by:</strong> ${this.escapeHtml(report.userName || 'Anonymous')}</p>
                             <p><strong>Artwork:</strong> ${this.escapeHtml(artworkTitle)}</p>
                             <p><strong>Artwork ID:</strong> ${report.artworkId}</p>
                         </div>
                         <div class="report-actions">
                             <button onclick="moderation.approveReport('${report.id}')" class="btn-approve">
-                                <i class="fas fa-check"></i> Approve (Take Down)
+                                <i class="fas fa-check"></i> Approve
                             </button>
                             <button onclick="moderation.dismissReport('${report.id}')" class="btn-dismiss">
                                 <i class="fas fa-times"></i> Dismiss
@@ -172,7 +209,7 @@ async resetUserPassword(userId) {
                                 <i class="fas fa-eye"></i> View
                             </button>
                             <button onclick="moderation.warnUser('${report.userId}')" class="btn-warn">
-                                <i class="fas fa-exclamation-triangle"></i> Warn User
+                                <i class="fas fa-exclamation-triangle"></i> Warn
                             </button>
                         </div>
                     </div>
@@ -185,16 +222,20 @@ async resetUserPassword(userId) {
             console.error('Error loading reports:', error);
             container.innerHTML = `
                 <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                     <p>Error loading reports. Please refresh.</p>
                 </div>
             `;
         }
     }
 
+    // ============================================
+    // LOAD NSFW CONTENT
+    // ============================================
     async loadNSFWContent() {
         const container = document.getElementById('nsfwList');
         const countEl = document.getElementById('nsfwCount');
+        const badgeEl = document.getElementById('nsfwBadge');
 
         try {
             const snapshot = await db.collection('artworks')
@@ -204,12 +245,14 @@ async resetUserPassword(userId) {
                 .orderBy('createdAt', 'desc')
                 .get();
 
-            countEl.textContent = snapshot.size;
+            const count = snapshot.size;
+            if (countEl) countEl.textContent = count;
+            if (badgeEl) badgeEl.textContent = count;
 
             if (snapshot.empty) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                        <i class="fas fa-check-circle"></i>
                         <p>No NSFW content pending review.</p>
                     </div>
                 `;
@@ -264,16 +307,20 @@ async resetUserPassword(userId) {
             console.error('Error loading NSFW content:', error);
             container.innerHTML = `
                 <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                     <p>Error loading NSFW content. Please refresh.</p>
                 </div>
             `;
         }
     }
 
+    // ============================================
+    // LOAD USERS
+    // ============================================
     async loadUsers() {
         const container = document.getElementById('usersList');
         const countEl = document.getElementById('usersCount');
+        const badgeEl = document.getElementById('usersBadge');
 
         try {
             const snapshot = await db.collection('users')
@@ -281,7 +328,9 @@ async resetUserPassword(userId) {
                 .limit(50)
                 .get();
 
-            countEl.textContent = snapshot.size;
+            const count = snapshot.size;
+            if (countEl) countEl.textContent = count;
+            if (badgeEl) badgeEl.textContent = count;
 
             if (snapshot.empty) {
                 container.innerHTML = `
@@ -314,20 +363,25 @@ async resetUserPassword(userId) {
                                 <div class="user-email">${this.escapeHtml(email)}</div>
                             </div>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                        <div class="user-actions">
                             <span class="user-role ${roleClass}">${roleLabel}</span>
                             ${role === 'user' ? `
-                                <button onclick="moderation.makeModerator('${user.id}')" class="btn-view" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;">
-                                    <i class="fas fa-user-shield"></i> Make Moderator
+                                <button onclick="moderation.makeModerator('${user.id}')" class="btn-view" style="padding: 0.25rem 0.75rem; font-size: 0.65rem;">
+                                    <i class="fas fa-user-shield"></i> Make Mod
                                 </button>
                             ` : ''}
                             ${role !== 'admin' ? `
-                                <button onclick="moderation.warnUser('${user.id}')" class="btn-warn" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;">
+                                <button onclick="moderation.resetUserPassword('${user.id}')" class="btn-warn" style="padding: 0.25rem 0.75rem; font-size: 0.65rem;">
+                                    <i class="fas fa-key"></i> Reset PW
+                                </button>
+                            ` : ''}
+                            ${role !== 'admin' ? `
+                                <button onclick="moderation.warnUser('${user.id}')" class="btn-warn" style="padding: 0.25rem 0.75rem; font-size: 0.65rem;">
                                     <i class="fas fa-exclamation-triangle"></i> Warn
                                 </button>
                             ` : ''}
                             ${role !== 'admin' ? `
-                                <button onclick="moderation.banUser('${user.id}')" class="btn-ban" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;">
+                                <button onclick="moderation.banUser('${user.id}')" class="btn-ban" style="padding: 0.25rem 0.75rem; font-size: 0.65rem;">
                                     <i class="fas fa-ban"></i> Ban
                                 </button>
                             ` : ''}
@@ -342,29 +396,34 @@ async resetUserPassword(userId) {
             console.error('Error loading users:', error);
             container.innerHTML = `
                 <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                     <p>Error loading users. Please refresh.</p>
                 </div>
             `;
         }
     }
 
+    // ============================================
+    // LOAD WARNINGS
+    // ============================================
     async loadWarnings() {
         const container = document.getElementById('warningsList');
         const countEl = document.getElementById('warningsCount');
+        const badgeEl = document.getElementById('warningsBadge');
 
         try {
-            // Get users with warnings
             const snapshot = await db.collection('users')
                 .where('nsfwWarnings', '>', 0)
                 .get();
 
-            countEl.textContent = snapshot.size;
+            const count = snapshot.size;
+            if (countEl) countEl.textContent = count;
+            if (badgeEl) badgeEl.textContent = count;
 
             if (snapshot.empty) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                        <i class="fas fa-check-circle"></i>
                         <p>No warnings issued.</p>
                     </div>
                 `;
@@ -382,13 +441,13 @@ async resetUserPassword(userId) {
                 html += `
                     <div class="warning-item">
                         <div class="report-header">
-                            <span class="warning-user">${this.escapeHtml(displayName)}</span>
+                            <span class="warning-user"><i class="fas fa-user"></i> ${this.escapeHtml(displayName)}</span>
                             <span class="warning-time">${timeAgo}</span>
                         </div>
                         <div class="report-details">
                             <p><strong>Warnings:</strong> ${warnings} of 3</p>
                             <p><strong>User ID:</strong> ${user.id}</p>
-                            ${warnings >= 3 ? '<p style="color: #ef4444;"><strong>⚠️ Auto-ban threshold reached!</strong></p>' : ''}
+                            ${warnings >= 3 ? '<p style="color: var(--neon-red);"><strong>⚠️ Auto-ban threshold reached!</strong></p>' : ''}
                         </div>
                         <div class="report-actions">
                             ${warnings < 3 ? `
@@ -413,31 +472,31 @@ async resetUserPassword(userId) {
             console.error('Error loading warnings:', error);
             container.innerHTML = `
                 <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                     <p>Error loading warnings. Please refresh.</p>
                 </div>
             `;
         }
     }
 
-    // ========== MODERATOR ACTIONS ==========
+    // ============================================
+    // MODERATOR ACTIONS
+    // ============================================
 
     async approveReport(reportId) {
-        if (!confirm('Approve this report? The artwork will be taken down.')) return;
+        if (!confirm('⚠️ Approve this report? The artwork will be taken down.')) return;
 
         try {
             const reportRef = db.collection('reports').doc(reportId);
             const report = await reportRef.get();
             const data = report.data();
 
-            // Update report status
             await reportRef.update({
                 status: 'approved',
                 reviewedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 reviewedBy: this.currentUser.uid
             });
 
-            // Take down artwork
             await db.collection('artworks').doc(data.artworkId).update({
                 status: 'removed',
                 removedReason: 'Reported content violation',
@@ -446,8 +505,8 @@ async resetUserPassword(userId) {
             });
 
             this.showToast('✅ Report approved and artwork removed');
-            this.loadReports();
-            this.loadStats();
+            await this.loadReports();
+            await this.loadStats();
 
         } catch (error) {
             console.error('Error approving report:', error);
@@ -466,8 +525,8 @@ async resetUserPassword(userId) {
             });
 
             this.showToast('Report dismissed');
-            this.loadReports();
-            this.loadStats();
+            await this.loadReports();
+            await this.loadStats();
 
         } catch (error) {
             console.error('Error dismissing report:', error);
@@ -486,19 +545,18 @@ async resetUserPassword(userId) {
                 nsfwModeratorId: this.currentUser.uid
             });
 
-            // Notify artist
             const artwork = await db.collection('artworks').doc(artworkId).get();
             const data = artwork.data();
-            if (data.artistId) {
+            if (data.artistId && typeof authManager !== 'undefined') {
                 await authManager.createNotification(data.artistId, 'nsfw_approved', {
-                    message: `✅ Your artwork "${data.title}" has been approved for the NSFW gallery.`,
+                    message: `✅ Your artwork "${data.title}" has been approved.`,
                     artworkId: artworkId
                 });
             }
 
             this.showToast('✅ NSFW content approved');
-            this.loadNSFWContent();
-            this.loadStats();
+            await this.loadNSFWContent();
+            await this.loadStats();
 
         } catch (error) {
             console.error('Error approving NSFW:', error);
@@ -519,19 +577,18 @@ async resetUserPassword(userId) {
                 nsfwModeratorId: this.currentUser.uid
             });
 
-            // Notify artist
             const artwork = await db.collection('artworks').doc(artworkId).get();
             const data = artwork.data();
-            if (data.artistId) {
+            if (data.artistId && typeof authManager !== 'undefined') {
                 await authManager.createNotification(data.artistId, 'nsfw_rejected', {
-                    message: `❌ Your artwork "${data.title}" was rejected from the NSFW gallery. Reason: ${reason}`,
+                    message: `❌ Your artwork "${data.title}" was rejected. Reason: ${reason}`,
                     artworkId: artworkId
                 });
             }
 
             this.showToast('NSFW content rejected');
-            this.loadNSFWContent();
-            this.loadStats();
+            await this.loadNSFWContent();
+            await this.loadStats();
 
         } catch (error) {
             console.error('Error rejecting NSFW:', error);
@@ -551,10 +608,9 @@ async resetUserPassword(userId) {
                 nsfwModeratorId: this.currentUser.uid
             });
 
-            // Notify artist
             const artwork = await db.collection('artworks').doc(artworkId).get();
             const data = artwork.data();
-            if (data.artistId) {
+            if (data.artistId && typeof authManager !== 'undefined') {
                 await authManager.createNotification(data.artistId, 'nsfw_flagged', {
                     message: `⚠️ Your artwork "${data.title}" has been flagged for review.`,
                     artworkId: artworkId
@@ -562,8 +618,8 @@ async resetUserPassword(userId) {
             }
 
             this.showToast('⚠️ NSFW content flagged');
-            this.loadNSFWContent();
-            this.loadStats();
+            await this.loadNSFWContent();
+            await this.loadStats();
 
         } catch (error) {
             console.error('Error flagging NSFW:', error);
@@ -588,13 +644,13 @@ async resetUserPassword(userId) {
                 nsfwLastWarningReason: reason
             });
 
-            // Notify user
-            await authManager.createNotification(userId, 'nsfw_warning', {
-                message: `⚠️ You have received a warning (${newWarnings}/3): ${reason}`,
-                warnings: newWarnings
-            });
+            if (typeof authManager !== 'undefined') {
+                await authManager.createNotification(userId, 'nsfw_warning', {
+                    message: `⚠️ You have received a warning (${newWarnings}/3): ${reason}`,
+                    warnings: newWarnings
+                });
+            }
 
-            // Auto-ban if 3 warnings
             if (newWarnings >= 3) {
                 await userRef.update({
                     status: 'banned',
@@ -603,17 +659,19 @@ async resetUserPassword(userId) {
                     bannedBy: this.currentUser.uid
                 });
 
-                await authManager.createNotification(userId, 'nsfw_banned', {
-                    message: '🚫 You have been banned for exceeding the NSFW warning limit.',
-                });
+                if (typeof authManager !== 'undefined') {
+                    await authManager.createNotification(userId, 'nsfw_banned', {
+                        message: '🚫 You have been banned for exceeding the NSFW warning limit.',
+                    });
+                }
 
                 this.showToast('🚫 User banned (3 warnings reached)');
             } else {
                 this.showToast(`⚠️ Warning issued (${newWarnings}/3)`);
             }
 
-            this.loadWarnings();
-            this.loadUsers();
+            await this.loadWarnings();
+            await this.loadUsers();
 
         } catch (error) {
             console.error('Error warning user:', error);
@@ -632,8 +690,8 @@ async resetUserPassword(userId) {
             });
 
             this.showToast('✅ Warnings cleared');
-            this.loadWarnings();
-            this.loadUsers();
+            await this.loadWarnings();
+            await this.loadUsers();
 
         } catch (error) {
             console.error('Error clearing warnings:', error);
@@ -651,11 +709,32 @@ async resetUserPassword(userId) {
             });
 
             this.showToast('✅ User is now a moderator');
-            this.loadUsers();
+            await this.loadUsers();
 
         } catch (error) {
             console.error('Error making moderator:', error);
             this.showToast('Error making moderator', 'error');
+        }
+    }
+
+    async resetUserPassword(userId) {
+        try {
+            const userDoc = await db.collection('users').doc(userId).get();
+            const email = userDoc.data()?.email;
+
+            if (!email) {
+                this.showToast('User has no email', 'error');
+                return;
+            }
+
+            if (!confirm(`Send password reset email to ${email}?`)) return;
+
+            await firebase.auth().sendPasswordResetEmail(email);
+            this.showToast(`✅ Password reset email sent to ${email}`);
+
+        } catch (error) {
+            console.error('Error resetting password:', error);
+            this.showToast('Error sending reset email', 'error');
         }
     }
 
@@ -673,13 +752,15 @@ async resetUserPassword(userId) {
                 bannedBy: this.currentUser.uid
             });
 
-            await authManager.createNotification(userId, 'nsfw_banned', {
-                message: `🚫 You have been banned from Art Mecca. Reason: ${reason}`
-            });
+            if (typeof authManager !== 'undefined') {
+                await authManager.createNotification(userId, 'nsfw_banned', {
+                    message: `🚫 You have been banned from Art Mecca. Reason: ${reason}`
+                });
+            }
 
             this.showToast('🚫 User banned');
-            this.loadUsers();
-            this.loadWarnings();
+            await this.loadUsers();
+            await this.loadWarnings();
 
         } catch (error) {
             console.error('Error banning user:', error);
@@ -691,24 +772,24 @@ async resetUserPassword(userId) {
         window.open(`/pages/community/artwork-detail.html?id=${artworkId}`, '_blank');
     }
 
-    // ========== UTILITY ==========
+    // ============================================
+    // UTILITY
+    // ============================================
 
     setupTabs() {
         const tabs = document.querySelectorAll('.tab-btn');
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // Remove active from all tabs
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
 
-                // Hide all tab content
                 document.querySelectorAll('.tab-content').forEach(content => {
                     content.classList.remove('active');
                 });
 
-                // Show selected tab content
                 const tabId = tab.dataset.tab;
-                document.getElementById(`${tabId}Tab`).classList.add('active');
+                const target = document.getElementById(`${tabId}Tab`);
+                if (target) target.classList.add('active');
             });
         });
     }
@@ -728,25 +809,58 @@ async resetUserPassword(userId) {
     }
 
     showToast(message, type = 'success') {
-        const toast = document.getElementById('toastNotification');
-        const toastMessage = document.getElementById('toastMessage');
+        let toast = document.getElementById('toastNotification');
+        let toastMessage = document.getElementById('toastMessage');
 
-        if (toast && toastMessage) {
-            toastMessage.textContent = message;
-            toast.className = 'toast-notification show';
-
-            const icon = toast.querySelector('i');
-            if (icon) {
-                icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-                icon.style.color = type === 'success' ? '#10b981' : '#ef4444';
-            }
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
-        } else {
-            alert(message);
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'toastNotification';
+            toast.className = 'toast-notification';
+            toast.innerHTML = `<i class="fas fa-check-circle"></i><span id="toastMessage"></span>`;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: var(--bg-card);
+                backdrop-filter: blur(20px);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                padding: 12px 24px;
+                box-shadow: var(--shadow-card), var(--glow-red);
+                color: var(--text-primary);
+                font-family: var(--font-condensed);
+                font-size: 0.85rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 10000;
+                transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                opacity: 0;
+                pointer-events: none;
+                max-width: 90%;
+            `;
+            document.body.appendChild(toast);
+            toastMessage = document.getElementById('toastMessage');
         }
+
+        const icon = toast.querySelector('i');
+        if (icon) {
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle success';
+            } else {
+                icon.className = 'fas fa-exclamation-circle error';
+            }
+        }
+
+        if (toastMessage) toastMessage.textContent = message;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+        }, 4000);
     }
 
     escapeHtml(text) {

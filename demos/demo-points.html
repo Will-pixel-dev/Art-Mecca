@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Points & Prizes — Art Mecca</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        /* ============================================================
+           THEME VARIABLES — GOLD & ORANGE RICH
+           ============================================================ */
+        :root {
+            /* Dark Mode */
+            --bg-body: #0a0508;
+            --bg-card: rgba(255, 215, 0, 0.04);
+            --bg-card-hover: rgba(255, 215, 0, 0.08);
+            --bg-card-border: rgba(255, 215, 0, 0.10);
+            --bg-elevated: rgba(255, 215, 0, 0.02);
+            --bg-nav: rgba(10, 5, 8, 0.92);
+            --bg-footer: rgba(10, 5, 8, 0.5);
+
+            --text-primary: #f5eaff;
+            --text-secondary: #d4b896;
+            --text-muted: #8a7040;
+            --text-inverse: #0a0508;
+
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+            --shadow-gold: 0 0 60px rgba(255, 215, 0, 0.05);
+
+            --border-color: rgba(255, 215, 0, 0.08);
+
+            /* Gold & Orange Palette */
+            --gold-dark: #b8860b;
+            --gold-medium: #d4a017;
+            --gold-primary: #f5c842;
+            --gold-light: #ffd700;
+            --gold-pale: #ffeaa7;
+            --gold-glow: 0 0 40px rgba(255, 215, 0, 0.15);
+
+            --orange-deep: #cc5500;
+            --orange-rich: #e66900;
+            --orange-bright: #ff8c00;
+            --orange-glow: 0 0 40px rgba(255, 140, 0, 0.12);
+
+            --gradient-gold: linear-gradient(135deg, #b8860b, #d4a017, #ffd700);
+            --gradient-gold-warm: linear-gradient(135deg, #d4a017, #f5c842, #ffd700);
+            --gradient-orange-gold: linear-gradient(135deg, #cc5500, #e66900, #ffd700);
+            --gradient-rich: linear-gradient(135deg, #b8860b, #e66900, #ffd700, #ffeaa7);
+
+            /* Fonts */
+            --font-display: 'Orbitron', 'Rajdhani', monospace;
+            --font-condensed: 'Rajdhani', 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+            --font-tag: 'Rubik Spray Paint', 'Permanent Marker', cursive;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f5f0e8;
+            --bg-card: rgba(255, 215, 0, 0.06);
+            --bg-card-hover: rgba(255, 215, 0, 0.10);
+            --bg-card-border: rgba(255, 215, 0, 0.15);
+            --bg-elevated: rgba(255, 215, 0, 0.04);
+            --bg-nav: rgba(245, 240, 232, 0.92);
+            --bg-footer: rgba(245, 240, 232, 0.5);
+
+            --text-primary: #1a0a00;
+            --text-secondary: #5a4020;
+            --text-muted: #8a7040;
+            --text-inverse: #f5f0e8;
+
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+            --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.10);
+            --shadow-gold: 0 0 60px rgba(255, 215, 0, 0.08);
+
+            --border-color: rgba(255, 215, 0, 0.12);
+
+            --gold-glow: 0 0 40px rgba(255, 215, 0, 0.08);
+            --orange-glow: 0 0 40px rgba(255, 140, 0, 0.06);
+        }
+
+        /* ============================================================
+           BASE
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-condensed);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            transition: background var(--transition), color var(--transition);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ============================================================
+           GOLD PARTICLES
+           ============================================================ */
+        .gold-particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .gold-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--gold-primary);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            animation: goldFloat linear infinite;
+            opacity: 0.4;
+        }
+
+        .gold-particle:nth-child(1) { left: 5%; animation-duration: 14s; animation-delay: 0s; width: 3px; height: 3px; }
+        .gold-particle:nth-child(2) { left: 12%; animation-duration: 18s; animation-delay: 1s; width: 5px; height: 5px; background: var(--orange-bright); box-shadow: 0 0 20px rgba(255, 140, 0, 0.3); }
+        .gold-particle:nth-child(3) { left: 20%; animation-duration: 12s; animation-delay: 2s; width: 3px; height: 3px; }
+        .gold-particle:nth-child(4) { left: 28%; animation-duration: 20s; animation-delay: 0.5s; width: 4px; height: 4px; background: var(--gold-light); box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); }
+        .gold-particle:nth-child(5) { left: 35%; animation-duration: 16s; animation-delay: 3s; width: 3px; height: 3px; }
+        .gold-particle:nth-child(6) { left: 42%; animation-duration: 13s; animation-delay: 1.5s; width: 6px; height: 6px; background: var(--orange-rich); box-shadow: 0 0 30px rgba(255, 140, 0, 0.3); }
+        .gold-particle:nth-child(7) { left: 50%; animation-duration: 19s; animation-delay: 2.5s; width: 3px; height: 3px; }
+        .gold-particle:nth-child(8) { left: 58%; animation-duration: 15s; animation-delay: 0.8s; width: 4px; height: 4px; background: var(--gold-primary); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        .gold-particle:nth-child(9) { left: 65%; animation-duration: 17s; animation-delay: 1.8s; width: 3px; height: 3px; }
+        .gold-particle:nth-child(10) { left: 72%; animation-duration: 21s; animation-delay: 3.5s; width: 5px; height: 5px; background: var(--gold-light); box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); }
+        .gold-particle:nth-child(11) { left: 80%; animation-duration: 11s; animation-delay: 0.3s; width: 3px; height: 3px; }
+        .gold-particle:nth-child(12) { left: 88%; animation-duration: 16s; animation-delay: 4s; width: 4px; height: 4px; background: var(--orange-bright); box-shadow: 0 0 25px rgba(255, 140, 0, 0.3); }
+        .gold-particle:nth-child(13) { left: 95%; animation-duration: 14s; animation-delay: 2.2s; width: 3px; height: 3px; }
+        .gold-particle:nth-child(14) { left: 48%; animation-duration: 22s; animation-delay: 1.2s; width: 5px; height: 5px; background: var(--gold-primary); box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); }
+        .gold-particle:nth-child(15) { left: 78%; animation-duration: 18s; animation-delay: 2.8s; width: 4px; height: 4px; background: var(--orange-rich); box-shadow: 0 0 20px rgba(255, 140, 0, 0.3); }
+
+        @keyframes goldFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(30px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ============================================================
+           SCANLINES — GOLD TINT
+           ============================================================ */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg,
+                    transparent 0px,
+                    transparent 2px,
+                    rgba(255, 215, 0, 0.01) 2px,
+                    rgba(255, 215, 0, 0.01) 3px);
+            pointer-events: none;
+            z-index: 9996;
+            animation: scanMove 0.8s linear infinite;
+        }
+
+        @keyframes scanMove {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(3px);
+            }
+        }
+
+        /* ============================================================
+           VIGNETTE — GOLD GLOW
+           ============================================================ */
+        .vignette {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(184, 134, 11, 0.08) 100%);
+            pointer-events: none;
+            z-index: 9995;
+        }
+
+        /* ============================================================
+           GRID LINES — GOLD
+           ============================================================ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 215, 0, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 9997;
+        }
+
+        /* ============================================================
+           SCROLLBAR — GOLD
+           ============================================================ */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-gold);
+            border-radius: 99px;
+        }
+
+        /* ============================================================
+           THEME TOGGLE
+           ============================================================ */
+        .theme-toggle-wrapper {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: var(--font-condensed);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-card-hover);
+            transform: scale(1.04);
+            box-shadow: var(--shadow-card-hover), var(--orange-glow);
+            border-color: var(--gold-primary);
+        }
+
+        .toggle-icon {
+            font-size: 1rem;
+        }
+        .toggle-label {
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .gold-header {
+            position: sticky;
+            top: 12px;
+            z-index: 100;
+            background: var(--bg-nav);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin: 12px 20px 0;
+            padding: 10px 28px;
+            box-shadow: var(--shadow-card), var(--gold-glow);
+            transition: all var(--transition);
+        }
+
+        .gold-header:hover {
+            box-shadow: var(--shadow-card-hover), var(--orange-glow);
+            border-color: var(--gold-primary);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .header-logo .logo-icon {
+            font-size: 1.2rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-logo .logo-text {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-nav a {
+            font-family: var(--font-condensed);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all var(--transition);
+            position: relative;
+        }
+
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gradient-gold);
+            transition: width var(--transition);
+        }
+
+        .header-nav a:hover {
+            color: var(--text-primary);
+        }
+
+        .header-nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-nav a.active {
+            color: var(--text-primary);
+        }
+
+        .header-nav a.active::after {
+            width: 100%;
+        }
+
+        .header-status {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* ============================================================
+           MAIN
+           ============================================================ */
+        .points-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ============================================================
+           HERO — GOLD RICH
+           ============================================================ */
+        .points-hero {
+            text-align: center;
+            padding: 40px 20px 32px;
+            margin-bottom: 32px;
+            position: relative;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+
+        .points-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-orange-gold);
+            opacity: 0.02;
+            pointer-events: none;
+            border-radius: 4px;
+        }
+
+        .points-hero .hero-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .points-hero h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.15));
+        }
+
+        .points-hero .subtitle {
+            font-family: var(--font-tag);
+            font-size: 1.6rem;
+            color: var(--gold-primary);
+            letter-spacing: 3px;
+            margin-top: 4px;
+        }
+
+        .points-hero .tagline {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        /* ============================================================
+           USER POINTS SUMMARY
+           ============================================================ */
+        .user-points-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .points-stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-card), var(--gold-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .points-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient-gold);
+            opacity: 0.3;
+        }
+
+        .points-stat-card:hover {
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-card-hover), var(--orange-glow);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+        }
+
+        .points-stat-card .stat-icon {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .points-stat-card .stat-number {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            display: block;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        }
+
+        .points-stat-card .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================================
+           HOW TO EARN
+           ============================================================ */
+        .how-to-earn {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+
+        .how-to-earn h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .how-to-earn h3 i {
+            color: var(--gold-primary);
+            margin-right: 8px;
+        }
+
+        .earn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .earn-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: all var(--transition);
+        }
+
+        .earn-item:hover {
+            border-color: var(--gold-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .earn-item .earn-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .earn-item .earn-info {
+            flex: 1;
+            margin: 0 12px;
+        }
+
+        .earn-item .earn-action {
+            font-family: var(--font-condensed);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .earn-item .earn-points {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        /* ============================================================
+           SECTION HEADER — GOLD
+           ============================================================ */
+        .section-header-gold {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .section-header-gold .section-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold-primary);
+            padding: 4px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 99px;
+            background: var(--bg-card);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            margin-bottom: 8px;
+            box-shadow: var(--gold-glow);
+        }
+
+        .section-header-gold .section-badge i {
+            margin-right: 6px;
+        }
+
+        .section-header-gold h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header-gold p {
+            font-family: var(--font-condensed);
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+        }
+
+        /* ============================================================
+           PRIZE TIERS
+           ============================================================ */
+        .tier-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .tier-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 24px;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-card), var(--gold-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-gold);
+            opacity: 0.2;
+        }
+
+        .tier-card:hover {
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-card-hover), var(--orange-glow);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+        }
+
+        .tier-card.yearly {
+            grid-row: span 2;
+            border-color: rgba(255, 215, 0, 0.2);
+        }
+
+        .tier-card.yearly::before {
+            background: var(--gradient-orange-gold);
+            opacity: 0.4;
+        }
+
+        .tier-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tier-header .tier-icon {
+            font-size: 1.8rem;
+        }
+
+        .tier-header .tier-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+        }
+
+        .tier-header .tier-badge {
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 12px;
+            border-radius: 99px;
+            margin-left: auto;
+        }
+
+        .tier-header .tier-badge.grand {
+            background: var(--gradient-orange-gold);
+            color: var(--text-inverse);
+            box-shadow: var(--gold-glow);
+        }
+
+        .tier-header .tier-badge.gold {
+            background: var(--gradient-gold);
+            color: var(--text-inverse);
+            box-shadow: var(--gold-glow);
+        }
+
+        .tier-header .tier-badge.silver {
+            background: rgba(192, 192, 192, 0.15);
+            color: #c0c0c0;
+            border: 1px solid rgba(192, 192, 192, 0.1);
+        }
+
+        .tier-header .tier-badge.bronze {
+            background: rgba(205, 127, 50, 0.15);
+            color: #cd7f32;
+            border: 1px solid rgba(205, 127, 50, 0.1);
+        }
+
+        .tier-prizes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .prize-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 12px;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            border-left: 2px solid var(--border-color);
+            transition: all var(--transition);
+        }
+
+        .prize-item:hover {
+            border-left-color: var(--gold-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .prize-item .prize-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .prize-item .prize-text {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .prize-item .prize-text strong {
+            color: var(--text-primary);
+        }
+
+        .prize-item .prize-text .prize-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 1px 10px;
+            border-radius: 99px;
+            background: var(--gradient-orange-gold);
+            color: var(--text-inverse);
+            box-shadow: var(--gold-glow);
+            margin-left: 4px;
+        }
+
+        /* ============================================================
+           SPECIAL EVENTS
+           ============================================================ */
+        .special-events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .event-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+
+        .event-card:hover {
+            background: var(--bg-card-hover);
+            box-shadow: var(--shadow-card-hover), var(--orange-glow);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+        }
+
+        .event-card .event-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .event-card .event-name {
+            font-family: var(--font-condensed);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .event-card .event-prize {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin: 4px 0 8px;
+        }
+
+        .event-card .event-badge {
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 14px;
+            border-radius: 99px;
+            display: inline-block;
+            background: var(--gradient-gold);
+            color: var(--text-inverse);
+            box-shadow: var(--gold-glow);
+        }
+
+        /* ============================================================
+           BADGE GALLERY
+           ============================================================ */
+        .badge-gallery {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .badge-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: all var(--transition);
+        }
+
+        .badge-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--gold-glow);
+        }
+
+        .badge-card .badge-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .badge-card .badge-name {
+            font-family: var(--font-condensed);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .badge-card .badge-status {
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-top: 4px;
+            color: var(--text-muted);
+        }
+
+        .badge-card .badge-status.earned {
+            color: var(--gold-primary);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        .badge-card.locked {
+            opacity: 0.5;
+            filter: grayscale(0.5);
+        }
+
+        .badge-card.locked:hover {
+            opacity: 0.7;
+            filter: grayscale(0.3);
+        }
+
+        /* ============================================================
+           POINTS SHOP
+           ============================================================ */
+        .points-shop {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-card), var(--gold-glow);
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .shop-item {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: all var(--transition);
+        }
+
+        .shop-item:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--gold-glow);
+        }
+
+        .shop-item .shop-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .shop-item .shop-name {
+            font-family: var(--font-condensed);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .shop-item .shop-cost {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            display: block;
+            margin: 2px 0;
+        }
+
+        .shop-item .shop-desc {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin: 4px 0 10px;
+        }
+
+        .btn-redeem {
+            padding: 6px 20px;
+            border: none;
+            border-radius: 4px;
+            background: var(--gradient-gold);
+            color: var(--text-inverse);
+            font-family: var(--font-condensed);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-redeem:hover {
+            transform: scale(1.04);
+            box-shadow: var(--gold-glow);
+        }
+
+        /* ============================================================
+           CTA SECTION
+           ============================================================ */
+        .hub-cta {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: var(--shadow-card), var(--gold-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hub-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-orange-gold);
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .hub-cta h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+        }
+
+        .hub-cta p {
+            font-family: var(--font-condensed);
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin: 8px 0 20px;
+        }
+
+        .hub-cta .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hub-cta .btn-challenge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-condensed);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+        }
+
+        .hub-cta .btn-challenge-primary {
+            background: var(--gradient-orange-gold);
+            color: var(--text-inverse);
+            box-shadow: var(--gold-glow);
+        }
+
+        .hub-cta .btn-challenge-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--orange-glow), 0 0 60px rgba(255, 140, 0, 0.1);
+        }
+
+        .hub-cta .btn-challenge-outline {
+            background: transparent;
+            color: var(--gold-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .hub-cta .btn-challenge-outline:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--gold-glow);
+        }
+
+        /* ============================================================
+           FOOTER — GOLD
+           ============================================================ */
+        .gold-footer {
+            padding: 32px 0 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 20px;
+            background: var(--bg-footer);
+            transition: all var(--transition);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-container .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .footer-container .footer-brand .gold {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-container .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-container .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color var(--transition);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .footer-container .footer-links a:hover {
+            color: var(--gold-primary);
+        }
+
+        .footer-container .footer-social {
+            display: flex;
+            gap: 12px;
+            font-size: 1.1rem;
+        }
+
+        .footer-container .footer-social a {
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+
+        .footer-container .footer-social a:hover {
+            color: var(--gold-primary);
+            transform: scale(1.1);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .tier-grid {
+                grid-template-columns: 1fr;
+            }
+            .tier-card.yearly {
+                grid-row: span 1;
+            }
+            .earn-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .special-events-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .shop-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .badge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gold-header {
+                margin: 8px 8px 0;
+                padding: 8px 16px;
+            }
+            .header-nav {
+                gap: 12px;
+            }
+            .header-nav a {
+                font-size: 0.6rem;
+            }
+            .header-status {
+                display: none;
+            }
+            .points-main {
+                padding: 16px 12px 70px;
+            }
+            .points-hero h1 {
+                font-size: 2.2rem;
+            }
+            .user-points-summary {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .points-stat-card {
+                padding: 16px;
+            }
+            .points-stat-card .stat-number {
+                font-size: 1.6rem;
+            }
+            .earn-grid {
+                grid-template-columns: 1fr;
+            }
+            .special-events-grid {
+                grid-template-columns: 1fr;
+            }
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+            .badge-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .hub-cta {
+                padding: 28px 20px;
+            }
+            .hub-cta h2 {
+                font-size: 1.5rem;
+            }
+            .hub-cta .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .hub-cta .btn-challenge {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+            .theme-toggle-wrapper {
+                bottom: 16px;
+                right: 16px;
+            }
+            .theme-toggle {
+                padding: 8px 14px;
+                font-size: 0.65rem;
+            }
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .footer-container .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .points-hero h1 {
+                font-size: 1.6rem;
+                letter-spacing: 2px;
+            }
+            .points-hero .subtitle {
+                font-size: 1.2rem;
+            }
+            .user-points-summary {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .points-stat-card {
+                padding: 12px;
+            }
+            .points-stat-card .stat-number {
+                font-size: 1.2rem;
+            }
+            .points-stat-card .stat-icon {
+                font-size: 1.2rem;
+            }
+            .badge-grid {
+                grid-template-columns: 1fr;
+            }
+            .tier-card {
+                padding: 16px;
+            }
+            .prize-item {
+                padding: 6px 10px;
+            }
+            .prize-item .prize-text {
+                font-size: 0.7rem;
+            }
+            .theme-toggle-wrapper {
+                bottom: 12px;
+                right: 12px;
+            }
+            .theme-toggle {
+                padding: 6px 12px;
+                font-size: 0.55rem;
+            }
+            .toggle-label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Vignette -->
+    <div class="vignette"></div>
+
+    <!-- Gold Particles -->
+    <div class="gold-particles">
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+        <div class="gold-particle"></div>
+    </div>
+
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="toggle-icon">🌙</span>
+            <span class="toggle-label">Dark</span>
+        </button>
+    </div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="gold-header">
+        <div class="header-container">
+            <a href="#" class="header-logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">ART MECCA</span>
+            </a>
+            <nav class="header-nav">
+                <a href="#" class="active">Points</a>
+                <a href="#">Feed</a>
+                <a href="#">Gallery</a>
+                <a href="#">Challenges</a>
+            </nav>
+            <span class="header-status">● ONLINE</span>
+        </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="points-main">
+
+        <!-- ====== HERO ====== -->
+        <section class="points-hero">
+            <span class="hero-icon">🏆</span>
+            <h1>POINTS &amp; PRIZES</h1>
+            <p class="subtitle">✦ Earn. Create. Win. ✦</p>
+            <p class="tagline">Every challenge brings you closer to glory</p>
+        </section>
+
+        <!-- ====== USER POINTS SUMMARY ====== -->
+        <section class="user-points-summary">
+            <div class="points-stat-card">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-number" id="totalPoints">0</span>
+                <span class="stat-label">Total Points</span>
+            </div>
+            <div class="points-stat-card">
+                <span class="stat-icon">🏅</span>
+                <span class="stat-number" id="badgesEarned">0</span>
+                <span class="stat-label">Badges Earned</span>
+            </div>
+            <div class="points-stat-card">
+                <span class="stat-icon">🏆</span>
+                <span class="stat-number" id="challengesWon">0</span>
+                <span class="stat-label">Challenges Won</span>
+            </div>
+            <div class="points-stat-card">
+                <span class="stat-icon">📊</span>
+                <span class="stat-number" id="globalRank">#--</span>
+                <span class="stat-label">Global Rank</span>
+            </div>
+        </section>
+
+        <!-- ====== HOW TO EARN ====== -->
+        <section class="how-to-earn">
+            <h3><i class="fas fa-coins"></i> How to Earn Points</h3>
+            <div class="earn-grid">
+                <div class="earn-item">
+                    <span class="earn-icon">🎨</span>
+                    <div class="earn-info">
+                        <span class="earn-action">Enter a Challenge</span>
+                    </div>
+                    <span class="earn-points">+10</span>
+                </div>
+                <div class="earn-item">
+                    <span class="earn-icon">⚡</span>
+                    <div class="earn-info">
+                        <span class="earn-action">Win Daily Challenge</span>
+                    </div>
+                    <span class="earn-points">+25</span>
+                </div>
+                <div class="earn-item">
+                    <span class="earn-icon">📅</span>
+                    <div class="earn-info">
+                        <span class="earn-action">Win Weekly Challenge</span>
+                    </div>
+                    <span class="earn-points">+50</span>
+                </div>
+                <div class="earn-item">
+                    <span class="earn-icon">🌟</span>
+                    <div class="earn-info">
+                        <span class="earn-action">Win Monthly Challenge</span>
+                    </div>
+                    <span class="earn-points">+100</span>
+                </div>
+                <div class="earn-item">
+                    <span class="earn-icon">👑</span>
+                    <div class="earn-info">
+                        <span class="earn-action">Win Yearly Challenge</span>
+                    </div>
+                    <span class="earn-points">+500</span>
+                </div>
+                <div class="earn-item">
+                    <span class="earn-icon">🎄</span>
+                    <div class="earn-info">
+                        <span class="earn-action">Special Event Winner</span>
+                    </div>
+                    <span class="earn-points">+150</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== PRIZE TIERS ====== -->
+        <div class="section-header-gold">
+            <div class="section-badge"><i class="fas fa-trophy"></i> Prize Tiers</div>
+            <h2>What You Can Win</h2>
+            <p>Every challenge has its rewards</p>
+        </div>
+
+        <div class="tier-grid">
+            <!-- Yearly Challenge -->
+            <div class="tier-card yearly">
+                <div class="tier-header">
+                    <span class="tier-icon">👑</span>
+                    <span class="tier-title">Yearly Challenge</span>
+                    <span class="tier-badge grand">Grand Prize</span>
+                </div>
+                <div class="tier-body">
+                    <div class="tier-prizes">
+                        <div class="prize-item">
+                            <span class="prize-icon">🏅</span>
+                            <span class="prize-text"><strong>Soul Chaser Badge</strong> — Exclusive animated badge on profile + next to username <span class="prize-badge">FOREVER</span></span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">🎨</span>
+                            <span class="prize-text"><strong>Featured Artist</strong> — 30-day homepage feature with interview &amp; Q&amp;A</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">📰</span>
+                            <span class="prize-text"><strong>Blog Feature</strong> — Dedicated blog post about you and your work</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">👑</span>
+                            <span class="prize-text"><strong>"Grand Master" Role</strong> — Special Discord/Community role</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">🖼️</span>
+                            <span class="prize-text"><strong>Art Showcase</strong> — Your work featured in a dedicated "Best of Year" gallery</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">🎬</span>
+                            <span class="prize-text"><strong>Process Video Feature</strong> — Your process video featured on the Art Mecca YouTube</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">📝</span>
+                            <span class="prize-text"><strong>Custom Prompt</strong> — You get to design a future challenge theme</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Challenge -->
+            <div class="tier-card">
+                <div class="tier-header">
+                    <span class="tier-icon">🌟</span>
+                    <span class="tier-title">Monthly Challenge</span>
+                    <span class="tier-badge gold">Special</span>
+                </div>
+                <div class="tier-body">
+                    <div class="tier-prizes">
+                        <div class="prize-item">
+                            <span class="prize-icon">🥇</span>
+                            <span class="prize-text"><strong>1st Place</strong> — "Monthly Master" badge (animated, 30 days) + Featured on homepage for 7 days + Exclusive "Gold" role + Artwork becomes next month's challenge banner + Create a custom prompt for next month's challenge</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">🥈</span>
+                            <span class="prize-text"><strong>2nd Place</strong> — "Silver Star" badge (30 days) + Featured in monthly newsletter + Honorable mention in blog</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">🥉</span>
+                            <span class="prize-text"><strong>3rd Place</strong> — "Bronze Talent" badge (30 days) + Honorable mention</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Challenge -->
+            <div class="tier-card">
+                <div class="tier-header">
+                    <span class="tier-icon">📅</span>
+                    <span class="tier-title">Weekly Challenge</span>
+                    <span class="tier-badge silver">Weekly</span>
+                </div>
+                <div class="tier-body">
+                    <div class="tier-prizes">
+                        <div class="prize-item">
+                            <span class="prize-icon">🥇</span>
+                            <span class="prize-text"><strong>1st Place</strong> — "Weekly Winner" badge (7 days) + Social media feature (IG/Twitter) "Artist of the Week"</span>
+                        </div>
+                        <div class="prize-item">
+                            <span class="prize-icon">🏅</span>
+                            <span class="prize-text"><strong>Honorable Mention (2-3)</strong> — "Honorable Mention" badge + Shoutout in weekly recap</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Challenge -->
+            <div class="tier-card">
+                <div class="tier-header">
+                    <span class="tier-icon">⚡</span>
+                    <span class="tier-title">Daily Challenge</span>
+                    <span class="tier-badge bronze">Daily</span>
+                </div>
+                <div class="tier-body">
+                    <div class="tier-prizes">
+                        <div class="prize-item">
+                            <span class="prize-icon">🥇</span>
+                            <span class="prize-text"><strong>Daily Winner</strong> — "Daily Doodle" badge (24 hours) + Featured in the "Daily Challenge" section + Bragging rights + Community recognition</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== SPECIAL EVENTS ====== -->
+        <div class="section-header-gold">
+            <div class="section-badge"><i class="fas fa-star"></i> Special Events</div>
+            <h2>Seasonal &amp; Charity Events</h2>
+            <p>Limited-time events with exclusive prizes</p>
+        </div>
+
+        <div class="special-events-grid">
+            <div class="event-card">
+                <div class="event-icon">🎄</div>
+                <div class="event-name">Christmas Challenge</div>
+                <div class="event-prize">🎅 "Holiday Hero" badge + Seasonal feature</div>
+                <span class="event-badge">Seasonal</span>
+            </div>
+            <div class="event-card">
+                <div class="event-icon">🎃</div>
+                <div class="event-name">Halloween Challenge</div>
+                <div class="event-prize">🧛 "Pumpkin King" badge + Spooky showcase</div>
+                <span class="event-badge">Seasonal</span>
+            </div>
+            <div class="event-card">
+                <div class="event-icon">💗</div>
+                <div class="event-name">Cancer Awareness</div>
+                <div class="event-prize">🎗️ "Supporter" badge + Charity gallery</div>
+                <span class="event-badge">Charity</span>
+            </div>
+            <div class="event-card">
+                <div class="event-icon">🧠</div>
+                <div class="event-name">Mental Health Awareness</div>
+                <div class="event-prize">💙 "Champion" badge + Community showcase</div>
+                <span class="event-badge">Charity</span>
+            </div>
+            <div class="event-card">
+                <div class="event-icon">🤝</div>
+                <div class="event-name">Community Collab</div>
+                <div class="event-prize">🌟 "Community Champion" badge + Co-created artwork</div>
+                <span class="event-badge">Collaboration</span>
+            </div>
+            <div class="event-card">
+                <div class="event-icon">🎨</div>
+                <div class="event-name">Art Battle</div>
+                <div class="event-prize">⚔️ "Art Duelist" badge + Tournament winner status</div>
+                <span class="event-badge">Competition</span>
+            </div>
+        </div>
+
+        <!-- ====== BADGE GALLERY ====== -->
+        <div class="badge-gallery">
+            <div class="section-header-gold" style="margin-bottom: 16px;">
+                <div class="section-badge"><i class="fas fa-medal"></i> Trophy Room</div>
+                <h2 style="font-size: 1.5rem;">Your Badge Collection</h2>
+            </div>
+            <div class="badge-grid">
+                <div class="badge-card locked">
+                    <span class="badge-icon">👑</span>
+                    <span class="badge-name">Grand Master</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+                <div class="badge-card locked">
+                    <span class="badge-icon">⭐</span>
+                    <span class="badge-name">Monthly Master</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+                <div class="badge-card locked">
+                    <span class="badge-icon">✨</span>
+                    <span class="badge-name">Weekly Winner</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+                <div class="badge-card locked">
+                    <span class="badge-icon">🎨</span>
+                    <span class="badge-name">Daily Doodle</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+                <div class="badge-card locked">
+                    <span class="badge-icon">🌟</span>
+                    <span class="badge-name">Supporter</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+                <div class="badge-card locked">
+                    <span class="badge-icon">🎄</span>
+                    <span class="badge-name">Holiday Hero</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+                <div class="badge-card locked">
+                    <span class="badge-icon">👥</span>
+                    <span class="badge-name">Community Champion</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+                <div class="badge-card locked">
+                    <span class="badge-icon">🏆</span>
+                    <span class="badge-name">Art Duelist</span>
+                    <span class="badge-status locked">🔒 Not Earned</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== POINTS SHOP ====== -->
+        <div class="section-header-gold">
+            <div class="section-badge"><i class="fas fa-store"></i> Rewards</div>
+            <h2>Redeem Your Points</h2>
+            <p>Trade your points for exclusive perks</p>
+        </div>
+
+        <div class="points-shop">
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <span class="shop-icon">📌</span>
+                    <span class="shop-name">Homepage Feature</span>
+                    <span class="shop-cost">200 pts</span>
+                    <span class="shop-desc">Get your artwork featured on the homepage</span>
+                    <button class="btn-redeem" data-cost="200">Redeem</button>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-icon">🎨</span>
+                    <span class="shop-name">Custom Badge Request</span>
+                    <span class="shop-cost">300 pts</span>
+                    <span class="shop-desc">Design your own custom badge</span>
+                    <button class="btn-redeem" data-cost="300">Redeem</button>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-icon">📝</span>
+                    <span class="shop-name">Suggest Challenge Theme</span>
+                    <span class="shop-cost">100 pts</span>
+                    <span class="shop-desc">Pick the theme for a future challenge</span>
+                    <button class="btn-redeem" data-cost="100">Redeem</button>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-icon">📢</span>
+                    <span class="shop-name">Social Media Shoutout</span>
+                    <span class="shop-cost">150 pts</span>
+                    <span class="shop-desc">Get featured on our social channels</span>
+                    <button class="btn-redeem" data-cost="150">Redeem</button>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-icon">⭐</span>
+                    <span class="shop-name">Profile Spotlight</span>
+                    <span class="shop-cost">250 pts</span>
+                    <span class="shop-desc">Get a spotlight on your profile</span>
+                    <button class="btn-redeem" data-cost="250">Redeem</button>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-icon">🎯</span>
+                    <span class="shop-name">Featured Artist</span>
+                    <span class="shop-cost">500 pts</span>
+                    <span class="shop-desc">Become a featured artist for 24 hours</span>
+                    <button class="btn-redeem" data-cost="500">Redeem</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== CTA ====== -->
+        <section class="hub-cta">
+            <h2>Ready to Start Earning?</h2>
+            <p>Join a challenge today and begin your journey to glory</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn-challenge btn-challenge-primary">
+                    <i class="fas fa-paint-brush"></i> Join a Challenge
+                </a>
+                <a href="#" class="btn-challenge btn-challenge-outline">
+                    <i class="fas fa-images"></i> Browse Gallery
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="gold-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span>✦</span>
+                <span class="gold">ART MECCA</span>
+                <span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-muted);font-weight:400;">✦ prize hub</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">about</a>
+                <a href="#">guidelines</a>
+                <a href="#">support</a>
+                <a href="#">privacy</a>
+            </div>
+            <div class="footer-social">
+                <a href="#">🐦</a>
+                <a href="#">📷</a>
+                <a href="#">🎮</a>
+                <a href="#">💬</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script>
+        // ============================================================
+        // THEME TOGGLE
+        // ============================================================
+        const toggle = document.getElementById('themeToggle');
+        const icon = toggle.querySelector('.toggle-icon');
+        const label = toggle.querySelector('.toggle-label');
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateToggleUI(savedTheme);
+
+        toggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateToggleUI(next);
+        });
+
+        function updateToggleUI(theme) {
+            if (theme === 'dark') {
+                icon.textContent = '🌙';
+                label.textContent = 'Dark';
+            } else {
+                icon.textContent = '☀️';
+                label.textContent = 'Light';
+            }
+        }
+
+        // ============================================================
+        // ANIMATE STATS
+        // ============================================================
+        function animateStats() {
+            const targets = {
+                totalPoints: 2847,
+                badgesEarned: 12,
+                challengesWon: 8,
+                globalRank: '#42'
+            };
+
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                Object.keys(targets).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    if (id === 'globalRank') {
+                        el.textContent = eased < 1 ? '#--' : targets[id];
+                        return;
+                    }
+                    const target = targets[id];
+                    const current = Math.floor(eased * target);
+                    el.textContent = current.toLocaleString();
+                });
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // ============================================================
+        // REDEEM BUTTONS
+        // ============================================================
+        document.querySelectorAll('.btn-redeem').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const cost = this.dataset.cost;
+                const original = this.textContent;
+                this.textContent = 'Redeeming...';
+                this.disabled = true;
+
+                setTimeout(() => {
+                    this.textContent = '✅ Redeemed!';
+                    setTimeout(() => {
+                        this.textContent = original;
+                        this.disabled = false;
+                    }, 1500);
+                }, 1000);
+            });
+        });
+
+        // ============================================================
+        // INITIALIZE
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(animateStats, 500);
+        });
+
+        // ============================================================
+        // CONSOLE EASTER EGG
+        // ============================================================
+        console.log('%c✦ ART MECCA — POINTS & PRIZES', 'font-size:20px; font-weight:bold; color:#ffd700; text-shadow: 0 0 20px #ffd700;');
+        console.log('%c🏆 Earn. Create. Win.', 'font-size:12px; color:#ffc72e;');
+        console.log('%c💰 Redeem your points for exclusive rewards!', 'font-size:12px; color:#e66900;');
+        console.log('%c🖌️ Keep it fresh. Hack the future.', 'font-size:14px; color:#ff6b00;');
+    </script>
+
+</body>
+</html>

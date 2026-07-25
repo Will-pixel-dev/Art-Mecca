@@ -9,69 +9,308 @@
     <title>Community Gallery | Art Mecca</title>
     <meta
       name="description"
-      content="Browse stunning digital artwork from the Art Mecca community. Discover new artists, get inspired, and share your own creations."
-    />
-    <meta
-      name="keywords"
-      content="art gallery, digital art, artwork, community art, artists"
-    />
-
-    <meta property="og:title" content="Community Gallery - Art Mecca" />
-    <meta
-      property="og:description"
       content="Browse stunning digital artwork from the Art Mecca community."
     />
-    <meta property="og:image" content="/images/og-gallery.jpg" />
-    <meta
-      property="og:url"
-      content="https://artisanhub.com/pages/community/gallery.html"
-    />
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Community Gallery - Art Mecca" />
-    <meta
-      name="twitter:description"
-      content="Browse stunning digital artwork from the Art Mecca community."
-    />
-    <meta name="twitter:image" content="/images/og-gallery.jpg" />
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../css/variables.css" />
     <link rel="stylesheet" href="../../css/main.css" />
-    <link rel="stylesheet" href="../../css/gallery.css" />
-    <link rel="stylesheet" href="../../css/header.css" />
-    <link rel="stylesheet" href="../../css/footer.css" />
-    <link rel="stylesheet" href="../../css/search.css" />
+    <link rel="stylesheet" href="../../css/components/header.css" />
+    <link rel="stylesheet" href="../../css/components/footer.css" />
     <link rel="stylesheet" href="../../css/avatar.css" />
-    <!-- Fonts & Libraries -->
+    <link rel="stylesheet" href="../../css/gallery.css" />
+
+    <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ===== INLINE DROPDOWN OVERRIDES ===== */
+      .category-dropdown {
+        position: relative !important;
+        z-index: 9999 !important;
+        flex-shrink: 0 !important;
+      }
+
+      #categoryDropdownBtn {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 6px 14px !important;
+        background: rgba(138, 25, 225, 0.06) !important;
+        border: 1px solid rgba(88, 235, 254, 0.08) !important;
+        border-radius: 4px !important;
+        font-size: 0.7rem !important;
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        color: #a090b8 !important;
+        font-family: "Share Tech Mono", monospace !important;
+        transition: all 0.3s ease !important;
+        white-space: nowrap !important;
+        position: relative !important;
+        z-index: 9999 !important;
+      }
+
+      #categoryDropdownBtn:hover {
+        border-color: #58ebfe !important;
+        color: #58ebfe !important;
+      }
+
+      #categoryDropdownBtn i {
+        color: #58ebfe !important;
+      }
+
+      #categoryDropdownBtn .fa-chevron-down {
+        transition: transform 0.3s ease !important;
+      }
+
+      #categoryDropdownBtn.active .fa-chevron-down {
+        transform: rotate(180deg) !important;
+      }
+
+      #categoryDropdownMenu {
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        left: 0 !important;
+        min-width: 220px !important;
+        max-height: 400px !important;
+        overflow-y: auto !important;
+        background: rgba(13, 11, 21, 0.96) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(88, 235, 254, 0.08) !important;
+        border-radius: 4px !important;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6) !important;
+        padding: 6px 0 !important;
+        z-index: 99999 !important;
+
+        /* Hidden by default */
+        opacity: 0 !important;
+        transform: translateY(-10px) scale(0.98) !important;
+        pointer-events: none !important;
+        transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        display: block !important;
+        visibility: visible !important;
+      }
+
+      #categoryDropdownMenu.show {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+        pointer-events: all !important;
+      }
+
+      #categoryDropdownMenu::-webkit-scrollbar {
+        width: 3px !important;
+      }
+      #categoryDropdownMenu::-webkit-scrollbar-track {
+        background: rgba(88, 235, 254, 0.02) !important;
+      }
+      #categoryDropdownMenu::-webkit-scrollbar-thumb {
+        background: rgba(138, 25, 225, 0.3) !important;
+        border-radius: 10px !important;
+      }
+
+      .dropdown-item {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 8px 18px !important;
+        color: #a090b8 !important;
+        text-decoration: none !important;
+        font-size: 0.75rem !important;
+        font-family: "Share Tech Mono", monospace !important;
+        cursor: pointer !important;
+        border-left: 2px solid transparent !important;
+        transition: all 0.2s ease !important;
+        background: transparent !important;
+        border-right: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        width: 100% !important;
+        text-align: left !important;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(138, 25, 225, 0.06) !important;
+        color: #58ebfe !important;
+        border-left-color: #58ebfe !important;
+      }
+
+      .dropdown-item.active {
+        background: rgba(138, 25, 225, 0.08) !important;
+        color: #58ebfe !important;
+        border-left-color: #58ebfe !important;
+      }
+
+      .dropdown-item.nsfw-link {
+        color: #ff2d95 !important;
+      }
+
+      .dropdown-item.nsfw-link:hover {
+        background: rgba(255, 45, 149, 0.08) !important;
+        color: #ff6db5 !important;
+        border-left-color: #ff2d95 !important;
+      }
+
+      .dropdown-divider {
+        height: 1px !important;
+        background: rgba(88, 235, 254, 0.06) !important;
+        margin: 4px 12px !important;
+      }
+
+      .dropdown-label {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 8px 18px !important;
+        color: #6a5a7a !important;
+        font-size: 0.7rem !important;
+        font-family: "Share Tech Mono", monospace !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+      }
+
+      .dropdown-label:hover {
+        background: rgba(138, 25, 225, 0.04) !important;
+        color: #a090b8 !important;
+      }
+
+      .dropdown-label input[type="checkbox"] {
+        accent-color: #58ebfe !important;
+        width: 14px !important;
+        height: 14px !important;
+        cursor: pointer !important;
+      }
+
+      .dropdown-label i {
+        color: #10b981 !important;
+        font-size: 0.7rem !important;
+      }
+
+      /* Mobile responsive for dropdown */
+      @media (max-width: 768px) {
+        #categoryDropdownMenu {
+          min-width: 180px !important;
+          right: 0 !important;
+          left: auto !important;
+          max-height: 300px !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+        #categoryDropdownMenu {
+          min-width: 160px !important;
+        }
+        .dropdown-item {
+          padding: 6px 14px !important;
+          font-size: 0.65rem !important;
+        }
+        #categoryDropdownBtn {
+          font-size: 0.6rem !important;
+          padding: 4px 10px !important;
+        }
+      }
+
+      /* HUD mode card corners */
+      body.hud-mode .hud-card-corners {
+        opacity: 1 !important;
+      }
+      .hud-card-corners {
+        position: absolute !important;
+        inset: 4px !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+        opacity: 0 !important;
+        transition: opacity 0.4s ease !important;
+      }
+      .card-inner:hover .hud-card-corners {
+        opacity: 1 !important;
+      }
+      .hud-card-corners span {
+        position: absolute !important;
+        font-family: "Share Tech Mono", monospace !important;
+        font-size: 8px !important;
+        color: rgba(88, 235, 254, 0.08) !important;
+      }
+      .hud-card-corners .hud-tl {
+        top: 2px;
+        left: 4px;
+      }
+      .hud-card-corners .hud-tr {
+        top: 2px;
+        right: 4px;
+      }
+      .hud-card-corners .hud-bl {
+        bottom: 2px;
+        left: 4px;
+      }
+      .hud-card-corners .hud-br {
+        bottom: 2px;
+        right: 4px;
+      }
+      .hud-card-corners .hud-id {
+        position: absolute !important;
+        bottom: 2px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        font-size: 0.35rem !important;
+        color: rgba(88, 235, 254, 0.04) !important;
+        font-family: "Share Tech Mono", monospace !important;
+        letter-spacing: 1px !important;
+      }
+    </style>
   </head>
   <body>
-    <!-- ========== SIDEBAR NAVIGATION ========== -->
+    <!-- ====== BACKGROUND EFFECTS ====== -->
+    <div class="gradient-bg"></div>
+    <div class="scanline-overlay active" id="scanlineOverlay"></div>
+    <div class="grid-overlay" id="gridOverlay"></div>
+
+    <!-- ====== PARTICLES ====== -->
+    <div class="particle-overlay" id="particleOverlay">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- ====== SIDEBAR ====== -->
     <aside class="sidebar" id="sidebar">
       <button class="sidebar-collapse-toggle" id="sidebarToggle">
         <i class="fas fa-chevron-left"></i>
       </button>
       <div class="sidebar-content">
         <div class="sidebar-logo">
-          <span class="logo-icon">🎨</span
-          ><span class="logo-text">Art Mecca</span>
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">Art Mecca</span>
         </div>
         <nav class="sidebar-nav">
           <a href="../../index.html" class="sidebar-link"
@@ -92,9 +331,9 @@
           <a href="gallery.html" class="sidebar-link active"
             ><i class="fas fa-images"></i><span>Gallery</span></a
           >
-          <a href="search-users.html" class="sidebar-link">
-            <i class="fas fa-search"></i><span>Find Artists</span>
-          </a>
+          <a href="search-users.html" class="sidebar-link"
+            ><i class="fas fa-search"></i><span>Find Artists</span></a
+          >
           <a href="../Equip/Equip.html" class="sidebar-link"
             ><i class="fas fa-briefcase"></i><span>Equip</span></a
           >
@@ -107,10 +346,6 @@
           <a href="#" class="sidebar-link" id="sidebarLikes"
             ><i class="fas fa-heart"></i><span>Liked Artworks</span
             ><span class="badge" id="likesCount">0</span></a
-          >
-          <a href="#" class="sidebar-link" id="sidebarSaves"
-            ><i class="fas fa-bookmark"></i><span>Saved Items</span
-            ><span class="badge" id="savesCount">0</span></a
           >
           <a href="#" class="sidebar-link" id="sidebarUploads"
             ><i class="fas fa-cloud-upload-alt"></i><span>My Uploads</span></a
@@ -139,96 +374,165 @@
         </div>
       </div>
     </aside>
-
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ========== MAIN CONTENT ========== -->
+    <!-- ====== MAIN CONTENT ====== -->
     <main class="main-content">
+      <!-- Top Bar -->
       <header class="top-bar">
         <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
           <i class="fas fa-bars"></i>
         </button>
 
-        <!-- Category Dropdown -->
+        <!-- ====== CATEGORY DROPDOWN - GROUPED VERSION ====== -->
         <div class="category-dropdown">
-          <button class="dropdown-btn" id="categoryDropdownBtn">
-            <i class="fas fa-filter"></i
-            ><span id="selectedCategory">All Categories</span
-            ><i class="fas fa-chevron-down"></i>
+          <button id="categoryDropdownBtn">
+            <i class="fas fa-filter"></i>
+            <span id="selectedCategory">All Categories</span>
+            <i class="fas fa-chevron-down"></i>
           </button>
-          <div class="dropdown-menu" id="categoryDropdownMenu">
+          <div id="categoryDropdownMenu">
+            <!-- All -->
             <a href="#" data-category="all" class="dropdown-item active"
-              >✨ All</a
+              >✦ All Categories</a
             >
-            <a href="#" data-category="daily" class="dropdown-item"
-              >⚡ Daily Challenge</a
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Challenges -->
+            <div
+              style="
+                padding: 4px 18px;
+                font-size: 0.55rem;
+                color: var(--text-muted);
+                font-family: var(--font-mono);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+              "
             >
+              Challenges
+            </div>
+            <a href="#" data-category="daily" class="dropdown-item">⚡ Daily</a>
             <a href="#" data-category="weekly" class="dropdown-item"
-              >📅 Weekly Challenge</a
+              >📅 Weekly</a
             >
             <a href="#" data-category="monthly" class="dropdown-item"
-              >🌟 Monthly Challenge</a
+              >🌟 Monthly</a
             >
             <a href="#" data-category="yearly" class="dropdown-item"
-              >🏆 Yearly Challenge</a
+              >🏆 Yearly</a
             >
-            <a href="#" data-category="random" class="dropdown-item"
-              >🎲 Random Prompt</a
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Art Styles -->
+            <div
+              style="
+                padding: 4px 18px;
+                font-size: 0.55rem;
+                color: var(--text-muted);
+                font-family: var(--font-mono);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+              "
             >
+              Art Styles
+            </div>
             <a href="#" data-category="original" class="dropdown-item"
               >🎨 Original</a
             >
-            <a href="#" data-category="photography" class="dropdown-item"
-              >📷 Photography</a
+            <a href="#" data-category="digital-painting" class="dropdown-item"
+              >🖌️ Digital Painting</a
+            >
+            <a href="#" data-category="illustration" class="dropdown-item"
+              >✏️ Illustration</a
+            >
+            <a href="#" data-category="concept-art" class="dropdown-item"
+              >💡 Concept Art</a
+            >
+            <a href="#" data-category="3d-art" class="dropdown-item"
+              >🧊 3D Art</a
             >
             <a href="#" data-category="animation" class="dropdown-item"
               >🎬 Animation</a
             >
-            <a href="#" data-category="traditional-art" class="dropdown-item"
-              >🖌️ Traditional Art</a
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Subjects -->
+            <div
+              style="
+                padding: 4px 18px;
+                font-size: 0.55rem;
+                color: var(--text-muted);
+                font-family: var(--font-mono);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+              "
             >
+              Subjects
+            </div>
+            <a href="#" data-category="portrait" class="dropdown-item"
+              >👨‍🎨 Portrait</a
+            >
+            <a href="#" data-category="landscape" class="dropdown-item"
+              >🏔️ Landscape</a
+            >
+            <a href="#" data-category="fantasy" class="dropdown-item"
+              >🐉 Fantasy</a
+            >
+            <a href="#" data-category="character-design" class="dropdown-item"
+              >👤 Character Design</a
+            >
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Special -->
+            <div
+              style="
+                padding: 4px 18px;
+                font-size: 0.55rem;
+                color: var(--text-muted);
+                font-family: var(--font-mono);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+              "
+            >
+              Special
+            </div>
             <a href="#" data-category="trending" class="dropdown-item"
               >🔥 Trending</a
             >
             <a href="#" data-category="new" class="dropdown-item"
               >🆕 New Arrivals</a
             >
-            <!-- Add to filter bar -->
-            <div class="filter-bar">
-              <!-- ... existing filters ... -->
-              <label
-                style="
-                  color: #a0aec0;
-                  display: flex;
-                  align-items: center;
-                  gap: 0.5rem;
-                  cursor: pointer;
-                "
-              >
-                <input type="checkbox" id="verifiedOnly" />
-                <i class="fas fa-shield-alt" style="color: #10b981"></i>
-                Verified Only
-              </label>
-            </div>
+
             <div class="dropdown-divider"></div>
-            <a
-              href="#"
-              data-category="nsfw"
-              class="dropdown-item"
-              style="color: #ef4444"
+
+            <!-- NSFW -->
+            <a href="nsfw-gallery.html" class="dropdown-item nsfw-link"
               >🔞 NSFW Gallery</a
             >
+
+            <div class="dropdown-divider"></div>
+
+            <!-- Verified Filter -->
+            <label class="dropdown-label">
+              <input type="checkbox" id="verifiedOnly" />
+              <i class="fas fa-shield-alt"></i>
+              Verified Only
+            </label>
           </div>
         </div>
 
-        <!-- Mini Random Prompt -->
+        <!-- Mini Prompt -->
         <div class="mini-prompt">
-          <i class="fas fa-dice-d6"></i
-          ><span id="miniPromptText">Click for inspiration</span>
+          <i class="fas fa-dice-d6"></i>
+          <span id="miniPromptText">Click for inspiration</span>
           <button class="mini-prompt-btn" id="miniPromptBtn">New</button>
         </div>
 
-        <!-- Search Bar -->
+        <!-- Search -->
         <div class="search-bar-container">
           <i class="fas fa-search search-icon"></i>
           <input
@@ -246,9 +550,6 @@
           </button>
         </div>
 
-        <!-- AUTH BUTTONS - Needed for authManager -->
-        <div class="auth-buttons"></div>
-
         <!-- Upload Button -->
         <button class="top-upload-btn" id="topUploadBtn">
           <i class="fas fa-plus"></i><span>Upload</span>
@@ -256,11 +557,11 @@
       </header>
 
       <!-- Random Prompt Banner -->
-      <div class="random-prompt-banner" id="randomPromptBanner">
+      <div class="random-prompt-banner">
         <div class="prompt-banner-content">
           <div class="prompt-icon">🎲</div>
           <div class="prompt-text">
-            <span class="prompt-label">Random Prompt Generator</span>
+            <span class="prompt-label">Random Prompt</span>
             <span class="prompt-value" id="randomPromptText"
               >Click the button for inspiration!</span
             >
@@ -271,14 +572,12 @@
         </div>
       </div>
 
-      <!-- Masonry Gallery Grid -->
+      <!-- Gallery Grid -->
       <div class="gallery-container">
-        <div class="gallery-grid" id="galleryGrid">
-          <div class="gallery-sizer"></div>
-        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
         <div class="loading-spinner" id="loadingSpinner">
           <div class="spinner"></div>
-          <p>Loading amazing artwork...</p>
+          <p>Loading artwork...</p>
         </div>
         <div class="load-more-container" id="loadMoreContainer">
           <button class="btn-load-more" id="loadMoreBtn">
@@ -288,274 +587,227 @@
       </div>
     </main>
 
-    <!-- ========== MODALS ========== -->
-    <!-- Upload Modal -->
-    <div class="modal-overlay" id="uploadModal">
-      <div class="modal-container upload-modal">
-        <div class="modal-header">
-          <h3><i class="fas fa-cloud-upload-alt"></i> Share Your Artwork</h3>
-          <button class="modal-close" id="closeUploadModal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <form id="uploadForm">
-            <div class="upload-area" id="uploadArea">
-              <i class="fas fa-cloud-upload-alt"></i>
-              <p>Drag & drop or click to upload</p>
-              <span>PNG, JPG, JPEG up to 10MB</span>
-              <input type="file" id="imageFile" accept="image/*" hidden />
-            </div>
-            <div class="form-group">
-              <label>Title <span class="required">*</span></label>
-              <input
-                type="text"
-                id="artTitle"
-                placeholder="Give your artwork a title"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label>Category <span class="required">*</span></label>
-              <select id="artCategory" required>
-                <option value="">Select category</option>
-                <option value="daily">⚡ Daily Challenge</option>
-                <option value="weekly">📅 Weekly Challenge</option>
-                <option value="monthly">🌟 Monthly Challenge</option>
-                <option value="yearly">🏆 Yearly Challenge</option>
-                <option value="random">🎲 Random Prompt</option>
-                <option value="original">🎨 Original</option>
-                <option value="photography">📷 Photography</option>
-                <option value="animation">🎬 Animation</option>
-                <option value="traditional-art">🖌️ Traditional Art</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Description</label>
-              <textarea
-                id="artDescription"
-                rows="3"
-                placeholder="Tell us about your artwork..."
-              ></textarea>
-            </div>
-            <div class="form-group">
-              <label>Tags (comma separated)</label>
-              <input
-                type="text"
-                id="artTags"
-                placeholder="e.g., portrait, digital art, fantasy"
-              />
-            </div>
-            <!-- Add this after the Tags field or before the submit button -->
-            <div class="form-group">
-              <label
-                class="checkbox-label"
-                style="
-                  display: flex;
-                  align-items: center;
-                  gap: 0.5rem;
-                  cursor: pointer;
-                "
-              >
-                <input type="checkbox" id="isNSFW" />
-                <span class="checkmark"></span>
-                <span style="font-weight: 500"
-                  >🔞 This artwork contains mature content (18+)</span
-                >
-              </label>
-              <small
-                class="helper-text"
-                style="color: #6b7280; display: block; margin-top: 0.25rem"
-              >
-                Checking this will restrict access to verified 18+ users only.
-              </small>
-            </div>
-
-            <!-- NSFW Category (shown when NSFW is checked) -->
-            <div
-              class="form-group"
-              id="nsfwCategoryGroup"
-              style="display: none"
-            >
-              <label>NSFW Category</label>
-              <select id="nsfwCategory">
-                <option value="nudity">Artistic Nudity</option>
-                <option value="violence">Gore & Violence</option>
-                <option value="mature">Mature Themes</option>
-              </select>
-            </div>
-            <button type="submit" class="btn-submit" id="submitArtBtn">
-              <i class="fas fa-paper-plane"></i> Publish to Gallery
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- Image Detail Modal -->
-    <div class="modal-overlay" id="imageModal">
-      <div class="modal-container image-modal">
-        <button class="modal-close" id="closeImageModal">&times;</button>
-        <div class="image-modal-content">
-          <div class="image-modal-left">
-            <img id="modalImage" src="" alt="" />
-          </div>
-          <div class="image-modal-right">
-            <div class="modal-artist-info">
-              <div class="artist-avatar" id="modalArtistAvatar">🎨</div>
-              <div class="artist-details">
-                <h4 id="modalArtistName">Artist Name</h4>
-                <span class="post-time" id="modalPostTime">Just now</span>
-              </div>
-            </div>
-            <h2 id="modalTitle">Artwork Title</h2>
-            <p id="modalDescription" class="modal-description">
-              Artwork description goes here...
-            </p>
-            <div class="modal-tags" id="modalTags"></div>
-            <div class="modal-actions">
-              <button class="action-btn like-btn" id="modalLikeBtn">
-                <i class="far fa-heart"></i><span id="likeCount">0</span>
-              </button>
-              <button class="action-btn cheers-btn" id="modalCheersBtn">
-                <i class="fas fa-glass-cheers"></i
-                ><span id="cheersCount">0</span>
-              </button>
-              <button class="action-btn" id="modalDownloadBtn">
-                <i class="fas fa-download"></i>
-              </button>
-              <button class="action-btn" id="modalShareBtn">
-                <i class="fas fa-share-alt"></i>
-              </button>
-              <button class="action-btn" id="modalSaveBtn">
-                <i class="fas fa-bookmark"></i>
-              </button>
-            </div>
-            <div class="comment-section">
-              <div class="comment-header" id="commentHeader">
-                <h4>
-                  <i class="fas fa-comments"></i> Comments
-                  <span id="commentCount">0</span>
-                </h4>
-                <button class="toggle-comments" id="toggleCommentsBtn">
-                  <i class="fas fa-chevron-down"></i>
-                </button>
-              </div>
-              <div class="comment-body" id="commentBody">
-                <div class="comment-input">
-                  <div class="comment-avatar">👤</div>
-                  <input
-                    type="text"
-                    id="commentInput"
-                    placeholder="Add a comment..."
-                  />
-                  <button id="postCommentBtn">Post</button>
-                </div>
-                <div class="comments-list" id="commentsList"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast-notification" id="toastNotification">
-      <i class="fas fa-check-circle"></i><span id="toastMessage">Success!</span>
-    </div>
-
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="../tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="../software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="../../tools/tools.html">Tools</a></li>
-              <li><a href="hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span
+              ><span class="logo-text">Art Mecca</span>
             </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span
+              ><span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html#cookies">Cookie Policy</a>
+          </div>
         </div>
       </div>
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
     </footer>
 
-    <!-- ========== SCRIPTS ========== -->
-    <!-- Config & Auth (Firebase SDKs already in head) -->
+    <!-- Toast -->
+    <div class="toast-notification" id="toastNotification">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMessage">Success!</span>
+    </div>
+
+    <!-- Theme Controls -->
+    <div class="theme-controls">
+      <button id="themeWarm" class="active" title="Warm Gradient">
+        <i class="fas fa-sun"></i>
+      </button>
+      <button id="themeCool" title="Cool Gradient">
+        <i class="fas fa-moon"></i>
+      </button>
+      <span
+        style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.1)"
+      ></span>
+      <button id="themeDark" class="active" title="Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="themeLight" title="Light Mode">
+        <i class="fas fa-sun"></i>
+      </button>
+      <span
+        style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.1)"
+      ></span>
+      <button id="hudToggle" class="active" title="HUD Mode (H)">
+        <i class="fas fa-vr-cardboard"></i>
+      </button>
+      <button id="scanlineToggle" class="active" title="Scanlines (S)">
+        <i class="fas fa-grip-lines"></i>
+      </button>
+      <button id="gridToggle" class="active" title="Grid Overlay (G)">
+        <i class="fas fa-th"></i>
+      </button>
+    </div>
+
+    <!-- ====== SCRIPTS ====== -->
     <script src="../../config/firebase-config.js"></script>
     <script src="../../js/auth/auth-manager.js"></script>
     <script src="../../js/auth/auth-check.js"></script>
-
-    <!-- ========== SEO ========== -->
-    <script src="/js/utils/seo.js"></script>
-
-    <!-- Navbar Active Detection -->
     <script src="../../js/navbar-active.js"></script>
-
-    <!-- ========== ERROR HANDLER ========== -->
-    <script src="/js/utils/error-handler.js"></script>
-
-    <!-- Notifications System -->
-    <script src="../../js/community/notifications.js"></script>
-
-    <!-- ========== CACHE & QUERY OPTIMIZER ========== -->
-    <script src="/js/utils/cache-manager.js"></script>
-    <script src="/js/utils/query-optimizer.js"></script>
-
-    <script src="/js/components/avatar-manager.js"></script>
-    <!-- Page Scripts -->
+    <script src="../../js/components/avatar-manager.js"></script>
+    <script src="../../js/components/header.js"></script>
     <script src="../../js/community/gallery.js"></script>
-    <script src="../../js/main.js"></script>
 
-    <!-- Header Initialization -->
+    <!-- ====== INLINE DROPDOWN SCRIPT - RUNS LAST ====== -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-          if (typeof authManager !== "undefined") {
-            authManager.updateUI();
+      (function () {
+        "use strict";
+
+        console.log("🔧 INLINE: Setting up category dropdown...");
+
+        // Get elements
+        var btn = document.getElementById("categoryDropdownBtn");
+        var menu = document.getElementById("categoryDropdownMenu");
+
+        if (!btn) {
+          console.error("❌ INLINE: Button not found!");
+          return;
+        }
+        if (!menu) {
+          console.error("❌ INLINE: Menu not found!");
+          return;
+        }
+
+        console.log("✅ INLINE: Elements found");
+
+        // Remove any existing listeners by cloning
+        var newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        btn = newBtn;
+
+        // Toggle dropdown on button click
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("📂 INLINE: Dropdown clicked");
+          menu.classList.toggle("show");
+          this.classList.toggle("active");
+          console.log('Menu has "show":', menu.classList.contains("show"));
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function (e) {
+          if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.remove("show");
+            btn.classList.remove("active");
           }
-        }, 300);
-      });
+        });
+
+        // Close on Escape key
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            menu.classList.remove("show");
+            btn.classList.remove("active");
+          }
+        });
+
+        // Handle category item clicks
+        var items = document.querySelectorAll(".dropdown-item");
+        console.log("📂 INLINE: Found", items.length, "dropdown items");
+
+        items.forEach(function (item) {
+          item.addEventListener("click", function (e) {
+            var category = this.dataset.category;
+
+            // If it's the NSFW link (no data-category), let it navigate normally
+            if (!category) {
+              return;
+            }
+
+            e.preventDefault();
+            console.log("📂 INLINE: Category selected:", category);
+
+            // Update selected text
+            var selected = document.getElementById("selectedCategory");
+            if (selected) {
+              selected.textContent = this.textContent.trim();
+            }
+
+            // Update active state
+            items.forEach(function (i) {
+              i.classList.remove("active");
+            });
+            this.classList.add("active");
+
+            // Close dropdown
+            menu.classList.remove("show");
+            btn.classList.remove("active");
+
+            // Apply filter to gallery
+            if (window.gallery) {
+              window.gallery.currentCategory = category;
+              window.gallery.currentPage = 0;
+              window.gallery.lastDoc = null;
+              window.gallery.loadArtworks(true);
+              console.log("✅ INLINE: Filter applied to gallery");
+            } else {
+              console.warn("⚠️ INLINE: Gallery not found, reloading page...");
+              window.location.href = "?category=" + category;
+            }
+          });
+        });
+
+        // Handle verified checkbox
+        var verifiedCheck = document.getElementById("verifiedOnly");
+        if (verifiedCheck) {
+          verifiedCheck.addEventListener("change", function () {
+            console.log("✅ INLINE: Verified filter:", this.checked);
+            if (window.gallery) {
+              window.gallery.verifiedOnly = this.checked;
+              window.gallery.currentPage = 0;
+              window.gallery.lastDoc = null;
+              window.gallery.loadArtworks(true);
+            }
+          });
+        }
+
+        console.log("✅ INLINE: Dropdown setup complete!");
+      })();
     </script>
+    <!-- Cookie Banner -->
+    <script src="/js/components/cookie-banner.js"></script>
   </body>
 </html>

@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Equip Blog — Art Mecca</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Art blog featuring interviews, tips, and advice for artists. Learn from professional artists and grow your creative career."
+    />
+    <meta
+      name="keywords"
+      content="art blog, artist interviews, art tips, creative advice, art career"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Equip Blog — Art Mecca" />
+    <meta
+      property="og:description"
+      content="Art blog featuring interviews, tips, and advice for artists."
+    />
+    <meta property="og:image" content="/images/og-blog.jpg" />
+    <meta property="og:type" content="website" />
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/blog.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  </head>
+  <body class="blog-page">
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link active"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/cv-templates.html">✦ CV Templates</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+                <li>
+                  <a href="/pages/Equip/templates.html">✦ Download Templates</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✦</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button class="btn-icon notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <button class="btn-icon search-btn" id="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+            <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i
+              ><input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- BLOG HERO                                                     -->
+    <!-- ============================================================ -->
+    <section class="blog-hero">
+      <div class="blog-hero-bg"></div>
+      <div class="blog-hero-content glass-panel">
+        <span class="hero-badge"><i class="fas fa-blog"></i> EQUIP BLOG</span>
+        <h1>
+          <span class="glitch-header" data-text="Art Advice & Insights">
+            Art <span class="gradient-text">Advice</span> &amp;
+            <span class="gradient-text">Insights</span>
+            <span class="glitch-layer" data-text="Art Advice & Insights"></span>
+            <span class="rgb-split" data-text="Art Advice & Insights"></span>
+            <span class="glitch-flash"></span>
+          </span>
+        </h1>
+        <p class="hero-subhead">
+          Interviews, tips, and advice from professional artists. Learn from the
+          best and grow your creative career.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-value" id="postCount">6</span
+            ><span class="stat-label">Articles</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">4</span
+            ><span class="stat-label">Categories</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">✦</span
+            ><span class="stat-label">Free</span>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-text">▼ SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- FEATURED ARTICLE                                              -->
+    <!-- ============================================================ -->
+    <section class="featured-section">
+      <div class="container">
+        <div class="featured-card glass-panel">
+          <div class="featured-badge">✦ FEATURED</div>
+          <div class="featured-content">
+            <div class="featured-info">
+              <span class="featured-category">Interview</span>
+              <h2>
+                <a href="/pages/Equip/blog/interview-mira-chen.html">
+                  Interview with Mira Chen: Finding Your Creative Voice
+                </a>
+              </h2>
+              <p>
+                Mira Chen shares her journey from hobbyist to professional
+                artist, the challenges she faced, and the lessons she learned
+                along the way.
+              </p>
+              <div class="featured-meta">
+                <span><i class="fas fa-user"></i> Art Mecca Team</span>
+                <span><i class="fas fa-calendar"></i> January 15, 2026</span>
+                <span><i class="fas fa-clock"></i> 8 min read</span>
+              </div>
+              <a
+                href="/pages/Equip/blog/interview-mira-chen.html"
+                class="btn-read"
+              >
+                Read Article <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+            <div class="featured-image">
+              <div class="featured-placeholder">🎨</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CATEGORY FILTERS                                              -->
+    <!-- ============================================================ -->
+    <section class="categories-section">
+      <div class="container">
+        <div class="categories-wrapper">
+          <button class="category-btn active" data-category="all">✦ All</button>
+          <button class="category-btn" data-category="interviews">
+            ✦ Interviews
+          </button>
+          <button class="category-btn" data-category="tips">✦ Tips</button>
+          <button class="category-btn" data-category="career">✦ Career</button>
+          <button class="category-btn" data-category="inspiration">
+            ✦ Inspiration
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- ARTICLE GRID                                                  -->
+    <!-- ============================================================ -->
+    <section class="articles-section">
+      <div class="container">
+        <div class="articles-grid" id="articlesGrid">
+          <!-- Article 1: Interview — Mira Chen -->
+          <article class="article-card glass-panel" data-category="interviews">
+            <div class="article-image">
+              <div class="article-placeholder">🎨</div>
+              <span class="article-category">Interview</span>
+            </div>
+            <div class="article-content">
+              <h3>
+                <a href="/pages/Equip/blog/interview-mira-chen.html">
+                  Interview with Mira Chen: Finding Your Creative Voice
+                </a>
+              </h3>
+              <p>
+                Mira Chen shares her journey from hobbyist to professional
+                artist and the lessons she learned along the way.
+              </p>
+              <div class="article-meta">
+                <span><i class="fas fa-user"></i> Art Mecca Team</span>
+                <span><i class="fas fa-calendar"></i> Jan 15, 2026</span>
+              </div>
+              <a
+                href="/pages/Equip/blog/interview-mira-chen.html"
+                class="btn-read-more"
+              >
+                Read More <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 2: Tips — Pricing -->
+          <article class="article-card glass-panel" data-category="tips">
+            <div class="article-image">
+              <div class="article-placeholder">💰</div>
+              <span class="article-category">Tips</span>
+            </div>
+            <div class="article-content">
+              <h3>
+                <a href="/pages/Equip/blog/5-tips-pricing-art.html">
+                  5 Tips for Pricing Your Art
+                </a>
+              </h3>
+              <p>
+                Learn how to price your artwork fairly and confidently. A
+                practical guide for artists at every level.
+              </p>
+              <div class="article-meta">
+                <span><i class="fas fa-user"></i> Art Mecca Team</span>
+                <span><i class="fas fa-calendar"></i> Jan 10, 2026</span>
+              </div>
+              <a
+                href="/pages/Equip/blog/5-tips-pricing-art.html"
+                class="btn-read-more"
+              >
+                Read More <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 3: Career — Portfolio -->
+          <article class="article-card glass-panel" data-category="career">
+            <div class="article-image">
+              <div class="article-placeholder">📁</div>
+              <span class="article-category">Career</span>
+            </div>
+            <div class="article-content">
+              <h3>
+                <a href="/pages/Equip/blog/build-portfolio-guide.html">
+                  How to Build a Portfolio That Gets Noticed
+                </a>
+              </h3>
+              <p>
+                Your portfolio is your most powerful tool. Learn how to curate,
+                structure, and present your best work.
+              </p>
+              <div class="article-meta">
+                <span><i class="fas fa-user"></i> Art Mecca Team</span>
+                <span><i class="fas fa-calendar"></i> Jan 5, 2026</span>
+              </div>
+              <a
+                href="/pages/Equip/blog/build-portfolio-guide.html"
+                class="btn-read-more"
+              >
+                Read More <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 4: Inspiration — Social Media -->
+          <article class="article-card glass-panel" data-category="inspiration">
+            <div class="article-image">
+              <div class="article-placeholder">📱</div>
+              <span class="article-category">Inspiration</span>
+            </div>
+            <div class="article-content">
+              <h3>
+                <a href="/pages/Equip/blog/social-media-artists.html">
+                  Social Media for Artists: A Beginner's Guide
+                </a>
+              </h3>
+              <p>
+                Build your online presence, grow your audience, and connect with
+                other artists through social media.
+              </p>
+              <div class="article-meta">
+                <span><i class="fas fa-user"></i> Art Mecca Team</span>
+                <span><i class="fas fa-calendar"></i> Dec 28, 2025</span>
+              </div>
+              <a
+                href="/pages/Equip/blog/social-media-artists.html"
+                class="btn-read-more"
+              >
+                Read More <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 5: Interview — Alex Rivera -->
+          <article class="article-card glass-panel" data-category="interviews">
+            <div class="article-image">
+              <div class="article-placeholder">🖌️</div>
+              <span class="article-category">Interview</span>
+            </div>
+            <div class="article-content">
+              <h3>
+                <a href="/pages/Equip/blog/interview-alex-rivera.html">
+                  Interview with Alex Rivera: Building a Creative Business
+                </a>
+              </h3>
+              <p>
+                Alex Rivera talks about turning a passion for art into a
+                sustainable business and the challenges of freelancing.
+              </p>
+              <div class="article-meta">
+                <span><i class="fas fa-user"></i> Art Mecca Team</span>
+                <span><i class="fas fa-calendar"></i> Dec 20, 2025</span>
+              </div>
+              <a
+                href="/pages/Equip/blog/interview-alex-rivera.html"
+                class="btn-read-more"
+              >
+                Read More <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+
+          <!-- Article 6: Tips — Finding Clients -->
+          <article class="article-card glass-panel" data-category="tips">
+            <div class="article-image">
+              <div class="article-placeholder">🤝</div>
+              <span class="article-category">Tips</span>
+            </div>
+            <div class="article-content">
+              <h3>
+                <a href="/pages/Equip/blog/finding-clients-guide.html">
+                  How to Find Your First Art Clients
+                </a>
+              </h3>
+              <p>
+                Practical advice on finding, attracting, and retaining your
+                first art clients. Start building your freelance career.
+              </p>
+              <div class="article-meta">
+                <span><i class="fas fa-user"></i> Art Mecca Team</span>
+                <span><i class="fas fa-calendar"></i> Dec 15, 2025</span>
+              </div>
+              <a
+                href="/pages/Equip/blog/finding-clients-guide.html"
+                class="btn-read-more"
+              >
+                Read More <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- NEWSLETTER SECTION                                            -->
+    <!-- ============================================================ -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-container glass-panel">
+          <div class="newsletter-content">
+            <span class="newsletter-badge"
+              ><i class="fas fa-envelope"></i> STAY UPDATED</span
+            >
+            <h2>
+              <span class="glitch-header" data-text="Get the Latest Articles">
+                Get the Latest <span class="gradient-text">Articles</span>
+                <span
+                  class="glitch-layer"
+                  data-text="Get the Latest Articles"
+                ></span>
+                <span
+                  class="rgb-split"
+                  data-text="Get the Latest Articles"
+                ></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>Subscribe to our newsletter and never miss an article.</p>
+            <form class="newsletter-form" id="newsletterForm">
+              <input type="email" placeholder="Enter your email" required />
+              <button type="submit">
+                <i class="fas fa-paper-plane"></i> Subscribe
+              </button>
+            </form>
+            <span class="newsletter-note">✦ No spam. Unsubscribe anytime.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- THEME TOGGLE                                                 -->
+    <!-- ============================================================ -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS                                                      -->
+    <!-- ============================================================ -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+    <script src="/js/auth/page-redirect.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ============================================================
+        // THEME TOGGLE
+        // ============================================================
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ============================================================
+        // PARTICLES
+        // ============================================================
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const particleCount = 50;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.2 + 0.05;
+              const colors = [
+                "#ff00ea",
+                "#ad03fc",
+                "#58ebfe",
+                "#4ff3a6",
+                "#ffc72e",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < particleCount; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.04;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#ff00ea";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#ff00ea";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ============================================================
+        // NOISE OVERLAY (glitch effect on G key)
+        // ============================================================
+        document.addEventListener("keydown", (e) => {
+          if (e.key.toLowerCase() === "g") {
+            const noise = document.getElementById("noiseOverlay");
+            if (noise) {
+              noise.classList.add("active");
+              setTimeout(() => noise.classList.remove("active"), 500);
+            }
+          }
+        });
+
+        // ============================================================
+        // CATEGORY FILTER
+        // ============================================================
+        const categoryBtns = document.querySelectorAll(".category-btn");
+        const articles = document.querySelectorAll(".article-card");
+
+        categoryBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            // Update active button
+            categoryBtns.forEach((b) => b.classList.remove("active"));
+            this.classList.add("active");
+
+            const category = this.dataset.category;
+
+            // Filter articles
+            articles.forEach((article) => {
+              if (category === "all" || article.dataset.category === category) {
+                article.style.display = "block";
+                setTimeout(() => {
+                  article.style.opacity = "1";
+                  article.style.transform = "translateY(0)";
+                }, 50);
+              } else {
+                article.style.opacity = "0";
+                article.style.transform = "translateY(20px)";
+                setTimeout(() => {
+                  article.style.display = "none";
+                }, 300);
+              }
+            });
+          });
+        });
+
+        // ============================================================
+        // NEWSLETTER FORM
+        // ============================================================
+        const newsletterForm = document.getElementById("newsletterForm");
+        if (newsletterForm) {
+          newsletterForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const input = this.querySelector("input");
+            const email = input.value.trim();
+
+            if (email) {
+              // Show success message
+              const btn = this.querySelector("button");
+              const originalText = btn.innerHTML;
+              btn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+              btn.style.background = "#4ff3a6";
+              btn.style.color = "#0a0508";
+              input.value = "";
+
+              setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = "";
+                btn.style.color = "";
+              }, 3000);
+
+              // Optional: Save to Firebase or send to email service
+              console.log("📧 Newsletter signup:", email);
+            }
+          });
+        }
+
+        // ============================================================
+        // ARTICLE COUNT
+        // ============================================================
+        const postCount = document.getElementById("postCount");
+        if (postCount) {
+          const totalArticles =
+            document.querySelectorAll(".article-card").length;
+          postCount.textContent = totalArticles;
+        }
+
+        console.log("⚡ Blog page initialized!");
+      });
+    </script>
+  </body>
+</html>

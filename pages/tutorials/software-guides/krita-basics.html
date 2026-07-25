@@ -1,6 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
       Krita Basics - Free Digital Painting Software Guide | Art Mecca
     </title>
@@ -40,6 +42,2618 @@
       content="Learn Krita basics with this free guide. Master the open-source digital painting software."
     />
     <meta name="twitter:image" content="/images/tutorials/krita-hero.jpg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ================================================================
+         KRITA BASICS TUTORIAL — CYBERPUNK BLUE/CYAN AESTHETIC
+         ================================================================ */
+
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(99, 219, 238, 0.06);
+        --bg-card-hover: rgba(99, 219, 238, 0.12);
+        --bg-elevated: rgba(99, 219, 238, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(99, 219, 238, 0.15);
+
+        /* Theme Colors - Blue/Cyan */
+        --color-cyan: #63dbee;
+        --color-blue: #3b82f6;
+        --color-blue-dark: #2563eb;
+        --color-blue-darker: #1d4ed8;
+        --color-blue-light: #60a5fa;
+        --color-cyan-light: #7ee5f8;
+
+        /* Glitch Colors - Blue/Cyan Only */
+        --color-glitch-a: #00eaff;
+        --color-glitch-b: #3b82f6;
+        --color-glitch-c: #ad03fc;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-magenta: #ff00ea;
+
+        /* Spray */
+        --color-spray-cyan: #63dbee;
+        --color-spray-blue: #3b82f6;
+        --color-spray-red: #ff0040;
+
+        /* Gradients */
+        --gradient-blue: linear-gradient(135deg, #63dbee, #3b82f6, #2563eb);
+        --gradient-cyber: linear-gradient(135deg, #00eaff, #3b82f6, #63dbee);
+        --gradient-neon: linear-gradient(135deg, #63dbee, #3b82f6);
+
+        /* Glows */
+        --glow-cyan:
+          0 0 40px rgba(99, 219, 238, 0.3), 0 0 80px rgba(99, 219, 238, 0.1);
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(99, 219, 238, 0.2);
+
+        --glow-cyan:
+          0 0 40px rgba(99, 219, 238, 0.08), 0 0 80px rgba(99, 219, 238, 0.03);
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.08), 0 0 80px rgba(59, 130, 246, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .tutorial-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(99, 219, 238, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         BREADCRUMB — CYBER HUD
+         ============================================================ */
+      .breadcrumb {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+      }
+
+      .breadcrumb a {
+        color: var(--color-cyan);
+        text-decoration: none;
+        transition: all var(--transition);
+      }
+
+      .breadcrumb a:hover {
+        color: var(--color-cyan-light);
+        text-shadow: 0 0 30px rgba(99, 219, 238, 0.2);
+      }
+
+      .breadcrumb .sep {
+        color: var(--text-muted);
+        opacity: 0.3;
+        margin: 0 8px;
+      }
+
+      /* ============================================================
+         TUTORIAL HERO — GLASS BLUE
+         ============================================================ */
+      .tutorial-hero {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 3rem;
+        margin: 2rem 0;
+        box-shadow: var(--shadow-card), var(--glow-cyan);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tutorial-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-blue);
+        opacity: 0.6;
+      }
+
+      .tutorial-hero::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-cyan);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
+      }
+
+      .tutorial-info {
+        flex: 1;
+        min-width: 280px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .tutorial-info h1 {
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 900;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+        line-height: 1.2;
+      }
+
+      .tutorial-info h1 .highlight {
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .tutorial-description {
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        font-family: var(--font-condensed);
+      }
+
+      .tutorial-meta {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .meta-item i {
+        color: var(--color-cyan);
+        font-size: 0.8rem;
+      }
+
+      .difficulty-badge-tutorial {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: rgba(99, 219, 238, 0.1);
+        color: var(--color-cyan);
+        border: 1px solid rgba(99, 219, 238, 0.15);
+        margin-bottom: 1rem;
+      }
+
+      /* ============================================================
+         TUTORIAL ACTIONS — SAVE & COMPLETE
+         ============================================================ */
+      .tutorial-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 1.5rem 0;
+      }
+
+      .btn-save-tutorial {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-save-tutorial:hover {
+        border-color: var(--color-cyan);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+      }
+
+      .btn-save-tutorial.saved {
+        background: var(--gradient-blue);
+        color: var(--text-inverse);
+        border-color: var(--color-cyan);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .completion-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-condensed);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .completion-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--color-cyan);
+        cursor: pointer;
+      }
+
+      /* ============================================================
+         TOOLS REQUIRED
+         ============================================================ */
+      .tools-required {
+        margin-top: 1.5rem;
+      }
+
+      .tools-required h3 {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+      }
+
+      .tools-required ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
+      }
+
+      .tools-required ul li {
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .tools-required ul li::before {
+        content: "◆";
+        color: var(--color-cyan);
+        font-size: 0.5rem;
+      }
+
+      /* ============================================================
+         TUTORIAL IMAGE
+         ============================================================ */
+      .tutorial-image {
+        flex: 1;
+        min-width: 280px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
+        position: relative;
+      }
+
+      .tutorial-image .image-placeholder {
+        width: 100%;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient-blue);
+        opacity: 0.8;
+        color: white;
+        font-size: 4rem;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .tutorial-image .image-placeholder p {
+        font-family: var(--font-condensed);
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        opacity: 0.8;
+      }
+
+      .image-caption {
+        padding: 0.5rem 1rem;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        background: var(--bg-elevated);
+        border-top: 1px solid var(--border-color);
+        letter-spacing: 0.5px;
+      }
+
+      /* ============================================================
+         PROGRESS BAR — CYBER HUD
+         ============================================================ */
+      .progress-container {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+        box-shadow: var(--shadow-card), var(--glow-cyan);
+      }
+
+      .progress-bar {
+        height: 6px;
+        background: var(--bg-elevated);
+        border-radius: 3px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        position: relative;
+      }
+
+      .progress {
+        height: 100%;
+        background: var(--gradient-blue);
+        width: 0%;
+        transition: width 0.3s ease;
+        box-shadow: 0 0 20px rgba(99, 219, 238, 0.2);
+      }
+
+      .progress-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
+      }
+
+      /* ============================================================
+         TUTORIAL CONTENT
+         ============================================================ */
+      .tutorial-content {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-card), var(--glow-cyan);
+      }
+
+      .step {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--border-color);
+        position: relative;
+      }
+
+      .step:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .step h2 {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        color: var(--text-primary);
+        margin: 0 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        letter-spacing: 1px;
+      }
+
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 36px;
+        height: 36px;
+        background: var(--gradient-blue);
+        color: var(--text-inverse);
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        flex-shrink: 0;
+        box-shadow: var(--glow-cyan);
+      }
+
+      .step-content p {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+        margin-bottom: 1rem;
+      }
+
+      .step-content h3 {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        margin: 1.5rem 0 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .step-content ul {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 1rem;
+      }
+
+      .step-content ul li {
+        font-family: var(--font-condensed);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        padding: 0.3rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        line-height: 1.6;
+      }
+
+      .step-content ul li::before {
+        content: "◈";
+        color: var(--color-cyan);
+        font-size: 0.6rem;
+        margin-top: 0.3rem;
+        flex-shrink: 0;
+      }
+
+      /* ============================================================
+         TIPS — GLASS BLUE
+         ============================================================ */
+      .tips {
+        background: rgba(99, 219, 238, 0.06);
+        border: 1px solid rgba(99, 219, 238, 0.15);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-left: 4px solid var(--color-cyan);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tips::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: radial-gradient(
+          circle,
+          rgba(99, 219, 238, 0.04),
+          transparent
+        );
+        pointer-events: none;
+      }
+
+      .tips h4 {
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        color: var(--color-cyan);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .tips p {
+        font-family: var(--font-condensed);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin: 0;
+      }
+
+      /* ============================================================
+         TUTORIAL VISUAL AID — FULL WIDTH
+         ============================================================ */
+      .tutorial-visual {
+        margin: 1.5rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
+      }
+
+      .visual-placeholder {
+        width: 100%;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        background: var(--bg-elevated);
+      }
+
+      .visual-placeholder i {
+        font-size: 3.5rem;
+        color: var(--color-cyan);
+        margin-bottom: 1rem;
+        opacity: 0.3;
+      }
+
+      .visual-placeholder p {
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .visual-placeholder .placeholder-note {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+        opacity: 0.5;
+        letter-spacing: 0.5px;
+      }
+
+      .visual-caption {
+        padding: 0.5rem 1rem;
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        background: var(--bg-elevated);
+        border-top: 1px solid var(--border-color);
+        letter-spacing: 0.5px;
+      }
+
+      /* ============================================================
+         COMPLETION MESSAGE
+         ============================================================ */
+      .completion-message {
+        background: var(--gradient-blue);
+        border-radius: 12px;
+        padding: 2.5rem;
+        text-align: center;
+        margin-top: 2rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--glow-cyan);
+      }
+
+      .completion-message::before {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-6deg);
+        font-family: var(--font-tag);
+        font-size: 6rem;
+        color: rgba(255, 255, 255, 0.03);
+        pointer-events: none;
+        letter-spacing: 8px;
+      }
+
+      .completion-message h3 {
+        font-family: var(--font-display);
+        color: white;
+        font-size: 1.8rem;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+
+      .completion-message p {
+        font-family: var(--font-condensed);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.05rem;
+        position: relative;
+        z-index: 1;
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* ============================================================
+         VIDEO SECTION
+         ============================================================ */
+      .video-section {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-card), var(--glow-cyan);
+      }
+
+      .video-section h2 {
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .video-section > p {
+        font-family: var(--font-condensed);
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+      }
+
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card);
+      }
+
+      .video-placeholder {
+        width: 100%;
+        height: 400px;
+        background: var(--gradient-blue);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        cursor: pointer;
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .video-placeholder::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.05) 2px,
+          rgba(0, 0, 0, 0.05) 4px
+        );
+        pointer-events: none;
+      }
+
+      .video-placeholder:hover {
+        transform: scale(1.01);
+      }
+
+      .video-placeholder i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.2));
+        position: relative;
+        z-index: 1;
+      }
+
+      .video-placeholder p {
+        font-family: var(--font-condensed);
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 1;
+        opacity: 0.9;
+      }
+
+      .video-placeholder small {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        opacity: 0.6;
+      }
+
+      /* ============================================================
+         TUTORIAL NAVIGATION
+         ============================================================ */
+      .tutorial-navigation {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 2rem 0;
+        flex-wrap: wrap;
+      }
+
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.8rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card);
+      }
+
+      .nav-btn:hover {
+        border-color: var(--color-cyan);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      /* ============================================================
+         RELATED TUTORIALS
+         ============================================================ */
+      .related-tutorials {
+        margin: 3rem 0;
+        position: relative;
+        z-index: 2;
+      }
+
+      .related-tutorials h2 {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        color: var(--text-primary);
+        text-align: center;
+        margin-bottom: 2rem;
+        letter-spacing: 2px;
+      }
+
+      .related-tutorials h2 .highlight {
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .tutorial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .tutorial-card-related {
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-card), var(--glow-cyan);
+        transition: all var(--transition-slow);
+        text-decoration: none;
+        display: block;
+        color: inherit;
+        max-width: 320px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .tutorial-card-related:hover {
+        transform: translateY(-6px);
+        border-color: rgba(99, 219, 238, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-blue);
+      }
+
+      .tutorial-card-related .card-image-related {
+        width: 100%;
+        height: 160px;
+        background: var(--gradient-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: white;
+        opacity: 0.7;
+      }
+
+      .tutorial-card-related .card-content {
+        padding: 1.25rem;
+      }
+
+      .tutorial-card-related .card-content h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .tutorial-card-related .card-content p {
+        font-family: var(--font-condensed);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin-bottom: 0.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .card-link {
+        color: var(--color-cyan);
+        font-family: var(--font-condensed);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all var(--transition);
+      }
+
+      .card-link:hover {
+        color: var(--color-cyan-light);
+        gap: 0.8rem;
+        text-shadow: 0 0 30px rgba(99, 219, 238, 0.2);
+      }
+
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-cyan);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-blue);
+        border-color: var(--color-cyan);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST NOTIFICATION
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-cyan);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-cyan);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
+      @media (max-width: 768px) {
+        .tutorial-hero {
+          flex-direction: column;
+          padding: 2rem 1.5rem;
+        }
+
+        .tutorial-info h1 {
+          font-size: 1.6rem;
+        }
+
+        .step h2 {
+          font-size: 1.3rem;
+        }
+
+        .tutorial-navigation {
+          flex-direction: column;
+        }
+
+        .nav-btn {
+          justify-content: center;
+        }
+
+        .tutorial-content {
+          padding: 1.5rem;
+        }
+
+        .tutorial-container {
+          padding: 0 1rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .completion-message::before {
+          font-size: 3rem;
+        }
+
+        .video-placeholder {
+          height: 250px;
+        }
+
+        .tutorial-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn-save-tutorial {
+          justify-content: center;
+        }
+
+        .completion-checkbox {
+          justify-content: center;
+        }
+
+        .tutorial-grid {
+          grid-template-columns: 1fr;
+          max-width: 100%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tutorial-hero {
+          padding: 1.5rem 1rem;
+        }
+
+        .tutorial-content {
+          padding: 1rem;
+        }
+
+        .completion-message h3 {
+          font-size: 1.3rem;
+        }
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+              >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+              >
+                Truly Yours ✦
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main>
+      <div class="tutorial-container">
+        <!-- Tutorial Hero -->
+        <section class="tutorial-hero">
+          <div class="tutorial-info">
+            <div class="breadcrumb">
+              <a href="/">Home</a>
+              <span class="sep">◆</span>
+              <a href="/pages/tutorials/tutorials.html">Tutorials</a>
+              <span class="sep">◆</span>
+              <a
+                href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                >Software Guides</a
+              >
+              <span class="sep">◆</span>
+              <span>Krita Basics</span>
+            </div>
+
+            <h1><span class="highlight">Krita</span> Basics</h1>
+
+            <p class="tutorial-description">
+              Learn the essentials of Krita, the powerful open-source digital
+              painting software. Master the interface, brushes, and essential
+              features.
+            </p>
+
+            <div class="tutorial-meta">
+              <span class="meta-item"
+                ><i class="fas fa-clock"></i> 30 min read</span
+              >
+              <span class="meta-item"
+                ><i class="fas fa-user"></i> Sarah Johnson</span
+              >
+              <span class="meta-item"
+                ><i class="fas fa-calendar"></i> March 15, 2024</span
+              >
+            </div>
+
+            <span class="difficulty-badge-tutorial">✦ Beginner</span>
+
+            <div class="tutorial-actions">
+              <button class="btn-save-tutorial" id="saveTutorialBtn">
+                <i class="far fa-bookmark" id="saveIcon"></i>
+                <span id="saveText">Save Tutorial</span>
+              </button>
+              <div class="completion-checkbox">
+                <input type="checkbox" id="markCompleted" />
+                <label for="markCompleted">Mark as completed</label>
+              </div>
+            </div>
+
+            <div class="tools-required">
+              <h3>Tools Required</h3>
+              <ul>
+                <li>Krita (free download from krita.org)</li>
+                <li>Graphics tablet (optional but recommended)</li>
+                <li>Basic understanding of digital art concepts</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tutorial-image">
+            <div class="image-placeholder">
+              <i class="fas fa-paintbrush-fine"></i>
+              <p>Krita Interface Guide</p>
+            </div>
+            <div class="image-caption">
+              Learn the Krita workspace and essential tools
+            </div>
+          </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <section class="progress-container">
+          <div class="progress-bar">
+            <div class="progress" id="reading-progress"></div>
+          </div>
+          <div class="progress-stats">
+            <span>0% complete</span>
+            <span id="time-remaining">~12 min remaining</span>
+          </div>
+        </section>
+
+        <!-- Tutorial Content -->
+        <section class="tutorial-content">
+          <!-- Step 1 -->
+          <div class="step" id="step-1">
+            <h2>
+              <span class="step-number">1</span>
+              Getting Started with Krita
+            </h2>
+            <div class="step-content">
+              <p>
+                Krita is a free, open-source digital painting software designed
+                for artists. It offers professional-grade features including
+                customizable brushes, layer management, and advanced color
+                tools.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Download Krita from the official website (krita.org) to ensure
+                  you get the latest stable version with all features.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-download"></i>
+                <p>📷 Krita Welcome Screen</p>
+                <div class="placeholder-note">
+                  Replace with Krita welcome screen screenshot
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 1.1 - Krita's welcome screen and initial setup
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step" id="step-2">
+            <h2>
+              <span class="step-number">2</span>
+              Understanding the Interface
+            </h2>
+            <div class="step-content">
+              <p>
+                Krita's interface is designed to be intuitive. Key areas include
+                the toolbar, dockers (panels), canvas, and menu bar. Customize
+                your workspace to suit your workflow.
+              </p>
+              <h3>Main Interface Areas</h3>
+              <ul>
+                <li>
+                  <strong>Toolbar:</strong> Contains all painting and selection
+                  tools
+                </li>
+                <li>
+                  <strong>Dockers:</strong> Layers, brushes, color picker, and
+                  more
+                </li>
+                <li><strong>Canvas:</strong> Your main painting area</li>
+                <li>
+                  <strong>Menu Bar:</strong> Access to all features and settings
+                </li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-desktop"></i>
+                <p>📷 Krita Interface Overview</p>
+                <div class="placeholder-note">
+                  Replace with Krita interface screenshot with labels
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 2.1 - Krita's workspace layout and key components
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step" id="step-3">
+            <h2>
+              <span class="step-number">3</span>
+              Essential Brushes and Settings
+            </h2>
+            <div class="step-content">
+              <p>
+                Krita comes with a comprehensive brush collection. The most
+                commonly used brushes include the Basic-5 Size, Basic-5 Opacity,
+                and various texture brushes for different effects.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Experiment with brush settings like size, opacity, and flow.
+                  Use the brush editor to create custom brushes tailored to your
+                  style.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-brush"></i>
+                <p>📷 Krita Brush Presets</p>
+                <div class="placeholder-note">
+                  Replace with Krita brush presets screenshot
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 3.1 - Krita's brush collection and presets
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step" id="step-4">
+            <h2>
+              <span class="step-number">4</span>
+              Layer Management
+            </h2>
+            <div class="step-content">
+              <p>
+                Layers are essential for non-destructive editing. Krita supports
+                multiple layer types including paint layers, vector layers,
+                filter layers, and group layers.
+              </p>
+              <h3>Layer Types</h3>
+              <ul>
+                <li>
+                  <strong>Paint Layer:</strong> Standard layer for painting
+                </li>
+                <li>
+                  <strong>Vector Layer:</strong> For vector shapes and text
+                </li>
+                <li>
+                  <strong>Filter Layer:</strong> Apply filters non-destructively
+                </li>
+                <li><strong>Group Layer:</strong> Organize multiple layers</li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-layer-group"></i>
+                <p>📷 Layer Management</p>
+                <div class="placeholder-note">
+                  Replace with Krita layers panel screenshot
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 4.1 - Working with layers in Krita
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="step" id="step-5">
+            <h2>
+              <span class="step-number">5</span>
+              Color Selection and Palettes
+            </h2>
+            <div class="step-content">
+              <p>
+                Krita offers powerful color selection tools including the color
+                wheel, color palette, and color history. Create custom palettes
+                for your projects.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Use the color picker tool to sample colors from reference
+                  images. Save your favorite colors to the palette for quick
+                  access.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-palette"></i>
+                <p>📷 Color Selection Tools</p>
+                <div class="placeholder-note">
+                  Replace with Krita color picker screenshot
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 5.1 - Color wheel and palette management
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="step" id="step-6">
+            <h2>
+              <span class="step-number">6</span>
+              Keyboard Shortcuts
+            </h2>
+            <div class="step-content">
+              <p>
+                Learning keyboard shortcuts dramatically speeds up your
+                workflow. Krita's shortcuts are customizable and many are
+                similar to other industry-standard software.
+              </p>
+              <h3>Essential Shortcuts</h3>
+              <ul>
+                <li><strong>B:</strong> Brush tool</li>
+                <li><strong>E:</strong> Eraser tool</li>
+                <li><strong>Z:</strong> Zoom in/out</li>
+                <li><strong>R:</strong> Rotate canvas</li>
+                <li><strong>Ctrl+Z:</strong> Undo</li>
+                <li><strong>Ctrl+Shift+Z:</strong> Redo</li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-keyboard"></i>
+                <p>📷 Shortcut Reference</p>
+                <div class="placeholder-note">
+                  Replace with shortcut reference image
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 6.1 - Essential keyboard shortcuts for Krita
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 7 -->
+          <div class="step" id="step-7">
+            <h2>
+              <span class="step-number">7</span>
+              Exporting Your Artwork
+            </h2>
+            <div class="step-content">
+              <p>
+                Krita supports multiple file formats for exporting your artwork.
+                Save as PNG for web use, PSD for compatibility with other
+                software, or TIFF for print.
+              </p>
+              <div class="tips">
+                <h4><i class="fas fa-lightbulb"></i> Pro Tip</h4>
+                <p>
+                  Use the "Export" option rather than "Save As" to optimize file
+                  size and format for your specific needs.
+                </p>
+              </div>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-file-export"></i>
+                <p>📷 Export Settings</p>
+                <div class="placeholder-note">
+                  Replace with Krita export dialog screenshot
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 7.1 - Export options and file formats
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 8 -->
+          <div class="step" id="step-8">
+            <h2>
+              <span class="step-number">8</span>
+              Putting It All Together
+            </h2>
+            <div class="step-content">
+              <p>
+                Now that you understand Krita's basic features, start creating!
+                Practice with simple projects and gradually explore more
+                advanced features as you become comfortable.
+              </p>
+              <h3>Practice Suggestions</h3>
+              <ul>
+                <li>Create a simple character sketch</li>
+                <li>Paint a landscape with basic brushes</li>
+                <li>Practice layer management with a complex composition</li>
+                <li>Experiment with color palettes and blending</li>
+              </ul>
+            </div>
+            <div class="tutorial-visual">
+              <div class="visual-placeholder">
+                <i class="fas fa-rocket"></i>
+                <p>📷 Start Creating</p>
+                <div class="placeholder-note">
+                  Replace with encouragement or sample artwork
+                </div>
+              </div>
+              <div class="visual-caption">
+                Fig 8.1 - Begin your digital painting journey with Krita
+              </div>
+            </div>
+          </div>
+
+          <!-- Completion Message -->
+          <div class="completion-message">
+            <h3><i class="fas fa-trophy"></i> Krita Mastered!</h3>
+            <p>
+              You've learned the basics of Krita! Continue exploring its
+              features and practice regularly to master this powerful
+              open-source software.
+            </p>
+          </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="video-section">
+          <h2>Watch the Process</h2>
+          <p>See Krita in action with our comprehensive video guide.</p>
+          <div class="video-container">
+            <div class="video-placeholder">
+              <i class="fab fa-youtube"></i>
+              <p>Krita Basics Video Tutorial</p>
+              <small>Click to watch the demonstration</small>
+            </div>
+          </div>
+          <p style="margin-top: 1rem">
+            <a
+              href="#"
+              style="
+                color: var(--color-cyan);
+                text-decoration: none;
+                font-family: var(--font-condensed);
+              "
+            >
+              View more software tutorials on our YouTube channel →
+            </a>
+          </p>
+        </section>
+
+        <!-- Tutorial Navigation -->
+        <section class="tutorial-navigation">
+          <a
+            href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+            class="nav-btn"
+          >
+            <i class="fas fa-arrow-left"></i> Back to Software Guides
+          </a>
+          <a
+            href="/pages/tutorials/software-guides/clipstudio-paint-basics.html"
+            class="nav-btn"
+          >
+            Next Tutorial <i class="fas fa-arrow-right"></i>
+          </a>
+        </section>
+
+        <!-- Related Tutorials -->
+        <section class="related-tutorials">
+          <h2>Continue <span class="highlight">Learning</span></h2>
+          <div class="tutorial-grid" id="relatedTutorialsGrid">
+            <!-- Rendered by JavaScript -->
+            <div
+              class="loading-state"
+              style="
+                text-align: center;
+                padding: 40px;
+                width: 100%;
+                grid-column: 1/-1;
+              "
+            >
+              <div
+                class="spinner"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border: 2px solid rgba(99, 219, 238, 0.15);
+                  border-top-color: #63dbee;
+                  border-radius: 50%;
+                  animation: spin 1s linear infinite;
+                  margin: 0 auto 1rem;
+                "
+              ></div>
+              <p style="color: var(--text-muted)">
+                Loading related tutorials...
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/tutorials/tutorials-data.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#63dbee",
+                "#3b82f6",
+                "#2563eb",
+                "#58ebfe",
+                "#4ff3a6",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#63dbee";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#63dbee";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== PROGRESS TRACKING ======
+        const progressBar = document.getElementById("reading-progress");
+        const progressStats = document.querySelector(
+          ".progress-stats span:first-child",
+        );
+        const timeRemaining = document.getElementById("time-remaining");
+
+        function updateProgress() {
+          const windowHeight = window.innerHeight;
+          const documentHeight =
+            document.documentElement.scrollHeight - windowHeight;
+          const scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop;
+          const scrollPercent = Math.min(
+            Math.round((scrollTop / documentHeight) * 100),
+            100,
+          );
+
+          if (progressBar) progressBar.style.width = scrollPercent + "%";
+          if (progressStats)
+            progressStats.textContent = scrollPercent + "% complete";
+
+          if (timeRemaining) {
+            const estimatedTotalTime = 12;
+            const timeRemainingValue = Math.max(
+              0,
+              Math.round((estimatedTotalTime * (100 - scrollPercent)) / 100),
+            );
+            timeRemaining.textContent = `~${timeRemainingValue} min remaining`;
+          }
+
+          // Save progress to localStorage
+          if (scrollPercent > 0) {
+            localStorage.setItem(
+              "tutorial_progress_krita-basics",
+              scrollPercent,
+            );
+          }
+        }
+
+        // Load saved progress
+        const savedProgress = localStorage.getItem(
+          "tutorial_progress_krita-basics",
+        );
+        if (savedProgress) {
+          const progress = parseInt(savedProgress);
+          if (progressBar) progressBar.style.width = progress + "%";
+          if (progressStats)
+            progressStats.textContent = progress + "% complete";
+        }
+
+        window.addEventListener("scroll", updateProgress);
+        updateProgress();
+
+        // ====== VIDEO PLACEHOLDER ======
+        const videoPlaceholder = document.querySelector(".video-placeholder");
+        if (videoPlaceholder) {
+          videoPlaceholder.addEventListener("click", function () {
+            alert(
+              "🎬 This would open a YouTube video demonstrating Krita basics",
+            );
+          });
+        }
+
+        // ====== LOAD RELATED TUTORIALS ======
+        function loadRelatedTutorials() {
+          const container = document.getElementById("relatedTutorialsGrid");
+          if (!container) return;
+
+          if (typeof window.tutorialData === "undefined") {
+            container.innerHTML = `
+              <div class="no-results" style="text-align: center; padding: 2rem; grid-column: 1/-1;">
+                <p style="color: var(--text-muted);">Tutorial data not loaded</p>
+              </div>
+            `;
+            return;
+          }
+
+          const currentTutorialId = "krita-basics";
+          const relatedTutorials = window.tutorialData.getRelatedTutorials(
+            currentTutorialId,
+            3,
+          );
+
+          if (relatedTutorials.length === 0) {
+            container.innerHTML = `
+              <div class="no-results" style="text-align: center; padding: 2rem; grid-column: 1/-1;">
+                <p style="color: var(--text-muted);">No related tutorials found</p>
+              </div>
+            `;
+            return;
+          }
+
+          container.innerHTML = relatedTutorials
+            .map((tutorial) => {
+              const category = window.tutorialData.categories.get(
+                tutorial.category,
+              );
+              const color = category ? category.color : "#63dbee";
+              const icon =
+                category && category.icon ? category.icon : "fas fa-book";
+
+              return `
+              <a href="${tutorial.file}" class="tutorial-card-related">
+                <div class="card-image-related" style="background: ${color};">
+                  <i class="${icon}"></i>
+                </div>
+                <div class="card-content">
+                  <h3>${tutorial.title}</h3>
+                  <p>${tutorial.description}</p>
+                  <span class="card-link">Read Tutorial →</span>
+                </div>
+              </a>
+            `;
+            })
+            .join("");
+        }
+
+        loadRelatedTutorials();
+
+        // ====== TUTORIAL DATA ======
+        const tutorialDataObj = {
+          id: "krita-basics",
+          title: "Krita Basics",
+          category: "software",
+          duration: "30 min",
+          difficulty: "beginner",
+          steps: 8,
+        };
+
+        // ====== SAVE TUTORIAL ======
+        const saveBtn = document.getElementById("saveTutorialBtn");
+        const saveIcon = document.getElementById("saveIcon");
+        const saveText = document.getElementById("saveText");
+
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (!user) {
+            if (saveBtn) saveBtn.style.display = "none";
+            return;
+          }
+
+          if (saveBtn) saveBtn.style.display = "flex";
+
+          try {
+            const savedRef = firebase
+              .firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("savedTutorials")
+              .doc(tutorialDataObj.id);
+
+            const doc = await savedRef.get();
+
+            if (doc.exists) {
+              saveIcon.className = "fas fa-bookmark";
+              saveText.textContent = "Saved";
+              saveBtn.classList.add("saved");
+            } else {
+              saveIcon.className = "far fa-bookmark";
+              saveText.textContent = "Save Tutorial";
+              saveBtn.classList.remove("saved");
+            }
+          } catch (error) {
+            console.error("Error loading saved status:", error);
+          }
+        });
+
+        if (saveBtn) {
+          saveBtn.addEventListener("click", async function () {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              alert("Please login to save tutorials");
+              window.location.href = "/pages/auth/login.html";
+              return;
+            }
+
+            this.disabled = true;
+            this.style.opacity = "0.7";
+
+            try {
+              const savedRef = firebase
+                .firestore()
+                .collection("users")
+                .doc(user.uid)
+                .collection("savedTutorials")
+                .doc(tutorialDataObj.id);
+
+              const doc = await savedRef.get();
+
+              if (doc.exists) {
+                await savedRef.delete();
+                saveIcon.className = "far fa-bookmark";
+                saveText.textContent = "Save Tutorial";
+                this.classList.remove("saved");
+                showToast("Tutorial removed from saved");
+              } else {
+                await savedRef.set({
+                  tutorialId: tutorialDataObj.id,
+                  title: tutorialDataObj.title,
+                  category: tutorialDataObj.category,
+                  duration: tutorialDataObj.duration,
+                  difficulty: tutorialDataObj.difficulty,
+                  savedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+                saveIcon.className = "fas fa-bookmark";
+                saveText.textContent = "Saved";
+                this.classList.add("saved");
+                showToast("Tutorial saved to your profile!");
+              }
+            } catch (error) {
+              console.error("Error saving tutorial:", error);
+              showToast("Error saving tutorial");
+            } finally {
+              this.disabled = false;
+              this.style.opacity = "1";
+            }
+          });
+        }
+
+        // ====== MARK COMPLETED ======
+        const completedCheckbox = document.getElementById("markCompleted");
+
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (!user) return;
+
+          try {
+            const progressDoc = await firebase
+              .firestore()
+              .collection("users")
+              .doc(user.uid)
+              .collection("tutorialProgress")
+              .doc(tutorialDataObj.id)
+              .get();
+
+            if (progressDoc.exists && progressDoc.data().completed) {
+              completedCheckbox.checked = true;
+            }
+          } catch (error) {
+            console.error("Error loading completed status:", error);
+          }
+        });
+
+        if (completedCheckbox) {
+          completedCheckbox.addEventListener("change", async function (e) {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+              alert("Please login to track progress");
+              e.target.checked = false;
+              return;
+            }
+
+            this.disabled = true;
+
+            try {
+              await firebase
+                .firestore()
+                .collection("users")
+                .doc(user.uid)
+                .collection("tutorialProgress")
+                .doc(tutorialDataObj.id)
+                .set(
+                  {
+                    tutorialId: tutorialDataObj.id,
+                    title: tutorialDataObj.title,
+                    category: tutorialDataObj.category,
+                    completed: e.target.checked,
+                    completedAt: e.target.checked
+                      ? firebase.firestore.FieldValue.serverTimestamp()
+                      : null,
+                    lastViewed: firebase.firestore.FieldValue.serverTimestamp(),
+                    progress: parseInt(progressBar?.style.width || "0"),
+                  },
+                  { merge: true },
+                );
+
+              showToast(
+                e.target.checked
+                  ? "Marked as completed! 🎉"
+                  : "Marked as incomplete",
+              );
+            } catch (error) {
+              console.error("Error saving progress:", error);
+            } finally {
+              this.disabled = false;
+            }
+          });
+        }
+
+        // ====== TOAST ======
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        // ====== AUTH ======
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+      });
+    </script>
+  </body>
 </html>
+```

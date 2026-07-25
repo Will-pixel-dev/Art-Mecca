@@ -1,0 +1,777 @@
+/* ================================================================
+   FOOTER — NEON HUD GRAFFITI + GLITCH
+   For Art Mecca footer.html
+   ================================================================ */
+
+/* ============================================================
+   FONTS — GAMER UI / SCI-FI HUD
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* ============================================================
+   THEME VARIABLES (match your existing theme)
+   ============================================================ */
+:root {
+    --bg-body: #0a0508;
+    --bg-card: rgba(255, 0, 234, 0.06);
+    --bg-card-hover: rgba(255, 0, 234, 0.12);
+    --bg-card-border: rgba(255, 0, 234, 0.15);
+    --bg-elevated: rgba(255, 0, 234, 0.04);
+    --bg-nav: rgba(10, 5, 8, 0.92);
+    --bg-footer: rgba(10, 5, 8, 0.5);
+
+    --text-primary: #f5eaff;
+    --text-secondary: #b8a0d0;
+    --text-muted: #5a3a6a;
+    --text-inverse: #0a0508;
+
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+    --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+    --border-color: rgba(255, 0, 234, 0.15);
+
+    /* Neon */
+    --neon-magenta: #ff00ea;
+    --neon-deep-purple: #ad03fc;
+    --neon-cyan: #58ebfe;
+    --neon-gold: #ffc72e;
+    --neon-green: #4ff3a6;
+
+    /* Spray */
+    --spray-red: #ff0040;
+    --spray-orange: #ff6b00;
+    --spray-yellow: #ffcc00;
+
+    --gradient-neon: linear-gradient(135deg, #ff00ea, #ad03fc);
+    --gradient-cyber: linear-gradient(135deg, #ff00ea, #ad03fc, #58ebfe);
+    --gradient-spray: linear-gradient(135deg, #ff0040, #ff6b00, #ffcc00);
+
+    --glow-magenta: 0 0 40px rgba(255, 0, 234, 0.3), 0 0 80px rgba(255, 0, 234, 0.1);
+    --glow-purple: 0 0 40px rgba(173, 3, 252, 0.3), 0 0 80px rgba(173, 3, 252, 0.1);
+    --glow-cyan: 0 0 40px rgba(88, 235, 254, 0.3), 0 0 80px rgba(88, 235, 254, 0.1);
+    --glow-pink: 0 0 40px rgba(255, 0, 234, 0.4), 0 0 80px rgba(255, 0, 234, 0.2);
+
+    --font-display: 'Orbitron', 'Rajdhani', monospace;
+    --font-condensed: 'Rajdhani', 'Orbitron', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-tag: 'Rubik Spray Paint', 'Permanent Marker', cursive;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="light"] {
+    --bg-body: #f5f0e8;
+    --bg-card: rgba(255, 255, 255, 0.5);
+    --bg-card-hover: rgba(255, 255, 255, 0.7);
+    --bg-card-border: rgba(173, 3, 252, 0.15);
+    --bg-elevated: rgba(255, 255, 255, 0.2);
+    --bg-nav: rgba(245, 240, 232, 0.92);
+    --bg-footer: rgba(245, 240, 232, 0.5);
+
+    --text-primary: #1a102a;
+    --text-secondary: #4a3a5a;
+    --text-muted: #8a7a9a;
+    --text-inverse: #f5f0e8;
+
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+    --border-color: rgba(173, 3, 252, 0.15);
+
+    --glow-magenta: 0 0 40px rgba(255, 0, 234, 0.08), 0 0 80px rgba(255, 0, 234, 0.03);
+    --glow-purple: 0 0 40px rgba(173, 3, 252, 0.08), 0 0 80px rgba(173, 3, 252, 0.03);
+    --glow-cyan: 0 0 40px rgba(88, 235, 254, 0.08), 0 0 80px rgba(88, 235, 254, 0.03);
+    --glow-pink: 0 0 40px rgba(255, 0, 234, 0.12), 0 0 80px rgba(255, 0, 234, 0.04);
+}
+
+/* ============================================================
+   FOOTER — MAIN CONTAINER
+   ============================================================ */
+.holographic-footer {
+    position: relative;
+    margin-top: 40px;
+    padding: 40px 0 20px;
+    background: var(--bg-footer);
+    border-top: 1px solid var(--border-color);
+    transition: all var(--transition);
+    overflow: hidden;
+    z-index: 1;
+    font-family: var(--font-condensed);
+}
+
+/* ============================================================
+   FOOTER GLITCH LINES (like Truly Yours)
+   ============================================================ */
+.holographic-footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 0, 234, 0.02) 2px,
+        rgba(255, 0, 234, 0.02) 4px
+    );
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+    animation: footerGlitchLines 0.15s steps(2) infinite;
+}
+
+@keyframes footerGlitchLines {
+    0% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(1px);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+}
+
+/* ============================================================
+   FOOTER GLITCH OVERLAY (random flashes)
+   ============================================================ */
+.holographic-footer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--neon-magenta);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    animation: footerGlitchFlash 12s ease-in-out infinite;
+}
+
+@keyframes footerGlitchFlash {
+    0%, 95%, 100% {
+        opacity: 0;
+    }
+    96% {
+        opacity: 0.03;
+    }
+    97% {
+        opacity: 0;
+    }
+    98% {
+        opacity: 0.05;
+    }
+    99% {
+        opacity: 0;
+    }
+}
+
+/* ============================================================
+   FOOTER TAG — GRAFFITI STYLE (with glitch on hover)
+   ============================================================ */
+.holographic-footer .footer-tag {
+    position: absolute;
+    bottom: 16px;
+    right: 40px;
+    font-family: var(--font-tag);
+    font-size: 1.2rem;
+    color: var(--neon-magenta);
+    opacity: 0.06;
+    letter-spacing: 4px;
+    pointer-events: none;
+    z-index: 1;
+    transition: all var(--transition);
+}
+
+.holographic-footer:hover .footer-tag {
+    opacity: 0.15;
+    animation: footerTagGlitch 0.8s ease-in-out infinite;
+}
+
+@keyframes footerTagGlitch {
+    0%, 100% {
+        transform: translateX(0) scale(1);
+        opacity: 0.15;
+    }
+    20% {
+        transform: translateX(-2px) scale(1.02);
+        opacity: 0.2;
+        color: var(--neon-cyan);
+    }
+    40% {
+        transform: translateX(2px) scale(0.98);
+        opacity: 0.1;
+        color: var(--spray-red);
+    }
+    60% {
+        transform: translateX(-1px) scale(1.01);
+        opacity: 0.18;
+        color: var(--neon-gold);
+    }
+    80% {
+        transform: translateX(1px) scale(0.99);
+        opacity: 0.12;
+        color: var(--neon-magenta);
+    }
+}
+
+.holographic-footer .footer-tag::before {
+    content: '✧ ';
+    color: var(--neon-cyan);
+}
+
+.holographic-footer .footer-tag::after {
+    content: ' ✧';
+    color: var(--neon-cyan);
+}
+
+/* ============================================================
+   FOOTER MAIN
+   ============================================================ */
+.footer-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    z-index: 2;
+}
+
+/* ============================================================
+   FOOTER BRAND
+   ============================================================ */
+.footer-brand .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    transition: all var(--transition);
+}
+
+.footer-brand .logo .logo-icon {
+    font-size: 1.3rem;
+    color: var(--neon-magenta);
+    filter: drop-shadow(0 0 20px rgba(255, 0, 234, 0.1));
+    transition: all var(--transition);
+}
+
+.footer-brand .logo:hover .logo-icon {
+    filter: drop-shadow(0 0 40px rgba(255, 0, 234, 0.3));
+    transform: rotate(-8deg) scale(1.1);
+}
+
+.footer-brand .logo .logo-text {
+    background: var(--gradient-cyber);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(255, 0, 234, 0.1));
+    transition: filter var(--transition);
+}
+
+.footer-brand .logo:hover .logo-text {
+    filter: drop-shadow(0 0 50px rgba(255, 0, 234, 0.3));
+}
+
+/* Footer status */
+.footer-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--neon-green);
+    animation: statusPulse 2s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(79, 243, 166, 0.3);
+}
+
+@keyframes statusPulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.status-text {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--neon-green);
+    letter-spacing: 2px;
+}
+
+.footer-tagline {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 2px;
+}
+
+/* ============================================================
+   FOOTER NAV — WITH GLITCH ON HOVER
+   ============================================================ */
+.footer-nav {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.footer-nav a {
+    font-family: var(--font-condensed);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all var(--transition);
+    position: relative;
+}
+
+/* Glitch underline on hover */
+.footer-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-neon);
+    transform: scaleX(0);
+    transition: transform var(--transition);
+    box-shadow: 0 0 20px rgba(255, 0, 234, 0.2);
+}
+
+.footer-nav a:hover {
+    color: var(--text-primary);
+    text-shadow: 0 0 30px rgba(88, 235, 254, 0.1);
+    animation: navGlitch 0.6s ease-in-out infinite;
+}
+
+@keyframes navGlitch {
+    0%, 100% {
+        transform: translateX(0);
+        text-shadow: 0 0 30px rgba(88, 235, 254, 0.1);
+    }
+    25% {
+        transform: translateX(-1px);
+        text-shadow: 1px 0 var(--neon-magenta), 0 0 30px rgba(88, 235, 254, 0.1);
+    }
+    75% {
+        transform: translateX(1px);
+        text-shadow: -1px 0 var(--neon-cyan), 0 0 30px rgba(88, 235, 254, 0.1);
+    }
+}
+
+.footer-nav a:hover::after {
+    transform: scaleX(1);
+}
+
+/* ============================================================
+   SOCIAL LINKS — GLITCH ON HOVER
+   ============================================================ */
+.social-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.social-links .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    transition: all var(--transition);
+    font-size: 1.1rem;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glitch scanlines on social icons */
+.social-links .social-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 0, 234, 0.03) 2px,
+        rgba(255, 0, 234, 0.03) 4px
+    );
+    opacity: 0;
+    transition: opacity var(--transition);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.social-links .social-link:hover::before {
+    opacity: 1;
+    animation: socialGlitchLines 0.1s steps(2) infinite;
+}
+
+@keyframes socialGlitchLines {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(1px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Glitch flash on social icons */
+.social-links .social-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--neon-magenta);
+    opacity: 0;
+    transition: all var(--transition);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.social-links .social-link:hover {
+    color: var(--text-primary);
+    border-color: var(--neon-cyan);
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: var(--glow-cyan);
+    animation: socialGlitch 0.6s ease-in-out infinite;
+}
+
+@keyframes socialGlitch {
+    0%, 100% {
+        transform: scale(1.1) translateY(-3px) translateX(0);
+        border-color: var(--neon-cyan);
+    }
+    25% {
+        transform: scale(1.1) translateY(-3px) translateX(-2px);
+        border-color: var(--neon-magenta);
+    }
+    75% {
+        transform: scale(1.1) translateY(-3px) translateX(2px);
+        border-color: var(--neon-gold);
+    }
+}
+
+.social-links .social-link:hover::after {
+    opacity: 0.05;
+    animation: socialFlash 0.3s ease 2;
+}
+
+@keyframes socialFlash {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.08;
+    }
+}
+
+/* Specific social colors on hover */
+.social-links .social-link:hover .fa-youtube {
+    color: #ffffff90;
+}
+.social-links .social-link:hover .fa-instagram {
+    color: #ffffff90;
+}
+.social-links .social-link:hover .fa-twitter {
+    color: #ffffff90;
+}
+.social-links .social-link:hover .fa-tiktok {
+    color: #ffffff90;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+.social-links .social-link:hover .fa-discord {
+    color: #ffffff90;
+}
+.social-links .social-link:hover .fa-pinterest {
+    color: #ffffff90;
+}
+
+/* ============================================================
+   FOOTER BOTTOM
+   ============================================================ */
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-bottom p {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+.footer-bottom .footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-bottom .footer-links a {
+    font-family: var(--font-condensed);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all var(--transition);
+    position: relative;
+}
+
+.footer-bottom .footer-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-neon);
+    transform: scaleX(0);
+    transition: transform var(--transition);
+}
+
+.footer-bottom .footer-links a:hover {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 30px rgba(88, 235, 254, 0.1);
+    animation: linkGlitch 0.5s ease-in-out infinite;
+}
+
+@keyframes linkGlitch {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    30% {
+        transform: translateX(-1px);
+        color: var(--neon-magenta);
+    }
+    70% {
+        transform: translateX(1px);
+        color: var(--neon-gold);
+    }
+}
+
+.footer-bottom .footer-links a:hover::after {
+    transform: scaleX(1);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .holographic-footer {
+        padding: 40px 0 20px;
+    }
+
+    .footer-main {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .footer-nav {
+        justify-content: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .holographic-footer .footer-tag {
+        display: none;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .holographic-footer {
+        padding: 30px 0 16px;
+    }
+
+    .footer-brand .logo {
+        font-size: 1rem;
+        justify-content: center;
+    }
+
+    .footer-nav {
+        gap: 16px;
+    }
+
+    .footer-nav a {
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+    }
+
+    .social-links .social-link {
+        width: 36px;
+        height: 36px;
+        font-size: 0.95rem;
+    }
+
+    .footer-bottom p {
+        font-size: 0.55rem;
+    }
+
+    .footer-bottom .footer-links {
+        gap: 14px;
+    }
+
+    .footer-bottom .footer-links a {
+        font-size: 0.5rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .holographic-footer {
+        padding: 24px 0 12px;
+    }
+
+    .footer-brand .logo {
+        font-size: 0.85rem;
+    }
+
+    .footer-brand .logo .logo-icon {
+        font-size: 1rem;
+    }
+
+    .footer-nav {
+        gap: 10px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-nav a {
+        font-size: 0.6rem;
+    }
+
+    .social-links {
+        gap: 8px;
+    }
+
+    .social-links .social-link {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
+    .footer-bottom p {
+        font-size: 0.5rem;
+    }
+
+    .footer-bottom .footer-links {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .footer-bottom .footer-links a {
+        font-size: 0.45rem;
+    }
+
+    .status-text {
+        font-size: 0.5rem;
+    }
+
+    .footer-tagline {
+        font-size: 0.6rem;
+    }
+
+    .holographic-footer .footer-tag {
+        display: none;
+    }
+}
+
+/* ============================================================
+   DROPDOWN MENU FIX
+   ============================================================ */
+.nav-dropdown {
+    position: relative !important;
+    z-index: 9999 !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+}
+
+.nav-dropdown > a {
+    position: relative !important;
+    z-index: 10 !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(8px) !important;
+    background: var(--bg-nav) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    padding: 8px 0 !important;
+    min-width: 220px !important;
+    box-shadow: var(--shadow-card), var(--glow-magenta) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    list-style: none !important;
+    margin: 0 !important;
+    z-index: 99999 !important;
+    overflow: visible !important;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    transform: translateX(-50%) translateY(0) !important;
+}

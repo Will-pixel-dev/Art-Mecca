@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <title>PAGE_TITLE — Art Mecca</title>
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  </head>
+  <body>
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--neon-cyan)"
+                    >❖ Software Journals</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✦</a
+              >
+            </li>
+          </ul>
+
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="admin-page">
+      <div class="container">
+        <!-- Hero Section -->
+        <section class="admin-hero">
+          <div class="admin-hero-content">
+            <span class="admin-hero-icon">PAGE_ICON</span>
+            <h1 class="glitch-hero" data-text="PAGE_TITLE_UPPER">
+              PAGE_TITLE_UPPER
+            </h1>
+            <p class="admin-subtitle">PAGE_SUBTITLE</p>
+            <div class="hero-graffiti-tag">✧ ADMIN ✧</div>
+          </div>
+        </section>
+
+        <!-- Breadcrumb Navigation -->
+        <nav class="admin-breadcrumb">
+          <a href="/">Home</a>
+          <span class="separator">/</span>
+          <a href="/pages/admin/">Admin</a>
+          <span class="separator">/</span>
+          <span class="current">PAGE_TITLE</span>
+        </nav>
+
+        <!-- Content -->
+        <div class="admin-content glass-panel">CONTENT_GOES_HERE</div>
+
+        <!-- Related Links -->
+        <div class="admin-related">
+          <span class="related-label">⚡ Related:</span>
+          <a href="guidelines.html">Guidelines</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms-of-service.html">Terms</a>
+          <a href="support.html">Support</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== THEME TOGGLE — BOTTOM RIGHT ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span
+              ><span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span
+              ><span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="guidelines.html">guidelines</a>
+            <a href="support.html">support</a>
+            <a href="contact.html">contact</a>
+            <a href="privacy.html">privacy</a>
+          </nav>
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="privacy.html">privacy policy</a>
+            <a href="terms-of-service.html">terms of service</a>
+            <a href="contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+    <script src="/js/auth/page-redirect.js"></script>
+
+    <script>
+      // ============================================================
+      // PARTICLES — ADMIN THEME (Gold/Purple)
+      // ============================================================
+      (function initParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouseX = -1000;
+        let mouseY = -1000;
+        const particleCount = 60;
+        let animationId = null;
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        class Particle {
+          constructor() {
+            this.reset();
+          }
+          reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.2;
+            this.speedY = (Math.random() - 0.5) * 0.2;
+            this.opacity = Math.random() * 0.2 + 0.02;
+            const colors = [
+              "#ffc72e",
+              "#ad03fc",
+              "#58ebfe",
+              "#ff00ea",
+              "#f59e0b",
+            ];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+          }
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 200) {
+              const force = ((200 - dist) / 200) * 0.008;
+              this.speedX += (dx / dist) * force;
+              this.speedY += (dy / dist) * force;
+            }
+            this.speedX *= 0.999;
+            this.speedY *= 0.999;
+            const maxSpeed = 0.8;
+            const speed = Math.sqrt(
+              this.speedX * this.speedX + this.speedY * this.speedY,
+            );
+            if (speed > maxSpeed) {
+              this.speedX = (this.speedX / speed) * maxSpeed;
+              this.speedY = (this.speedY / speed) * maxSpeed;
+            }
+            if (
+              this.x < 0 ||
+              this.x > canvas.width ||
+              this.y < 0 ||
+              this.y > canvas.height
+            )
+              this.reset();
+          }
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function drawConnections() {
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 120) {
+                const opacity = (1 - dist / 120) * 0.03;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = "#ffc72e";
+                ctx.globalAlpha = opacity;
+                ctx.lineWidth = 0.3;
+                ctx.shadowColor = "#ffc72e";
+                ctx.shadowBlur = 2;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+              }
+            }
+          }
+        }
+
+        function animateParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+          drawConnections();
+          animationId = requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        window.addEventListener("beforeunload", () => {
+          if (animationId) cancelAnimationFrame(animationId);
+        });
+      })();
+
+      // ============================================================
+      // THEME TOGGLE
+      // ============================================================
+      (function initThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (!themeToggle) return;
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        const icon = themeToggle.querySelector(".toggle-icon");
+        const label = themeToggle.querySelector(".toggle-label");
+
+        if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+        if (label) label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+        themeToggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          const current = document.documentElement.getAttribute("data-theme");
+          const next = current === "dark" ? "light" : "dark";
+
+          document.documentElement.setAttribute("data-theme", next);
+          localStorage.setItem("theme", next);
+
+          const iconEl = this.querySelector(".toggle-icon");
+          const labelEl = this.querySelector(".toggle-label");
+          if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+          if (labelEl) labelEl.textContent = next === "dark" ? "Dark" : "Light";
+        });
+      })();
+
+      // ============================================================
+      // NOISE OVERLAY TOGGLE
+      // ============================================================
+      (function initNoiseToggle() {
+        const noiseOverlay = document.getElementById("noiseOverlay");
+        if (noiseOverlay) {
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "g" || e.key === "G") {
+              noiseOverlay.classList.add("active");
+              setTimeout(() => noiseOverlay.classList.remove("active"), 500);
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

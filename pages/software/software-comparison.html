@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -47,15 +47,26 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
-    <link rel="stylesheet" href="/css/software-comparison.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Google Fonts + Font Awesome -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -68,154 +79,1462 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ================================================================
+         SOFTWARE COMPARISON — CYBERPUNK BLUE HUD AESTHETIC
+         ================================================================ */
+
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(59, 130, 246, 0.06);
+        --bg-card-hover: rgba(59, 130, 246, 0.12);
+        --bg-elevated: rgba(59, 130, 246, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(59, 130, 246, 0.15);
+
+        /* Theme Colors - Blue */
+        --color-blue: #3b82f6;
+        --color-blue-dark: #2563eb;
+        --color-blue-darker: #1d4ed8;
+        --color-blue-light: #60a5fa;
+        --color-blue-lighter: #93bbfc;
+        --color-cyan: #58ebfe;
+
+        /* Glitch Colors - Blue Only */
+        --color-glitch-a: #00eaff;
+        --color-glitch-b: #3b82f6;
+        --color-glitch-c: #1d4ed8;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-magenta: #ff00ea;
+
+        /* Spray */
+        --color-spray-blue: #3b82f6;
+        --color-spray-cyan: #58ebfe;
+
+        /* Gradients */
+        --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb, #1d4ed8);
+        --gradient-cyber: linear-gradient(135deg, #00eaff, #3b82f6, #58ebfe);
+        --gradient-neon: linear-gradient(135deg, #3b82f6, #2563eb);
+
+        /* Glows */
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.1);
+        --glow-cyan:
+          0 0 40px rgba(88, 235, 254, 0.3), 0 0 80px rgba(88, 235, 254, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(59, 130, 246, 0.2);
+
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.08), 0 0 80px rgba(59, 130, 246, 0.03);
+        --glow-cyan:
+          0 0 40px rgba(88, 235, 254, 0.08), 0 0 80px rgba(88, 235, 254, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(59, 130, 246, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         MAIN CONTENT
+         ============================================================ */
+      .comparison-main {
+        position: relative;
+        z-index: 2;
+        padding: 2rem 0 4rem;
+        min-height: 100vh;
+      }
+
+      /* ============================================================
+         HERO SECTION — CYBER HUD
+         ============================================================ */
+      .comparison-hero {
+        text-align: center;
+        padding: 4rem 0 3rem;
+        position: relative;
+      }
+
+      .comparison-hero::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-blue);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
+      }
+
+      .hero-badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--color-cyan);
+        padding: 0.4rem 1.2rem;
+        border: 1px solid rgba(88, 235, 254, 0.15);
+        border-radius: 2px;
+        background: rgba(88, 235, 254, 0.03);
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+        animation: badgePulse 3s ease-in-out infinite;
+      }
+
+      @keyframes badgePulse {
+        0%,
+        100% {
+          border-color: rgba(88, 235, 254, 0.15);
+          box-shadow: 0 0 0px rgba(88, 235, 254, 0);
+        }
+        50% {
+          border-color: rgba(88, 235, 254, 0.3);
+          box-shadow: 0 0 20px rgba(88, 235, 254, 0.05);
+        }
+      }
+
+      .comparison-hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        line-height: 1.1;
+      }
+
+      .comparison-hero h1 .highlight {
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmerBlue 4s ease-in-out infinite;
+        background-size: 200% 200%;
+      }
+
+      @keyframes shimmerBlue {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .hero-subhead {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         GLASS CARD
+         ============================================================ */
+      .glass-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        transition: all var(--transition);
+      }
+
+      .glass-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(59, 130, 246, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      /* ============================================================
+         COMPARISON TABLE — CYBER HUD
+         ============================================================ */
+      .comparison-card {
+        padding: 0.5rem;
+        margin-bottom: 3rem;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .comparison-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-blue);
+        opacity: 0.4;
+      }
+
+      .comparison-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.85rem;
+        min-width: 900px;
+      }
+
+      .comparison-table th {
+        padding: 1rem 1.25rem;
+        text-align: left;
+        font-weight: 700;
+        font-size: 0.65rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border-color);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .comparison-table td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid rgba(59, 130, 246, 0.04);
+        vertical-align: middle;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+      }
+
+      .comparison-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .comparison-table tr:hover td {
+        background: rgba(59, 130, 246, 0.03);
+      }
+
+      .highlight-row td {
+        background: rgba(59, 130, 246, 0.04);
+        border-left: 2px solid var(--color-cyan);
+      }
+
+      .highlight-row:hover td {
+        background: rgba(59, 130, 246, 0.08);
+      }
+
+      /* ---- Software Name ---- */
+      .software-name {
+        font-weight: 700;
+        font-size: 1rem;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        letter-spacing: 0.5px;
+      }
+
+      .software-icon {
+        width: 34px;
+        height: 34px;
+        background: var(--bg-elevated);
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        border: 1px solid var(--border-color);
+        color: var(--color-cyan);
+      }
+
+      /* ---- Feature Badges ---- */
+      .feature-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(88, 235, 254, 0.06);
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.6rem;
+        font-weight: 500;
+        font-family: var(--font-mono);
+        color: var(--color-cyan);
+        border: 1px solid rgba(88, 235, 254, 0.08);
+        margin: 0.1rem 0.15rem;
+      }
+
+      .feature-badge i {
+        font-size: 0.5rem;
+      }
+
+      /* ---- Price ---- */
+      .price-tag {
+        font-weight: 700;
+        color: var(--color-cyan);
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+      }
+
+      /* ---- Rating ---- */
+      .rating-stars {
+        color: #fbbf24;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+      }
+
+      /* ---- Table Actions ---- */
+      .table-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        align-items: stretch;
+      }
+
+      .btn-compare {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.6rem;
+        font-family: var(--font-condensed);
+        background: rgba(59, 130, 246, 0.06);
+        color: var(--color-cyan);
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        transition: all var(--transition);
+        white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-compare:hover {
+        background: rgba(59, 130, 246, 0.12);
+        border-color: var(--color-cyan);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-blue);
+      }
+
+      .btn-compare i {
+        font-size: 0.6rem;
+      }
+
+      .btn-reviews {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0.8rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.6rem;
+        font-family: var(--font-condensed);
+        background: rgba(88, 235, 254, 0.04);
+        color: var(--color-blue-light);
+        border: 1px solid rgba(88, 235, 254, 0.08);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all var(--transition);
+        white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-reviews:hover {
+        background: rgba(88, 235, 254, 0.1);
+        border-color: var(--color-cyan);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .btn-reviews i {
+        font-size: 0.6rem;
+      }
+
+      /* ============================================================
+         FEATURES SHOWCASE
+         ============================================================ */
+      .features-showcase {
+        margin: 3rem 0;
+      }
+
+      .section-title-center {
+        text-align: center;
+        font-family: var(--font-display);
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 2px;
+      }
+
+      .section-title-center .highlight {
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .section-desc {
+        text-align: center;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 2.5rem;
+        font-family: var(--font-condensed);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .feature-compare-card {
+        padding: 2rem;
+        text-align: center;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        transition: all var(--transition-slow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-compare-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at center,
+          rgba(59, 130, 246, 0.05),
+          transparent 70%
+        );
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+      }
+
+      .feature-compare-card:hover::before {
+        opacity: 1;
+      }
+
+      .feature-compare-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 16px;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          transparent 40%,
+          rgba(59, 130, 246, 0.2),
+          rgba(88, 235, 254, 0.2),
+          transparent 60%
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+      }
+
+      .feature-compare-card:hover::after {
+        opacity: 1;
+      }
+
+      .feature-compare-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(59, 130, 246, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      .feature-icon-lg {
+        font-size: 2.5rem;
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.75rem;
+        display: inline-block;
+        transition: all var(--transition);
+      }
+
+      .feature-compare-card:hover .feature-icon-lg {
+        transform: scale(1.1) rotate(-3deg);
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .feature-compare-card h3 {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.5px;
+        transition: color var(--transition);
+      }
+
+      .feature-compare-card:hover h3 {
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .feature-compare-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-family: var(--font-condensed);
+        transition: color var(--transition);
+      }
+
+      .feature-compare-card:hover p {
+        color: var(--text-primary);
+      }
+
+      /* ============================================================
+         CTA SECTION
+         ============================================================ */
+      .cta-software {
+        padding: 3rem 2rem;
+        text-align: center;
+        margin: 3rem 0;
+        position: relative;
+        overflow: hidden;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+      }
+
+      .cta-software::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-blue);
+        opacity: 0.4;
+      }
+
+      .cta-software::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 3rem;
+        color: var(--color-blue);
+        opacity: 0.03;
+        pointer-events: none;
+        letter-spacing: 6px;
+        transform: rotate(-4deg);
+      }
+
+      .cta-software h3 {
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        letter-spacing: 1px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .cta-software p {
+        color: var(--text-secondary);
+        max-width: 500px;
+        margin: 0 auto 1.5rem;
+        font-family: var(--font-condensed);
+        position: relative;
+        z-index: 1;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+      }
+
+      .btn-primary-soft {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        font-family: var(--font-condensed);
+        background: var(--gradient-blue);
+        color: var(--text-inverse);
+        text-decoration: none;
+        transition: all var(--transition);
+        box-shadow: var(--glow-blue);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-primary-soft:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow:
+          var(--glow-cyan),
+          0 8px 40px rgba(59, 130, 246, 0.2);
+      }
+
+      .btn-secondary-soft {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        font-family: var(--font-condensed);
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+      }
+
+      .btn-secondary-soft:hover {
+        border-color: var(--color-cyan);
+        color: var(--color-cyan);
+        transform: translateY(-3px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-blue);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+        border-color: var(--color-cyan);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST NOTIFICATION
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-cyan);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         MODAL
+         ============================================================ */
+      .software-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(12px);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .modal-content {
+        background: var(--bg-body);
+        border-radius: 16px;
+        max-width: 520px;
+        width: 90%;
+        padding: 2rem;
+        position: relative;
+        animation: slideUp 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .modal-content .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: all var(--transition);
+        line-height: 1;
+      }
+
+      .modal-content .modal-close:hover {
+        color: var(--color-cyan);
+        transform: rotate(90deg);
+      }
+
+      .modal-content h2 {
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: 1px;
+      }
+
+      .modal-content .modal-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin: 1rem 0;
+        font-family: var(--font-condensed);
+      }
+
+      .modal-content .modal-section {
+        margin: 1.5rem 0;
+      }
+
+      .modal-content .modal-section h3 {
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-muted);
+        letter-spacing: 1px;
+      }
+
+      .modal-content .modal-section p {
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+      }
+
+      .modal-content .modal-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .modal-content .modal-section ul li {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+      }
+
+      .modal-content .modal-section ul li .check {
+        color: var(--color-cyan);
+        font-size: 0.8rem;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .modal-actions .btn-modal {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+        text-decoration: none;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        flex: 1;
+        min-width: 120px;
+        cursor: pointer;
+        border: none;
+      }
+
+      .modal-actions .btn-modal.primary {
+        background: var(--gradient-blue);
+        color: var(--text-inverse);
+        box-shadow: var(--glow-blue);
+      }
+
+      .modal-actions .btn-modal.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .modal-actions .btn-modal.secondary {
+        background: transparent;
+        color: var(--color-cyan);
+        border: 1px solid var(--border-color);
+      }
+
+      .modal-actions .btn-modal.secondary:hover {
+        border-color: var(--color-cyan);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-cyan);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
+      @media (max-width: 992px) {
+        .comparison-table {
+          font-size: 0.8rem;
+          min-width: 800px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          padding: 0.75rem 1rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .comparison-main {
+          padding: 1rem 0 3rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .comparison-hero h1 {
+          font-size: 2rem;
+        }
+
+        .hero-subhead {
+          font-size: 1rem;
+        }
+
+        .comparison-table {
+          font-size: 0.7rem;
+          min-width: 700px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          padding: 0.5rem 0.75rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .cta-software {
+          padding: 2rem 1.5rem;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .btn-primary-soft,
+        .btn-secondary-soft {
+          width: 100%;
+          max-width: 300px;
+          justify-content: center;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .software-name {
+          font-size: 0.85rem;
+          gap: 0.5rem;
+        }
+
+        .software-icon {
+          width: 28px;
+          height: 28px;
+          font-size: 0.9rem;
+        }
+
+        .btn-compare,
+        .btn-reviews {
+          font-size: 0.5rem;
+          padding: 0.2rem 0.5rem;
+        }
+
+        .comparison-hero::after {
+          font-size: 1.5rem;
+          right: 10px;
+          bottom: 5px;
+          opacity: 0.02;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .comparison-table {
+          font-size: 0.6rem;
+          min-width: 600px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          padding: 0.4rem 0.5rem;
+        }
+
+        .feature-badge {
+          font-size: 0.5rem;
+          padding: 0.1rem 0.4rem;
+        }
+
+        .price-tag {
+          font-size: 0.65rem;
+        }
+
+        .rating-stars {
+          font-size: 0.65rem;
+        }
+
+        .btn-compare,
+        .btn-reviews {
+          font-size: 0.45rem;
+          padding: 0.15rem 0.4rem;
+        }
+
+        .modal-content {
+          padding: 1.5rem;
+        }
+
+        .modal-content h2 {
+          font-size: 1.4rem;
+        }
+
+        .modal-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Header - Updated with working notification system -->
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="software">
               <a
                 href="/pages/software/software-comparison.html"
-                class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
+                class="nav-link active"
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link active"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -223,12 +1542,13 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM (correct IDs for notifications.js) -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -265,7 +1585,7 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -273,8 +1593,20 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
+
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -284,6 +1616,7 @@
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -291,7 +1624,7 @@
               <i class="fas fa-search search-icon"></i>
               <input
                 type="text"
-                placeholder="Search software, tutorials, tools..."
+                placeholder="Search tutorials, tools, artists..."
                 id="search-input"
                 autocomplete="off"
               />
@@ -302,33 +1635,37 @@
           </div>
           <div class="search-results" id="search-results">
             <div class="search-placeholder">
-              <p>Type to search for software, tutorials, or artists</p>
+              <p>Type to search for tutorials, tools, or artists</p>
             </div>
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
-    <main>
-      <!-- Hero Section -->
-      <div class="comparison-hero">
-        <div class="container">
-          <span class="hero-badge"
-            ><i class="fas fa-chart-simple"></i> Compare & Choose</span
-          >
-          <h1>Find your perfect creative companion</h1>
+    <!-- ====== MAIN ====== -->
+    <main class="comparison-main">
+      <div class="container">
+        <!-- Hero Section -->
+        <section class="comparison-hero">
+          <span class="hero-badge">
+            <i class="fas fa-chart-simple"></i> Compare &amp; Choose
+          </span>
+
+          <h1>
+            Find your perfect
+            <span class="glitch-header" data-text="creative companion"
+              >creative companion</span
+            >
+          </h1>
+
           <p class="hero-subhead">
             Side-by-side comparison of top digital art software. Features,
-            pricing, and expert ratings — all in one place.
+            pricing, and real artist reviews — all in one place.
           </p>
-        </div>
-      </div>
+        </section>
 
-      <div class="container">
-        <!-- Comparison Table Card -->
-        <div class="comparison-card">
+        <!-- Comparison Table -->
+        <div class="comparison-card glass-card">
           <table class="comparison-table">
             <thead>
               <tr>
@@ -338,7 +1675,7 @@
                 <th>Pricing</th>
                 <th>Key Features</th>
                 <th>Rating</th>
-                <th></th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -346,8 +1683,9 @@
                 <td>
                   <div class="software-name">
                     <span class="software-icon"
-                      ><i class="fab fa-adobe"></i></span
-                    >Adobe Photoshop
+                      ><i class="fas fa-image"></i
+                    ></span>
+                    Adobe Photoshop
                   </div>
                 </td>
                 <td>Illustration, Photo editing</td>
@@ -363,17 +1701,26 @@
                 </td>
                 <td><span class="rating-stars">★★★★★</span> 4.9</td>
                 <td>
-                  <button class="btn-compare" data-soft="Photoshop">
-                    Learn More
-                  </button>
+                  <div class="table-actions">
+                    <button class="btn-compare" data-soft="Photoshop">
+                      <i class="fas fa-info-circle"></i> Learn More
+                    </button>
+                    <a
+                      href="/pages/software/software-journals.html?software=photoshop"
+                      class="btn-reviews"
+                    >
+                      <i class="fas fa-book-open"></i> Journals
+                    </a>
+                  </div>
                 </td>
               </tr>
               <tr class="highlight-row">
                 <td>
                   <div class="software-name">
                     <span class="software-icon"
-                      ><i class="fas fa-paintbrush-fine"></i></span
-                    >Procreate
+                      ><i class="fas fa-paint-brush"></i
+                    ></span>
+                    Procreate
                   </div>
                 </td>
                 <td>iPad illustration, sketching</td>
@@ -389,20 +1736,29 @@
                 </td>
                 <td><span class="rating-stars">★★★★★</span> 4.8</td>
                 <td>
-                  <button class="btn-compare" data-soft="Procreate">
-                    Learn More
-                  </button>
+                  <div class="table-actions">
+                    <button class="btn-compare" data-soft="Procreate">
+                      <i class="fas fa-info-circle"></i> Learn More
+                    </button>
+                    <a
+                      href="/pages/software/software-journals.html?software=procreate"
+                      class="btn-reviews"
+                    >
+                      <i class="fas fa-book-open"></i> Journals
+                    </a>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td>
                   <div class="software-name">
                     <span class="software-icon"
-                      ><i class="fas fa-pen-fancy"></i></span
-                    >Clip Studio Paint
+                      ><i class="fas fa-pen-fancy"></i
+                    ></span>
+                    Clip Studio Paint
                   </div>
                 </td>
-                <td>Manga & Comic Art</td>
+                <td>Manga &amp; Comic Art</td>
                 <td>Win / Mac / iPad / Android</td>
                 <td><span class="price-tag">$4.50/mo or $219</span></td>
                 <td>
@@ -415,17 +1771,26 @@
                 </td>
                 <td><span class="rating-stars">★★★★½</span> 4.7</td>
                 <td>
-                  <button class="btn-compare" data-soft="ClipStudio">
-                    Learn More
-                  </button>
+                  <div class="table-actions">
+                    <button class="btn-compare" data-soft="ClipStudio">
+                      <i class="fas fa-info-circle"></i> Learn More
+                    </button>
+                    <a
+                      href="/pages/software/software-journals.html?software=clipstudio"
+                      class="btn-reviews"
+                    >
+                      <i class="fas fa-book-open"></i> Journals
+                    </a>
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td>
                   <div class="software-name">
                     <span class="software-icon"
-                      ><i class="fas fa-palette"></i></span
-                    >Krita
+                      ><i class="fas fa-palette"></i
+                    ></span>
+                    Krita
                   </div>
                 </td>
                 <td>Digital Painting (Free)</td>
@@ -441,17 +1806,26 @@
                 </td>
                 <td><span class="rating-stars">★★★★½</span> 4.6</td>
                 <td>
-                  <button class="btn-compare" data-soft="Krita">
-                    Learn More
-                  </button>
+                  <div class="table-actions">
+                    <button class="btn-compare" data-soft="Krita">
+                      <i class="fas fa-info-circle"></i> Learn More
+                    </button>
+                    <a
+                      href="/pages/software/software-journals.html?software=krita"
+                      class="btn-reviews"
+                    >
+                      <i class="fas fa-book-open"></i> Journals
+                    </a>
+                  </div>
                 </td>
               </tr>
               <tr class="highlight-row">
                 <td>
                   <div class="software-name">
                     <span class="software-icon"
-                      ><i class="fas fa-crown"></i></span
-                    >Affinity Photo
+                      ><i class="fas fa-crown"></i
+                    ></span>
+                    Affinity Photo
                   </div>
                 </td>
                 <td>Professional Photo Editing</td>
@@ -467,9 +1841,17 @@
                 </td>
                 <td><span class="rating-stars">★★★★½</span> 4.7</td>
                 <td>
-                  <button class="btn-compare" data-soft="Affinity">
-                    Learn More
-                  </button>
+                  <div class="table-actions">
+                    <button class="btn-compare" data-soft="Affinity">
+                      <i class="fas fa-info-circle"></i> Learn More
+                    </button>
+                    <a
+                      href="/pages/software/software-journals.html?software=affinity"
+                      class="btn-reviews"
+                    >
+                      <i class="fas fa-book-open"></i> Journals
+                    </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -478,7 +1860,9 @@
 
         <!-- Feature Highlights Grid -->
         <div class="features-showcase">
-          <h2 class="section-title-center">Why compare with us?</h2>
+          <h2 class="section-title-center">
+            Why compare with <span class="highlight">us</span>?
+          </h2>
           <p class="section-desc">
             Unbiased insights, hand-picked tools, and real artist reviews.
           </p>
@@ -494,105 +1878,444 @@
               </p>
             </div>
             <div class="feature-compare-card">
-              <div class="feature-icon-lg"><i class="fas fa-users"></i></div>
-              <h3>Artist community votes</h3>
-              <p>Ratings and reviews from real digital artists worldwide.</p>
+              <div class="feature-icon-lg">
+                <i class="fas fa-megaphone"></i>
+              </div>
+              <h3>Software Promotions &amp; Version News</h3>
+              <p>
+                Stay updated with the latest software releases, promotions,
+                discounts, and version updates.
+              </p>
             </div>
             <div class="feature-compare-card">
-              <div class="feature-icon-lg"><i class="fas fa-gem"></i></div>
-              <h3>Exclusive deals</h3>
+              <div class="feature-icon-lg">
+                <i class="fas fa-book-open"></i>
+              </div>
+              <h3>Real artist journals</h3>
               <p>
-                Access discounts and free trials through Art Mecca partners.
+                Read honest, in-depth journeys from artists who've used the
+                software.
               </p>
             </div>
           </div>
         </div>
 
-        <!-- Call to Action -->
-        <div class="cta-software">
+        <!-- CTA Section -->
+        <div class="cta-software glass-card">
           <h3>Still not sure which software fits your style?</h3>
           <p>
             Take our quick quiz and get a personalized recommendation in
-            minutes.
+            minutes, or read real artist journals.
           </p>
-          <a href="/pages/tools/software-quiz.html" class="btn-primary-soft"
-            >Take the Quiz <i class="fas fa-arrow-right"></i
-          ></a>
+          <div class="cta-buttons">
+            <a href="/pages/tools/software-quiz.html" class="btn-primary-soft">
+              Take the Quiz <i class="fas fa-arrow-right"></i>
+            </a>
+            <a
+              href="/pages/software/software-journals.html"
+              class="btn-secondary-soft"
+            >
+              <i class="fas fa-book-open"></i> Read Journals
+            </a>
+          </div>
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html#cookies">Cookie Policy</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#3b82f6",
+                "#2563eb",
+                "#58ebfe",
+                "#60a5fa",
+                "#93bbfc",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#3b82f6";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#3b82f6";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== SOFTWARE DETAILS ======
+        const softwareDetails = {
+          Photoshop: {
+            name: "Adobe Photoshop",
+            description:
+              "Industry-standard for raster graphics editing, digital painting, and photo manipulation.",
+            features: [
+              "Advanced brush engine",
+              "3D editing",
+              "AI-powered tools",
+              "Cloud storage",
+              "Neural filters",
+            ],
+            bestFor: "Professional illustrators, photographers, and designers",
+            featuresPage:
+              "https://www.adobe.com/products/photoshop/features.html",
+            trialLink:
+              "https://www.adobe.com/products/photoshop/free-trial-download.html",
+          },
+          Procreate: {
+            name: "Procreate",
+            description:
+              "Powerful iPad illustration app with an intuitive interface and stunning performance.",
+            features: [
+              "Apple Pencil integration",
+              "Over 200 brushes",
+              "4K canvas support",
+              "Animation assist",
+              "ColorDrop",
+            ],
+            bestFor: "Digital artists on iPad, illustrators, and sketchers",
+            featuresPage: "https://procreate.com/features",
+            trialLink: "https://procreate.com/handbook",
+          },
+          ClipStudio: {
+            name: "Clip Studio Paint",
+            description:
+              "The go-to software for manga, comics, and concept art with specialized tools.",
+            features: [
+              "Vector layers",
+              "3D models support",
+              "Frame border tools",
+              "Inking stability",
+              "Screen tone tools",
+            ],
+            bestFor: "Manga artists, comic creators, and illustrators",
+            featuresPage: "https://www.clipstudio.net/en/features/",
+            trialLink: "https://www.clipstudio.net/en/trial/",
+          },
+          Krita: {
+            name: "Krita",
+            description:
+              "Free and open-source digital painting software loved by concept artists.",
+            features: [
+              "Brush stabilizers",
+              "Wrap-around mode",
+              "Pop-up palette",
+              "Animation timeline",
+              "Resource manager",
+            ],
+            bestFor:
+              "Budget-conscious artists, illustrators, and open-source enthusiasts",
+            featuresPage: "https://krita.org/en/features/highlights/",
+            trialLink: "https://krita.org/en/download/",
+          },
+          Affinity: {
+            name: "Affinity Photo",
+            description:
+              "Professional photo editing software with one-time purchase model.",
+            features: [
+              "Live filters",
+              "Panorama stitching",
+              "Focus stacking",
+              "RAW editing",
+              "HDR merge",
+            ],
+            bestFor: "Photographers and designers seeking Adobe alternative",
+            featuresPage: "https://affinity.serif.com/en-us/photo/features/",
+            trialLink: "https://affinity.serif.com/en-us/photo/trial/",
+          },
+        };
+
+        // ====== SHOW MODAL ======
+        function showModal(softwareKey) {
+          const soft = softwareDetails[softwareKey];
+          if (!soft) return;
+
+          const modal = document.createElement("div");
+          modal.className = "software-modal";
+
+          modal.innerHTML = `
+            <div class="modal-content">
+              <button class="modal-close">&times;</button>
+              <h2>${soft.name}</h2>
+              <p class="modal-description">${soft.description}</p>
+              <div class="modal-section">
+                <h3>🎯 Best For</h3>
+                <p>${soft.bestFor}</p>
+              </div>
+              <div class="modal-section">
+                <h3>✨ Key Features</h3>
+                <ul>
+                  ${soft.features.map((f) => `<li><span class="check">◆</span> ${f}</li>`).join("")}
+                </ul>
+              </div>
+              <div class="modal-actions">
+                <a href="${soft.featuresPage}" target="_blank" rel="noopener" class="btn-modal primary">
+                  <i class="fas fa-list"></i> View All Features
+                </a>
+                <a href="${soft.trialLink}" target="_blank" rel="noopener" class="btn-modal secondary">
+                  <i class="fas fa-download"></i> Free Trial
+                </a>
+              </div>
+            </div>
+          `;
+
+          document.body.appendChild(modal);
+
+          modal
+            .querySelector(".modal-close")
+            .addEventListener("click", () => modal.remove());
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) modal.remove();
+          });
+
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              modal.remove();
+            }
+          });
+        }
+
+        // ====== COMPARE BUTTONS ======
+        document.querySelectorAll(".btn-compare").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const soft = this.getAttribute("data-soft");
+            showModal(soft);
+          });
+        });
+
+        // ====== TOAST ======
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        // ====== AUTH ======
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
@@ -600,10 +2323,7 @@
         }, 300);
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/software-comparison.js"></script>
+    <!-- Cookie Banner -->
+    <script src="/js/components/cookie-banner.js"></script>
   </body>
 </html>

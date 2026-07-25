@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dark Portfolio — Artist Name</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* ================================================================
+       DARK MODE SHOWCASE PORTFOLIO
+       ================================================================ */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0a0f;
+        --bg-card: #14141e;
+        --text: #ffffff;
+        --text-muted: #6a6a7e;
+        --accent: #58ebfe;
+        --accent-dim: rgba(88, 235, 254, 0.06);
+        --accent-glow: 0 0 40px rgba(88, 235, 254, 0.08);
+        --border: rgba(255, 255, 255, 0.04);
+        --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+        --font-body: "Inter", -apple-system, sans-serif;
+        --font-display: "Playfair Display", Georgia, serif;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      /* --- GLOW ANIMATION --- */
+      @keyframes glowPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* --- HEADER --- */
+      .header {
+        padding: 2rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header .logo {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        text-decoration: none;
+        color: var(--text);
+      }
+
+      .header .logo span {
+        color: var(--accent);
+      }
+
+      .header .nav {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .header .nav a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .header .nav a:hover {
+        color: var(--text);
+      }
+
+      /* --- HERO --- */
+      .hero {
+        padding: 6rem 0 3rem;
+      }
+
+      .hero-content {
+        max-width: 700px;
+      }
+
+      .hero-content .badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--accent);
+        background: var(--accent-dim);
+        padding: 4px 12px;
+        border-radius: 4px;
+        border: 1px solid rgba(88, 235, 254, 0.08);
+        margin-bottom: 1rem;
+      }
+
+      .hero-content h1 {
+        font-family: var(--font-display);
+        font-size: 4.5rem;
+        font-weight: 700;
+        line-height: 1.05;
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
+      }
+
+      .hero-content h1 span {
+        color: var(--accent);
+      }
+
+      .hero-content p {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        max-width: 500px;
+        margin-bottom: 2rem;
+      }
+
+      .hero-content .cta {
+        display: inline-block;
+        padding: 14px 36px;
+        background: var(--accent);
+        color: var(--bg);
+        text-decoration: none;
+        font-weight: 600;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+      }
+
+      .hero-content .cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(88, 235, 254, 0.2);
+      }
+
+      .hero-content .stats {
+        display: flex;
+        gap: 3rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+      }
+
+      .hero-content .stats .stat-value {
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        font-weight: 700;
+        display: block;
+        line-height: 1.2;
+      }
+
+      .hero-content .stats .stat-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* --- GALLERY --- */
+      .gallery {
+        padding: 4rem 0 6rem;
+      }
+
+      .gallery h2 {
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        letter-spacing: -0.5px;
+      }
+
+      .gallery h2 span {
+        color: var(--accent);
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .gallery-item {
+        background: var(--bg-card);
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .gallery-item:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent);
+        box-shadow: var(--accent-glow);
+      }
+
+      .gallery-item .placeholder {
+        width: 100%;
+        aspect-ratio: 4/3;
+        background: #1a1a2a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: var(--text-muted);
+        opacity: 0.2;
+      }
+
+      .gallery-item .info {
+        padding: 1.2rem 1.5rem;
+      }
+
+      .gallery-item .info h4 {
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+
+      .gallery-item .info p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      /* --- FOOTER --- */
+      .footer {
+        padding: 3rem 0;
+        border-top: 1px solid var(--border);
+        text-align: center;
+      }
+
+      .footer p {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      .footer .social {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        margin-top: 12px;
+      }
+
+      .footer .social a {
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+      }
+
+      .footer .social a:hover {
+        color: var(--accent);
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          gap: 1rem;
+          text-align: center;
+        }
+        .header .nav {
+          gap: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .hero {
+          padding: 4rem 0 2rem;
+        }
+        .hero-content h1 {
+          font-size: 3rem;
+        }
+        .hero-content .stats {
+          gap: 1.5rem;
+          flex-wrap: wrap;
+        }
+        .gallery-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-content h1 {
+          font-size: 2.2rem;
+        }
+        .hero-content p {
+          font-size: 1rem;
+        }
+        .container {
+          padding: 0 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="container header">
+      <a href="#" class="logo">✦ <span>ARTIST</span></a>
+      <nav class="nav">
+        <a href="#">Home</a>
+        <a href="#">Gallery</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="container hero">
+      <div class="hero-content">
+        <span class="badge">✦ Bold • Moody • Powerful</span>
+        <h1>Dark <span>Artist</span></h1>
+        <p>
+          Dramatic, moody, and unforgettable. A portfolio that commands
+          attention.
+        </p>
+        <a href="#" class="cta">View Gallery →</a>
+        <div class="stats">
+          <div>
+            <span class="stat-value">48</span
+            ><span class="stat-label">Artworks</span>
+          </div>
+          <div>
+            <span class="stat-value">18K</span
+            ><span class="stat-label">Followers</span>
+          </div>
+          <div>
+            <span class="stat-value">8</span
+            ><span class="stat-label">Years</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="container gallery">
+      <h2>✦ Featured <span>Works</span></h2>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <div class="placeholder">🎨</div>
+          <div class="info">
+            <h4>Artwork Title</h4>
+            <p>Medium • 2026</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="placeholder">🖌️</div>
+          <div class="info">
+            <h4>Artwork Title</h4>
+            <p>Medium • 2026</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="placeholder">✨</div>
+          <div class="info">
+            <h4>Artwork Title</h4>
+            <p>Medium • 2026</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="placeholder">🎭</div>
+          <div class="info">
+            <h4>Artwork Title</h4>
+            <p>Medium • 2026</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="placeholder">⚡</div>
+          <div class="info">
+            <h4>Artwork Title</h4>
+            <p>Medium • 2026</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="placeholder">🌙</div>
+          <div class="info">
+            <h4>Artwork Title</h4>
+            <p>Medium • 2026</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="container footer">
+      <p>✦ KEEP IT FRESH ✦</p>
+      <div class="social">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-tiktok"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+      </div>
+      <p style="margin-top: 12px; font-size: 0.7rem; opacity: 0.3">
+        © 2026 Artist Name — Dark Portfolio
+      </p>
+    </footer>
+  </body>
+</html>

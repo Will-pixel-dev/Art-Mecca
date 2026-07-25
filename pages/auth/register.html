@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/auth.css" />
 
     <!-- Fonts -->
@@ -29,203 +29,235 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   </head>
   <body>
-    <!-- Header -->
-    <header class="main-header" id="main-header">
-      <div class="container">
-        <nav class="navbar">
-          <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
-              <span class="logo-text">Art Mecca</span>
-            </a>
-          </div>
-          <div class="nav-actions">
-            <button
-              class="btn-icon search-btn"
-              id="search-btn"
-              aria-label="Search"
-            >
-              <i class="fas fa-search"></i>
-            </button>
-            <div class="auth-buttons"></div>
-          </div>
-          <button class="mobile-menu-btn" id="mobile-menu-btn">
-            <span></span><span></span><span></span>
-          </button>
-        </nav>
-      </div>
-    </header>
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
 
     <main class="auth-page">
       <div class="auth-container">
-        <div class="auth-card">
-          <div class="auth-header">
-            <h1>Create Account</h1>
-            <p>Join the Art Mecca community</p>
-          </div>
-
-          <form id="registerForm" class="auth-form">
-            <!-- Full Name -->
-            <div class="form-group">
-              <label for="fullname"
-                >Full Name <span class="required">*</span></label
-              >
-              <input
-                type="text"
-                id="fullname"
-                placeholder="Enter your full name"
-                required
-              />
+        <div class="auth-grid">
+          <!-- Auth Card -->
+          <div class="auth-card">
+            <div class="auth-header">
+              <span class="auth-icon">⌘</span>
+              <h1 class="glitch-hero" data-text="SIGN UP">SIGN UP</h1>
+              <p>
+                Join the <span class="gradient-text">Art Mecca</span> collective
+              </p>
             </div>
 
-            <!-- Email -->
-            <div class="form-group">
-              <label for="email"
-                >Email Address <span class="required">*</span></label
-              >
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                required
-              />
-            </div>
+            <form id="registerForm" class="auth-form">
+              <!-- Full Name -->
+              <div class="form-group">
+                <label for="fullname"
+                  >Full Name <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="fullname"
+                  placeholder="Enter your full name"
+                />
+              </div>
 
-            <!-- Password -->
-            <div class="form-group">
-              <label for="password"
-                >Password <span class="required">*</span></label
-              >
-              <div class="password-input-wrapper">
+              <!-- Email -->
+              <div class="form-group">
+                <label for="email"
+                  >Email Address <span class="required">*</span></label
+                >
+                <input type="email" id="email" placeholder="Enter your email" />
+              </div>
+
+              <!-- Password -->
+              <div class="form-group">
+                <label for="password"
+                  >Password <span class="required">*</span></label
+                >
+                <div class="password-input-wrapper">
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="Create a password"
+                    minlength="6"
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    id="passwordToggle"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <small class="helper-text">Must be at least 6 characters</small>
+              </div>
+
+              <!-- Confirm Password -->
+              <div class="form-group">
+                <label for="confirmPassword"
+                  >Confirm Password <span class="required">*</span></label
+                >
                 <input
                   type="password"
-                  id="password"
-                  placeholder="Create a password"
-                  required
-                  minlength="6"
+                  id="confirmPassword"
+                  placeholder="Confirm your password"
                 />
-                <button
-                  type="button"
-                  class="password-toggle"
-                  id="passwordToggle"
-                >
-                  <i class="fas fa-eye"></i>
-                </button>
               </div>
-              <small class="helper-text">Must be at least 6 characters</small>
-            </div>
 
-            <!-- Confirm Password -->
-            <div class="form-group">
-              <label for="confirmPassword"
-                >Confirm Password <span class="required">*</span></label
-              >
-              <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Confirm your password"
-                required
-              />
-            </div>
-
-            <!-- DATE OF BIRTH -->
-            <div class="form-group">
-              <label for="dateOfBirth"
-                >Date of Birth <span class="required">*</span></label
-              >
-              <input type="date" id="dateOfBirth" required />
-              <small class="helper-text"
-                >You must be at least 13 years old to join.</small
-              >
-            </div>
-
-            <!-- Terms -->
-            <div class="form-group checkbox-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="terms" required />
-                <span class="checkmark"></span>
-                I agree to the
-                <a href="/pages/legal/terms.html" target="_blank"
-                  >Terms of Service</a
+              <!-- Date of Birth -->
+              <div class="form-group">
+                <label for="dateOfBirth"
+                  >Date of Birth <span class="required">*</span></label
                 >
-                and
-                <a href="/pages/legal/privacy.html" target="_blank"
-                  >Privacy Policy</a
+                <input type="date" id="dateOfBirth" />
+                <small class="helper-text"
+                  >You must be at least 13 years old to join.</small
                 >
-              </label>
+              </div>
+
+              <!-- Terms -->
+              <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="terms" />
+                  <span class="checkmark"></span>
+                  I agree to the
+                  <a href="/pages/legal/terms.html" target="_blank"
+                    >Terms of Service</a
+                  >
+                  and
+                  <a href="/pages/legal/privacy.html" target="_blank"
+                    >Privacy Policy</a
+                  >
+                </label>
+              </div>
+
+              <!-- Age Confirmation -->
+              <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="ageConfirm" required />
+                  <span class="checkmark"></span>
+                  I confirm that I am at least <strong>13 years old</strong> and
+                  agree to the
+                  <a href="/pages/admin/terms-of-service.html" target="_blank"
+                    >Terms of Service</a
+                  >
+                  and
+                  <a href="/pages/admin/privacy.html" target="_blank"
+                    >Privacy Policy</a
+                  >
+                </label>
+              </div>
+
+              <button type="submit" class="btn-submit" id="registerBtn">
+                <i class="fas fa-user-plus"></i> Create Account
+              </button>
+            </form>
+
+            <div class="auth-footer">
+              <p>
+                Already have an account?
+                <a href="/pages/auth/login.html">Sign In</a>
+              </p>
             </div>
+          </div>
 
-            <button type="submit" class="btn-submit" id="registerBtn">
-              <i class="fas fa-user-plus"></i> Create Account
-            </button>
-          </form>
-
-          <div class="auth-footer">
-            <p>
-              Already have an account?
-              <a href="/pages/auth/login.html">Sign In</a>
-            </p>
+          <!-- Hero Side -->
+          <div class="auth-hero">
+            <div class="hero-content">
+              <span class="hero-icon">✦</span>
+              <h2>Join the Cyber Den</h2>
+              <p>
+                Access tutorials, tools, and a community of artists pushing the
+                boundaries of digital creativity.
+              </p>
+              <div class="hero-features">
+                <div class="feature">
+                  <span class="feature-icon">◈</span>
+                  <span>Exclusive Tutorials</span>
+                </div>
+                <div class="feature">
+                  <span class="feature-icon">◆</span>
+                  <span>Community Challenges</span>
+                </div>
+                <div class="feature">
+                  <span class="feature-icon">⌘</span>
+                  <span>Creative Tools & Resources</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE — BOTTOM RIGHT ====== -->
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
     </footer>
 
     <!-- Scripts -->
@@ -238,6 +270,187 @@
     <script src="/js/search.js"></script>
 
     <script>
+      <!-- ====== PARTICLES & THEME TOGGLE ====== -->
+
+      // ============================================================
+      // PARTICLES
+      // ============================================================
+      (function initParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouseX = -1000;
+        let mouseY = -1000;
+        const particleCount = 80;
+        let animationId = null;
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        class Particle {
+          constructor() {
+            this.reset();
+          }
+          reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+            this.opacity = Math.random() * 0.3 + 0.05;
+            const colors = [
+              "#ad03fc",
+              "#00d4ff",
+              "#58ebfe",
+              "#c84dff",
+              "#ff00ea",
+              "#6b00b3",
+            ];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+          }
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 200) {
+              const force = ((200 - dist) / 200) * 0.015;
+              this.speedX += (dx / dist) * force;
+              this.speedY += (dy / dist) * force;
+            }
+            this.speedX *= 0.999;
+            this.speedY *= 0.999;
+            const maxSpeed = 1.2;
+            const speed = Math.sqrt(
+              this.speedX * this.speedX + this.speedY * this.speedY,
+            );
+            if (speed > maxSpeed) {
+              this.speedX = (this.speedX / speed) * maxSpeed;
+              this.speedY = (this.speedY / speed) * maxSpeed;
+            }
+            if (
+              this.x < 0 ||
+              this.x > canvas.width ||
+              this.y < 0 ||
+              this.y > canvas.height
+            )
+              this.reset();
+          }
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+        function drawConnections() {
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 120) {
+                const opacity = (1 - dist / 120) * 0.05;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = "#ad03fc";
+                ctx.globalAlpha = opacity;
+                ctx.lineWidth = 0.6;
+                ctx.shadowColor = "#ff6b00";
+                ctx.shadowBlur = 4;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+              }
+            }
+          }
+        }
+
+        function animateParticles() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+          drawConnections();
+          animationId = requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        window.addEventListener("beforeunload", () => {
+          if (animationId) cancelAnimationFrame(animationId);
+        });
+      })();
+
+      // ============================================================
+      // THEME TOGGLE
+      // ============================================================
+      (function initThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (!themeToggle) return;
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        const icon = themeToggle.querySelector(".toggle-icon");
+        const label = themeToggle.querySelector(".toggle-label");
+
+        if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+        if (label) label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+        themeToggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          const current = document.documentElement.getAttribute("data-theme");
+          const next = current === "dark" ? "light" : "dark";
+
+          document.documentElement.setAttribute("data-theme", next);
+          localStorage.setItem("theme", next);
+
+          const iconEl = this.querySelector(".toggle-icon");
+          const labelEl = this.querySelector(".toggle-label");
+          if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+          if (labelEl) labelEl.textContent = next === "dark" ? "Dark" : "Light";
+        });
+      })();
+
+      // ============================================================
+      // NOISE OVERLAY TOGGLE
+      // ============================================================
+      (function initNoiseToggle() {
+        const noiseOverlay = document.getElementById("noiseOverlay");
+        if (noiseOverlay) {
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "g" || e.key === "G") {
+              noiseOverlay.classList.add("active");
+              setTimeout(() => noiseOverlay.classList.remove("active"), 500);
+            }
+          });
+        }
+      })();
+
       document.addEventListener("DOMContentLoaded", function () {
         // Wait for authManager to be ready
         function initRegistration() {

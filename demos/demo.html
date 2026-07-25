@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Art Mecca — Hologram · Immersion · Glitch</title>
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="demo.css" />
+  </head>
+  <body>
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== GLITCH FLASH OVERLAY ====== -->
+    <div class="glitch-flash" id="glitchFlash"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== THEME TOGGLE — BOTTOM RIGHT ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== TOAST NOTIFICATION CONTAINER ====== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ====== TOP NAV ====== -->
+    <header class="hybrid-nav" id="mainNav">
+      <div class="nav-container">
+        <div class="nav-left">
+          <div class="hybrid-logo">
+            <span class="logo-icon">✧</span>
+            <span class="logo-text">ART MECCA</span>
+            <span class="logo-sub">[ v4.0 ]</span>
+          </div>
+        </div>
+        <nav class="nav-center" id="navCenter">
+          <a href="#" class="active" data-key="1">Gallery</a>
+          <a href="#" data-key="2">Challenges</a>
+          <a href="#" data-key="3">Learn</a>
+          <a href="#" data-key="4">Tools</a>
+          <a href="#" data-key="5">Community</a>
+        </nav>
+        <div class="nav-right">
+          <span class="hybrid-status">● ONLINE</span>
+          <div class="hybrid-avatar" id="avatarBtn">
+            <span>✧</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== KEYBOARD SHORTCUTS HINT ====== -->
+    <div class="keyboard-hint">
+      <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> —
+      navigate &nbsp;|&nbsp; <kbd>G</kbd> — glitch &nbsp;|&nbsp; <kbd>T</kbd> —
+      toast
+    </div>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="hybrid-dashboard" id="mainDashboard">
+      <!-- ====== HERO ====== -->
+      <section class="hybrid-hero">
+        <div class="hero-card" id="heroCard">
+          <div class="scan-line"></div>
+          <div class="hero-left">
+            <span
+              class="hero-tag typewriter"
+              data-text="✦ fresh paint & holograms"
+              >✦ fresh paint & holograms</span
+            >
+            <h1 class="hero-title">
+              <span class="title-main" id="glitchTitle">ART MECCA</span>
+              <span class="title-sub">cyber den & studio</span>
+            </h1>
+            <p class="hero-desc" id="heroDesc">
+              Welcome to the hybrid zone. Neon meets spray paint. Holograms meet
+              raw street energy. This is where digital artists gather to tag the
+              future and hack the present.
+            </p>
+            <div class="hero-stats">
+              <div class="stat" data-count="12847">
+                <span class="stat-number counter" data-target="12847">0</span>
+                <span class="stat-label">crew</span>
+              </div>
+              <div class="stat" data-count="341">
+                <span class="stat-number counter" data-target="341">0</span>
+                <span class="stat-label">missions</span>
+              </div>
+              <div class="stat" data-count="2400">
+                <span class="stat-number counter" data-target="2400">0</span>
+                <span class="stat-label">tags</span>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <button class="btn btn-primary" id="dropTagBtn">
+                ✧ drop a tag
+              </button>
+              <button class="btn btn-secondary" id="scanWallBtn">
+                scan the wall
+              </button>
+            </div>
+          </div>
+          <div class="hero-right">
+            <div class="hybrid-display" id="holoDisplay">
+              <!-- Wireframe overlay -->
+              <div class="wireframe-overlay"></div>
+
+              <!-- HUD Rings -->
+              <div class="hud-ring"></div>
+              <div class="hud-ring"></div>
+              <div class="hud-ring"></div>
+
+              <!-- Crosshair -->
+              <div class="hud-crosshair">
+                <div class="hud-crosshair-line horizontal"></div>
+                <div class="hud-crosshair-line vertical"></div>
+              </div>
+
+              <!-- Graffiti Tags -->
+              <span class="display-tag">✧ FRESH</span>
+              <span class="display-tag">★ NEON</span>
+              <span class="display-tag">✦ MECCA</span>
+
+              <!-- Spray Can -->
+              <span class="spray-can">🎨</span>
+
+              <!-- HUD Data -->
+              <div class="hud-data">
+                <span
+                  ><span class="data-label">STATUS</span>
+                  <span id="hudStatus">NOMINAL</span></span
+                >
+                <span><span class="data-label">SECTOR</span> 001</span>
+                <span
+                  ><span class="data-label">POWER</span>
+                  <span id="hudPower">98%</span></span
+                >
+              </div>
+
+              <!-- Holographic shimmer -->
+              <div class="holo-shimmer"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SECTION: CHALLENGES ====== -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            ◈ ACTIVE <span class="hud-accent">MISSIONS</span>
+            <span class="spray-accent">+ BATTLES</span>
+          </h2>
+          <a href="#" class="section-link" id="viewAllLink">VIEW ALL →</a>
+        </div>
+        <div class="challenge-grid" id="challengeGrid">
+          <div class="challenge-card flip-card" data-flip="false">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <span class="challenge-badge hot">★ HOT</span>
+                <h3 class="challenge-title">NEON DREAMS</h3>
+                <p class="challenge-desc">
+                  Cyberpunk scenes that bleed neon. Winner gets the wall and 500
+                  pigments.
+                </p>
+                <div class="challenge-meta">
+                  <span>👾 847 engaged</span>
+                  <span>⏱ 4d 12h</span>
+                </div>
+                <button class="btn btn-ghost flip-trigger">
+                  ACCEPT MISSION →
+                </button>
+              </div>
+              <div class="flip-back">
+                <span class="challenge-badge hot">★ HOT</span>
+                <h3 class="challenge-title">NEON DREAMS</h3>
+                <p class="challenge-desc">
+                  🔥 Bonus: Create a companion piece in monochrome for extra
+                  pigments!
+                </p>
+                <button class="btn btn-primary flip-trigger">
+                  ↻ FLIP BACK
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="challenge-card flip-card" data-flip="false">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <span class="challenge-badge new">✦ NEW</span>
+                <h3 class="challenge-title">BRUSHSTROKE PORTRAITS</h3>
+                <p class="challenge-desc">
+                  Digital portraits with classic oil painting texture. Bring the
+                  heat.
+                </p>
+                <div class="challenge-meta">
+                  <span>👾 612 engaged</span>
+                  <span>⏱ 6d 8h</span>
+                </div>
+                <button class="btn btn-ghost flip-trigger">
+                  ACCEPT MISSION →
+                </button>
+              </div>
+              <div class="flip-back">
+                <span class="challenge-badge new">✦ NEW</span>
+                <h3 class="challenge-title">BRUSHSTROKE PORTRAITS</h3>
+                <p class="challenge-desc">
+                  🖌️ Bonus: Use at least 3 different brush textures for bonus
+                  points!
+                </p>
+                <button class="btn btn-primary flip-trigger">
+                  ↻ FLIP BACK
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="challenge-card flip-card" data-flip="false">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <span class="challenge-badge weekly">◈ WEEKLY</span>
+                <h3 class="challenge-title">MONOCHROME MAYHEM</h3>
+                <p class="challenge-desc">
+                  One color. Infinite shades. Show us your rawest monochrome
+                  piece.
+                </p>
+                <div class="challenge-meta">
+                  <span>👾 1.2k engaged</span>
+                  <span>⏱ 2d 3h</span>
+                </div>
+                <button class="btn btn-ghost flip-trigger">
+                  ACCEPT MISSION →
+                </button>
+              </div>
+              <div class="flip-back">
+                <span class="challenge-badge weekly">◈ WEEKLY</span>
+                <h3 class="challenge-title">MONOCHROME MAYHEM</h3>
+                <p class="challenge-desc">
+                  ⚫ Bonus: Add a single pop of color for a "spotlight" effect!
+                </p>
+                <button class="btn btn-primary flip-trigger">
+                  ↻ FLIP BACK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SECTION: GALLERY ====== -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            ◈ GALLERY <span class="hud-accent">SCAN</span> +
+            <span class="spray-accent">WALL</span>
+          </h2>
+          <a href="#" class="section-link">VIEW ALL →</a>
+        </div>
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="gallery-item glitch-image" data-glitch="false">
+            <div class="scan-line"></div>
+            <div
+              class="gallery-art"
+              style="
+                background:
+                  radial-gradient(
+                    circle at 30% 40%,
+                    #ff00ea 0%,
+                    transparent 60%
+                  ),
+                  radial-gradient(
+                    circle at 70% 60%,
+                    #ad03fc 0%,
+                    transparent 50%
+                  );
+              "
+            >
+              <span class="gallery-badge hot">● HOT</span>
+            </div>
+            <div class="gallery-info">
+              <h4 class="glitch-text" data-text='"NEON TOKYO NIGHTS"'>
+                "NEON TOKYO NIGHTS"
+              </h4>
+              <span>CYBER_KIWI</span>
+              <div class="gallery-actions">
+                <span class="likes">♥ 234</span>
+                <span>◆ 42</span>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item glitch-image" data-glitch="false">
+            <div class="scan-line"></div>
+            <div
+              class="gallery-art"
+              style="
+                background:
+                  radial-gradient(
+                    circle at 60% 30%,
+                    #58ebfe 0%,
+                    transparent 50%
+                  ),
+                  radial-gradient(
+                    circle at 20% 70%,
+                    #4ff3a6 0%,
+                    transparent 40%
+                  );
+              "
+            >
+              <span class="gallery-badge new">✦ NEW</span>
+            </div>
+            <div class="gallery-info">
+              <h4 class="glitch-text" data-text='"ETHEREAL FLOW"'>
+                "ETHEREAL FLOW"
+              </h4>
+              <span>LUNAR_BRUSH</span>
+              <div class="gallery-actions">
+                <span class="likes">♥ 189</span>
+                <span>◆ 27</span>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item glitch-image" data-glitch="false">
+            <div class="scan-line"></div>
+            <div
+              class="gallery-art"
+              style="
+                background:
+                  radial-gradient(
+                    circle at 40% 50%,
+                    #ffc72e 0%,
+                    transparent 60%
+                  ),
+                  radial-gradient(
+                    circle at 80% 20%,
+                    #ff6b00 0%,
+                    transparent 40%
+                  );
+              "
+            >
+              <span class="gallery-badge">◈ TOP</span>
+            </div>
+            <div class="gallery-info">
+              <h4 class="glitch-text" data-text='"GOLDEN HOUR"'>
+                "GOLDEN HOUR"
+              </h4>
+              <span>ROYAL_PIXEL</span>
+              <div class="gallery-actions">
+                <span class="likes">♥ 156</span>
+                <span>◆ 31</span>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-item glitch-image" data-glitch="false">
+            <div class="scan-line"></div>
+            <div
+              class="gallery-art"
+              style="
+                background:
+                  radial-gradient(
+                    circle at 50% 30%,
+                    #ad03fc 0%,
+                    transparent 50%
+                  ),
+                  radial-gradient(
+                    circle at 30% 70%,
+                    #ff00ea 0%,
+                    transparent 40%
+                  ),
+                  radial-gradient(
+                    circle at 70% 80%,
+                    #58ebfe 0%,
+                    transparent 30%
+                  );
+              "
+            >
+              <span class="gallery-badge legend">★ LEGEND</span>
+            </div>
+            <div class="gallery-info">
+              <h4 class="glitch-text" data-text='"COSMIC DUALITY"'>
+                "COSMIC DUALITY"
+              </h4>
+              <span>NEBULA_STUDIO</span>
+              <div class="gallery-actions">
+                <span class="likes">♥ 412</span>
+                <span>◆ 68</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== SECTION: TOOLS ====== -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">
+            ◈ EQUIPMENT <span class="hud-accent">BAY</span> +
+            <span class="spray-accent">STENCILS</span>
+          </h2>
+          <a href="#" class="section-link">VIEW ALL →</a>
+        </div>
+        <div class="tools-grid">
+          <div class="tool-card" data-tilt="0">
+            <span class="tool-icon">◆</span>
+            <h4>PALETTE GENERATOR</h4>
+            <p>AI-powered color synthesis for your projects.</p>
+            <span class="tool-status">● ONLINE</span>
+          </div>
+          <div class="tool-card" data-tilt="0">
+            <span class="tool-icon">✦</span>
+            <h4>PERSPECTIVE GRID</h4>
+            <p>Precision overlays for spatial composition.</p>
+            <span class="tool-status">● ONLINE</span>
+          </div>
+          <div class="tool-card" data-tilt="0">
+            <span class="tool-icon">◈</span>
+            <h4>BRUSH LIBRARY</h4>
+            <p>Curated brush sets from across the galaxy.</p>
+            <span class="tool-status">● ONLINE</span>
+          </div>
+          <div class="tool-card" data-tilt="0">
+            <span class="tool-icon">★</span>
+            <h4>CONTRAST CHECKER</h4>
+            <p>Accessibility scanning for all crew members.</p>
+            <span class="tool-status">● ONLINE</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== FOOTER ====== -->
+      <footer class="hybrid-footer">
+        <div class="footer-container">
+          <div class="footer-brand">
+            <span class="footer-logo">✧ ART MECCA</span>
+            <p class="footer-desc">cyber den & studio [ est. 2026 ]</p>
+          </div>
+          <nav class="footer-nav">
+            <a href="#">about</a>
+            <a href="#">guidelines</a>
+            <a href="#">support</a>
+            <a href="#">careers</a>
+            <a href="#">privacy</a>
+          </nav>
+          <div class="footer-social">
+            <span>🐦</span>
+            <span>📷</span>
+            <span>🎮</span>
+            <span>💬</span>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span
+            >© 2026 ART MECCA — CREW: ∞ | STATUS: NOMINAL | KEEP IT FRESH</span
+          >
+        </div>
+      </footer>
+    </main>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="demo.js"></script>
+  </body>
+</html>

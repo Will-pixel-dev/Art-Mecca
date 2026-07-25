@@ -8,14 +8,22 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -30,38 +38,493 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
-      .search-users-main {
-        padding: 2rem 0;
-        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
-        min-height: 100vh;
+      /* ============================================ */
+      /* FIND ARTISTS - SCI-FI CYBERPUNK              */
+      /* Glass + Neon + HUD                          */
+      /* ============================================ */
+
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --glass-blur: blur(20px);
+        --text-primary: #e8e0f0;
+        --text-secondary: #a090b8;
+        --text-muted: #6a5a7a;
+        --bg-primary: #0a0810;
+        --bg-secondary: #12101f;
+        --neon-purple: #8a19e1;
+        --neon-cyan: #58ebfe;
+        --neon-pink: #ff00ea;
+        --neon-green: #4ff3a6;
+        --neon-gold: #ffc72e;
+        --neon-orange: #ff6b00;
+        --purple-glow: rgba(138, 25, 225, 0.3);
+        --cyan-glow: rgba(88, 235, 254, 0.15);
+        --shadow-glow: 0 8px 40px rgba(0, 0, 0, 0.6);
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --font-mono: "Share Tech Mono", "Courier New", monospace;
+        --font-display: "Orbitron", "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ============================================ */
+      /* GRADIENT BACKGROUND                          */
+      /* ============================================ */
+
+      .gradient-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        background:
+          radial-gradient(ellipse at 0% 0%, #8a19e1 0%, transparent 50%),
+          radial-gradient(ellipse at 100% 100%, #58ebfe 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, #ff00ea 0%, transparent 60%);
+        background-size: 200% 200%;
+        animation: gradientWarm 25s ease-in-out infinite alternate;
+        opacity: 0.2;
+        pointer-events: none;
+      }
+
+      @keyframes gradientWarm {
+        0%,
+        100% {
+          background-position: 0% 0%;
+          opacity: 0.15;
+        }
+        50% {
+          background-position: 100% 100%;
+          opacity: 0.25;
+        }
+      }
+
+      .gradient-bg.cool {
+        background:
+          radial-gradient(ellipse at 0% 0%, #8a19e1 0%, transparent 50%),
+          radial-gradient(ellipse at 100% 100%, #4ff3a6 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, #58ebfe 0%, transparent 60%);
+        animation: gradientCool 25s ease-in-out infinite alternate;
+      }
+
+      @keyframes gradientCool {
+        0%,
+        100% {
+          background-position: 0% 0%;
+          opacity: 0.15;
+        }
+        50% {
+          background-position: 100% 100%;
+          opacity: 0.25;
+        }
+      }
+
+      /* ============================================ */
+      /* SCANLINE OVERLAY                            */
+      /* ============================================ */
+
+      .scanline-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9997;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 3px
+        );
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
+
+      .scanline-overlay:not(.active) {
+        opacity: 0;
+      }
+
+      body.hud-mode .scanline-overlay {
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(88, 235, 254, 0.015) 2px,
+          rgba(88, 235, 254, 0.015) 3px,
+          transparent 3px,
+          transparent 5px,
+          rgba(138, 25, 225, 0.015) 5px,
+          rgba(138, 25, 225, 0.015) 6px
+        );
+        animation: scanMove 0.5s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(6px);
+        }
+      }
+
+      /* ============================================ */
+      /* GRID OVERLAY                                */
+      /* ============================================ */
+
+      .grid-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9996;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        background-image:
+          linear-gradient(rgba(88, 235, 254, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(88, 235, 254, 0.06) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      body.grid-mode .grid-overlay {
+        opacity: 1;
+      }
+
+      /* ============================================ */
+      /* PARTICLES                                   */
+      /* ============================================ */
+
+      .particle-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        opacity: 0.3;
+      }
+
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: var(--neon-cyan);
+        border-radius: 50%;
+        animation: floatParticle 20s infinite linear;
+        opacity: 0;
+        box-shadow: 0 0 10px var(--neon-cyan);
+      }
+
+      .particle:nth-child(1) {
+        left: 10%;
+        animation-delay: 0s;
+        animation-duration: 22s;
+        background: var(--neon-purple);
+      }
+      .particle:nth-child(2) {
+        left: 20%;
+        animation-delay: 2s;
+        animation-duration: 18s;
+        background: var(--neon-cyan);
+      }
+      .particle:nth-child(3) {
+        left: 30%;
+        animation-delay: 4s;
+        animation-duration: 25s;
+        background: var(--neon-pink);
+      }
+      .particle:nth-child(4) {
+        left: 40%;
+        animation-delay: 1s;
+        animation-duration: 20s;
+        background: var(--neon-green);
+      }
+      .particle:nth-child(5) {
+        left: 50%;
+        animation-delay: 3s;
+        animation-duration: 23s;
+        background: var(--neon-gold);
+      }
+      .particle:nth-child(6) {
+        left: 60%;
+        animation-delay: 5s;
+        animation-duration: 19s;
+        background: var(--neon-orange);
+      }
+      .particle:nth-child(7) {
+        left: 70%;
+        animation-delay: 2s;
+        animation-duration: 21s;
+        background: var(--neon-purple);
+      }
+      .particle:nth-child(8) {
+        left: 80%;
+        animation-delay: 4s;
+        animation-duration: 24s;
+        background: var(--neon-cyan);
+      }
+      .particle:nth-child(9) {
+        left: 15%;
+        animation-delay: 6s;
+        animation-duration: 17s;
+        background: var(--neon-pink);
+      }
+      .particle:nth-child(10) {
+        left: 45%;
+        animation-delay: 3s;
+        animation-duration: 26s;
+        background: var(--neon-green);
+      }
+      .particle:nth-child(11) {
+        left: 75%;
+        animation-delay: 5s;
+        animation-duration: 22s;
+        background: var(--neon-gold);
+      }
+      .particle:nth-child(12) {
+        left: 90%;
+        animation-delay: 7s;
+        animation-duration: 20s;
+        background: var(--neon-orange);
+      }
+
+      @keyframes floatParticle {
+        0% {
+          top: -10%;
+          opacity: 0;
+          transform: translateX(0) scale(0);
+        }
+        10% {
+          opacity: 0.8;
+          transform: translateX(10px) scale(1);
+        }
+        90% {
+          opacity: 0.8;
+          transform: translateX(-10px) scale(1);
+        }
+        100% {
+          top: 110%;
+          opacity: 0;
+          transform: translateX(0) scale(0);
+        }
+      }
+
+      body.light-mode .particle-overlay {
+        opacity: 0.1;
+      }
+
+      /* ============================================ */
+      /* HUD CORNERS                                 */
+      /* ============================================ */
+
+      body.hud-mode::before {
+        content: "";
+        position: fixed;
+        inset: 20px;
+        pointer-events: none;
+        z-index: 9998;
+        border: 1px solid rgba(88, 235, 254, 0.05);
+        border-radius: 4px;
+      }
+
+      body.hud-mode::after {
+        content: "⏣ SYS: ONLINE  |  USERS: 0  |  HUD: v2.1";
+        position: fixed;
+        bottom: 80px;
+        right: 30px;
+        font-family: var(--font-mono);
+        font-size: 0.45rem;
+        color: rgba(88, 235, 254, 0.15);
+        letter-spacing: 2px;
+        z-index: 9998;
+        pointer-events: none;
+      }
+
+      /* ============================================ */
+      /* THEME CONTROLS                              */
+      /* ============================================ */
+
+      .theme-controls {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(13, 11, 21, 0.85);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        padding: 6px 10px;
+        border-radius: 40px;
+        border: 1px solid rgba(138, 25, 225, 0.15);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .theme-controls button {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgba(138, 25, 225, 0.12);
+        background: rgba(138, 25, 225, 0.06);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .theme-controls button:hover {
+        background: rgba(138, 25, 225, 0.15);
+        transform: scale(1.05);
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+      }
+
+      .theme-controls button.active {
+        background: linear-gradient(
+          135deg,
+          var(--neon-purple),
+          var(--neon-cyan)
+        );
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 0 20px rgba(138, 25, 225, 0.25);
+      }
+
+      /* ============================================ */
+      /* MAIN CONTENT                                */
+      /* ============================================ */
+
+      .search-users-main {
+        padding-top: 90px;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+
+      .search-users-main .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* ============================================ */
+      /* PAGE HEADER                                 */
+      /* ============================================ */
 
       .page-header {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        padding: 1rem 0;
       }
 
       .page-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        font-size: 2.5rem;
+        font-weight: 800;
+        font-family: var(--font-display);
+        letter-spacing: 2px;
+        background: linear-gradient(
+          135deg,
+          var(--neon-purple),
+          var(--neon-cyan),
+          var(--neon-pink)
+        );
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
         margin-bottom: 0.5rem;
+        text-shadow: none;
+        filter: drop-shadow(0 0 40px rgba(138, 25, 225, 0.15));
+      }
+
+      .page-header h1 i {
+        background: linear-gradient(
+          135deg,
+          var(--neon-purple),
+          var(--neon-cyan)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
 
       .page-header p {
-        color: #6b7280;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
       }
 
-      /* Search Section */
+      /* ============================================ */
+      /* SEARCH SECTION - GLASS + NEON              */
+      /* ============================================ */
+
       .search-section {
-        background: white;
-        border-radius: 1rem;
-        padding: 1.5rem;
+        background: rgba(13, 11, 21, 0.6);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-radius: var(--radius-md);
+        padding: 1.5rem 2rem;
         margin-bottom: 2rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        box-shadow: var(--shadow-glow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .search-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--neon-cyan),
+          transparent
+        );
+        opacity: 0.3;
+        animation: scanLine 3s ease-in-out infinite;
+      }
+
+      @keyframes scanLine {
+        0%,
+        100% {
+          opacity: 0.1;
+        }
+        50% {
+          opacity: 0.4;
+        }
       }
 
       .search-input-group {
@@ -73,199 +536,363 @@
 
       .search-input-group input {
         flex: 1;
-        padding: 0.8rem 1rem;
-        border: 2px solid #e5e7eb;
-        border-radius: 50px;
-        font-size: 1rem;
+        padding: 0.8rem 1.2rem;
+        background: rgba(13, 11, 21, 0.6);
+        border: 1px solid rgba(88, 235, 254, 0.08);
+        border-radius: var(--radius-sm);
+        font-size: 0.9rem;
+        color: var(--text-primary);
         transition: all 0.3s ease;
+        font-family: var(--font-mono);
+      }
+
+      .search-input-group input::placeholder {
+        color: var(--text-muted);
       }
 
       .search-input-group input:focus {
         outline: none;
-        border-color: #fe67ea;
-        box-shadow: 0 0 0 3px rgba(254, 103, 234, 0.1);
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 30px rgba(88, 235, 254, 0.05);
+        background: rgba(13, 11, 21, 0.8);
       }
 
       .search-btn {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        background: linear-gradient(
+          135deg,
+          var(--neon-purple),
+          var(--neon-cyan)
+        );
         color: white;
         border: none;
         padding: 0.8rem 2rem;
-        border-radius: 50px;
+        border-radius: var(--radius-sm);
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        box-shadow: 0 4px 20px rgba(138, 25, 225, 0.2);
       }
 
       .search-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(254, 103, 234, 0.3);
+        box-shadow: 0 8px 30px rgba(138, 25, 225, 0.3);
       }
 
       /* Filter Chips */
       .filter-chips {
         display: flex;
-        gap: 0.8rem;
+        gap: 0.6rem;
         flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .filter-chips .filter-label {
+        color: var(--text-muted);
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-right: 0.5rem;
+        font-family: var(--font-mono);
       }
 
       .filter-chip {
-        padding: 0.4rem 1rem;
-        background: #f3f4f6;
-        border-radius: 50px;
-        font-size: 0.8rem;
+        padding: 0.3rem 1rem;
+        background: rgba(13, 11, 21, 0.4);
+        border-radius: var(--radius-sm);
+        font-size: 0.7rem;
         cursor: pointer;
         transition: all 0.2s ease;
-        color: #4b5563;
+        color: var(--text-secondary);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        font-weight: 500;
+        font-family: var(--font-mono);
       }
 
       .filter-chip:hover {
-        background: #fe67ea;
-        color: white;
+        background: rgba(138, 25, 225, 0.1);
+        color: var(--neon-cyan);
+        border-color: var(--neon-cyan);
+        transform: translateY(-2px);
       }
 
       .filter-chip.active {
-        background: #fe67ea;
-        color: white;
+        background: rgba(138, 25, 225, 0.15);
+        color: var(--neon-cyan);
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 20px rgba(138, 25, 225, 0.05);
       }
 
-      /* Results Count */
+      /* Badge Filters */
+      .badge-filters {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin-top: 0.8rem;
+        padding-top: 0.8rem;
+        border-top: 1px solid rgba(88, 235, 254, 0.06);
+      }
+
+      .badge-filter-group {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+      }
+
+      .badge-filter-group .group-label {
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-family: var(--font-mono);
+      }
+
+      .badge-filter-chip {
+        padding: 0.15rem 0.7rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.6rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: var(--text-secondary);
+        border: 1px solid rgba(88, 235, 254, 0.04);
+        background: rgba(13, 11, 21, 0.3);
+        font-family: var(--font-mono);
+      }
+
+      .badge-filter-chip:hover {
+        background: rgba(138, 25, 225, 0.08);
+        color: var(--neon-cyan);
+        transform: translateY(-1px);
+      }
+
+      .badge-filter-chip.active {
+        background: rgba(138, 25, 225, 0.12);
+        color: var(--neon-cyan);
+        border-color: var(--neon-cyan);
+      }
+
+      /* ============================================ */
+      /* RESULTS COUNT                              */
+      /* ============================================ */
+
       .results-count {
-        margin-bottom: 1rem;
-        color: #6b7280;
-        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        font-weight: 500;
+        font-family: var(--font-mono);
       }
 
-      /* Users Grid */
+      .results-count span {
+        color: var(--neon-cyan);
+        font-weight: 700;
+      }
+
+      /* ============================================ */
+      /* USERS GRID - CSS GRID                      */
+      /* ============================================ */
+
       .users-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
         gap: 1.5rem;
       }
 
-      /* ============================================
-       PRETTY ARTIST CARD STYLES
-    ============================================ */
+      /* ============================================ */
+      /* USER CARD - GLASS + NEON                   */
+      /* ============================================ */
 
       .user-card {
-        background: white;
-        border-radius: 1rem;
+        background: rgba(13, 11, 21, 0.5);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-radius: var(--radius-md);
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        box-shadow: var(--shadow-glow);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         cursor: pointer;
         position: relative;
       }
 
-      .user-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 30px -12px rgba(254, 103, 234, 0.25);
-      }
-
-      /* Gradient border effect on hover */
       .user-card::before {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
-        border-radius: 1rem;
-        padding: 2px;
-        background: linear-gradient(135deg, #fe67ea, #63dbee, #8b5cf6);
-        -webkit-mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--neon-cyan),
+          transparent
+        );
         opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
+        transition: opacity 0.4s ease;
       }
 
       .user-card:hover::before {
-        opacity: 1;
+        opacity: 0.6;
       }
 
-      /* Card Content Layout */
+      .user-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(88, 235, 254, 0.15);
+        box-shadow:
+          0 16px 48px rgba(0, 0, 0, 0.5),
+          0 0 40px rgba(138, 25, 225, 0.03);
+      }
+
       .user-card-content {
         display: flex;
-        padding: 1.2rem;
-        gap: 1rem;
-        align-items: center;
+        padding: 1.5rem;
+        gap: 1.2rem;
+        align-items: flex-start;
       }
 
-      /* Right side info */
-      .user-info-right {
-        flex: 1;
-      }
-
-      /* Avatar - Now on right side */
-      .user-avatar-right {
-        width: 85px;
-        height: 85px;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+      /* Avatar */
+      .user-avatar-left {
+        width: 72px;
+        height: 72px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: white;
-        font-weight: bold;
+        font-weight: 700;
         flex-shrink: 0;
         background-size: cover;
         background-position: center;
-        box-shadow: 0 4px 12px rgba(254, 103, 234, 0.3);
+        box-shadow: 0 4px 20px rgba(138, 25, 225, 0.2);
         transition: all 0.3s ease;
+        border: 2px solid rgba(88, 235, 254, 0.1);
+        font-family: var(--font-display);
       }
 
-      .user-card:hover .user-avatar-right {
+      .user-card:hover .user-avatar-left {
         transform: scale(1.05);
-        box-shadow: 0 6px 16px rgba(254, 103, 234, 0.4);
+        box-shadow: 0 8px 30px rgba(138, 25, 225, 0.3);
+        border-color: var(--neon-cyan);
       }
 
-      /* Name */
+      .user-avatar-left img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .user-info-right {
+        flex: 1;
+        min-width: 0;
+      }
+
       .user-name {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #1f2937, #4a5568);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        margin-bottom: 0.2rem;
+        color: var(--text-primary);
+        margin-bottom: 0.1rem;
+        line-height: 1.2;
+        font-family: var(--font-display);
+        letter-spacing: 0.5px;
       }
 
-      /* Username */
+      .user-name a {
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .user-name a:hover {
+        color: var(--neon-cyan);
+      }
+
       .user-username {
-        font-size: 0.7rem;
-        color: #fe67ea;
-        margin-bottom: 0.5rem;
+        font-size: 0.6rem;
+        color: var(--neon-cyan);
         font-weight: 500;
         display: inline-block;
-        background: rgba(254, 103, 234, 0.1);
-        padding: 0.1rem 0.5rem;
-        border-radius: 50px;
+        background: rgba(88, 235, 254, 0.06);
+        padding: 0.1rem 0.6rem;
+        border-radius: var(--radius-sm);
+        margin-bottom: 0.5rem;
+        font-family: var(--font-mono);
+        border: 1px solid rgba(88, 235, 254, 0.06);
       }
 
-      /* Bio */
       .user-bio {
         font-size: 0.75rem;
-        color: #6b7280;
-        line-height: 1.4;
-        margin-bottom: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 0.6rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        min-height: 2.4rem;
+        font-family: var(--font-body);
+      }
+
+      /* Badges */
+      .user-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        margin-bottom: 0.6rem;
+      }
+
+      .user-badge-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+        padding: 0.1rem 0.5rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.5rem;
+        font-weight: 600;
+        background: rgba(13, 11, 21, 0.4);
+        color: var(--text-secondary);
+        border: 1px solid rgba(88, 235, 254, 0.04);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        font-family: var(--font-mono);
+      }
+
+      .user-badge-tag.artist-type {
+        background: rgba(138, 25, 225, 0.1);
+        color: var(--neon-purple);
+        border-color: rgba(138, 25, 225, 0.08);
+      }
+
+      .user-badge-tag.specialty {
+        background: rgba(88, 235, 254, 0.06);
+        color: var(--neon-cyan);
+        border-color: rgba(88, 235, 254, 0.06);
+      }
+
+      .user-badge-tag.medium {
+        background: rgba(79, 243, 166, 0.06);
+        color: var(--neon-green);
+        border-color: rgba(79, 243, 166, 0.06);
       }
 
       /* Stats */
       .user-stats {
         display: flex;
-        gap: 1rem;
+        gap: 1.5rem;
         margin-bottom: 0.8rem;
         padding-top: 0.5rem;
-        border-top: 1px solid #f0eef2;
+        border-top: 1px solid rgba(88, 235, 254, 0.06);
       }
 
       .user-stat {
@@ -275,67 +902,80 @@
 
       .user-stat-value {
         display: block;
-        font-weight: 800;
-        background: linear-gradient(135deg, #fe67ea, #8b5cf6);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        font-weight: 700;
+        color: var(--text-primary);
         font-size: 0.9rem;
+        font-family: var(--font-display);
       }
 
       .user-stat-label {
-        font-size: 0.6rem;
-        color: #9ca3af;
+        font-size: 0.5rem;
+        color: var(--text-muted);
         font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-family: var(--font-mono);
       }
 
-      /* Shadow Button - Pink (default) */
+      /* Shadow Button */
       .shadow-btn-small {
-        background: linear-gradient(135deg, #fe67ea, #e237ce);
-        color: white;
-        border: none;
-        padding: 0.45rem 0.8rem;
-        border-radius: 50px;
-        font-size: 0.7rem;
+        background: rgba(13, 11, 21, 0.4);
+        color: var(--text-secondary);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        padding: 0.35rem 0.8rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.6rem;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        letter-spacing: 0.3px;
+        font-family: var(--font-mono);
+        backdrop-filter: blur(4px);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       .shadow-btn-small:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 14px rgba(254, 103, 234, 0.4);
+        background: rgba(138, 25, 225, 0.1);
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+        box-shadow: 0 4px 20px rgba(138, 25, 225, 0.05);
       }
 
-      /* Shadowing (following) - Purple */
       .shadow-btn-small.active {
-        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        background: rgba(138, 25, 225, 0.12);
+        color: var(--neon-cyan);
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 20px rgba(138, 25, 225, 0.05);
       }
 
       .shadow-btn-small.active:hover {
-        box-shadow: 0 6px 14px rgba(139, 92, 246, 0.4);
+        background: rgba(138, 25, 225, 0.2);
+        box-shadow: 0 0 30px rgba(138, 25, 225, 0.1);
       }
 
-      /* Loading & Empty States */
+      /* ============================================ */
+      /* LOADING & EMPTY STATES                      */
+      /* ============================================ */
+
       .loading-state {
         text-align: center;
-        padding: 3rem;
+        padding: 4rem;
+        grid-column: 1 / -1;
       }
 
       .spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid #e5e7eb;
-        border-top-color: #fe67ea;
+        width: 40px;
+        height: 40px;
+        border: 2px solid rgba(88, 235, 254, 0.06);
+        border-top-color: var(--neon-cyan);
         border-radius: 50%;
-        animation: spin 1s linear infinite;
+        animation: spin 0.8s linear infinite;
         margin: 0 auto 1rem;
       }
 
@@ -345,62 +985,327 @@
         }
       }
 
+      .loading-state p {
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+      }
+
       .empty-state {
         text-align: center;
-        padding: 3rem;
-        background: white;
-        border-radius: 1rem;
+        padding: 4rem 2rem;
+        background: rgba(13, 11, 21, 0.4);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        grid-column: 1 / -1;
       }
 
       .empty-state i {
         font-size: 3rem;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        background: linear-gradient(
+          135deg,
+          var(--neon-purple),
+          var(--neon-cyan)
+        );
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
         margin-bottom: 1rem;
+        display: block;
+        opacity: 0.6;
       }
 
-      /* Responsive */
-      @media (max-width: 768px) {
+      .empty-state h3 {
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        font-family: var(--font-display);
+      }
+
+      .empty-state p {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      /* ============================================ */
+      /* RESPONSIVE                                  */
+      /* ============================================ */
+
+      @media (max-width: 1024px) {
         .users-grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        .search-users-main {
+          padding-top: 80px;
+        }
+
+        .search-users-main .container {
+          padding: 0 16px;
+        }
+
+        .page-header h1 {
+          font-size: 2rem;
+        }
+
+        .search-section {
+          padding: 1rem 1.2rem;
         }
 
         .search-input-group {
           flex-direction: column;
         }
 
-        .filter-chips {
+        .search-btn {
+          width: 100%;
           justify-content: center;
+        }
+
+        .users-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
         }
 
         .user-card-content {
           flex-direction: column;
+          align-items: center;
           text-align: center;
+          padding: 1.2rem;
+        }
+
+        .user-avatar-left {
+          width: 64px;
+          height: 64px;
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .user-badges {
+          justify-content: center;
         }
 
         .user-stats {
           justify-content: center;
         }
 
-        .user-avatar-right {
-          width: 70px;
-          height: 70px;
-          font-size: 1.5rem;
-          margin-bottom: 0.5rem;
+        .filter-chips {
+          justify-content: center;
         }
+
+        .badge-filters {
+          justify-content: center;
+        }
+
+        .badge-filter-group {
+          justify-content: center;
+        }
+
+        .results-count {
+          text-align: center;
+        }
+
+        body.hud-mode::before {
+          inset: 10px;
+        }
+
+        body.hud-mode::after {
+          bottom: 70px;
+          right: 20px;
+          font-size: 0.35rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .search-users-main {
+          padding-top: 70px;
+        }
+
+        .page-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .page-header p {
+          font-size: 0.9rem;
+        }
+
+        .user-card-content {
+          padding: 1rem;
+        }
+
+        .user-avatar-left {
+          width: 56px;
+          height: 56px;
+          font-size: 1.2rem;
+        }
+
+        .user-name {
+          font-size: 0.95rem;
+        }
+
+        .theme-controls {
+          bottom: 16px;
+          right: 16px;
+          padding: 4px 8px;
+        }
+
+        .theme-controls button {
+          width: 28px;
+          height: 28px;
+          font-size: 0.6rem;
+        }
+      }
+
+      /* ============================================ */
+      /* LIGHT MODE                                  */
+      /* ============================================ */
+
+      body.light-mode {
+        --bg-primary: #f0ecf5;
+        --bg-secondary: #e8e0f0;
+        --text-primary: #1a1028;
+        --text-secondary: #5a4a70;
+        --text-muted: #8a7a9a;
+      }
+
+      body.light-mode .gradient-bg {
+        opacity: 0.08;
+      }
+
+      body.light-mode .search-section {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      body.light-mode .user-card {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      body.light-mode .search-input-group input {
+        background: rgba(255, 255, 255, 0.5);
+        color: var(--text-primary);
+      }
+
+      body.light-mode .search-input-group input::placeholder {
+        color: var(--text-muted);
+      }
+
+      body.light-mode .filter-chip {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      body.light-mode .filter-chip:hover {
+        background: rgba(138, 25, 225, 0.06);
+      }
+
+      body.light-mode .filter-chip.active {
+        background: rgba(138, 25, 225, 0.1);
+      }
+
+      body.light-mode .badge-filter-chip {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      body.light-mode .badge-filter-chip:hover {
+        background: rgba(138, 25, 225, 0.06);
+      }
+
+      body.light-mode .badge-filter-chip.active {
+        background: rgba(138, 25, 225, 0.1);
+      }
+
+      body.light-mode .empty-state {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      body.light-mode .shadow-btn-small {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      body.light-mode .shadow-btn-small:hover {
+        background: rgba(138, 25, 225, 0.06);
+      }
+
+      body.light-mode .shadow-btn-small.active {
+        background: rgba(138, 25, 225, 0.08);
+      }
+
+      body.light-mode .theme-controls {
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      body.light-mode .user-badge-tag.artist-type {
+        background: rgba(138, 25, 225, 0.06);
+      }
+
+      body.light-mode .user-badge-tag.specialty {
+        background: rgba(88, 235, 254, 0.06);
+      }
+
+      body.light-mode .user-badge-tag.medium {
+        background: rgba(79, 243, 166, 0.06);
+      }
+
+      body.light-mode .user-username {
+        background: rgba(88, 235, 254, 0.06);
+      }
+
+      /* ============================================ */
+      /* DARK MODE - DEFAULT                         */
+      /* ============================================ */
+
+      body.dark-mode {
+        --bg-primary: #0a0810;
+        --bg-secondary: #12101f;
+        --text-primary: #e8e0f0;
+        --text-secondary: #a090b8;
+        --text-muted: #6a5a7a;
+      }
+
+      body.dark-mode .search-section {
+        background: rgba(13, 11, 21, 0.6);
+      }
+
+      body.dark-mode .user-card {
+        background: rgba(13, 11, 21, 0.5);
+      }
+
+      body.dark-mode .gradient-bg {
+        opacity: 0.2;
       }
     </style>
   </head>
   <body>
-    <!-- Header - Updated with working notification system -->
+    <!-- ====== BACKGROUND EFFECTS ====== -->
+    <div class="gradient-bg"></div>
+    <div class="scanline-overlay active" id="scanlineOverlay"></div>
+    <div class="grid-overlay" id="gridOverlay"></div>
+
+    <!-- ====== PARTICLES ====== -->
+    <div class="particle-overlay" id="particleOverlay">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
             <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+              <span class="logo-icon">✦</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
@@ -421,39 +1326,43 @@
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -466,11 +1375,18 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--neon-cyan)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
@@ -481,17 +1397,17 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
@@ -503,25 +1419,25 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
@@ -531,15 +1447,13 @@
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -547,12 +1461,11 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
+                >Truly Yours ✦</a
               >
             </li>
           </ul>
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -589,7 +1502,6 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -597,7 +1509,16 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
           <button
             class="mobile-menu-btn"
@@ -631,10 +1552,9 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN CONTENT ====== -->
     <main class="search-users-main">
       <div class="container">
         <div class="page-header">
@@ -647,13 +1567,15 @@
             <input
               type="text"
               id="userSearchInput"
-              placeholder="Search by name, username, or specialty..."
+              placeholder="Search by name, username, specialty, or medium..."
             />
             <button id="searchUsersBtn" class="search-btn">
               <i class="fas fa-search"></i> Search
             </button>
           </div>
+
           <div class="filter-chips" id="filterChips">
+            <span class="filter-label">Sort:</span>
             <span class="filter-chip active" data-filter="all"
               >All Artists</span
             >
@@ -661,86 +1583,148 @@
             <span class="filter-chip" data-filter="active">Most Active</span>
             <span class="filter-chip" data-filter="new">Newest</span>
           </div>
+
+          <div class="badge-filters" id="badgeFilters">
+            <div class="badge-filter-group">
+              <span class="group-label">🎨 Type:</span>
+              <span class="badge-filter-chip active" data-badge="all_types"
+                >All</span
+              >
+              <span class="badge-filter-chip" data-badge="digital"
+                >Digital</span
+              >
+              <span class="badge-filter-chip" data-badge="traditional"
+                >Traditional</span
+              >
+              <span class="badge-filter-chip" data-badge="mixed">Mixed</span>
+              <span class="badge-filter-chip" data-badge="3d">3D</span>
+              <span class="badge-filter-chip" data-badge="photography"
+                >Photo</span
+              >
+              <span class="badge-filter-chip" data-badge="animation"
+                >Animation</span
+              >
+            </div>
+          </div>
         </div>
 
-        <div id="resultsCount" class="results-count"></div>
+        <div class="results-count" id="resultsCount"></div>
 
-        <div id="usersGrid" class="users-grid">
+        <div class="users-grid" id="usersGrid">
           <div class="loading-state">
             <div class="spinner"></div>
-            <p>Loading artists...</p>
+            <p>Discovering artists...</p>
           </div>
         </div>
       </div>
     </main>
 
-    <footer class="tutorial-footer">
+    <!-- ====== THEME CONTROLS ====== -->
+    <div class="theme-controls">
+      <button id="themeWarm" class="active" title="Warm Gradient">
+        <i class="fas fa-sun"></i>
+      </button>
+      <button id="themeCool" title="Cool Gradient">
+        <i class="fas fa-moon"></i>
+      </button>
+      <span
+        style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.1)"
+      ></span>
+      <button id="themeDark" class="active" title="Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="themeLight" title="Light Mode">
+        <i class="fas fa-sun"></i>
+      </button>
+      <span
+        style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.1)"
+      ></span>
+      <button id="hudToggle" class="active" title="HUD Mode (H)">
+        <i class="fas fa-vr-cardboard"></i>
+      </button>
+      <button id="scanlineToggle" class="active" title="Scanlines (S)">
+        <i class="fas fa-grip-lines"></i>
+      </button>
+      <button id="gridToggle" class="active" title="Grid Overlay (G)">
+        <i class="fas fa-th"></i>
+      </button>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- FOOTER                                                     -->
+    <!-- ========================================================== -->
+
+    <!-- components/footer.html -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/community/search-users.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -751,10 +1735,5 @@
         }, 300);
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/community/search-users.js"></script>
   </body>
 </html>

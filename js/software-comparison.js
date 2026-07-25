@@ -6,7 +6,64 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Software comparison page loaded');
 
-  // Get all "Learn More" buttons
+  // ---- Theme Toggle ----
+  const darkBtn = document.getElementById('themeDark');
+  const lightBtn = document.getElementById('themeLight');
+
+  // Check for saved theme preference
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-mode');
+    lightBtn.classList.add('active');
+    darkBtn.classList.remove('active');
+  }
+
+  darkBtn.addEventListener('click', function() {
+    document.body.classList.remove('light-mode');
+    darkBtn.classList.add('active');
+    lightBtn.classList.remove('active');
+    localStorage.setItem('theme', 'dark');
+  });
+
+  lightBtn.addEventListener('click', function() {
+    document.body.classList.add('light-mode');
+    lightBtn.classList.add('active');
+    darkBtn.classList.remove('active');
+    localStorage.setItem('theme', 'light');
+  });
+
+  // ---- "Read Journals" buttons - navigate to journals page with filter ----
+  document.querySelectorAll('.btn-reviews').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      // The href already points to the journals page with query param
+      // Let the browser handle the navigation
+      const href = this.getAttribute('href');
+      if (!href || href === '#') {
+        e.preventDefault();
+        window.location.href = '/pages/software/software-journals.html';
+      }
+      // Otherwise, let the browser navigate normally
+    });
+  });
+
+  // ---- "Read Journals" CTA button ----
+  const ctaJournalBtn = document.querySelector('.btn-secondary-soft');
+  if (ctaJournalBtn) {
+    ctaJournalBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/pages/software/software-journals.html';
+    });
+  }
+
+  // ---- "Take the Quiz" CTA button ----
+  const ctaQuizBtn = document.querySelector('.btn-primary-soft');
+  if (ctaQuizBtn) {
+    ctaQuizBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/pages/tools/software-quiz.html';
+    });
+  }
+
+  // ---- Software Details Modal ----
   const compareButtons = document.querySelectorAll('.btn-compare');
 
   // Software details database with official features page links
@@ -53,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // Add click handlers to each button
+  // Add click handlers to each button - FIXED to open trial links
   compareButtons.forEach(button => {
     button.addEventListener('click', function(e) {
       e.preventDefault();
@@ -62,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (softwareKey && softwareDetails[softwareKey]) {
         showSoftwareModal(softwareDetails[softwareKey]);
       } else {
-        // Fallback for any missing data
         showGenericNotification();
       }
     });
@@ -92,14 +148,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const modalContent = document.createElement('div');
     modalContent.style.cssText = `
-      background: white;
+      background: var(--bg-deep, #0a0815);
       border-radius: 24px;
       max-width: 520px;
       width: 90%;
       padding: 2rem;
       position: relative;
       animation: slideUp 0.3s ease;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      border: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+      color: var(--text-primary, #f0edf7);
     `;
 
     modalContent.innerHTML = `
@@ -111,61 +169,62 @@ document.addEventListener('DOMContentLoaded', function() {
         border: none;
         font-size: 1.8rem;
         cursor: pointer;
-        color: #999;
+        color: var(--text-muted, #7a7290);
         transition: all 0.2s;
         line-height: 1;
-      " onmouseover="this.style.color='#fe67ea'" onmouseout="this.style.color='#999'">&times;</button>
+      " onmouseover="this.style.color='#ff69b4'" onmouseout="this.style.color='var(--text-muted, #7a7290)'">&times;</button>
 
       <h2 style="
         font-size: 1.8rem;
         margin-bottom: 0.5rem;
-        background: linear-gradient(135deg, #1f2937, #fe67ea);
+        background: linear-gradient(135deg, #ff69b4, #8B5CF6);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
       ">${software.name}</h2>
 
-      <p style="color: #4b5563; line-height: 1.6; margin: 1rem 0;">
+      <p style="color: var(--text-secondary, #b0a8c8); line-height: 1.6; margin: 1rem 0;">
         ${software.description}
       </p>
 
       <div style="margin: 1.5rem 0;">
-        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">🎯 Best For:</h3>
-        <p style="color: #6b7280;">${software.bestFor}</p>
+        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-secondary, #b0a8c8);">🎯 Best For:</h3>
+        <p style="color: var(--text-muted, #7a7290);">${software.bestFor}</p>
       </div>
 
       <div style="margin: 1.5rem 0;">
-        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">✨ Key Features:</h3>
+        <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-secondary, #b0a8c8);">✨ Key Features:</h3>
         <ul style="list-style: none; padding: 0;">
-          ${software.features.map(f => `<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;"><span style="color: #10b981;">✓</span> ${f}</li>`).join('')}
+          ${software.features.map(f => `<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary, #b0a8c8);"><span style="color: #10b981;">✓</span> ${f}</li>`).join('')}
         </ul>
       </div>
 
       <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
-        <a href="${software.featuresPage}" target="_blank" style="
+        <a href="${software.featuresPage}" target="_blank" rel="noopener noreferrer" style="
           display: inline-flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
           background: transparent;
-          color: #fe67ea;
+          color: #ff69b4;
           text-decoration: none;
           padding: 0.75rem 1.5rem;
           border-radius: 40px;
           font-weight: 600;
           flex: 1;
           transition: all 0.2s;
-          border: 2px solid #fe67ea;
-        " onmouseover="this.style.backgroundColor='#fe67ea'; this.style.color='white'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#fe67ea'">
+          border: 2px solid #ff69b4;
+          cursor: pointer;
+        " onmouseover="this.style.backgroundColor='#ff69b4'; this.style.color='white'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ff69b4'">
           <i class="fas fa-list"></i> View All Features
         </a>
 
-        <a href="${software.trialLink}" target="_blank" style="
+        <a href="${software.trialLink}" target="_blank" rel="noopener noreferrer" style="
           display: inline-flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
-          background: #fe67ea;
+          background: linear-gradient(135deg, #ff69b4, #8B5CF6);
           color: white;
           text-decoration: none;
           padding: 0.75rem 1.5rem;
@@ -173,8 +232,9 @@ document.addEventListener('DOMContentLoaded', function() {
           font-weight: 600;
           flex: 1;
           transition: all 0.2s;
-          border: 2px solid #fe67ea;
-        " onmouseover="this.style.backgroundColor='#e237ce'; this.style.borderColor='#e237ce'" onmouseout="this.style.backgroundColor='#fe67ea'; this.style.borderColor='#fe67ea'">
+          border: 2px solid transparent;
+          cursor: pointer;
+        " onmouseover="this.style.boxShadow='0 8px 32px rgba(255,105,180,0.35)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='none'; this.style.transform='none'">
           <i class="fas fa-download"></i> Free Trial / Download
         </a>
       </div>
@@ -204,7 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
    * Fallback notification for demo purposes
    */
   function showGenericNotification() {
-    // Create a toast notification
     const toast = document.createElement('div');
     toast.textContent = '✨ More details coming soon! Check back for updates.';
     toast.style.cssText = `
@@ -212,24 +271,27 @@ document.addEventListener('DOMContentLoaded', function() {
       bottom: 2rem;
       left: 50%;
       transform: translateX(-50%);
-      background: #1f2937;
-      color: white;
+      background: var(--bg-deep, #0a0815);
+      color: var(--text-primary, #f0edf7);
       padding: 0.75rem 1.5rem;
       border-radius: 50px;
       font-size: 0.9rem;
       z-index: 10001;
       animation: slideUp 0.3s ease;
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+      border: 1px solid var(--glass-border, rgba(255,255,255,0.08));
+      backdrop-filter: blur(12px);
     `;
     document.body.appendChild(toast);
 
     setTimeout(() => {
       toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.3s ease';
       setTimeout(() => toast.remove(), 300);
     }, 2500);
   }
 
-  // Add animation keyframes dynamically
+  // ---- Add animation keyframes dynamically ----
   const styleSheet = document.createElement('style');
   styleSheet.textContent = `
     @keyframes fadeIn {
@@ -249,19 +311,30 @@ document.addEventListener('DOMContentLoaded', function() {
   `;
   document.head.appendChild(styleSheet);
 
-  // Table row hover effect enhancement
+  // ---- Table row hover effect ----
   const tableRows = document.querySelectorAll('.comparison-table tbody tr');
   tableRows.forEach(row => {
     row.addEventListener('mouseenter', function() {
       this.style.transition = 'background 0.2s';
-      this.style.backgroundColor = 'rgba(254, 103, 234, 0.04)';
+      this.style.backgroundColor = 'rgba(255, 105, 180, 0.04)';
     });
     row.addEventListener('mouseleave', function() {
       this.style.backgroundColor = '';
     });
   });
 
-  // Add smooth scroll for any anchor links
+  // ---- Mouse-following glow for feature cards ----
+document.querySelectorAll('.feature-compare-card').forEach(card => {
+  card.addEventListener('mousemove', function(e) {
+    const rect = this.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    this.style.setProperty('--mouse-x', x + '%');
+    this.style.setProperty('--mouse-y', y + '%');
+  });
+});
+
+  // ---- Smooth scroll for anchor links ----
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const target = document.querySelector(this.getAttribute('href'));
@@ -271,4 +344,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  console.log('✅ Software Comparison page initialized');
 });

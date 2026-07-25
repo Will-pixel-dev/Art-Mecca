@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rainbow Cyberpunk Community</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ============================================================
+           THEME VARIABLES — RAINBOW CYBERPUNK
+           ============================================================ */
+        :root {
+            --bg-body: #0a0508;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.07);
+            --bg-card-border: rgba(255, 255, 255, 0.06);
+            --bg-nav: rgba(10, 5, 8, 0.85);
+
+            --text-primary: #f5eaff;
+            --text-secondary: #b8a0d0;
+            --text-muted: #5a3a6a;
+
+            /* Rainbow Colors */
+            --rainbow-red: #ff0040;
+            --rainbow-orange: #ff6b00;
+            --rainbow-gold: #ffc72e;
+            --rainbow-green: #4ff3a6;
+            --rainbow-cyan: #58ebfe;
+            --rainbow-blue: #0088ff;
+            --rainbow-purple: #ad03fc;
+            --rainbow-pink: #ff00ea;
+
+            --gradient-rainbow: linear-gradient(135deg, #ff0040, #ff6b00, #ffc72e, #4ff3a6, #58ebfe, #0088ff, #ad03fc, #ff00ea);
+            --gradient-rainbow-horizontal: linear-gradient(90deg, #ff0040, #ff6b00, #ffc72e, #4ff3a6, #58ebfe, #0088ff, #ad03fc, #ff00ea);
+            --gradient-rainbow-vertical: linear-gradient(180deg, #ff0040, #ff6b00, #ffc72e, #4ff3a6, #58ebfe, #0088ff, #ad03fc, #ff00ea);
+
+            --font-display: 'Orbitron', 'Rajdhani', monospace;
+            --font-condensed: 'Rajdhani', 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+            --font-tag: 'Rubik Spray Paint', 'Permanent Marker', cursive;
+
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ============================================================
+           BASE
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-condensed);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ============================================================
+           BACKGROUND EFFECTS
+           ============================================================ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 10% 20%, rgba(255, 0, 64, 0.04), transparent 50%),
+                radial-gradient(ellipse at 90% 30%, rgba(255, 107, 0, 0.04), transparent 50%),
+                radial-gradient(ellipse at 50% 70%, rgba(255, 199, 46, 0.04), transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(79, 243, 166, 0.03), transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(88, 235, 254, 0.03), transparent 50%),
+                radial-gradient(ellipse at 30% 40%, rgba(173, 3, 252, 0.04), transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(255, 0, 234, 0.04), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: rainbowPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes rainbowPulse {
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ============================================================
+           RAINBOW SCANLINES
+           ============================================================ */
+        .rainbow-scanlines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9996;
+            background: repeating-linear-gradient(0deg,
+                    transparent 0px,
+                    transparent 2px,
+                    rgba(255, 0, 0, 0.02) 2px,
+                    rgba(255, 0, 0, 0.02) 3px,
+                    transparent 3px,
+                    transparent 5px,
+                    rgba(255, 165, 0, 0.02) 5px,
+                    rgba(255, 165, 0, 0.02) 6px,
+                    transparent 6px,
+                    transparent 8px,
+                    rgba(255, 255, 0, 0.02) 8px,
+                    rgba(255, 255, 0, 0.02) 9px,
+                    transparent 9px,
+                    transparent 11px,
+                    rgba(0, 255, 0, 0.02) 11px,
+                    rgba(0, 255, 0, 0.02) 12px,
+                    transparent 12px,
+                    transparent 14px,
+                    rgba(0, 255, 255, 0.02) 14px,
+                    rgba(0, 255, 255, 0.02) 15px,
+                    transparent 15px,
+                    transparent 17px,
+                    rgba(0, 0, 255, 0.02) 17px,
+                    rgba(0, 0, 255, 0.02) 18px,
+                    transparent 18px,
+                    transparent 20px,
+                    rgba(128, 0, 255, 0.02) 20px,
+                    rgba(128, 0, 255, 0.02) 21px,
+                    transparent 21px,
+                    transparent 23px,
+                    rgba(255, 0, 255, 0.02) 23px,
+                    rgba(255, 0, 255, 0.02) 24px);
+            animation: rainbowScanMove 0.6s linear infinite;
+        }
+
+        @keyframes rainbowScanMove {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(24px);
+            }
+        }
+
+        /* Grid lines */
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9995;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ============================================================
+           RAINBOW GLITCH TEXT UTILITY
+           ============================================================ */
+        .rainbow-text {
+            background: var(--gradient-rainbow);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbowShift 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 234, 0.1));
+        }
+
+        @keyframes rainbowShift {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* ============================================================
+           GLITCH TEXT — RAINBOW (AGGRESSIVE)
+           ============================================================ */
+        .glitch-rainbow {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-rainbow::before,
+        .glitch-rainbow::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            pointer-events: none;
+            -webkit-text-fill-color: initial;
+        }
+
+        .glitch-rainbow::before {
+            color: #ff0040;
+            z-index: -1;
+            animation: glitchRainbow1 0.08s infinite;
+            text-shadow: 3px 0 #58ebfe, -2px 0 #ffc72e;
+        }
+
+        .glitch-rainbow::after {
+            color: #58ebfe;
+            z-index: -2;
+            animation: glitchRainbow2 0.12s infinite;
+            text-shadow: -3px 0 #ff0040, 2px 0 #4ff3a6;
+        }
+
+        .glitch-rainbow:hover::before {
+            animation: glitchRainbow1 0.04s infinite;
+        }
+
+        .glitch-rainbow:hover::after {
+            animation: glitchRainbow2 0.06s infinite;
+        }
+
+        @keyframes glitchRainbow1 {
+            0% {
+                transform: translate(0) skewX(0deg);
+                color: #ff0040;
+            }
+            10% {
+                transform: translate(-3px, 2px) skewX(4deg);
+                color: #ff6b00;
+            }
+            20% {
+                transform: translate(3px, -2px) skewX(-4deg);
+                color: #ffc72e;
+            }
+            30% {
+                transform: translate(-2px, 4px) skewX(3deg);
+                color: #4ff3a6;
+            }
+            40% {
+                transform: translate(2px, -4px) skewX(-3deg);
+                color: #58ebfe;
+            }
+            50% {
+                transform: translate(-4px, 2px) skewX(5deg);
+                color: #0088ff;
+            }
+            60% {
+                transform: translate(4px, -2px) skewX(-5deg);
+                color: #ad03fc;
+            }
+            70% {
+                transform: translate(-2px, 3px) skewX(2deg);
+                color: #ff00ea;
+            }
+            80% {
+                transform: translate(2px, -3px) skewX(-2deg);
+                color: #ff0040;
+            }
+            90% {
+                transform: translate(-1px, 1px) skewX(1deg);
+                color: #ff6b00;
+            }
+            100% {
+                transform: translate(0) skewX(0deg);
+                color: #ff0040;
+            }
+        }
+
+        @keyframes glitchRainbow2 {
+            0% {
+                transform: translate(0) skewX(0deg);
+                color: #58ebfe;
+            }
+            10% {
+                transform: translate(3px, -2px) skewX(-4deg);
+                color: #0088ff;
+            }
+            20% {
+                transform: translate(-3px, 2px) skewX(4deg);
+                color: #ad03fc;
+            }
+            30% {
+                transform: translate(2px, -4px) skewX(-3deg);
+                color: #ff00ea;
+            }
+            40% {
+                transform: translate(-2px, 4px) skewX(3deg);
+                color: #58ebfe;
+            }
+            50% {
+                transform: translate(4px, -2px) skewX(-5deg);
+                color: #ff0040;
+            }
+            60% {
+                transform: translate(-4px, 2px) skewX(5deg);
+                color: #ff6b00;
+            }
+            70% {
+                transform: translate(2px, -3px) skewX(-2deg);
+                color: #ffc72e;
+            }
+            80% {
+                transform: translate(-2px, 3px) skewX(2deg);
+                color: #4ff3a6;
+            }
+            90% {
+                transform: translate(1px, -1px) skewX(-1deg);
+                color: #58ebfe;
+            }
+            100% {
+                transform: translate(0) skewX(0deg);
+                color: #58ebfe;
+            }
+        }
+
+        /* ============================================================
+           HEADER / NAV
+           ============================================================ */
+        .community-header {
+            position: sticky;
+            top: 12px;
+            z-index: 100;
+            background: var(--bg-nav);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            margin: 12px 20px 0;
+            padding: 10px 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: all var(--transition);
+        }
+
+        .community-header:hover {
+            border-color: rgba(255, 0, 234, 0.15);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo .logo-icon {
+            font-size: 1.2rem;
+            background: var(--gradient-rainbow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo .logo-text {
+            background: var(--gradient-rainbow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: rainbowShift 3s ease-in-out infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-condensed);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gradient-rainbow-horizontal);
+            transition: width var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-status {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--rainbow-green);
+            letter-spacing: 1px;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ============================================================
+           MAIN CONTAINER
+           ============================================================ */
+        .community-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================================================
+           SECTION COLOR STYLES — INTENSIFIED SHADOWS
+           ============================================================ */
+
+        /* --- RED (HERO) --- */
+        .section-hero {
+            border-color: rgba(255, 0, 64, 0.25) !important;
+            box-shadow: 0 0 80px rgba(255, 0, 64, 0.15), 0 0 160px rgba(255, 0, 64, 0.05), inset 0 0 80px rgba(255, 0, 64, 0.03) !important;
+        }
+
+        .section-hero .section-badge {
+            color: #ff0040 !important;
+            text-shadow: 0 0 40px rgba(255, 0, 64, 0.3) !important;
+        }
+
+        .section-hero h1 .rainbow-text {
+            filter: drop-shadow(0 0 60px rgba(255, 0, 64, 0.25)) !important;
+        }
+
+        /* --- ORANGE (FEATURES) --- */
+        .section-orange {
+            border-color: rgba(255, 107, 0, 0.25) !important;
+            box-shadow: 0 0 80px rgba(255, 107, 0, 0.12), 0 0 160px rgba(255, 107, 0, 0.04), inset 0 0 80px rgba(255, 107, 0, 0.03) !important;
+        }
+
+        .feature-card.section-orange:hover {
+            border-color: rgba(255, 107, 0, 0.35) !important;
+            box-shadow: 0 8px 32px rgba(255, 107, 0, 0.12), 0 0 60px rgba(255, 107, 0, 0.05) !important;
+        }
+
+        /* --- GOLD (COMMUNITY FEED) --- */
+        .section-gold {
+            border-color: rgba(255, 199, 46, 0.25) !important;
+            box-shadow: 0 0 80px rgba(255, 199, 46, 0.12), 0 0 160px rgba(255, 199, 46, 0.04), inset 0 0 80px rgba(255, 199, 46, 0.03) !important;
+        }
+
+        .feed-card.section-gold:hover {
+            border-color: rgba(255, 199, 46, 0.35) !important;
+            box-shadow: 0 8px 32px rgba(255, 199, 46, 0.12), 0 0 60px rgba(255, 199, 46, 0.05) !important;
+        }
+
+        /* --- GREEN (CHALLENGES) --- */
+        .section-green {
+            border-color: rgba(79, 243, 166, 0.25) !important;
+            box-shadow: 0 0 80px rgba(79, 243, 166, 0.12), 0 0 160px rgba(79, 243, 166, 0.04), inset 0 0 80px rgba(79, 243, 166, 0.03) !important;
+        }
+
+        .challenge-card.section-green:hover {
+            border-color: rgba(79, 243, 166, 0.35) !important;
+            box-shadow: 0 8px 32px rgba(79, 243, 166, 0.12), 0 0 60px rgba(79, 243, 166, 0.05) !important;
+        }
+
+        /* --- CYAN (GALLERY) --- */
+        .section-cyan {
+            border-color: rgba(88, 235, 254, 0.25) !important;
+            box-shadow: 0 0 80px rgba(88, 235, 254, 0.12), 0 0 160px rgba(88, 235, 254, 0.04), inset 0 0 80px rgba(88, 235, 254, 0.03) !important;
+        }
+
+        .gallery-item.section-cyan:hover {
+            border-color: rgba(88, 235, 254, 0.35) !important;
+            box-shadow: 0 8px 32px rgba(88, 235, 254, 0.12), 0 0 60px rgba(88, 235, 254, 0.05) !important;
+        }
+
+        /* --- PURPLE (CTA / FOOTER) --- */
+        .section-purple {
+            border-color: rgba(173, 3, 252, 0.25) !important;
+            box-shadow: 0 0 80px rgba(173, 3, 252, 0.12), 0 0 160px rgba(173, 3, 252, 0.04), inset 0 0 80px rgba(173, 3, 252, 0.03) !important;
+        }
+
+        .section-purple .btn {
+            background: linear-gradient(135deg, #ad03fc, #ff00ea) !important;
+            box-shadow: 0 0 60px rgba(173, 3, 252, 0.15) !important;
+            animation: none !important;
+        }
+
+        .section-purple .btn:hover {
+            box-shadow: 0 0 80px rgba(173, 3, 252, 0.25) !important;
+        }
+
+        /* ============================================================
+           HERO SECTION — RED (AGGRESSIVE GLITCH HEADER)
+           ============================================================ */
+        .hero-section {
+            padding: 60px 48px;
+            border-radius: 4px;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 64, 0.15);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(255, 0, 64, 0.12), 0 0 160px rgba(255, 0, 64, 0.04), inset 0 0 80px rgba(255, 0, 64, 0.03);
+            transition: all var(--transition);
+        }
+
+        .hero-section:hover {
+            border-color: rgba(255, 0, 64, 0.35);
+            box-shadow: 0 0 120px rgba(255, 0, 64, 0.18), 0 0 200px rgba(255, 0, 64, 0.06), inset 0 0 120px rgba(255, 0, 64, 0.04);
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 0, 64, 0.04), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-section .hero-badge {
+            display: inline-block;
+            font-family: var(--font-tag);
+            font-size: 0.9rem;
+            color: #ff0040;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            transform: rotate(-1deg);
+            text-shadow: 0 0 40px rgba(255, 0, 64, 0.3);
+        }
+
+        .hero-section h1 {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            line-height: 1.05;
+            margin-bottom: 16px;
+        }
+
+        .hero-section h1 .rainbow-text {
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 60px rgba(255, 0, 64, 0.2));
+            animation: heroGlitchText 0.5s infinite;
+        }
+
+        @keyframes heroGlitchText {
+            0% {
+                filter: drop-shadow(0 0 60px rgba(255, 0, 64, 0.2));
+            }
+            25% {
+                filter: drop-shadow(0 0 80px rgba(255, 0, 64, 0.3)) drop-shadow(0 0 120px rgba(255, 0, 64, 0.1));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(255, 0, 64, 0.15));
+            }
+            75% {
+                filter: drop-shadow(0 0 100px rgba(255, 0, 64, 0.25)) drop-shadow(0 0 140px rgba(255, 0, 64, 0.08));
+            }
+            100% {
+                filter: drop-shadow(0 0 60px rgba(255, 0, 64, 0.2));
+            }
+        }
+
+        .hero-section .hero-glitch-header {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-section .hero-glitch-header::before,
+        .hero-section .hero-glitch-header::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.6;
+            pointer-events: none;
+            -webkit-text-fill-color: initial;
+        }
+
+        .hero-section .hero-glitch-header::before {
+            color: #ff0040;
+            z-index: -1;
+            animation: heroGlitch1 0.06s infinite;
+            text-shadow: 4px 0 #58ebfe, -3px 0 #ffc72e;
+        }
+
+        .hero-section .hero-glitch-header::after {
+            color: #58ebfe;
+            z-index: -2;
+            animation: heroGlitch2 0.09s infinite;
+            text-shadow: -4px 0 #ff0040, 3px 0 #4ff3a6;
+        }
+
+        @keyframes heroGlitch1 {
+            0% {
+                transform: translate(0) skewX(0deg);
+                color: #ff0040;
+            }
+            10% {
+                transform: translate(-5px, 3px) skewX(6deg);
+                color: #ff6b00;
+            }
+            20% {
+                transform: translate(5px, -3px) skewX(-6deg);
+                color: #ffc72e;
+            }
+            30% {
+                transform: translate(-3px, 5px) skewX(4deg);
+                color: #4ff3a6;
+            }
+            40% {
+                transform: translate(3px, -5px) skewX(-4deg);
+                color: #58ebfe;
+            }
+            50% {
+                transform: translate(-6px, 3px) skewX(8deg);
+                color: #0088ff;
+            }
+            60% {
+                transform: translate(6px, -3px) skewX(-8deg);
+                color: #ad03fc;
+            }
+            70% {
+                transform: translate(-3px, 4px) skewX(3deg);
+                color: #ff00ea;
+            }
+            80% {
+                transform: translate(3px, -4px) skewX(-3deg);
+                color: #ff0040;
+            }
+            90% {
+                transform: translate(-2px, 2px) skewX(2deg);
+                color: #ff6b00;
+            }
+            100% {
+                transform: translate(0) skewX(0deg);
+                color: #ff0040;
+            }
+        }
+
+        @keyframes heroGlitch2 {
+            0% {
+                transform: translate(0) skewX(0deg);
+                color: #58ebfe;
+            }
+            10% {
+                transform: translate(5px, -3px) skewX(-6deg);
+                color: #0088ff;
+            }
+            20% {
+                transform: translate(-5px, 3px) skewX(6deg);
+                color: #ad03fc;
+            }
+            30% {
+                transform: translate(3px, -5px) skewX(-4deg);
+                color: #ff00ea;
+            }
+            40% {
+                transform: translate(-3px, 5px) skewX(4deg);
+                color: #58ebfe;
+            }
+            50% {
+                transform: translate(6px, -3px) skewX(-8deg);
+                color: #ff0040;
+            }
+            60% {
+                transform: translate(-6px, 3px) skewX(8deg);
+                color: #ff6b00;
+            }
+            70% {
+                transform: translate(3px, -4px) skewX(-3deg);
+                color: #ffc72e;
+            }
+            80% {
+                transform: translate(-3px, 4px) skewX(3deg);
+                color: #4ff3a6;
+            }
+            90% {
+                transform: translate(2px, -2px) skewX(-2deg);
+                color: #58ebfe;
+            }
+            100% {
+                transform: translate(0) skewX(0deg);
+                color: #58ebfe;
+            }
+        }
+
+        .hero-section p {
+            font-family: var(--font-condensed);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 28px;
+            letter-spacing: 1px;
+            line-height: 1.8;
+        }
+
+        .hero-section .hero-tags {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-section .hero-tags .tag {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 16px;
+            border-radius: 99px;
+            border: 1px solid rgba(255, 0, 64, 0.12);
+            transition: all var(--transition);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .hero-section .hero-tags .tag:hover {
+            border-color: rgba(255, 0, 64, 0.35);
+            box-shadow: 0 0 40px rgba(255, 0, 64, 0.08);
+            color: #fff;
+        }
+
+        /* ============================================================
+           SECTION HEADER
+           ============================================================ */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .section-header .section-link {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color var(--transition);
+            letter-spacing: 1px;
+        }
+
+        .section-header .section-link:hover {
+            color: var(--rainbow-cyan);
+        }
+
+        /* ============================================================
+           FEATURES GRID — ORANGE
+           ============================================================ */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .feature-card {
+            padding: 28px 20px;
+            text-align: center;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 107, 0, 0.12);
+            border-radius: 4px;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 107, 0, 0.02), inset 0 0 30px rgba(255, 107, 0, 0.01);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b00, #ffc72e, #ff6b00);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(255, 107, 0, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(255, 107, 0, 0.10), 0 0 60px rgba(255, 107, 0, 0.04);
+        }
+
+        .feature-card .feature-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .feature-card .feature-icon .rainbow {
+            background: var(--gradient-rainbow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .feature-card p {
+            font-family: var(--font-condensed);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           FEED — GOLD
+           ============================================================ */
+        .feed-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .feed-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 199, 46, 0.12);
+            border-radius: 4px;
+            padding: 24px;
+            transition: all var(--transition);
+            box-shadow: 0 0 30px rgba(255, 199, 46, 0.02), inset 0 0 30px rgba(255, 199, 46, 0.01);
+        }
+
+        .feed-card:hover {
+            border-color: rgba(255, 199, 46, 0.35);
+            box-shadow: 0 8px 32px rgba(255, 199, 46, 0.10), 0 0 60px rgba(255, 199, 46, 0.04);
+        }
+
+        .feed-card .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .feed-card .feed-header h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .feed-card .feed-header .feed-badge {
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 2px 12px;
+            border: 1px solid rgba(255, 199, 46, 0.12);
+            border-radius: 99px;
+        }
+
+        .feed-item {
+            display: flex;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 199, 46, 0.04);
+            transition: all var(--transition);
+        }
+
+        .feed-item:last-child {
+            border-bottom: none;
+        }
+
+        .feed-item:hover {
+            padding-left: 8px;
+        }
+
+        .feed-item .feed-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-tag);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            background: radial-gradient(circle, rgba(255, 199, 46, 0.15), transparent);
+            color: var(--text-primary);
+        }
+
+        .feed-item .feed-content {
+            flex: 1;
+        }
+
+        .feed-item .feed-content .feed-name {
+            font-family: var(--font-condensed);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .feed-item .feed-content .feed-name .gold-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-left: 6px;
+            background: #ffc72e;
+            box-shadow: 0 0 10px rgba(255, 199, 46, 0.2);
+        }
+
+        .feed-item .feed-content .feed-text {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .feed-item .feed-content .feed-time {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--text-muted);
+        }
+
+        /* ============================================================
+           SIDEBAR — GOLD
+           ============================================================ */
+        .sidebar-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 199, 46, 0.08);
+            border-radius: 4px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all var(--transition);
+            box-shadow: 0 0 30px rgba(255, 199, 46, 0.02);
+        }
+
+        .sidebar-card:hover {
+            border-color: rgba(255, 199, 46, 0.2);
+            box-shadow: 0 8px 32px rgba(255, 199, 46, 0.06);
+        }
+
+        .sidebar-card h4 {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .sidebar-card .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 199, 46, 0.04);
+            font-family: var(--font-condensed);
+            font-size: 0.8rem;
+        }
+
+        .sidebar-card .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-card .stat-item .stat-label {
+            color: var(--text-muted);
+        }
+
+        .sidebar-card .stat-item .stat-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .sidebar-card .stat-item .stat-value.rainbow {
+            background: var(--gradient-rainbow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-card .sidebar-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .sidebar-card .sidebar-tag-list .tag {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            padding: 2px 12px;
+            border-radius: 99px;
+            border: 1px solid rgba(255, 199, 46, 0.06);
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+
+        .sidebar-card .sidebar-tag-list .tag:hover {
+            border-color: rgba(255, 199, 46, 0.2);
+            color: var(--text-primary);
+        }
+
+        /* ============================================================
+           CHALLENGES — GREEN
+           ============================================================ */
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .challenge-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(79, 243, 166, 0.12);
+            border-radius: 4px;
+            padding: 24px;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(79, 243, 166, 0.02), inset 0 0 30px rgba(79, 243, 166, 0.01);
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4ff3a6, #58ebfe, #4ff3a6);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .challenge-card:hover::before {
+            opacity: 1;
+        }
+
+        .challenge-card:hover {
+            border-color: rgba(79, 243, 166, 0.35);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(79, 243, 166, 0.10), 0 0 60px rgba(79, 243, 166, 0.04);
+        }
+
+        .challenge-card .challenge-badge {
+            font-family: var(--font-tag);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: #4ff3a6;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .challenge-card h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .challenge-card p {
+            font-family: var(--font-condensed);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .challenge-card .challenge-meta {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+
+        .challenge-card .challenge-meta .prize {
+            color: #ffc72e;
+        }
+
+        .challenge-card .challenge-progress {
+            margin-top: 10px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .challenge-card .challenge-progress .progress-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #4ff3a6, #58ebfe, #4ff3a6);
+            background-size: 200% 100%;
+            animation: progressShift 2s ease-in-out infinite;
+            width: 64%;
+        }
+
+        @keyframes progressShift {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* ============================================================
+           GALLERY — CYAN
+           ============================================================ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            border-radius: 4px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: var(--bg-card);
+            border: 1px solid rgba(88, 235, 254, 0.08);
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-muted);
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(88, 235, 254, 0.02);
+        }
+
+        .gallery-item:hover {
+            border-color: rgba(88, 235, 254, 0.35);
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(88, 235, 254, 0.10), 0 0 60px rgba(88, 235, 254, 0.04);
+        }
+
+        .gallery-item .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(88, 235, 254, 0.05), transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item .gallery-label {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.5rem;
+            color: rgba(88, 235, 254, 0.3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-row: span 2;
+            aspect-ratio: auto;
+            min-height: 200px;
+        }
+
+        .gallery-item:nth-child(2) {
+            background: radial-gradient(circle at 30% 40%, rgba(88, 235, 254, 0.08), transparent 60%);
+        }
+        .gallery-item:nth-child(3) {
+            background: radial-gradient(circle at 60% 30%, rgba(88, 235, 254, 0.06), transparent 60%);
+        }
+        .gallery-item:nth-child(4) {
+            background: radial-gradient(circle at 40% 50%, rgba(88, 235, 254, 0.08), transparent 60%);
+        }
+        .gallery-item:nth-child(5) {
+            background: radial-gradient(circle at 50% 30%, rgba(88, 235, 254, 0.06), transparent 60%);
+        }
+        .gallery-item:nth-child(6) {
+            background: radial-gradient(circle at 30% 70%, rgba(88, 235, 254, 0.08), transparent 60%);
+        }
+        .gallery-item:nth-child(7) {
+            background: radial-gradient(circle at 70% 80%, rgba(88, 235, 254, 0.06), transparent 60%);
+        }
+        .gallery-item:nth-child(8) {
+            background: radial-gradient(circle at 50% 50%, rgba(88, 235, 254, 0.08), transparent 60%);
+        }
+
+        /* ============================================================
+           CTA SECTION — PURPLE
+           ============================================================ */
+        .cta-section {
+            padding: 48px 40px;
+            text-align: center;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(173, 3, 252, 0.12);
+            border-radius: 4px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(173, 3, 252, 0.05), 0 0 120px rgba(173, 3, 252, 0.02), inset 0 0 60px rgba(173, 3, 252, 0.02);
+            transition: all var(--transition);
+        }
+
+        .cta-section:hover {
+            border-color: rgba(173, 3, 252, 0.3);
+            box-shadow: 0 0 100px rgba(173, 3, 252, 0.08), 0 0 160px rgba(173, 3, 252, 0.03), inset 0 0 100px rgba(173, 3, 252, 0.03);
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(173, 3, 252, 0.04), transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .cta-section p {
+            font-family: var(--font-condensed);
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .cta-section .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-condensed);
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            background: linear-gradient(135deg, #ad03fc, #ff00ea);
+            color: var(--text-inverse);
+            box-shadow: 0 0 60px rgba(173, 3, 252, 0.1);
+        }
+
+        .cta-section .btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 80px rgba(173, 3, 252, 0.2);
+        }
+
+        /* ============================================================
+           FOOTER — PURPLE
+           ============================================================ */
+        .community-footer {
+            padding: 32px 0 20px;
+            border-top: 1px solid rgba(173, 3, 252, 0.08);
+            margin-top: 20px;
+            box-shadow: 0 -4px 40px rgba(173, 3, 252, 0.02);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-container .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .footer-container .footer-brand .rainbow {
+            background: var(--gradient-rainbow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: rainbowShift 3s ease-in-out infinite;
+        }
+
+        .footer-container .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-container .footer-links a {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color var(--transition);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .footer-container .footer-links a:hover {
+            color: #ad03fc;
+        }
+
+        .footer-container .footer-social {
+            display: flex;
+            gap: 12px;
+            font-size: 1.1rem;
+        }
+
+        .footer-container .footer-social a {
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+
+        .footer-container .footer-social a:hover {
+            color: #ad03fc;
+            transform: scale(1.1);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .feed-grid {
+                grid-template-columns: 1fr;
+            }
+            .challenge-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gallery-item:nth-child(1) {
+                grid-row: span 1;
+                min-height: auto;
+                aspect-ratio: 1;
+            }
+            .hero-section h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .community-header {
+                margin: 8px 8px 0;
+                padding: 8px 16px;
+            }
+            .nav-links {
+                gap: 12px;
+            }
+            .nav-links a {
+                font-size: 0.6rem;
+            }
+            .nav-status {
+                display: none;
+            }
+            .community-main {
+                padding: 16px 12px 40px;
+            }
+            .hero-section {
+                padding: 32px 20px;
+            }
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+            .hero-section p {
+                font-size: 0.95rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .feature-card {
+                padding: 20px 16px;
+            }
+            .challenge-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .cta-section {
+                padding: 32px 20px;
+            }
+            .cta-section h2 {
+                font-size: 1.5rem;
+            }
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .footer-container .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section h1 {
+                font-size: 1.6rem;
+                letter-spacing: 2px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .feed-item {
+                padding: 8px 0;
+            }
+            .feed-item .feed-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+            .community-header {
+                padding: 6px 12px;
+            }
+            .nav-links {
+                gap: 8px;
+            }
+            .nav-links a {
+                font-size: 0.5rem;
+            }
+            .section-header h2 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Grid Overlay -->
+    <div class="grid-overlay"></div>
+
+    <!-- Rainbow Scanlines -->
+    <div class="rainbow-scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="community-header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">ART MECCA</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Challenges</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">Forums</a></li>
+            </ul>
+            <span class="nav-status">● ONLINE</span>
+        </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="community-main">
+
+        <!-- ====== HERO — RED (AGGRESSIVE GLITCH HEADER) ====== -->
+        <section class="hero-section section-hero">
+            <div class="hero-badge">✦ red zone</div>
+            <h1>
+                <span class="hero-glitch-header rainbow-text" data-text="Community Center">
+                    Community Center
+                </span>
+            </h1>
+            <p class="glitch-rainbow" data-text="Where digital artists gather — neon meets color, graffiti meets hologram.">
+                Where digital artists gather — neon meets color, graffiti meets hologram.
+            </p>
+            <div class="hero-tags">
+                <span class="tag">✦ Creative</span>
+                <span class="tag">✦ Inclusive</span>
+                <span class="tag">✦ Colorful</span>
+                <span class="tag">✦ Cyber</span>
+                <span class="tag">✦ Holographic</span>
+                <span class="tag">✦ Street Art</span>
+                <span class="tag">✦ Rainbow</span>
+            </div>
+        </section>
+
+        <!-- ====== FEATURES — ORANGE ====== -->
+        <div class="section-header section-orange">
+            <h2>✦ <span class="glitch-rainbow" data-text="Features">Features</span></h2>
+            <a href="#" class="section-link">View All →</a>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card section-orange">
+                <span class="feature-icon">🎨</span>
+                <h3 class="glitch-rainbow" data-text="Digital Gallery">Digital Gallery</h3>
+                <p>Showcase your art in a rainbow-lit HUD gallery</p>
+            </div>
+            <div class="feature-card section-orange">
+                <span class="feature-icon">🏆</span>
+                <h3 class="glitch-rainbow" data-text="Challenges">Challenges</h3>
+                <p>Daily, weekly, and monthly creative battles</p>
+            </div>
+            <div class="feature-card section-orange">
+                <span class="feature-icon">👥</span>
+                <h3 class="glitch-rainbow" data-text="Artist Forums">Artist Forums</h3>
+                <p>Connect with fellow creatives across the spectrum</p>
+            </div>
+            <div class="feature-card section-orange">
+                <span class="feature-icon">📡</span>
+                <h3 class="glitch-rainbow" data-text="Live Feed">Live Feed</h3>
+                <p>Real-time activity from the community</p>
+            </div>
+            <div class="feature-card section-orange">
+                <span class="feature-icon">🛠️</span>
+                <h3 class="glitch-rainbow" data-text="Tools">Tools</h3>
+                <p>Color palettes, prompts, and HUD overlays</p>
+            </div>
+            <div class="feature-card section-orange">
+                <span class="feature-icon">💡</span>
+                <h3 class="glitch-rainbow" data-text="Workshops">Workshops</h3>
+                <p>Learn from artists in live holographic sessions</p>
+            </div>
+            <div class="feature-card section-orange">
+                <span class="feature-icon">🌈</span>
+                <h3 class="glitch-rainbow" data-text="Rainbow Mode">Rainbow Mode</h3>
+                <p>Everything glows in full color spectrum</p>
+            </div>
+            <div class="feature-card section-orange">
+                <span class="feature-icon">⚡</span>
+                <h3 class="glitch-rainbow" data-text="HUD Overlay">HUD Overlay</h3>
+                <p>Sci-fi interface for the modern artist</p>
+            </div>
+        </div>
+
+        <!-- ====== COMMUNITY FEED — GOLD ====== -->
+        <div class="section-header section-gold">
+            <h2>✦ <span class="glitch-rainbow" data-text="Community Feed">Community Feed</span></h2>
+            <a href="#" class="section-link">View All →</a>
+        </div>
+        <div class="feed-grid">
+            <div class="feed-card section-gold">
+                <div class="feed-header">
+                    <h3>Recent Activity</h3>
+                    <span class="feed-badge">● LIVE</span>
+                </div>
+                <div class="feed-item">
+                    <div class="feed-avatar">🎨</div>
+                    <div class="feed-content">
+                        <div class="feed-name">@cyber_kiwi <span class="gold-dot"></span></div>
+                        <div class="feed-text">Just dropped a new neon portrait in the gallery!</div>
+                        <div class="feed-time">2 min ago</div>
+                    </div>
+                </div>
+                <div class="feed-item">
+                    <div class="feed-avatar">🖌️</div>
+                    <div class="feed-content">
+                        <div class="feed-name">@lunar_brush <span class="gold-dot"></span></div>
+                        <div class="feed-text">Won the weekly challenge with a holographic masterpiece!</div>
+                        <div class="feed-time">18 min ago</div>
+                    </div>
+                </div>
+                <div class="feed-item">
+                    <div class="feed-avatar">🌈</div>
+                    <div class="feed-content">
+                        <div class="feed-name">@rainbow_riot <span class="gold-dot"></span></div>
+                        <div class="feed-text">Hosting a live color theory workshop in 30 min!</div>
+                        <div class="feed-time">1 hour ago</div>
+                    </div>
+                </div>
+                <div class="feed-item">
+                    <div class="feed-avatar">✨</div>
+                    <div class="feed-content">
+                        <div class="feed-name">@nebula_studio <span class="gold-dot"></span></div>
+                        <div class="feed-text">New tutorial: "How to create glowing rainbow effects"</div>
+                        <div class="feed-time">2 hours ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="sidebar-card section-gold">
+                    <h4>📊 <span class="rainbow-text">Community Stats</span></h4>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Artists</span>
+                        <span class="stat-value rainbow">12,847</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Active Today</span>
+                        <span class="stat-value rainbow">3,421</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Challenges Active</span>
+                        <span class="stat-value rainbow">47</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Artworks Uploaded</span>
+                        <span class="stat-value rainbow">2.4k</span>
+                    </div>
+                </div>
+                <div class="sidebar-card section-gold">
+                    <h4>🏷️ <span class="rainbow-text">Trending Tags</span></h4>
+                    <div class="sidebar-tag-list">
+                        <span class="tag">#cyberpunk</span>
+                        <span class="tag">#rainbow</span>
+                        <span class="tag">#neon</span>
+                        <span class="tag">#hologram</span>
+                        <span class="tag">#streetart</span>
+                        <span class="tag">#glitch</span>
+                        <span class="tag">#vaporwave</span>
+                        <span class="tag">#HUD</span>
+                        <span class="tag">#sci-fi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== CHALLENGES — GREEN ====== -->
+        <div class="section-header section-green">
+            <h2>🏆 <span class="glitch-rainbow" data-text="Active Challenges">Active Challenges</span></h2>
+            <a href="#" class="section-link">View All →</a>
+        </div>
+        <div class="challenge-grid">
+            <div class="challenge-card section-green">
+                <span class="challenge-badge">★ rainbow</span>
+                <h3>🌈 Spectrum Showdown</h3>
+                <p>Create art using all 7 colors of the rainbow in a cyberpunk setting</p>
+                <div class="challenge-meta">
+                    <span>👥 847 participants</span>
+                    <span class="prize">🏆 500 Pigments</span>
+                </div>
+                <div class="challenge-progress">
+                    <div class="progress-fill" style="width: 64%;"></div>
+                </div>
+            </div>
+            <div class="challenge-card section-green">
+                <span class="challenge-badge">✦ hologram</span>
+                <h3>🖼️ Holographic Portraits</h3>
+                <p>Digital portraits with a holographic, rainbow-tinged aesthetic</p>
+                <div class="challenge-meta">
+                    <span>👥 612 participants</span>
+                    <span class="prize">🏆 350 Pigments</span>
+                </div>
+                <div class="challenge-progress">
+                    <div class="progress-fill" style="width: 48%;"></div>
+                </div>
+            </div>
+            <div class="challenge-card section-green">
+                <span class="challenge-badge">◈ graffiti</span>
+                <h3>🎨 Neon Graffiti Wall</h3>
+                <p>Design a vibrant graffiti piece with cyberpunk and rainbow elements</p>
+                <div class="challenge-meta">
+                    <span>👥 1.2k participants</span>
+                    <span class="prize">🏆 800 Pigments</span>
+                </div>
+                <div class="challenge-progress">
+                    <div class="progress-fill" style="width: 82%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== GALLERY — CYAN ====== -->
+        <div class="section-header section-cyan">
+            <h2>🖼️ <span class="glitch-rainbow" data-text="Gallery Highlights">Gallery Highlights</span></h2>
+            <a href="#" class="section-link">View All →</a>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item section-cyan" style="background: radial-gradient(circle at 30% 40%, rgba(88, 235, 254, 0.15), transparent 60%), radial-gradient(circle at 70% 60%, rgba(88, 235, 254, 0.10), transparent 50%);">
+                <span>🎨</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● neon dream</span>
+            </div>
+            <div class="gallery-item section-cyan">
+                <span>🌈</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● rainbow flow</span>
+            </div>
+            <div class="gallery-item section-cyan">
+                <span>💫</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● holographic</span>
+            </div>
+            <div class="gallery-item section-cyan">
+                <span>🎯</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● cyber glow</span>
+            </div>
+            <div class="gallery-item section-cyan">
+                <span>🖌️</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● graffiti tag</span>
+            </div>
+            <div class="gallery-item section-cyan">
+                <span>🌟</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● starlight</span>
+            </div>
+            <div class="gallery-item section-cyan">
+                <span>⚡</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● electric HUD</span>
+            </div>
+            <div class="gallery-item section-cyan">
+                <span>✨</span>
+                <div class="gallery-overlay"></div>
+                <span class="gallery-label">● spectrum</span>
+            </div>
+        </div>
+
+        <!-- ====== CTA — PURPLE ====== -->
+        <section class="cta-section section-purple">
+            <h2>✨ <span class="rainbow-text">Join the Rainbow Revolution</span></h2>
+            <p>Be part of a community where color meets cyberpunk. Every shade is welcome.</p>
+            <a href="#" class="btn">✦ Join Community</a>
+        </section>
+
+    </main>
+
+    <!-- ====== FOOTER — PURPLE ====== -->
+    <footer class="community-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span>✦</span>
+                <span class="rainbow">ART MECCA</span>
+                <span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-muted);font-weight:400;">✦ rainbow cyber den</span>
+            </div>
+            <div class="footer-links">
+                <a href="#">about</a>
+                <a href="#">guidelines</a>
+                <a href="#">support</a>
+                <a href="#">privacy</a>
+            </div>
+            <div class="footer-social">
+                <a href="#">🐦</a>
+                <a href="#">📷</a>
+                <a href="#">🎮</a>
+                <a href="#">💬</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

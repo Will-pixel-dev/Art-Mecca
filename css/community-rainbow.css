@@ -1,0 +1,487 @@
+/* ============================================================
+   COMMUNITY HUB — RAINBOW CYBERPUNK AESTHETIC
+   Adds rainbow section coloring, glitch effects, and grid lines
+   ============================================================ */
+
+/* ============================================================
+   RAINBOW COLOR VARIABLES
+   ============================================================ */
+:root {
+  /* Rainbow Colors */
+  --rainbow-red: #ff0040;
+  --rainbow-orange: #ff6b00;
+  --rainbow-gold: #ffc72e;
+  --rainbow-green: #4ff3a6;
+  --rainbow-cyan: #58ebfe;
+  --rainbow-blue: #0088ff;
+  --rainbow-purple: #ad03fc;
+  --rainbow-pink: #ff00ea;
+
+  /* Rainbow Gradients */
+  --gradient-rainbow: linear-gradient(135deg, #ff0040, #ff6b00, #ffc72e, #4ff3a6, #58ebfe, #0088ff, #ad03fc, #ff00ea);
+  --gradient-rainbow-horizontal: linear-gradient(90deg, #ff0040, #ff6b00, #ffc72e, #4ff3a6, #58ebfe, #0088ff, #ad03fc, #ff00ea);
+  --gradient-rainbow-vertical: linear-gradient(180deg, #ff0040, #ff6b00, #ffc72e, #4ff3a6, #58ebfe, #0088ff, #ad03fc, #ff00ea);
+
+  /* Section Color Variables */
+  --section-red: #ff0040;
+  --section-orange: #ff6b00;
+  --section-gold: #ffc72e;
+  --section-green: #4ff3a6;
+  --section-cyan: #58ebfe;
+  --section-blue: #0088ff;
+  --section-purple: #ad03fc;
+  --section-pink: #ff00ea;
+}
+
+/* ============================================================
+   RAINBOW GRID OVERLAY — SUBTLE
+   ============================================================ */
+.rainbow-grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9995;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Rainbow scanlines — subtle */
+.rainbow-scanlines-subtle {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9994;
+  background: repeating-linear-gradient(0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(255, 0, 0, 0.008) 2px,
+      rgba(255, 0, 0, 0.008) 3px,
+      transparent 3px,
+      transparent 5px,
+      rgba(255, 165, 0, 0.008) 5px,
+      rgba(255, 165, 0, 0.008) 6px,
+      transparent 6px,
+      transparent 8px,
+      rgba(255, 255, 0, 0.008) 8px,
+      rgba(255, 255, 0, 0.008) 9px,
+      transparent 9px,
+      transparent 11px,
+      rgba(0, 255, 0, 0.008) 11px,
+      rgba(0, 255, 0, 0.008) 12px,
+      transparent 12px,
+      transparent 14px,
+      rgba(0, 255, 255, 0.008) 14px,
+      rgba(0, 255, 255, 0.008) 15px,
+      transparent 15px,
+      transparent 17px,
+      rgba(0, 0, 255, 0.008) 17px,
+      rgba(0, 0, 255, 0.008) 18px,
+      transparent 18px,
+      transparent 20px,
+      rgba(128, 0, 255, 0.008) 20px,
+      rgba(128, 0, 255, 0.008) 21px,
+      transparent 21px,
+      transparent 23px,
+      rgba(255, 0, 255, 0.008) 23px,
+      rgba(255, 0, 255, 0.008) 24px);
+  animation: rainbowScanSubtle 0.8s linear infinite;
+}
+
+@keyframes rainbowScanSubtle {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(24px); }
+}
+
+/* ============================================================
+   RAINBOW GLITCH TEXT — MILD VERSION
+   ============================================================ */
+.glitch-rainbow-mild {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-rainbow-mild::before,
+.glitch-rainbow-mild::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  pointer-events: none;
+  -webkit-text-fill-color: initial;
+}
+
+.glitch-rainbow-mild::before {
+  color: var(--rainbow-red);
+  z-index: -1;
+  animation: glitchMild1 0.15s infinite;
+  text-shadow: 2px 0 var(--rainbow-cyan), -1px 0 var(--rainbow-gold);
+}
+
+.glitch-rainbow-mild::after {
+  color: var(--rainbow-cyan);
+  z-index: -2;
+  animation: glitchMild2 0.2s infinite;
+  text-shadow: -2px 0 var(--rainbow-red), 1px 0 var(--rainbow-green);
+}
+
+@keyframes glitchMild1 {
+  0% { transform: translate(0) skewX(0deg); }
+  20% { transform: translate(-1px, 1px) skewX(1deg); }
+  40% { transform: translate(1px, -1px) skewX(-1deg); }
+  60% { transform: translate(-0.5px, 0.5px) skewX(0.5deg); }
+  80% { transform: translate(0.5px, -0.5px) skewX(-0.5deg); }
+  100% { transform: translate(0) skewX(0deg); }
+}
+
+@keyframes glitchMild2 {
+  0% { transform: translate(0) skewX(0deg); }
+  20% { transform: translate(1px, -1px) skewX(-1deg); }
+  40% { transform: translate(-1px, 1px) skewX(1deg); }
+  60% { transform: translate(0.5px, -0.5px) skewX(-0.5deg); }
+  80% { transform: translate(-0.5px, 0.5px) skewX(0.5deg); }
+  100% { transform: translate(0) skewX(0deg); }
+}
+
+/* ============================================================
+   SECTION COLOR THEMES — EACH SECTION = DIFFERENT WORLD
+   ============================================================ */
+
+/* --- RED SECTION (Hero) --- */
+.section-theme-red {
+  border-color: rgba(255, 0, 64, 0.2) !important;
+  box-shadow: 0 0 60px rgba(255, 0, 64, 0.08), 0 0 120px rgba(255, 0, 64, 0.03), inset 0 0 60px rgba(255, 0, 64, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-red:hover {
+  border-color: rgba(255, 0, 64, 0.3) !important;
+  box-shadow: 0 0 80px rgba(255, 0, 64, 0.12), 0 0 160px rgba(255, 0, 64, 0.05) !important;
+}
+
+.section-theme-red .section-badge {
+  color: var(--rainbow-red) !important;
+  border-color: rgba(255, 0, 64, 0.15) !important;
+}
+.section-theme-red .section-badge i {
+  color: var(--rainbow-red) !important;
+}
+.section-theme-red .section-header h2::after {
+  background: linear-gradient(135deg, #ff0040, #ff6b00) !important;
+  box-shadow: 0 0 30px rgba(255, 0, 64, 0.15) !important;
+}
+.section-theme-red .glitch-header {
+  background: linear-gradient(135deg, #ff0040, #ff6b00) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(255, 0, 64, 0.15)) !important;
+}
+
+/* --- ORANGE SECTION (Features) --- */
+.section-theme-orange {
+  border-color: rgba(255, 107, 0, 0.2) !important;
+  box-shadow: 0 0 60px rgba(255, 107, 0, 0.08), 0 0 120px rgba(255, 107, 0, 0.03), inset 0 0 60px rgba(255, 107, 0, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-orange:hover {
+  border-color: rgba(255, 107, 0, 0.3) !important;
+  box-shadow: 0 0 80px rgba(255, 107, 0, 0.12), 0 0 160px rgba(255, 107, 0, 0.05) !important;
+}
+
+.section-theme-orange .section-badge {
+  color: var(--rainbow-orange) !important;
+  border-color: rgba(255, 107, 0, 0.15) !important;
+}
+.section-theme-orange .section-badge i {
+  color: var(--rainbow-orange) !important;
+}
+.section-theme-orange .section-header h2::after {
+  background: linear-gradient(135deg, #ff6b00, #ffc72e) !important;
+  box-shadow: 0 0 30px rgba(255, 107, 0, 0.15) !important;
+}
+.section-theme-orange .glitch-header {
+  background: linear-gradient(135deg, #ff6b00, #ffc72e) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(255, 107, 0, 0.15)) !important;
+}
+
+/* --- GOLD SECTION (Community Feed / Stats) --- */
+.section-theme-gold {
+  border-color: rgba(255, 199, 46, 0.2) !important;
+  box-shadow: 0 0 60px rgba(255, 199, 46, 0.08), 0 0 120px rgba(255, 199, 46, 0.03), inset 0 0 60px rgba(255, 199, 46, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-gold:hover {
+  border-color: rgba(255, 199, 46, 0.3) !important;
+  box-shadow: 0 0 80px rgba(255, 199, 46, 0.12), 0 0 160px rgba(255, 199, 46, 0.05) !important;
+}
+
+.section-theme-gold .section-badge {
+  color: var(--rainbow-gold) !important;
+  border-color: rgba(255, 199, 46, 0.15) !important;
+}
+.section-theme-gold .section-badge i {
+  color: var(--rainbow-gold) !important;
+}
+.section-theme-gold .section-header h2::after {
+  background: linear-gradient(135deg, #ffc72e, #4ff3a6) !important;
+  box-shadow: 0 0 30px rgba(255, 199, 46, 0.15) !important;
+}
+.section-theme-gold .glitch-header {
+  background: linear-gradient(135deg, #ffc72e, #4ff3a6) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(255, 199, 46, 0.15)) !important;
+}
+
+/* --- GREEN SECTION (Challenges) --- */
+.section-theme-green {
+  border-color: rgba(79, 243, 166, 0.2) !important;
+  box-shadow: 0 0 60px rgba(79, 243, 166, 0.08), 0 0 120px rgba(79, 243, 166, 0.03), inset 0 0 60px rgba(79, 243, 166, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-green:hover {
+  border-color: rgba(79, 243, 166, 0.3) !important;
+  box-shadow: 0 0 80px rgba(79, 243, 166, 0.12), 0 0 160px rgba(79, 243, 166, 0.05) !important;
+}
+
+.section-theme-green .section-badge {
+  color: var(--rainbow-green) !important;
+  border-color: rgba(79, 243, 166, 0.15) !important;
+}
+.section-theme-green .section-badge i {
+  color: var(--rainbow-green) !important;
+}
+.section-theme-green .section-header h2::after {
+  background: linear-gradient(135deg, #4ff3a6, #58ebfe) !important;
+  box-shadow: 0 0 30px rgba(79, 243, 166, 0.15) !important;
+}
+.section-theme-green .glitch-header {
+  background: linear-gradient(135deg, #4ff3a6, #58ebfe) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(79, 243, 166, 0.15)) !important;
+}
+
+/* --- CYAN SECTION (Gallery / Artworks) --- */
+.section-theme-cyan {
+  border-color: rgba(88, 235, 254, 0.2) !important;
+  box-shadow: 0 0 60px rgba(88, 235, 254, 0.08), 0 0 120px rgba(88, 235, 254, 0.03), inset 0 0 60px rgba(88, 235, 254, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-cyan:hover {
+  border-color: rgba(88, 235, 254, 0.3) !important;
+  box-shadow: 0 0 80px rgba(88, 235, 254, 0.12), 0 0 160px rgba(88, 235, 254, 0.05) !important;
+}
+
+.section-theme-cyan .section-badge {
+  color: var(--rainbow-cyan) !important;
+  border-color: rgba(88, 235, 254, 0.15) !important;
+}
+.section-theme-cyan .section-badge i {
+  color: var(--rainbow-cyan) !important;
+}
+.section-theme-cyan .section-header h2::after {
+  background: linear-gradient(135deg, #58ebfe, #0088ff) !important;
+  box-shadow: 0 0 30px rgba(88, 235, 254, 0.15) !important;
+}
+.section-theme-cyan .glitch-header {
+  background: linear-gradient(135deg, #58ebfe, #0088ff) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(88, 235, 254, 0.15)) !important;
+}
+
+/* --- BLUE SECTION (Bulletin / Announcements) --- */
+.section-theme-blue {
+  border-color: rgba(0, 136, 255, 0.2) !important;
+  box-shadow: 0 0 60px rgba(0, 136, 255, 0.08), 0 0 120px rgba(0, 136, 255, 0.03), inset 0 0 60px rgba(0, 136, 255, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-blue:hover {
+  border-color: rgba(0, 136, 255, 0.3) !important;
+  box-shadow: 0 0 80px rgba(0, 136, 255, 0.12), 0 0 160px rgba(0, 136, 255, 0.05) !important;
+}
+
+.section-theme-blue .section-badge {
+  color: var(--rainbow-blue) !important;
+  border-color: rgba(0, 136, 255, 0.15) !important;
+}
+.section-theme-blue .section-badge i {
+  color: var(--rainbow-blue) !important;
+}
+.section-theme-blue .section-header h2::after {
+  background: linear-gradient(135deg, #0088ff, #ad03fc) !important;
+  box-shadow: 0 0 30px rgba(0, 136, 255, 0.15) !important;
+}
+.section-theme-blue .glitch-header {
+  background: linear-gradient(135deg, #0088ff, #ad03fc) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(0, 136, 255, 0.15)) !important;
+}
+
+/* --- PURPLE SECTION (Winners / CTA) --- */
+.section-theme-purple {
+  border-color: rgba(173, 3, 252, 0.2) !important;
+  box-shadow: 0 0 60px rgba(173, 3, 252, 0.08), 0 0 120px rgba(173, 3, 252, 0.03), inset 0 0 60px rgba(173, 3, 252, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-purple:hover {
+  border-color: rgba(173, 3, 252, 0.3) !important;
+  box-shadow: 0 0 80px rgba(173, 3, 252, 0.12), 0 0 160px rgba(173, 3, 252, 0.05) !important;
+}
+
+.section-theme-purple .section-badge {
+  color: var(--rainbow-purple) !important;
+  border-color: rgba(173, 3, 252, 0.15) !important;
+}
+.section-theme-purple .section-badge i {
+  color: var(--rainbow-purple) !important;
+}
+.section-theme-purple .section-header h2::after {
+  background: linear-gradient(135deg, #ad03fc, #ff00ea) !important;
+  box-shadow: 0 0 30px rgba(173, 3, 252, 0.15) !important;
+}
+.section-theme-purple .glitch-header {
+  background: linear-gradient(135deg, #ad03fc, #ff00ea) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(173, 3, 252, 0.15)) !important;
+}
+
+/* --- PINK SECTION (CTA / Featured Artists) --- */
+.section-theme-pink {
+  border-color: rgba(255, 0, 234, 0.2) !important;
+  box-shadow: 0 0 60px rgba(255, 0, 234, 0.08), 0 0 120px rgba(255, 0, 234, 0.03), inset 0 0 60px rgba(255, 0, 234, 0.02) !important;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-theme-pink:hover {
+  border-color: rgba(255, 0, 234, 0.3) !important;
+  box-shadow: 0 0 80px rgba(255, 0, 234, 0.12), 0 0 160px rgba(255, 0, 234, 0.05) !important;
+}
+
+.section-theme-pink .section-badge {
+  color: var(--rainbow-pink) !important;
+  border-color: rgba(255, 0, 234, 0.15) !important;
+}
+.section-theme-pink .section-badge i {
+  color: var(--rainbow-pink) !important;
+}
+.section-theme-pink .section-header h2::after {
+  background: linear-gradient(135deg, #ff00ea, #ff0040) !important;
+  box-shadow: 0 0 30px rgba(255, 0, 234, 0.15) !important;
+}
+.section-theme-pink .glitch-header {
+  background: linear-gradient(135deg, #ff00ea, #ff0040) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 30px rgba(255, 0, 234, 0.15)) !important;
+}
+
+/* ============================================================
+   RAINBOW PARTICLES — OVERRIDE
+   ============================================================ */
+/* The particle canvas will be updated via JS to use rainbow colors */
+
+/* ============================================================
+   SECTION WRAPPER — SCROLL TRANSITION EFFECT
+   ============================================================ */
+.section-wrapper {
+  position: relative;
+  padding: 1px 0; /* Prevents margin collapse */
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.section-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+  transition: opacity 0.8s ease;
+}
+
+.section-wrapper:hover::before {
+  opacity: 0.6;
+}
+
+/* Each section gets a subtle gradient overlay based on its theme */
+.section-wrapper[data-theme="red"]::before {
+  background: radial-gradient(ellipse at 20% 50%, rgba(255, 0, 64, 0.06), transparent 70%);
+}
+.section-wrapper[data-theme="orange"]::before {
+  background: radial-gradient(ellipse at 40% 50%, rgba(255, 107, 0, 0.06), transparent 70%);
+}
+.section-wrapper[data-theme="gold"]::before {
+  background: radial-gradient(ellipse at 60% 50%, rgba(255, 199, 46, 0.06), transparent 70%);
+}
+.section-wrapper[data-theme="green"]::before {
+  background: radial-gradient(ellipse at 80% 50%, rgba(79, 243, 166, 0.06), transparent 70%);
+}
+.section-wrapper[data-theme="cyan"]::before {
+  background: radial-gradient(ellipse at 30% 30%, rgba(88, 235, 254, 0.06), transparent 70%);
+}
+.section-wrapper[data-theme="blue"]::before {
+  background: radial-gradient(ellipse at 70% 30%, rgba(0, 136, 255, 0.06), transparent 70%);
+}
+.section-wrapper[data-theme="purple"]::before {
+  background: radial-gradient(ellipse at 50% 20%, rgba(173, 3, 252, 0.06), transparent 70%);
+}
+.section-wrapper[data-theme="pink"]::before {
+  background: radial-gradient(ellipse at 50% 80%, rgba(255, 0, 234, 0.06), transparent 70%);
+}
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 768px) {
+  .section-wrapper[data-theme]::before {
+    opacity: 0.15;
+  }
+
+  .section-wrapper:hover::before {
+    opacity: 0.25;
+  }
+
+  .rainbow-grid-overlay {
+    background-size: 20px 20px;
+  }
+
+  .rainbow-scanlines-subtle {
+    animation-duration: 1.2s;
+  }
+}
+
+@media (max-width: 480px) {
+  .rainbow-grid-overlay {
+    background-size: 15px 15px;
+    opacity: 0.3;
+  }
+
+  .rainbow-scanlines-subtle {
+    display: none;
+  }
+}

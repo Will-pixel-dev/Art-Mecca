@@ -42,7 +42,7 @@ class UserProfile {
       await this.loadBadge();
       await this.updateSidebarUI();
       await this.updateSidebarCounts();
-      await this.checkNSFWCreator();
+      await this.loadUserData();
 
       this.setupEventListeners();
       this.setupImageUploads();
@@ -54,10 +54,129 @@ class UserProfile {
       this.setupAgeVerification();
 
       this.updateUIForProfileType();
+
+      // Check NSFW age gate BEFORE rendering profile
+      const canView = await this.checkNSFWAgeGate();
+      if (!canView) {
+        document.getElementById('loadingState').style.display = 'none';
+        return;
+      }
+
+      this.renderProfile();
     });
   }
 
-  // ========== IMAGE COMPRESSION METHOD ==========
+  // ========== NSFW AGE GATE ==========
+
+  async checkNSFWAgeGate() {
+    // If viewing your own profile, always allow
+    if (this.isOwnProfile) return true;
+
+    // Get the profile owner's data
+    const profileOwner = this.userData;
+    if (!profileOwner) return true;
+
+    // Check if profile owner is NSFW Creator
+    if (profileOwner.isNSFWCreator !== true) {
+      return true; // Not NSFW creator, allow access
+    }
+
+    // Profile is NSFW creator - check viewer's age
+    if (!this.currentUser) {
+      // Not logged in - show age gate
+      this.showNSFWAgeGate();
+      return false;
+    }
+
+    // Get viewer's age from Firestore
+    try {
+      const viewerDoc = await db.collection('users').doc(this.currentUser.uid).get();
+      if (viewerDoc.exists) {
+        const viewerData = viewerDoc.data();
+        const viewerAge = parseInt(viewerData.age) || 0;
+
+        if (viewerAge < 18) {
+          // Under 18 - show age gate
+          this.showNSFWAgeGate();
+          return false;
+        }
+
+        // 18 or older - allow access
+        return true;
+      }
+    } catch (error) {
+      console.error('Error checking viewer age:', error);
+    }
+
+    // Default: show age gate if age can't be verified
+    this.showNSFWAgeGate();
+    return false;
+  }
+
+  showNSFWAgeGate() {
+    const profileContent = document.getElementById('profileContent');
+    const loadingState = document.getElementById('loadingState');
+
+    if (loadingState) loadingState.style.display = 'none';
+
+    if (profileContent) {
+      profileContent.innerHTML = `
+        <div class="age-gate-profile" style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 70vh;
+          padding: 2rem;
+          text-align: center;
+        ">
+          <div class="age-gate-content" style="
+            max-width: 500px;
+            padding: 3rem 2.5rem;
+            background: rgba(10, 5, 8, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 64, 0.08);
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 40px rgba(255,0,64,0.1);
+          ">
+            <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">🔞</span>
+            <h2 style="font-family: 'Orbitron', monospace; color: #f5eaff; font-size: 1.4rem; margin-bottom: 0.5rem; letter-spacing: 1px;">
+              Age Restricted Profile
+            </h2>
+            <p style="color: #b8a0d0; margin-bottom: 1.5rem; line-height: 1.6; font-family: 'Rajdhani', sans-serif;">
+              This artist has marked their profile as containing mature content.
+              You must be <strong style="color: #ff0040;">18 or older</strong> to view this profile.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+              <a href="/pages/community/gallery.html" style="
+                padding: 0.6rem 1.5rem;
+                background: rgba(255, 255, 255, 0.02);
+                color: #f5eaff;
+                border: 1px solid rgba(255, 0, 64, 0.08);
+                border-radius: 4px;
+                text-decoration: none;
+                font-family: 'Rajdhani', sans-serif;
+                font-weight: 600;
+                font-size: 0.8rem;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+              ">
+                <i class="fas fa-arrow-left"></i> Back to Gallery
+              </a>
+            </div>
+            <p style="font-size: 0.7rem; color: #5a3a6a; margin-top: 1rem; opacity: 0.5; font-family: 'Share Tech Mono', monospace;">
+              If you believe you should have access, please log in with your account.
+            </p>
+          </div>
+        </div>
+      `;
+      profileContent.style.display = 'block';
+    }
+  }
+
+  // ========== IMAGE COMPRESSION ==========
+
   compressImage(file, maxDimension = 1200, quality = 0.85) {
     return new Promise((resolve, reject) => {
       if (file.size < 300 * 1024) {
@@ -112,210 +231,19 @@ class UserProfile {
       reader.onerror = () => reject(new Error("Failed to read file"));
     });
   }
-  // Add to UserProfile class:
-
-  /**
-   * Setup age verification in profile
-   */
-  setupAgeVerification() {
-    const section = document.getElementById("ageVerificationSection");
-    if (!section) return;
-
-    // Only show if user is logged in and viewing their own profile
-    if (!this.isOwnProfile) {
-      section.style.display = "none";
-      return;
-    }
-
-    // Check if user already has age set
-    if (this.userData && this.userData.ageVerified === true) {
-      section.style.display = "none";
-      return;
-    }
-
-    // Show verification section
-    section.style.display = "block";
-
-    // Setup verify button
-    const verifyBtn = document.getElementById("verifyAgeBtn");
-    if (verifyBtn) {
-      verifyBtn.addEventListener("click", async () => {
-        if (window.ageVerification) {
-          await window.ageVerification.startVerification(window.location.href);
-        } else {
-          // Fallback to simple verification
-          this.showSimpleAgeVerification();
-        }
-      });
-    }
-  }
-  // Add to UserProfile class
-
-/**
- * Render verification badge for the profile
- */
-renderVerificationBadge() {
-    const profileHeader = document.querySelector('.profile-header');
-    if (!profileHeader) return;
-
-    // Remove existing badge if any
-    const existingBadge = document.querySelector('.profile-verification-section');
-    if (existingBadge) existingBadge.remove();
-
-    // Check if user is verified
-    const isVerified = this.userData?.isAdult === true && this.userData?.ageVerified === true;
-    const isPending = this.userData?.verificationStatus === 'pending';
-    const hasAttempted = this.userData?.verificationAttempts > 0;
-
-    let badgeHTML = '';
-    let statusText = '';
-    let statusIcon = '';
-    let badgeClass = '';
-
-    // Only show verification section for own profile or if user has attempted verification
-    if (this.isOwnProfile || hasAttempted) {
-        if (isVerified) {
-            badgeClass = 'verified';
-            statusText = 'Age Verified';
-            statusIcon = 'fa-shield-alt';
-        } else if (isPending) {
-            badgeClass = 'pending';
-            statusText = 'Verification Pending';
-            statusIcon = 'fa-clock';
-        } else if (hasAttempted) {
-            badgeClass = 'unverified';
-            statusText = 'Verification Failed';
-            statusIcon = 'fa-exclamation-circle';
-        } else {
-            badgeClass = 'not-required';
-            statusText = 'Not Verified';
-            statusIcon = 'fa-user';
-        }
-
-        badgeHTML = `
-            <div class="profile-verification-section">
-                <span class="label">Verification Status:</span>
-                <div class="verification-badge-wrapper">
-                    <span class="verification-badge ${badgeClass} large">
-                        <i class="fas ${statusIcon}"></i>
-                        <span class="verification-dot ${badgeClass}"></span>
-                        ${statusText}
-                    </span>
-                    <span class="verification-tooltip">
-                        ${isVerified ? 'This user has verified their age (18+)' :
-                          isPending ? 'Verification is in progress...' :
-                          'This user has not verified their age'}
-                    </span>
-                </div>
-                ${!isVerified && this.isOwnProfile ? `
-                    <button class="btn-verify-age" onclick="window.ageVerification?.startVerification(window.location.href)"
-                            style="padding: 6px 16px; background: linear-gradient(135deg, #fe67ea, #63dbee); color: white; border: none; border-radius: 20px; font-weight: 600; cursor: pointer; font-size: 0.8rem;">
-                        <i class="fas fa-id-card"></i> Verify Age
-                    </button>
-                ` : ''}
-            </div>
-        `;
-
-        // Insert after profile name section
-        const nameSection = profileHeader.querySelector('.profile-name-section');
-        if (nameSection) {
-            nameSection.insertAdjacentHTML('afterend', badgeHTML);
-        }
-    }
-}
-
-/**
- * Add verification badge to gallery cards
- */
-addVerificationBadgeToGallery() {
-    // This will be called when rendering gallery cards
-    const cards = document.querySelectorAll('.gallery-card');
-    cards.forEach(card => {
-        const artistId = card.dataset.artistId;
-        if (!artistId) return;
-
-        // Check if artist is verified
-        this.checkArtistVerification(artistId).then(isVerified => {
-            if (isVerified) {
-                const badge = document.createElement('span');
-                badge.className = 'verification-badge verified small';
-                badge.innerHTML = '<i class="fas fa-shield-alt"></i> Verified';
-                badge.style.position = 'absolute';
-                badge.style.top = '8px';
-                badge.style.right = '8px';
-                badge.style.zIndex = '5';
-
-                const cardInner = card.querySelector('.card-inner');
-                if (cardInner) {
-                    cardInner.style.position = 'relative';
-                    cardInner.appendChild(badge);
-                }
-            }
-        });
-    });
-}
-
-/**
- * Check if an artist is verified
- */
-async checkArtistVerification(artistId) {
-    try {
-        const doc = await firebase.firestore()
-            .collection('users')
-            .doc(artistId)
-            .get();
-
-        if (doc.exists) {
-            const data = doc.data();
-            return data.isAdult === true && data.ageVerified === true;
-        }
-        return false;
-    } catch (error) {
-        console.error('Error checking artist verification:', error);
-        return false;
-    }
-}
-// Add to UserProfile class in profile.js
-
-async loadVerificationStats() {
-    if (!this.userId) return;
-
-    try {
-        const doc = await firebase.firestore()
-            .collection('users')
-            .doc(this.userId)
-            .get();
-
-        if (doc.exists) {
-            const data = doc.data();
-            const isVerified = data.isAdult === true && data.ageVerified === true;
-
-            // Add to stats section
-            const statsContainer = document.querySelector('.profile-stats-header');
-            if (statsContainer) {
-                const statHTML = `
-                    <div class="stat verification-stat">
-                        <span class="stat-value" style="font-size: 1rem;">
-                            ${isVerified ? '✅' : '❌'}
-                        </span>
-                        <span class="stat-label">Age Verified</span>
-                    </div>
-                `;
-                statsContainer.insertAdjacentHTML('beforeend', statHTML);
-            }
-        }
-    } catch (error) {
-        console.error('Error loading verification stats:', error);
-    }
-}
 
   // ========== SHOW/HIDE UI BASED ON PROFILE TYPE ==========
+
   updateUIForProfileType() {
     const editBtn = document.getElementById("editProfileBtn");
     const coverUploadBtn = document.getElementById("coverUploadBtn");
     const avatarOverlay = document.getElementById("avatarUploadBtn");
     const uploadSection = document.querySelector(".profile-upload-section");
     const emptyUploadBtn = document.getElementById("emptyUploadBtn");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const moderationBtn = document.getElementById("moderationBtn");
+    const palettePicker = document.getElementById("palettePicker");
+    const themeToggle = document.getElementById("themeToggleBtn");
 
     if (this.isOwnProfile) {
       if (editBtn) editBtn.style.display = "flex";
@@ -323,16 +251,32 @@ async loadVerificationStats() {
       if (avatarOverlay) avatarOverlay.style.display = "flex";
       if (uploadSection) uploadSection.style.display = "flex";
       if (emptyUploadBtn) emptyUploadBtn.style.display = "block";
+      if (settingsBtn) settingsBtn.style.display = "inline-flex";
+      // Show palette picker and theme toggle only on own profile
+      if (palettePicker) palettePicker.style.display = "flex";
+      if (themeToggle) themeToggle.style.display = "flex";
+
+      this.checkModeratorStatus().then((isModerator) => {
+        if (isModerator && moderationBtn) {
+          moderationBtn.style.display = "inline-flex";
+        }
+      });
     } else {
       if (editBtn) editBtn.style.display = "none";
       if (coverUploadBtn) coverUploadBtn.style.display = "none";
       if (avatarOverlay) avatarOverlay.style.display = "none";
       if (uploadSection) uploadSection.style.display = "none";
       if (emptyUploadBtn) emptyUploadBtn.style.display = "none";
+      if (settingsBtn) settingsBtn.style.display = "none";
+      if (moderationBtn) moderationBtn.style.display = "none";
+      // Hide palette picker and theme toggle on other people's profiles
+      if (palettePicker) palettePicker.style.display = "none";
+      if (themeToggle) themeToggle.style.display = "none";
     }
   }
 
   // ========== UPDATE SIDEBAR USER INFO ==========
+
   async updateSidebarUI() {
     const user = this.currentUser;
     const sidebarAvatar = document.getElementById("sidebarUserAvatar");
@@ -434,6 +378,8 @@ async loadVerificationStats() {
       });
     }
 
+
+
     const savedTutsBtn = document.getElementById("sidebarSavedTuts");
     if (savedTutsBtn) {
       savedTutsBtn.addEventListener("click", (e) => {
@@ -518,90 +464,6 @@ async loadVerificationStats() {
       });
     }
   }
-  // Add to UserProfile class
-
-/**
- * Show admin/moderation buttons if user has permissions
- */
-showAdminButtons() {
-    const settingsBtn = document.getElementById('settingsBtn');
-    const moderationBtn = document.getElementById('moderationBtn');
-
-    // Settings button - always show on own profile
-    if (this.isOwnProfile) {
-        if (settingsBtn) {
-            settingsBtn.style.display = 'inline-flex';
-        }
-    }
-
-    // Check if user is moderator/admin
-    this.checkModeratorStatus().then((isModerator) => {
-        if (isModerator) {
-            if (moderationBtn) {
-                moderationBtn.style.display = 'inline-flex';
-            }
-        }
-    });
-}
-
-/**
- * Check if the current user is a moderator
- */
-async checkModeratorStatus() {
-    if (!this.currentUser) return false;
-
-    try {
-        const doc = await firebase.firestore()
-            .collection('users')
-            .doc(this.currentUser.uid)
-            .get();
-
-        if (doc.exists) {
-            const data = doc.data();
-            const isModerator = data.role === 'admin' || data.role === 'moderator' || data.isModerator === true;
-            return isModerator;
-        }
-        return false;
-    } catch (error) {
-        console.error('Error checking moderator status:', error);
-        return false;
-    }
-}
-
-// In the updateUIForProfileType method, add the settings button call:
-updateUIForProfileType() {
-    const editBtn = document.getElementById("editProfileBtn");
-    const coverUploadBtn = document.getElementById("coverUploadBtn");
-    const avatarOverlay = document.getElementById("avatarUploadBtn");
-    const uploadSection = document.querySelector(".profile-upload-section");
-    const emptyUploadBtn = document.getElementById("emptyUploadBtn");
-    const settingsBtn = document.getElementById("settingsBtn");
-    const moderationBtn = document.getElementById("moderationBtn");
-
-    if (this.isOwnProfile) {
-        if (editBtn) editBtn.style.display = "flex";
-        if (coverUploadBtn) coverUploadBtn.style.display = "flex";
-        if (avatarOverlay) avatarOverlay.style.display = "flex";
-        if (uploadSection) uploadSection.style.display = "flex";
-        if (emptyUploadBtn) emptyUploadBtn.style.display = "block";
-        if (settingsBtn) settingsBtn.style.display = "inline-flex";
-
-        // Check for moderator status
-        this.checkModeratorStatus().then((isModerator) => {
-            if (isModerator && moderationBtn) {
-                moderationBtn.style.display = "inline-flex";
-            }
-        });
-    } else {
-        if (editBtn) editBtn.style.display = "none";
-        if (coverUploadBtn) coverUploadBtn.style.display = "none";
-        if (avatarOverlay) avatarOverlay.style.display = "none";
-        if (uploadSection) uploadSection.style.display = "none";
-        if (emptyUploadBtn) emptyUploadBtn.style.display = "none";
-        if (settingsBtn) settingsBtn.style.display = "none";
-        if (moderationBtn) moderationBtn.style.display = "none";
-    }
-}
 
   // ========== ARTIST BADGE FUNCTIONALITY ==========
 
@@ -686,6 +548,36 @@ updateUIForProfileType() {
     } else {
       mediumContainer.innerHTML = '<span class="badge-tag">Not set</span>';
     }
+
+    // Also render NSFW Creator badge if applicable
+    this.renderNSFWCreatorBadge();
+  }
+
+  renderNSFWCreatorBadge() {
+    const badgesContainer = document.getElementById('heroBadges');
+    if (!badgesContainer) return;
+
+    // Check if user is NSFW Creator
+    if (this.userData?.isNSFWCreator === true) {
+      // Check if badge already exists
+      let existing = badgesContainer.querySelector('.nsfw-creator-badge');
+      if (!existing) {
+        const badge = document.createElement('span');
+        badge.className = 'badge nsfw-creator-badge';
+        badge.innerHTML = '<i class="fas fa-shield-alt"></i> 🔞 NSFW Creator';
+        // Insert before the artist badge
+        const artistBadge = badgesContainer.querySelector('.badge.artist');
+        if (artistBadge) {
+          badgesContainer.insertBefore(badge, artistBadge);
+        } else {
+          badgesContainer.appendChild(badge);
+        }
+      }
+    } else {
+      // Remove badge if it exists
+      const existing = badgesContainer.querySelector('.nsfw-creator-badge');
+      if (existing) existing.remove();
+    }
   }
 
   formatSpecialtyLabel(specialty) {
@@ -763,6 +655,7 @@ updateUIForProfileType() {
   }
 
   // ========== BADGE EDIT SETUP ==========
+
   setupBadgeEdit() {
     const editBtn = document.getElementById("editBadgeBtn");
     const modal = document.getElementById("badgeModal");
@@ -770,18 +663,11 @@ updateUIForProfileType() {
     const cancelBtn = document.getElementById("cancelBadgeBtn");
     const saveBtn = document.getElementById("saveBadgeBtn");
 
-    console.log("Setting up badge edit...", {
-      editBtn: !!editBtn,
-      modal: !!modal,
-      saveBtn: !!saveBtn,
-    });
-
     if (editBtn) {
       const newEditBtn = editBtn.cloneNode(true);
       editBtn.parentNode.replaceChild(newEditBtn, editBtn);
 
       newEditBtn.addEventListener("click", () => {
-        console.log("Edit badge button clicked");
         this.populateBadgeForm();
         if (modal) modal.classList.add("active");
       });
@@ -806,7 +692,6 @@ updateUIForProfileType() {
       newSaveBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log("Save badge button clicked!");
         this.saveBadge();
       });
     }
@@ -816,7 +701,6 @@ updateUIForProfileType() {
       form.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          console.log("Enter key pressed in form");
           this.saveBadge();
         }
       });
@@ -834,6 +718,11 @@ updateUIForProfileType() {
         this.filterSpecialties(artistTypeSelect.value);
       });
     }
+
+    // Artist type change - update specialties/mediums
+    document.getElementById('artistType')?.addEventListener('change', (e) => {
+      this.populateSpecialties(e.target.value);
+    });
   }
 
   filterSpecialties(artistType) {
@@ -872,6 +761,95 @@ updateUIForProfileType() {
     });
   }
 
+  populateSpecialties(type) {
+    const specialtyMap = {
+      '': [],
+      digital: ['character-design', 'portrait', 'anatomy', 'landscape', 'digital-painting', 'concept-art', 'illustration', 'manga', 'storyboarding', 'photo-manipulation'],
+      traditional: ['oil-painting', 'watercolor', 'acrylic', 'charcoal', 'ink', 'pastel', 'mixed-media', 'collage', 'printmaking', 'sketching'],
+      '3d': ['3d-modeling', 'sculpting', 'texturing', 'rigging', 'animation-3d', 'game-art'],
+      photography: ['portrait-photography', 'landscape-photography', 'macro', 'street', 'fine-art', 'wildlife'],
+      animation: ['2d-animation', 'stop-motion', 'motion-graphics', 'character-animation', 'experimental'],
+      mixed: ['mixed-media', 'collage', 'assemblage', 'installation', 'digital-collage']
+    };
+
+    const mediumMap = {
+      '': [],
+      traditional: ['watercolor', 'acrylic', 'oil-paint', 'ink', 'graphite', 'charcoal-medium', 'pastel-medium', 'gouache', 'colored-pencil', 'marker'],
+      digital: ['photoshop', 'procreate', 'clip-studio', 'krita', 'ibis-paint', 'affinity', 'corel-painter', 'blender', 'zbrush', 'maya'],
+      '3d': ['blender', 'zbrush', 'maya', '3ds-max', 'cinema4d', 'unity', 'unreal-engine'],
+      photography: ['digital-photography', 'film-photography', 'medium-format', 'large-format', 'polaroid', 'lomography'],
+      animation: ['toon-boom', 'tv-paint', 'after-effects', 'animate', 'moho', 'spine']
+    };
+
+    // Specialties Grid
+    const specs = specialtyMap[type] || [];
+    const specGrid = document.getElementById('specialtiesGrid');
+    specGrid.innerHTML = '';
+
+    if (specs.length === 0) {
+      specGrid.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem;">Select an artist type above to see specialties</p>';
+    } else {
+      const mid = Math.ceil(specs.length / 2);
+      const col1 = specs.slice(0, mid);
+      const col2 = specs.slice(mid);
+
+      const col1Div = document.createElement('div');
+      col1Div.className = 'group';
+      col1Div.innerHTML = col1.map(s => `
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
+          <input type="checkbox" value="${s}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
+          ${s.replace(/-/g, ' ')}
+        </label>
+      `).join('');
+
+      const col2Div = document.createElement('div');
+      col2Div.className = 'group';
+      col2Div.innerHTML = col2.map(s => `
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
+          <input type="checkbox" value="${s}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
+          ${s.replace(/-/g, ' ')}
+        </label>
+      `).join('');
+
+      specGrid.appendChild(col1Div);
+      specGrid.appendChild(col2Div);
+    }
+
+    // Mediums Grid
+    const meds = mediumMap[type] || [];
+    const medGrid = document.getElementById('mediumGrid');
+    medGrid.innerHTML = '';
+
+    if (meds.length === 0) {
+      medGrid.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem;">Select an artist type above to see mediums</p>';
+    } else {
+      const mid2 = Math.ceil(meds.length / 2);
+      const col1 = meds.slice(0, mid2);
+      const col2 = meds.slice(mid2);
+
+      const col1Div = document.createElement('div');
+      col1Div.className = 'group';
+      col1Div.innerHTML = col1.map(m => `
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
+          <input type="checkbox" value="${m}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
+          ${m.replace(/-/g, ' ')}
+        </label>
+      `).join('');
+
+      const col2Div = document.createElement('div');
+      col2Div.className = 'group';
+      col2Div.innerHTML = col2.map(m => `
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
+          <input type="checkbox" value="${m}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
+          ${m.replace(/-/g, ' ')}
+        </label>
+      `).join('');
+
+      medGrid.appendChild(col1Div);
+      medGrid.appendChild(col2Div);
+    }
+  }
+
   populateBadgeForm() {
     const badge = this.badgeData || {};
 
@@ -895,12 +873,8 @@ updateUIForProfileType() {
       });
   }
 
-  // ========== SAVE BADGE ==========
   async saveBadge() {
-    console.log("saveBadge called!");
-
     const artistType = document.getElementById("artistType").value;
-    console.log("Artist type:", artistType);
 
     if (!artistType) {
       alert("Please select your artist type");
@@ -911,7 +885,6 @@ updateUIForProfileType() {
       '#specialtiesGrid input[type="checkbox"]:checked',
     );
     let specialties = Array.from(specialtyCheckboxes).map((cb) => cb.value);
-    console.log("Specialties:", specialties);
 
     if (specialties.length > 4) {
       alert("Please select up to 4 specialties");
@@ -922,7 +895,6 @@ updateUIForProfileType() {
       '#mediumGrid input[type="checkbox"]:checked',
     );
     let mediums = Array.from(mediumCheckboxes).map((cb) => cb.value);
-    console.log("Mediums:", mediums);
 
     if (mediums.length > 3) {
       alert("Please select up to 3 mediums");
@@ -936,8 +908,6 @@ updateUIForProfileType() {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
-    console.log("Saving badge data:", badgeData);
-
     try {
       await firebase
         .firestore()
@@ -945,7 +915,6 @@ updateUIForProfileType() {
         .doc(this.userId)
         .update({ badge: badgeData });
 
-      console.log("Badge saved successfully!");
       this.badgeData = badgeData;
       this.renderBadge();
 
@@ -959,73 +928,36 @@ updateUIForProfileType() {
     }
   }
 
-  // ========== NSFW CREATOR BADGE ==========
-  async checkNSFWCreator() {
-    if (!this.userId) return;
-
-    try {
-      const snapshot = await firebase
-        .firestore()
-        .collection("artworks")
-        .where("artistId", "==", this.userId)
-        .where("isNSFW", "==", true)
-        .where("status", "==", "published")
-        .limit(1)
-        .get();
-
-      const hasNSFW = !snapshot.empty;
-      const badge = document.getElementById("nsfwCreatorBadge");
-
-      if (badge) {
-        // Only show if user has NSFW content AND viewer is 18+ (or not logged in)
-        const isAdult = this.userData?.isAdult || false;
-        if (hasNSFW && (isAdult || !this.isOwnProfile)) {
-          badge.style.display = "block";
-        } else {
-          badge.style.display = "none";
-        }
-      }
-    } catch (error) {
-      console.error("Error checking NSFW creator:", error);
-    }
-  }
-
   // ========== AGE VERIFICATION ==========
+
   setupAgeVerification() {
     const section = document.getElementById("ageVerificationSection");
     if (!section) return;
 
-    // Only show if user is logged in and viewing their own profile
     if (!this.isOwnProfile) {
       section.style.display = "none";
       return;
     }
 
-    // Check if user already has age set
     if (this.userData && this.userData.age !== undefined) {
       section.style.display = "none";
       return;
     }
 
-    // Show verification section
     section.style.display = "block";
 
-    // Setup verify button
     const verifyBtn = document.getElementById("verifyAgeBtn");
     if (verifyBtn) {
       verifyBtn.addEventListener("click", () => {
-        // Use the global AgeVerification if available
         if (window.AgeVerification) {
           window.AgeVerification.triggerVerification();
         } else {
-          // Fallback: Show a simple prompt for DOB
           this.showSimpleAgeVerification();
         }
       });
     }
   }
 
-  // Fallback age verification if AgeVerification class isn't loaded
   showSimpleAgeVerification() {
     const dob = prompt(
       "Please enter your date of birth (YYYY-MM-DD) to verify your age:",
@@ -1083,6 +1015,7 @@ updateUIForProfileType() {
   }
 
   // ========== PROFILE LOADING ==========
+
   async loadProfile() {
     const loadingState = document.getElementById("loadingState");
     const profileContent = document.getElementById("profileContent");
@@ -1108,6 +1041,24 @@ updateUIForProfileType() {
     } catch (error) {
       console.error("Error loading profile:", error);
       this.showError();
+    }
+  }
+
+  async loadUserData() {
+    if (!this.userId) return;
+
+    try {
+      const doc = await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.userId)
+        .get();
+
+      if (doc.exists) {
+        this.userData = doc.data();
+      }
+    } catch (error) {
+      console.error("Error loading user data:", error);
     }
   }
 
@@ -1152,6 +1103,24 @@ updateUIForProfileType() {
     if (artistDisplay) artistDisplay.textContent = displayName;
 
     this.renderBio(this.userData.bio || "No bio yet.");
+
+    // Badges
+    const badgesContainer = document.getElementById('heroBadges');
+    badgesContainer.innerHTML = '';
+
+    // NSFW Creator Badge
+    if (this.userData?.isNSFWCreator === true) {
+      badgesContainer.innerHTML += `<span class="badge nsfw-creator-badge"><i class="fas fa-shield-alt"></i> 🔞 NSFW Creator</span>`;
+    }
+
+    // Existing badges
+    if (this.userData?.isAdult && this.userData?.ageVerified) {
+      badgesContainer.innerHTML += `<span class="badge verified"><i class="fas fa-check-circle"></i> Age Verified</span>`;
+    }
+    if (this.userData?.role && this.userData?.role !== 'user') {
+      badgesContainer.innerHTML += `<span class="badge moderator">${this.userData.role.charAt(0).toUpperCase() + this.userData.role.slice(1)}</span>`;
+    }
+    badgesContainer.innerHTML += `<span class="badge artist"><i class="fas fa-palette"></i> Artist</span>`;
   }
 
   renderBio(bioText) {
@@ -1201,6 +1170,7 @@ updateUIForProfileType() {
   }
 
   // ========== SHADOW SYSTEM ==========
+
   async loadShadowData() {
     if (!this.userId) return;
 
@@ -1451,6 +1421,7 @@ updateUIForProfileType() {
   }
 
   // ========== ARTWORKS WITH CACHING ==========
+
   async loadArtworks() {
     const artworksGrid = document.getElementById("artworksGrid");
     const artworkCountSpan = document.getElementById("artworkCount");
@@ -1460,7 +1431,6 @@ updateUIForProfileType() {
     if (!artworksGrid) return;
 
     try {
-      // Use queryOptimizer if available, otherwise fallback to direct query
       if (typeof queryOptimizer !== "undefined") {
         const cacheKey = `user_artworks_${this.userId}`;
 
@@ -1480,13 +1450,12 @@ updateUIForProfileType() {
               ...doc.data(),
             }));
           },
-          5 * 60 * 1000, // 5 minutes cache
+          5 * 60 * 1000,
         );
 
         if (cachedArtworks) {
           this.artworks = cachedArtworks;
         } else {
-          // Fallback: load directly
           const snapshot = await firebase
             .firestore()
             .collection("artworks")
@@ -1501,7 +1470,6 @@ updateUIForProfileType() {
           }));
         }
       } else {
-        // Fallback without queryOptimizer
         const snapshot = await firebase
           .firestore()
           .collection("artworks")
@@ -1527,7 +1495,6 @@ updateUIForProfileType() {
       if (totalLikesSpan) totalLikesSpan.textContent = totalLikes;
       if (totalCheersSpan) totalCheersSpan.textContent = totalCheers;
 
-      // Render the artworks
       if (this.artworks.length === 0) {
         artworksGrid.innerHTML = `
           <div class="empty-state">
@@ -1596,13 +1563,11 @@ updateUIForProfileType() {
   }
 
   // ========== IMAGE UPLOADS ==========
+
   setupImageUploads() {
     if (!this.isOwnProfile) {
-      console.log("Viewing someone else's profile - hiding upload buttons");
       return;
     }
-
-    console.log("Setting up image uploads for own profile");
 
     const avatarWrapper = document.getElementById("profileAvatar");
     const avatarInput = document.getElementById("avatarFileInput");
@@ -1620,7 +1585,6 @@ updateUIForProfileType() {
 
       newAvatarWrapper.addEventListener("click", (e) => {
         e.stopPropagation();
-        console.log("Avatar clicked");
         avatarInput.click();
       });
 
@@ -1647,13 +1611,11 @@ updateUIForProfileType() {
       coverBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         e.preventDefault();
-        console.log("Cover upload button clicked");
         coverInput.click();
       });
 
       coverInput.addEventListener("change", (e) => {
         if (e.target.files && e.target.files[0]) {
-          console.log("Cover file selected:", e.target.files[0].name);
           this.uploadImage(e.target.files[0], "cover");
         }
       });
@@ -1734,9 +1696,6 @@ updateUIForProfileType() {
 
   setupUpload() {
     if (!this.isOwnProfile) {
-      console.log(
-        "Viewing someone else's profile - hiding upload modal trigger",
-      );
       return;
     }
 
@@ -1938,6 +1897,7 @@ updateUIForProfileType() {
   }
 
   // ========== LIKED & SAVED ARTWORKS ==========
+
   async loadLikedArtworks() {
     if (!this.userId) return;
 
@@ -2201,6 +2161,11 @@ updateUIForProfileType() {
         }
       });
     }
+
+    // Artist type change - update specialties/mediums
+    document.getElementById('artistType')?.addEventListener('change', (e) => {
+      this.populateSpecialties(e.target.value);
+    });
   }
 
   showEditModal() {

@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Home — Art Mecca</title>
+
+    <!-- SEO -->
+    <meta name="robots" content="noindex, follow" />
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components/header.css" />
+    <link rel="stylesheet" href="css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="css/home.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  </head>
+  <body>
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <!-- ====== HEADER ====== -->
+<header class="main-header" id="main-header">
+  <div class="container">
+    <nav class="navbar">
+      <!-- Logo -->
+      <div class="nav-brand">
+        <a href="/" class="logo" id="logoLink">
+          <span class="logo-icon">✧</span>
+          <span class="logo-text">Art Mecca</span>
+        </a>
+      </div>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links" id="nav-links">
+        <li>
+          <a href="/" class="nav-link" data-section="home" id="navHome">Home</a>
+        </li>
+        <li>
+          <a href="/#about" class="nav-link" data-section="about">About</a>
+        </li>
+        <li class="nav-dropdown" data-section="tutorials">
+          <a href="/pages/tutorials/tutorials.html" class="nav-link">
+            Tutorials <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a
+                href="/pages/tutorials/character-design/character-design-tutorials.html"
+                >◈ Character Design</a
+              >
+            </li>
+            <li>
+              <a
+                href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                >✦ Color & Lighting</a
+              >
+            </li>
+            <li>
+              <a
+                href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                >◆ Digital Painting</a
+              >
+            </li>
+            <li>
+              <a
+                href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                >◈ Facial Features</a
+              >
+            </li>
+            <li>
+              <a
+                href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                >⌘ Software Guide</a
+              >
+            </li>
+            <li>
+              <a
+                href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                >⚙ Workflow Process</a
+              >
+            </li>
+            <li>
+              <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-dropdown" data-section="software">
+          <a href="/pages/software/software-comparison.html" class="nav-link">
+            Software <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/pages/software/software-comparison.html"
+                >◈ Software Comparison</a
+              >
+            </li>
+            <li>
+              <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-dropdown" data-section="tools">
+          <a href="/pages/tools/tools.html" class="nav-link">
+            Tools <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/pages/tools/color-palette-generator.html"
+                >◈ Color Palette Generator</a
+              >
+            </li>
+            <li>
+              <a href="/pages/tools/color-scheme-analyzer.html"
+                >✦ Color Scheme Analyzer</a
+              >
+            </li>
+            <li>
+              <a href="/pages/tools/prompt-generator.html"
+                >◆ Character Prompt Generator</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="nav-dropdown" data-section="community">
+          <a href="/pages/community/hub.html" class="nav-link">
+            Community <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/pages/community/hub.html#daily-challenge"
+                >◆ Daily Challenge</a
+              >
+            </li>
+            <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+            <li>
+              <a href="/pages/community/search-users.html">✦ Find Artists</a>
+            </li>
+            <li>
+              <a href="/pages/community/activity-feed.html">⌘ Activity Feed</a>
+            </li>
+            <li>
+              <a href="/pages/community/challenges.html">◈ Challenges</a>
+            </li>
+            <li><a href="/pages/community/analytics.html">◆ Analytics</a></li>
+          </ul>
+        </li>
+        <li class="nav-dropdown" data-section="equip">
+          <a href="/pages/Equip/Equip.html" class="nav-link">
+            Equip <span class="dropdown-arrow">▼</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/pages/Equip/Equip.html">◈ Portfolio Template</a></li>
+            <li>
+              <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+            </li>
+            <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+            <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+          </ul>
+        </li>
+        <li>
+          <a
+            href="/pages/truly-yours/truly-yours-project.html"
+            class="nav-link truly-yours-link"
+            data-section="truly-yours"
+          >
+            Truly Yours ✦
+          </a>
+        </li>
+      </ul>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <!-- Notification Bell -->
+        <div class="notification-container">
+          <button
+            class="btn-icon notification-btn"
+            id="notificationBtn"
+            aria-label="Notifications"
+          >
+            <i class="fas fa-bell"></i>
+          </button>
+          <span
+            class="notification-badge"
+            id="notificationBadge"
+            style="display: none"
+            >0</span
+          >
+          <div
+            class="notification-dropdown"
+            id="notificationDropdown"
+            style="display: none"
+          >
+            <div class="notification-header">
+              <h3>Notifications</h3>
+              <button id="markAllReadBtn" class="mark-read-btn">
+                Mark all read
+              </button>
+            </div>
+            <div class="notification-list" id="notificationList">
+              <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>No notifications yet</p>
+              </div>
+            </div>
+            <div class="notification-footer">
+              <a href="/pages/community/notifications.html">View All</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <button class="btn-icon search-btn" id="search-btn" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+
+        <!-- Hybrid Status -->
+        <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+
+        <!-- Avatar -->
+        <div class="nav-avatar-container" id="navAvatar"></div>
+
+        <!-- Auth Buttons -->
+        <div class="auth-buttons" id="authButtons">
+          <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+            >Log In</a
+          >
+          <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+            >Sign Up</a
+          >
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        class="mobile-menu-btn"
+        id="mobile-menu-btn"
+        aria-label="Toggle menu"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Search Overlay -->
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-container">
+      <div class="search-box">
+        <div class="search-input-wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            placeholder="Search tutorials, tools, artists..."
+            id="search-input"
+            autocomplete="off"
+          />
+        </div>
+        <button class="btn-icon search-close" id="search-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="search-results" id="search-results">
+        <div class="search-placeholder">
+          <p>Type to search for tutorials, tools, or artists</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+    <!-- ====== TOAST NOTIFICATION CONTAINER ====== -->
+
+    <!-- ====== KEYBOARD SHORTCUTS HINT ====== -->
+    <div class="keyboard-hint">
+      <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> —
+      navigate &nbsp;|&nbsp; <kbd>G</kbd> — glitch &nbsp;|&nbsp; <kbd>T</kbd> —
+      toast
+    </div>
+    <!-- ============================================================ -->
+    <!-- HERO SECTION - 3 LAYER SYSTEM                               -->
+    <!-- ============================================================ -->
+    <section class="parallax-hero" id="homeHero">
+      <!-- LAYER 1: BACKGROUND -->
+      <div class="hero-layer-1" id="layer1Container">
+        <div id="layer1Content">
+          <img
+            src="#"
+            alt="Background"
+            class="hero-bg-image"
+            onload="this.classList.add('loaded')"
+            onerror="this.style.display = 'none'"
+          />
+          <div class="hero-bg-fallback"></div>
+        </div>
+      </div>
+
+      <!-- LAYER 2: OVERLAY / AMBIENT EFFECTS -->
+      <div class="hero-layer-2" id="layer2Container">
+        <div id="layer2Content">
+          <div class="neon-orb"></div>
+          <div class="grid-overlay"></div>
+          <span class="graffiti-tag tag-top-left">✧ FRESH</span>
+          <span class="graffiti-tag tag-bottom-right">★ NEON</span>
+          <div class="scan-line-hero"></div>
+        </div>
+      </div>
+
+      <!-- LAYER 3: GLASS UI CONTENT -->
+      <div class="hero-layer-3">
+        <div class="hero-content glass-panel">
+          <div class="hero-dashboard-header">
+            <!-- Glitchy welcome text with typewriter -->
+            <div class="welcome-glitch-container">
+              <span class="glitch-welcome" data-text="WELCOME BACK, ARTIST"
+                >WELCOME BACK, ARTIST</span
+              >
+              <div class="typewriter-container">
+                <span class="typewriter-text" id="typewriterText"></span>
+                <span class="typewriter-cursor">█</span>
+              </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="hero-stats-grid">
+              <div class="hero-stat-card glass-panel">
+                <span class="hero-stat-value" id="heroTotalArtworks">0</span>
+                <span class="hero-stat-label">Artworks</span>
+                <div class="stat-glow"></div>
+              </div>
+              <div class="hero-stat-card glass-panel">
+                <span class="hero-stat-value" id="heroTotalArtists">0</span>
+                <span class="hero-stat-label">Artists</span>
+                <div class="stat-glow"></div>
+              </div>
+              <div class="hero-stat-card glass-panel">
+                <span class="hero-stat-value" id="heroActiveChallenges">0</span>
+                <span class="hero-stat-label">Challenges</span>
+                <div class="stat-glow"></div>
+              </div>
+              <div class="hero-stat-card glass-panel">
+                <span class="hero-stat-value" id="heroTotalLikes">0</span>
+                <span class="hero-stat-label">Likes</span>
+                <div class="stat-glow"></div>
+              </div>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="hero-quick-actions">
+              <a
+                href="/pages/community/gallery.html"
+                class="btn btn-primary btn-glow"
+              >
+                <span class="btn-icon">▶</span> EXPLORE GALLERY
+              </a>
+              <a
+                href="/pages/community/challenges.html"
+                class="btn btn-secondary"
+              >
+                <span class="btn-icon">◆</span> JOIN CHALLENGE
+              </a>
+              <a href="/pages/tools/tools.html" class="btn btn-secondary">
+                <span class="btn-icon">⚡</span> TOOLS
+              </a>
+            </div>
+
+            <!-- System Status -->
+            <div class="hero-system-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: ONLINE</span>
+              <span class="status-divider">|</span>
+              <span class="status-text"
+                >CREW: <span id="crewCount">0</span></span
+              >
+              <span class="status-divider">|</span>
+              <span
+                class="status-text glitch-text-small"
+                data-text="✦ KEEP IT FRESH ✦"
+                >✦ KEEP IT FRESH ✦</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <span class="scroll-text">▼ SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- HOME DASHBOARD CONTENT                                       -->
+    <!-- ============================================================ -->
+    <main class="home-dashboard">
+      <!-- ========================================================== -->
+      <!-- SECTION: COMMUNITY NEWS SLIDER                             -->
+      <!-- ========================================================== -->
+      <section class="community-news-section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-badge">✦ COMMUNITY NEWS ✦</div>
+            <h2>
+    <span class="glitch-header" data-text="Latest from the Cyber Den">
+        ✧ Latest from the <span class="gradient-text">Cyber Den</span>
+        <span class="glitch-layer" data-text="Latest from the Cyber Den"></span>
+        <span class="rgb-split" data-text="Latest from the Cyber Den"></span>
+        <span class="glitch-flash"></span>
+    </span>
+</h2>
+            <p>
+              Stay updated with the latest announcements and community
+              highlights
+            </p>
+          </div>
+
+          <div class="news-slider-container">
+            <div class="news-slider" id="newsSlider">
+              <!-- 7 Slides -->
+              <div class="news-slide active" data-index="0">
+                <div class="news-slide-image">
+                  <div class="news-image-placeholder">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Slide 1</span>
+                  </div>
+                </div>
+                <div class="news-slide-content">
+                  <span class="news-tag">✦ ANNOUNCEMENT</span>
+                  <h3>Art Mecca v2.0 Launch</h3>
+                  <p>
+                    We're thrilled to announce the launch of Art Mecca v2.0
+                    with全新的 features including the 3D gallery, real-time
+                    collaboration, and enhanced community tools.
+                  </p>
+                  <a href="#" class="news-read-more">Read More →</a>
+                </div>
+              </div>
+
+              <div class="news-slide" data-index="1">
+                <div class="news-slide-image">
+                  <div class="news-image-placeholder">
+                    <i class="fas fa-trophy"></i>
+                    <span>Slide 2</span>
+                  </div>
+                </div>
+                <div class="news-slide-content">
+                  <span class="news-tag">✦ CHALLENGE</span>
+                  <h3>Monthly Art Challenge: Cyberpunk</h3>
+                  <p>
+                    This month's theme is Cyberpunk! Create your best futuristic
+                    artwork for a chance to win prizes and be featured in our
+                    gallery.
+                  </p>
+                  <a href="#" class="news-read-more">Join Challenge →</a>
+                </div>
+              </div>
+
+              <div class="news-slide" data-index="2">
+                <div class="news-slide-image">
+                  <div class="news-image-placeholder">
+                    <i class="fas fa-users"></i>
+                    <span>Slide 3</span>
+                  </div>
+                </div>
+                <div class="news-slide-content">
+                  <span class="news-tag">✦ COMMUNITY</span>
+                  <h3>Community Spotlight: Artist of the Month</h3>
+                  <p>
+                    Meet our featured artist of the month! Their incredible work
+                    has inspired the entire community with their unique style
+                    and creativity.
+                  </p>
+                  <a href="#" class="news-read-more">Meet the Artist →</a>
+                </div>
+              </div>
+
+              <div class="news-slide" data-index="3">
+                <div class="news-slide-image">
+                  <div class="news-image-placeholder">
+                    <i class="fas fa-palette"></i>
+                    <span>Slide 4</span>
+                  </div>
+                </div>
+                <div class="news-slide-content">
+                  <span class="news-tag">✦ TUTORIAL</span>
+                  <h3>New Tutorial: Advanced Lighting</h3>
+                  <p>
+                    Learn advanced lighting techniques from industry
+                    professionals. This comprehensive guide covers everything
+                    from basic shadows to complex light setups.
+                  </p>
+                  <a href="#" class="news-read-more">Start Learning →</a>
+                </div>
+              </div>
+
+              <div class="news-slide" data-index="4">
+                <div class="news-slide-image">
+                  <div class="news-image-placeholder">
+                    <i class="fas fa-rocket"></i>
+                    <span>Slide 5</span>
+                  </div>
+                </div>
+                <div class="news-slide-content">
+                  <span class="news-tag">✦ UPDATE</span>
+                  <h3>New Tools: Prompt Generator</h3>
+                  <p>
+                    Our new prompt generator helps you overcome creative blocks
+                    and generate unique ideas for your next masterpiece.
+                  </p>
+                  <a href="#" class="news-read-more">Try It Now →</a>
+                </div>
+              </div>
+
+              <div class="news-slide" data-index="5">
+                <div class="news-slide-image">
+                  <div class="news-image-placeholder">
+                    <i class="fas fa-gem"></i>
+                    <span>Slide 6</span>
+                  </div>
+                </div>
+                <div class="news-slide-content">
+                  <span class="news-tag">✦ EVENT</span>
+                  <h3>Live Art Battle: This Friday!</h3>
+                  <p>
+                    Join us this Friday for our monthly Live Art Battle! Watch
+                    artists compete in real-time, vote for your favorites, and
+                    win exclusive rewards.
+                  </p>
+                  <a href="#" class="news-read-more">RSVP Now →</a>
+                </div>
+              </div>
+
+              <div class="news-slide" data-index="6">
+                <div class="news-slide-image">
+                  <div class="news-image-placeholder">
+                    <i class="fas fa-star"></i>
+                    <span>Slide 7</span>
+                  </div>
+                </div>
+                <div class="news-slide-content">
+                  <span class="news-tag">✦ MILESTONE</span>
+                  <h3>10K Artists Strong!</h3>
+                  <p>
+                    We've reached 10,000 artists in our community! Thank you to
+                    everyone who has made this journey possible. Here's to many
+                    more milestones!
+                  </p>
+                  <a href="#" class="news-read-more">Celebrate →</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slider Controls -->
+            <div class="news-slider-controls">
+              <button class="news-slider-btn prev-btn" id="newsPrevBtn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="news-slider-dots" id="newsDots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+                <span class="dot" data-index="3"></span>
+                <span class="dot" data-index="4"></span>
+                <span class="dot" data-index="5"></span>
+                <span class="dot" data-index="6"></span>
+              </div>
+              <button class="news-slider-btn next-btn" id="newsNextBtn">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- SECTION: 3D WINNERS CAROUSEL (10 winners)                  -->
+      <!-- ========================================================== -->
+      <section class="winners-carousel-section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-badge">✦ CHAMPIONS ✦</div>
+             <h2>
+    <span class="glitch-header" data-text="Monthly Winners">
+        ◆ Monthly <span class="gradient-text">Winners</span>
+        <span class="glitch-layer" data-text="Monthly Winners"></span>
+        <span class="rgb-split" data-text="Monthly Winners"></span>
+        <span class="glitch-flash"></span>
+    </span>
+</h2>
+              >Latest from the
+              <span class="gradient-text">Cyber Den</span></span
+            >
+            <p>Celebrating the best artists and their amazing creations</p>
+          </div>
+
+          <div class="winners-carousel-container">
+            <div class="winners-carousel" id="winnersCarousel">
+              <!-- Rendered by JavaScript -->
+              <div
+                class="loading-state"
+                style="
+                  text-align: center;
+                  padding: 40px;
+                  width: 100%;
+                  grid-column: 1/-1;
+                "
+              >
+                <div
+                  class="spinner"
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border: 2px solid rgba(138, 25, 225, 0.15);
+                    border-top-color: #8a19e1;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 1rem;
+                  "
+                ></div>
+                <p style="color: var(--text-muted)">Loading winners...</p>
+              </div>
+            </div>
+
+            <!-- Carousel Controls -->
+            <div class="winners-carousel-controls">
+              <button class="carousel-btn prev-btn" id="winnersPrevBtn">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="carousel-progress">
+                <div
+                  class="carousel-progress-bar"
+                  id="winnersProgressBar"
+                ></div>
+              </div>
+              <button class="carousel-btn next-btn" id="winnersNextBtn">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- ========================================================== -->
+      <!-- SECTION: HOST INFO — Cyberpunk Street Art Style           -->
+      <!-- ========================================================== -->
+      <section class="host-info-section">
+        <div class="container">
+          <div class="host-info-container glass-panel">
+            <!-- Graffiti Tag Background -->
+            <span class="host-graffiti-tag tag-1">✧ HOST ✧</span>
+            <span class="host-graffiti-tag tag-2">★ CYBER DEN ★</span>
+
+            <div class="host-info-content">
+              <!-- Avatar / Profile Image -->
+              <div class="host-avatar-wrapper">
+                <div class="host-avatar" id="hostAvatar">
+                  <span class="host-avatar-emoji">🎨</span>
+                  <div class="host-avatar-ring"></div>
+                </div>
+                <div class="host-status-badge">
+                  <span class="status-dot"></span>
+                  <span>ONLINE</span>
+                </div>
+              </div>
+
+              <!-- Text Content -->
+              <div class="host-text">
+                <div class="host-header">
+                  <span class="host-badge">✦ SYSTEM ADMIN ✦</span>
+                  <h2>
+                    HiyA! I'm,
+                    <span class="gradient-text" id="hostName">Truly Yours</span>
+                  </h2>
+                </div>
+
+                <p class="host-bio" id="hostBio">
+                  Welcome to the <strong>Cyber Den</strong> — a creative space
+                  built for artists, by an artist. I designed this platform to
+                  help you <strong>learn, create, and connect</strong> with
+                  fellow creatives. Need to find you're footing? Vist these
+                  official accounts, to help you figure out you're setup and
+                  explore all the features through a immersive lense! Follow the
+                  official Truly Yours account for updates and creative
+                  inspiration! Whether you're here to master digital painting,
+                  find inspiration, or share your work, you're in the right
+                  place. <strong>yours truly</strong> —
+                  <span class="signature-name glitch" data-text="Truly Yours"
+                    >Truly Yours</span
+                  >
+                </p>
+
+                <div class="host-quick-tips">
+                  <div class="tip-item">
+                    <span class="tip-icon">☆</span>
+                    <span class="tip-text"
+                      >Explore the <strong>Gallery</strong> for
+                      inspiration</span
+                    >
+                  </div>
+                  <div class="tip-item">
+                    <span class="tip-icon">🜲</span>
+                    <span class="tip-text"
+                      >Join <strong>Challenges</strong> to level up</span
+                    >
+                  </div>
+                  <div class="tip-item">
+                    <span class="tip-icon">❀</span>
+                    <span class="tip-text"
+                      >Learn with <strong>Tutorials</strong> from pros</span
+                    >
+                  </div>
+                  <div class="tip-item">
+                    <span class="tip-icon">♡</span>
+                    <span class="tip-text"
+                      >Connect in the <strong>Community Hub</strong></span
+                    >
+                  </div>
+                </div>
+
+                <!-- Character Avatars -->
+                <div class="host-characters">
+                  <span class="characters-label">✦ MY CREW ✦</span>
+                  <div class="characters-grid" id="charactersGrid">
+                    <!-- Rendered by JavaScript -->
+                    <div class="character-placeholder">
+                      <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Official Links -->
+                <div class="host-official-links">
+                  <span class="links-label">✦ OFFICIAL ACCOUNTS ✦</span>
+                  <div class="links-grid">
+                    <a
+                      href="https://www.youtube.com/@Trulyyours26"
+                      class="host-link youtube"
+                      target="_blank"
+                    >
+                      <i class="fab fa-youtube"></i>
+                      <span>YouTube</span>
+                    </a>
+                    <a
+                      href="https://www.instagram.com/_trulyyours26"
+                      class="host-link instagram"
+                      target="_blank"
+                    >
+                      <i class="fab fa-instagram"></i>
+                      <span>Instagram</span>
+                    </a>
+                    <a
+                      href="https://x.com/TrulyYoursMira"
+                      class="host-link twitter"
+                      target="_blank"
+                    >
+                      <i class="fab fa-x-twitter"></i>
+                      <span>X</span>
+                    </a>
+                    <a
+                      href="https://www.tiktok.com/@truly_yours26"
+                      class="host-link tiktok"
+                      target="_blank"
+                    >
+                      <i class="fab fa-tiktok"></i>
+                      <span>TikTok</span>
+                    </a>
+                    <a
+                      href="https://za.pinterest.com/TrulyYours26/"
+                      class="host-link pinterest"
+                      target="_blank"
+                    >
+                      <i class="fab fa-pinterest"></i>
+                      <span>Pinterest</span>
+                    </a>
+                    <a href="#" class="host-link discord" target="_blank">
+                      <i class="fab fa-discord"></i>
+                      <span>Discord</span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- View Profile Button -->
+                <a
+                  href="/pages/community/profiles.html"
+                  class="btn btn-primary host-profile-btn"
+                >
+                  <span class="btn-icon">✦</span> VIEW MY PROFILE
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- SECTION: RECENT ARTWORKS                                   -->
+      <!-- ========================================================== -->
+      <section class="recent-artworks">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-badge">✦ GALLERY ✦</div>
+            <h2>
+              <h2>
+    <span class="glitch-header" data-text="Fresh from the Community">
+        ◈ Fresh from the <span class="gradient-text">Community</span>
+        <span class="glitch-layer" data-text="Fresh from the Community"></span>
+        <span class="rgb-split" data-text="Fresh from the Community"></span>
+        <span class="glitch-flash"></span>
+    </span>
+</h2>
+            </h2>
+            <a href="/pages/community/gallery.html" class="view-all"
+              >View All →</a
+            >
+          </div>
+          <div class="artwork-grid" id="recentArtworks">
+            <!-- Rendered by JavaScript -->
+            <div class="artwork-placeholder">
+              <i class="fas fa-paint-brush"></i>
+              <span>Loading artworks...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- SECTION: ACTIVE CHALLENGES                                 -->
+      <!-- ========================================================== -->
+      <section class="active-challenges">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-badge">✦ MISSIONS ✦</div>
+            <h2>
+        <span class="glitch-header" data-text="Active Challenges">★ Active <span class="gradient-text">Challenges</span></span>
+      </h2>
+            <a href="/pages/community/challenges.html" class="view-all"
+              >✦ View All ✦</a
+            >
+          </div>
+          <div class="challenge-grid" id="activeChallenges">
+            <!-- Rendered by JavaScript -->
+            <div class="challenge-placeholder">
+              <i class="fas fa-spinner fa-spin"></i>
+              <span>Loading challenges...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- SECTION: ACTIVITY FEED                                     -->
+      <!-- ========================================================== -->
+      <section class="activity-feed">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-badge">✦ LIVE FEED ✦</div>
+            <h2>
+              <span class="glitch-header" data-text="Community Activity">
+        ◈ Community <span class="gradient-text">Activity</span>
+        <span class="glitch-layer" data-text="Community Activity"></span>
+        <span class="rgb-split" data-text="Community Activity"></span>
+        <span class="glitch-flash"></span>
+    </span>
+            </h2>
+          </div>
+          <div class="feed-list" id="activityFeed">
+            <!-- Rendered by JavaScript -->
+            <div class="feed-placeholder">
+              <i class="fas fa-spinner fa-spin"></i>
+              <span>Loading activity...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- SECTION: FEATURED ARTISTS                                  -->
+      <!-- ========================================================== -->
+      <section class="featured-artists">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-badge">✦ SPOTLIGHT ✦</div>
+            <h2>
+              <span class="glitch-header" data-text="Artists to Watch">
+        ✧ Artists to <span class="gradient-text">Watch</span>
+        <span class="glitch-layer" data-text="Artists to Watch"></span>
+        <span class="rgb-split" data-text="Artists to Watch"></span>
+        <span class="glitch-flash"></span>
+    </span>
+            </h2>
+            <a href="/pages/community/hub.html" class="view-all"
+              >✦ View All ✦</a
+            >
+          </div>
+          <div class="artist-grid" id="featuredArtists">
+            <!-- Rendered by JavaScript -->
+            <div class="artist-placeholder">
+              <i class="fas fa-spinner fa-spin"></i>
+              <span>Loading artists...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- SECTION: CTA                                               -->
+      <!-- ========================================================== -->
+      <section class="home-cta-section">
+        <div class="container">
+          <div class="home-cta glass-panel">
+            <div class="cta-glow"></div>
+            <span class="cta-graffiti-tag tag-1">✧ JOIN THE MOVEMENT ✧</span>
+            <span class="cta-graffiti-tag tag-2">★ CREATE SOMETHING ★</span>
+
+            <h2>
+              <span class="glitch-header" data-text="Ready to Make Your Mark"
+                >Ready to Make Your
+                <span class="gradient-text">Mark</span>?</span
+              >
+            </h2>
+            <p>
+              Join thousands of artists who are already creating, learning, and
+              growing in the cyber den.
+            </p>
+            <div class="cta-buttons">
+              <a
+                href="/pages/auth/register.html"
+                class="btn btn-primary btn-glow"
+              >
+                <span class="btn-icon">▶</span> START CREATING
+              </a>
+              <a
+                href="/pages/tutorials/tutorials.html"
+                class="btn btn-secondary"
+              >
+                <span class="btn-icon">◆</span> LEARN MORE
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ====== THEME TOGGLE — BOTTOM RIGHT ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- FOOTER                                                     -->
+    <!-- ========================================================== -->
+
+    <!-- components/footer.html -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html#cookies">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+    </footer>
+
+    <!-- ========================================================== -->
+    <!-- SCRIPTS - ALL IN THE RIGHT ORDER                          -->
+    <!-- ========================================================== -->
+
+    <!-- 1. Firebase Config -->
+    <script src="config/firebase-config.js"></script>
+
+    <!-- 2. Auth -->
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+
+    <!-- 3. Components -->
+
+    <script src="js/components/avatar-manager.js"></script>
+    <script src="js/components/header.js"></script>
+
+    <!-- 4. Navbar -->
+    <script src="/js/navbar-active.js"></script>
+
+    <!-- 5. Search -->
+    <script src="/js/search.js"></script>
+
+    <!-- 6. SEO -->
+    <script src="/js/utils/seo.js"></script>
+
+    <!-- 7. Page Redirect -->
+    <script src="js/auth/page-redirect.js"></script>
+
+    <!-- 8. Challenges System (needed for challenges to load) -->
+    <script src="/js/community/challenges.js"></script>
+
+    <!-- 9. Host info  -->
+    <script src="js/host-info.js"></script>
+
+    <!-- 10. Home Page Features (THIS IS THE MAIN ONE) -->
+    <script src="js/home-page.js"></script>
+
+    <script>
+      // Update nav link based on auth
+      firebase.auth().onAuthStateChanged((user) => {
+        const homeLink = document.getElementById("navHomeLink");
+        if (homeLink) {
+          homeLink.href = user ? "/home.html" : "/";
+        }
+      });
+    </script>
+    <!-- Cookie Banner -->
+<script src="/js/components/cookie-banner.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1079 @@
+/* ================================================================
+   LOGIN PAGE — PINK/ORANGE NEON AESTHETIC
+   COMPLETE STANDALONE FILE
+   DIRECT CONTRAST TO SIGNUP (PURPLE/BLUE)
+   ================================================================ */
+
+/* ============================================================
+   THEME VARIABLES — ORANGE/PINK OVERRIDES
+   ============================================================ */
+:root {
+  --login-bg-body: #0a0508;
+  --login-bg-card: rgba(255, 107, 0, 0.06);
+  --login-bg-card-hover: rgba(255, 107, 0, 0.12);
+  --login-bg-card-border: rgba(255, 107, 0, 0.15);
+  --login-bg-elevated: rgba(255, 107, 0, 0.04);
+  --login-bg-nav: rgba(10, 5, 8, 0.92);
+
+  --login-text-primary: #f5eaff;
+  --login-text-secondary: #d4a080;
+  --login-text-muted: #6a3a2a;
+  --login-text-inverse: #0a0508;
+
+  --login-shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+  --login-shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+  --login-border-color: rgba(255, 107, 0, 0.15);
+
+  /* Neon Colors - Orange & Pink */
+  --neon-orange: #ff6b00;
+  --neon-orange-light: #ff8c00;
+  --neon-pink: #ff2d95;
+  --neon-pink-light: #ff00aa;
+  --neon-peach: #ff8a7a;
+  --neon-gold: #f59e0b;
+  --neon-green: #4ff3a6;
+  --neon-cyan: #58ebfe;
+  --neon-purple: #ad03fc;
+  --neon-blue: #00d4ff;
+
+  --login-gradient-primary: linear-gradient(135deg, #ff6b00, #ff2d95);
+  --login-gradient-secondary: linear-gradient(135deg, #ff2d95, #ff6b00);
+  --login-gradient-cyber: linear-gradient(135deg, #ff6b00, #ff2d95, #ff00aa);
+
+  --login-glow-orange: 0 0 40px rgba(255, 107, 0, 0.3), 0 0 80px rgba(255, 107, 0, 0.1);
+  --login-glow-pink: 0 0 40px rgba(255, 45, 149, 0.3), 0 0 80px rgba(255, 45, 149, 0.1);
+  --login-glow-peach: 0 0 40px rgba(255, 138, 122, 0.3), 0 0 80px rgba(255, 138, 122, 0.1);
+
+  --login-font-display: "Orbitron", "Rajdhani", monospace;
+  --login-font-condensed: "Rajdhani", "Orbitron", sans-serif;
+  --login-font-mono: "Share Tech Mono", monospace;
+  --login-font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+  --login-font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --login-transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --login-transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================
+   BASE — FULL HEIGHT COVERAGE
+   ============================================================ */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--login-bg-body);
+}
+
+.login-page {
+  min-height: 100vh;
+  padding: 40px 0 60px;
+  background: var(--login-bg-body);
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   NOISE OVERLAY & EFFECTS — FIXED POSITIONING
+   ============================================================ */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+.noise-overlay.active {
+  opacity: 1;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9996;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.02) 2px,
+    rgba(0, 0, 0, 0.02) 3px
+  );
+  animation: scanMove 0.8s linear infinite;
+}
+
+@keyframes scanMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(3px); }
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+  z-index: 9995;
+}
+
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+.theme-toggle-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--login-bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--login-border-color);
+  border-radius: 4px;
+  color: var(--login-text-primary);
+  font-family: var(--login-font-condensed);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--login-transition);
+  box-shadow: var(--login-shadow-card), var(--login-glow-orange);
+}
+
+.theme-toggle:hover {
+  background: var(--login-bg-card-hover);
+  transform: scale(1.04);
+  box-shadow: var(--login-shadow-card-hover), var(--login-glow-peach);
+  border-color: var(--neon-orange);
+}
+
+.theme-toggle .toggle-icon {
+  font-size: 1rem;
+}
+
+.theme-toggle .toggle-label {
+  font-weight: 600;
+}
+
+/* ============================================================
+   GLASS PANEL
+   ============================================================ */
+.glass-panel {
+  background: var(--login-bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--login-border-color);
+  box-shadow: var(--login-shadow-card);
+  transition: all var(--login-transition);
+}
+
+.glass-panel:hover {
+  background: var(--login-bg-card-hover);
+  box-shadow: var(--login-shadow-card-hover);
+  border-color: rgba(255, 107, 0, 0.25);
+}
+
+/* ============================================================
+   GLITCH HEADERS — ORANGE/PINK VERSION
+   ============================================================ */
+.glitch-hero {
+  position: relative;
+  display: inline-block;
+  font-family: var(--login-font-display);
+  font-size: inherit;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--login-text-primary);
+  animation: glitchFlicker 3s ease-in-out infinite;
+}
+
+.glitch-hero::before,
+.glitch-hero::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.glitch-hero::before {
+  color: var(--neon-orange);
+  animation: glitch1 0.15s infinite;
+  text-shadow: 2px 0 var(--neon-pink);
+  opacity: 0.3;
+}
+
+.glitch-hero::after {
+  color: var(--neon-pink);
+  animation: glitch2 0.2s infinite;
+  text-shadow: -2px 0 var(--neon-orange);
+  opacity: 0.3;
+}
+
+@keyframes glitch1 {
+  0% { transform: translate(0); }
+  20% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes glitch2 {
+  0% { transform: translate(0); }
+  20% { transform: translate(1px, -1px); }
+  40% { transform: translate(-1px, 1px); }
+  60% { transform: translate(1px, -1px); }
+  80% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes glitchFlicker {
+  0%, 85%, 89%, 95%, 100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  87% {
+    opacity: 0.97;
+    transform: translateX(-1.5px) scale(1.01);
+  }
+  89% {
+    opacity: 1;
+    transform: translateX(1.5px) scale(0.99);
+  }
+  92% {
+    opacity: 0.98;
+    transform: translateX(-0.8px) scale(1.005);
+  }
+  94% {
+    opacity: 1;
+    transform: translateX(0.8px) scale(0.995);
+  }
+  96% {
+    opacity: 0.99;
+    transform: translateX(-0.5px) scale(1.002);
+  }
+}
+
+.gradient-text {
+  background: var(--login-gradient-cyber);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
+   AUTH CONTAINER
+   ============================================================ */
+.auth-container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 20;
+}
+
+.auth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+/* ============================================================
+   AUTH CARD — GLASSMORPHISM ORANGE/PINK
+   ============================================================ */
+.auth-card {
+  background: var(--login-bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--login-border-color);
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: var(--login-shadow-card), var(--login-glow-orange);
+  transition: all var(--login-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--login-gradient-primary);
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.auth-card:hover {
+  border-color: var(--neon-orange);
+  box-shadow: var(--login-shadow-card-hover), var(--login-glow-orange);
+}
+
+/* ============================================================
+   AUTH HEADER
+   ============================================================ */
+.auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-header .auth-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 12px;
+  color: var(--neon-orange);
+  text-shadow: 0 0 40px rgba(255, 107, 0, 0.3);
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(8deg); }
+}
+
+.auth-header h1 {
+  font-family: var(--login-font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  background: var(--login-gradient-cyber);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 4px 0;
+}
+
+.auth-header p {
+  font-family: var(--login-font-condensed);
+  font-size: 1.1rem;
+  color: var(--login-text-secondary);
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+/* ============================================================
+   AUTH FORM
+   ============================================================ */
+.auth-form {
+  margin-bottom: 0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--login-font-mono);
+  font-size: 0.65rem;
+  color: var(--login-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.form-group .required {
+  color: var(--neon-pink);
+  margin-left: 2px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--login-bg-elevated);
+  border: 1px solid var(--login-border-color);
+  border-radius: 4px;
+  color: var(--login-text-primary);
+  font-family: var(--login-font-body);
+  font-size: 0.9rem;
+  transition: all var(--login-transition);
+  box-sizing: border-box;
+}
+
+.form-group input::placeholder {
+  color: var(--login-text-muted);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--neon-orange);
+  box-shadow: 0 0 30px rgba(255, 107, 0, 0.08);
+  background: var(--login-bg-card-hover);
+}
+
+.helper-text {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--login-font-mono);
+  font-size: 0.6rem;
+  color: var(--login-text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* Password input wrapper */
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-input-wrapper input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--login-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  transition: all var(--login-transition);
+  font-size: 0.9rem;
+}
+
+.password-toggle:hover {
+  color: var(--neon-orange);
+}
+
+/* ============================================================
+   FORM OPTIONS
+   ============================================================ */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-options .checkbox-label {
+  font-size: 0.8rem;
+  color: var(--login-text-secondary);
+}
+
+/* ============================================================
+   CHECKBOX
+   ============================================================ */
+.checkbox-group {
+  margin-top: 4px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-family: var(--login-font-body);
+  font-size: 0.8rem;
+  color: var(--login-text-secondary);
+  line-height: 1.5;
+}
+
+.checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--login-border-color);
+  border-radius: 4px;
+  flex-shrink: 0;
+  position: relative;
+  transition: all var(--login-transition);
+  background: var(--login-bg-elevated);
+  margin-top: 1px;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background: var(--login-gradient-primary);
+  border-color: var(--neon-orange);
+  box-shadow: var(--login-glow-orange);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.checkbox-label a {
+  color: var(--neon-peach);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all var(--login-transition);
+}
+
+.checkbox-label a:hover {
+  color: var(--neon-orange);
+  text-decoration: underline;
+}
+
+/* ============================================================
+   FORGOT LINK
+   ============================================================ */
+.forgot-link {
+  color: var(--neon-peach);
+  font-family: var(--login-font-condensed);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all var(--login-transition);
+}
+
+.forgot-link:hover {
+  color: var(--neon-orange);
+  text-shadow: 0 0 30px rgba(255, 107, 0, 0.3);
+  text-decoration: underline;
+}
+
+/* ============================================================
+   SUBMIT BUTTON — ORANGE/PINK
+   ============================================================ */
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background: var(--login-gradient-primary);
+  border: none;
+  border-radius: 4px;
+  color: var(--login-text-inverse);
+  font-family: var(--login-font-condensed);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--login-transition);
+  box-shadow: var(--login-glow-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.btn-submit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  z-index: 0;
+}
+
+.btn-submit:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--login-glow-orange), 0 0 80px rgba(255, 107, 0, 0.2);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-submit i {
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   SOCIAL AUTH
+   ============================================================ */
+.auth-divider {
+  text-align: center;
+  margin: 24px 0;
+  position: relative;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--login-border-color);
+}
+
+.auth-divider span {
+  background: var(--login-bg-card);
+  padding: 0 16px;
+  color: var(--login-text-muted);
+  font-family: var(--login-font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.social-auth {
+  margin-bottom: 0;
+}
+
+.social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--login-bg-elevated);
+  border: 1px solid var(--login-border-color);
+  border-radius: 4px;
+  color: var(--login-text-secondary);
+  font-family: var(--login-font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--login-transition);
+}
+
+.social-btn:hover {
+  background: var(--login-bg-card-hover);
+  border-color: var(--neon-orange);
+  transform: translateY(-3px);
+  box-shadow: var(--login-glow-orange);
+  color: var(--login-text-primary);
+}
+
+/* ============================================================
+   AUTH FOOTER
+   ============================================================ */
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--login-border-color);
+}
+
+.auth-footer p {
+  font-family: var(--login-font-body);
+  color: var(--login-text-secondary);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.auth-footer a {
+  color: var(--neon-peach);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all var(--login-transition);
+  font-family: var(--login-font-condensed);
+  letter-spacing: 1px;
+}
+
+.auth-footer a:hover {
+  color: var(--neon-orange);
+  text-shadow: 0 0 30px rgba(255, 107, 0, 0.3);
+  text-decoration: underline;
+}
+
+/* ============================================================
+   AUTH HERO (RIGHT SIDE) — ORANGE/PINK
+   ============================================================ */
+.auth-hero {
+  background: var(--login-bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--login-border-color);
+  border-radius: 8px;
+  padding: 40px 32px;
+  box-shadow: var(--login-shadow-card), var(--login-glow-pink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all var(--login-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--login-gradient-secondary);
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.auth-hero:hover {
+  border-color: var(--neon-pink);
+  box-shadow: var(--login-shadow-card-hover), var(--login-glow-pink);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 16px;
+  color: var(--neon-pink);
+  text-shadow: 0 0 60px rgba(255, 45, 149, 0.3);
+  animation: floatIcon 3s ease-in-out infinite 0.5s;
+}
+
+.hero-content h2 {
+  font-family: var(--login-font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: var(--login-gradient-cyber);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 8px 0;
+}
+
+.hero-content p {
+  font-family: var(--login-font-body);
+  color: var(--login-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--login-bg-elevated);
+  border: 1px solid var(--login-border-color);
+  border-radius: 4px;
+  font-family: var(--login-font-body);
+  font-size: 0.85rem;
+  color: var(--login-text-secondary);
+  transition: all var(--login-transition);
+}
+
+.feature:hover {
+  background: var(--login-bg-card-hover);
+  border-color: var(--neon-orange);
+  transform: translateX(6px);
+}
+
+.feature-icon {
+  font-size: 1.2rem;
+}
+
+/* ============================================================
+   GRAFFITI TAG — ORANGE/PINK
+   ============================================================ */
+.hero-graffiti-tag {
+  position: absolute;
+  font-family: var(--login-font-tag);
+  font-size: 4rem;
+  color: var(--neon-orange);
+  opacity: 0.04;
+  pointer-events: none;
+  bottom: -10px;
+  right: -40px;
+  transform: rotate(-6deg);
+  letter-spacing: 8px;
+}
+
+/* ============================================================
+   TOAST MESSAGE
+   ============================================================ */
+#auth-message {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  text-align: center;
+  font-family: var(--login-font-condensed);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  background: var(--login-bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--login-border-color);
+  color: var(--login-text-primary);
+  animation: fadeIn 0.3s ease;
+  box-shadow: var(--login-shadow-card);
+}
+
+#auth-message.success {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+}
+
+#auth-message.error {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .auth-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .auth-hero {
+    order: -1;
+    padding: 32px 24px;
+  }
+
+  .hero-features {
+    max-width: 100%;
+  }
+
+  .feature:hover {
+    transform: translateX(4px);
+  }
+
+  .hero-graffiti-tag {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 0 1rem;
+  }
+
+  .auth-card {
+    padding: 28px 20px;
+  }
+
+  .auth-header h1 {
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+  }
+
+  .auth-header .auth-icon {
+    font-size: 2.2rem;
+  }
+
+  .hero-content h2 {
+    font-size: 1.4rem;
+  }
+
+  .hero-icon {
+    font-size: 3rem;
+  }
+
+  .btn-submit {
+    padding: 14px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+  }
+
+  .form-options {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 20px 16px;
+  }
+
+  .auth-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .form-group input {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+  }
+
+  .checkbox-label {
+    font-size: 0.7rem;
+  }
+
+  .hero-features .feature {
+    font-size: 0.75rem;
+    padding: 10px 12px;
+  }
+
+  .auth-footer p {
+    font-size: 0.75rem;
+  }
+
+  .social-btn {
+    font-size: 0.75rem;
+    padding: 12px;
+  }
+}
+
+/* ============================================================
+   LIGHT THEME OVERRIDES — ORANGE/PINK VERSION
+   ============================================================ */
+[data-theme="light"] {
+  --login-bg-body: #fdf6f0;
+  --login-bg-card: rgba(255, 255, 255, 0.6);
+  --login-bg-card-hover: rgba(255, 255, 255, 0.8);
+  --login-bg-elevated: rgba(255, 255, 255, 0.2);
+  --login-bg-nav: rgba(253, 246, 240, 0.92);
+
+  --login-text-primary: #1a0a08;
+  --login-text-secondary: #5a3a2a;
+  --login-text-muted: #9a7a6a;
+  --login-text-inverse: #fdf6f0;
+
+  --login-shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --login-shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+  --login-border-color: rgba(255, 107, 0, 0.2);
+
+  --login-glow-orange: 0 0 40px rgba(255, 107, 0, 0.08), 0 0 80px rgba(255, 107, 0, 0.03);
+  --login-glow-pink: 0 0 40px rgba(255, 45, 149, 0.08), 0 0 80px rgba(255, 45, 149, 0.03);
+  --login-glow-peach: 0 0 40px rgba(255, 138, 122, 0.08), 0 0 80px rgba(255, 138, 122, 0.03);
+}
+
+[data-theme="light"] .auth-card,
+[data-theme="light"] .auth-hero {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .form-group input {
+  background: rgba(255, 255, 255, 0.3);
+  color: var(--login-text-primary);
+}
+
+[data-theme="light"] .form-group input:focus {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .btn-submit {
+  color: white;
+}
+
+[data-theme="light"] .theme-toggle {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 107, 0, 0.15);
+}
+
+[data-theme="light"] .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--neon-orange);
+}
+
+[data-theme="light"] .feature {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .feature:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] .auth-header h1,
+[data-theme="light"] .hero-content h2 {
+  background: var(--login-gradient-cyber);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background: var(--login-gradient-primary);
+}
+
+[data-theme="light"] .checkmark {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="light"] #auth-message {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .social-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--login-text-secondary);
+}
+
+[data-theme="light"] .social-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+[data-theme="light"] .auth-divider span {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .auth-footer {
+  border-top-color: rgba(255, 107, 0, 0.15);
+}
+
+[data-theme="light"] .glitch-hero::before,
+[data-theme="light"] .glitch-hero::after {
+  opacity: 0.15;
+}
+
+[data-theme="light"] .hero-graffiti-tag {
+  opacity: 0.08;
+}

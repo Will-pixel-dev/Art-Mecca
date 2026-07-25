@@ -1,64 +1,45 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Color Palette Generator - Art Mecca</title>
+    <title>Color Palette Generator · Art Mecca</title>
     <meta
       name="description"
       content="Create beautiful color palettes with our free color palette generator. Generate harmonious color schemes for your digital art projects."
     />
-    <meta
-      name="keywords"
-      content="color palette generator, color scheme generator, palette creator, art color tools, color harmony"
-    />
-
-    <!-- Open Graph -->
-    <meta
-      property="og:title"
-      content="Color Palette Generator - Create Beautiful Color Schemes"
-    />
-    <meta
-      property="og:description"
-      content="Create beautiful color palettes with our free color palette generator. Perfect for digital artists."
-    />
-    <meta property="og:image" content="/images/og-palette.jpg" />
-    <meta
-      property="og:url"
-      content="https://artisanhub.com/pages/tools/color-palette-generator.html"
-    />
-    <meta property="og:type" content="website" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Color Palette Generator - Create Beautiful Color Schemes"
-    />
-    <meta
-      name="twitter:description"
-      content="Create beautiful color palettes with our free color palette generator."
-    />
-    <meta name="twitter:image" content="/images/og-palette.jpg" />
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/tools.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -69,68 +50,1317 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ================================================================
+         COLOR PALETTE GENERATOR — CYBERPUNK PINK HUD AESTHETIC
+         ================================================================ */
+
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(240, 36, 223, 0.06);
+        --bg-card-hover: rgba(240, 36, 223, 0.12);
+        --bg-elevated: rgba(240, 36, 223, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(240, 36, 223, 0.15);
+
+        /* Theme Colors - Truly Yours Pink */
+        --color-pink-1: #f024df;
+        --color-pink-2: #ff42ef;
+        --color-pink-3: #ff57f1;
+        --color-pink-4: #fb74fb;
+        --color-pink-5: #ff8af5;
+        --color-pink: #f024df;
+        --color-pink-dark: #d01ec4;
+        --color-pink-light: #ff57f1;
+
+        /* Glitch Colors */
+        --color-glitch-a: #ff42ef;
+        --color-glitch-b: #f024df;
+        --color-glitch-c: #ad03fc;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-magenta: #ff00ea;
+
+        /* Spray */
+        --color-spray-pink: #f024df;
+        --color-spray-red: #ff0040;
+
+        /* Gradients */
+        --gradient-pink: linear-gradient(135deg, #f024df, #ff42ef, #ff57f1);
+        --gradient-cyber: linear-gradient(135deg, #ff42ef, #ad03fc, #f024df);
+        --gradient-neon: linear-gradient(135deg, #f024df, #ff42ef);
+
+        /* Glows */
+        --glow-pink:
+          0 0 40px rgba(240, 36, 223, 0.3), 0 0 80px rgba(240, 36, 223, 0.1);
+        --glow-pink-dark:
+          0 0 40px rgba(208, 30, 196, 0.3), 0 0 80px rgba(208, 30, 196, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(240, 36, 223, 0.2);
+
+        --glow-pink:
+          0 0 40px rgba(240, 36, 223, 0.08), 0 0 80px rgba(240, 36, 223, 0.03);
+        --glow-pink-dark:
+          0 0 40px rgba(208, 30, 196, 0.08), 0 0 80px rgba(208, 30, 196, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(240, 36, 223, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         GLASS CARD
+         ============================================================ */
+      .glass-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-pink);
+        transition: all var(--transition);
+      }
+
+      .glass-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(240, 36, 223, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-pink-dark);
+      }
+
+      /* ============================================================
+         MAIN CONTENT
+         ============================================================ */
+      .tool-main {
+        position: relative;
+        z-index: 2;
+        padding: 2rem 0 4rem;
+        min-height: 100vh;
+      }
+
+      /* ============================================================
+         HEADER
+         ============================================================ */
+      .tool-header {
+        text-align: center;
+        padding: 3rem 0 2rem;
+        position: relative;
+      }
+
+      .tool-header::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-pink);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
+      }
+
+      .tool-header h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        line-height: 1.1;
+      }
+
+      .tool-header h1 .highlight {
+        background: var(--gradient-pink);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmerPink 4s ease-in-out infinite;
+        background-size: 200% 200%;
+      }
+
+      @keyframes shimmerPink {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .tool-header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         GENERATOR GRID
+         ============================================================ */
+      .generator-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-pink);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .generator-grid::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-pink);
+        opacity: 0.4;
+      }
+
+      @media (max-width: 860px) {
+        .generator-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ============================================================
+         CONTROLS SIDEBAR
+         ============================================================ */
+      .controls-sidebar {
+        padding: 1.5rem;
+        background: var(--bg-elevated);
+        border-right: 1px solid var(--border-color);
+      }
+
+      .controls-sidebar h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: var(--color-pink);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .control-group {
+        margin-bottom: 1rem;
+      }
+
+      .control-group label {
+        display: block;
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.3rem;
+      }
+
+      .color-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--bg-elevated);
+        padding: 0.2rem 0.5rem 0.2rem 0.3rem;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+      }
+
+      .color-input-wrapper input[type="color"] {
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background: none;
+        padding: 0;
+        flex-shrink: 0;
+      }
+
+      .color-input-wrapper .color-hex-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+        outline: none;
+        min-width: 70px;
+        border-radius: 2px;
+        transition: all var(--transition);
+      }
+
+      .color-input-wrapper .color-hex-input:focus {
+        background: var(--bg-card);
+        box-shadow: 0 0 0 2px rgba(240, 36, 223, 0.2);
+      }
+
+      .color-input-wrapper .color-hex-input::placeholder {
+        color: var(--text-muted);
+        opacity: 0.5;
+      }
+
+      select,
+      input[type="text"] {
+        width: 100%;
+        padding: 0.5rem 0.8rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-size: 0.85rem;
+        font-family: var(--font-condensed);
+        outline: none;
+        transition: all var(--transition);
+      }
+
+      select:focus,
+      input[type="text"]:focus {
+        border-color: var(--color-pink);
+        box-shadow: 0 0 0 3px rgba(240, 36, 223, 0.05);
+      }
+
+      select option {
+        background: var(--bg-body);
+        color: var(--text-primary);
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: var(--color-pink);
+        background: transparent;
+        cursor: pointer;
+        height: 4px;
+      }
+
+      .range-value {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        margin-left: 0.5rem;
+      }
+
+      /* ============================================================
+         CUSTOM COLOR PICKERS
+         ============================================================ */
+      .custom-color-pickers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background: var(--bg-elevated);
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+      }
+
+      .custom-color-picker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.2rem;
+      }
+
+      .custom-color-picker label {
+        font-size: 0.5rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .custom-color-picker input[type="color"] {
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        background: none;
+        padding: 0;
+      }
+
+      .custom-color-picker input[type="color"]:hover {
+        border-color: var(--color-pink);
+      }
+
+      .custom-color-picker .custom-hex {
+        font-size: 0.45rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+      }
+
+      /* ============================================================
+         ACTION BUTTONS
+         ============================================================ */
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+        border: none;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary {
+        background: var(--gradient-pink);
+        color: var(--text-inverse);
+        box-shadow: var(--glow-pink);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          var(--glow-pink-dark),
+          0 8px 40px rgba(240, 36, 223, 0.2);
+      }
+
+      .btn-secondary {
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--color-pink);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-pink);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-outline:hover {
+        border-color: var(--color-pink);
+        color: var(--color-pink);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-pink);
+      }
+
+      .btn-small {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.65rem;
+      }
+
+      /* ============================================================
+         SOCIAL SHARING
+         ============================================================ */
+      .social-sharing {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .social-sharing h4 {
+        font-size: 0.65rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .share-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-share {
+        width: 34px;
+        height: 34px;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+      }
+
+      .btn-share:hover {
+        background: var(--gradient-pink);
+        color: var(--text-inverse);
+        border-color: transparent;
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: var(--glow-pink);
+      }
+
+      /* ============================================================
+         DISPLAY AREA
+         ============================================================ */
+      .display-area {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+
+      .palette-display {
+        background: var(--bg-elevated);
+        border-radius: 12px;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .palette-display canvas {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+        background: var(--bg-body);
+        aspect-ratio: 600 / 200;
+      }
+
+      /* ============================================================
+         COLOR SWATCHES
+         ============================================================ */
+      .color-swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .color-swatch {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--bg-elevated);
+        padding: 0.2rem 0.6rem 0.2rem 0.2rem;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        transition: all var(--transition);
+      }
+
+      .color-swatch:hover {
+        border-color: var(--color-pink);
+        transform: scale(1.05);
+        box-shadow: var(--glow-pink);
+        background: var(--bg-card-hover);
+      }
+
+      .color-preview {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        flex-shrink: 0;
+        border: 1px solid var(--border-color);
+      }
+
+      .color-info {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.6rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+      }
+
+      .btn-copy-color {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 0.6rem;
+        transition: all var(--transition);
+        padding: 2px 4px;
+        border-radius: 4px;
+      }
+
+      .btn-copy-color:hover {
+        color: var(--color-pink);
+        background: rgba(240, 36, 223, 0.08);
+        transform: scale(1.1);
+      }
+
+      /* ============================================================
+         EXPORT SECTION
+         ============================================================ */
+      .export-section {
+        background: var(--bg-elevated);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .export-section h4 {
+        font-size: 0.8rem;
+        font-family: var(--font-display);
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .export-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .export-output {
+        background: var(--bg-body);
+        border-radius: 8px;
+        padding: 1rem;
+        min-height: 60px;
+        border: 1px solid var(--border-color);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        overflow-x: auto;
+        transition: border-color var(--transition);
+      }
+
+      .export-output:hover {
+        border-color: rgba(240, 36, 223, 0.2);
+      }
+
+      .export-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        opacity: 0.5;
+        gap: 0.3rem;
+        height: 100%;
+        min-height: 40px;
+      }
+
+      .export-placeholder i {
+        font-size: 1.2rem;
+      }
+
+      /* ============================================================
+         SAVED & FEATURED PALETTES
+         ============================================================ */
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+
+      .section-header h2 {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .section-header h2 i {
+        color: var(--color-pink);
+      }
+
+      .section-subtitle {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        font-family: var(--font-condensed);
+      }
+
+      .saved-palettes-grid,
+      .featured-palettes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .saved-palette-card,
+      .featured-palette-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: var(--shadow-card), var(--glow-pink);
+        transition: all var(--transition-slow);
+      }
+
+      .saved-palette-card:hover,
+      .featured-palette-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(240, 36, 223, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-pink-dark);
+      }
+
+      .palette-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .palette-name {
+        font-weight: 600;
+        font-size: 0.85rem;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 120px;
+        letter-spacing: 0.5px;
+      }
+
+      .palette-date {
+        font-size: 0.5rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+      }
+
+      .palette-colors-preview {
+        display: flex;
+        gap: 3px;
+        height: 32px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+      }
+
+      .palette-color {
+        flex: 1;
+        min-width: 10px;
+      }
+
+      .palette-card-actions {
+        display: flex;
+        gap: 0.3rem;
+        justify-content: flex-end;
+      }
+
+      .palette-action-btn {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.55rem;
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .palette-action-btn:hover {
+        background: rgba(240, 36, 223, 0.08);
+        color: var(--color-pink);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-pink);
+      }
+
+      .palette-action-btn.delete:hover {
+        color: var(--color-spray-red);
+        background: rgba(255, 0, 64, 0.08);
+      }
+
+      .featured-palette-card h3 {
+        font-size: 0.9rem;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        margin-bottom: 0.2rem;
+        letter-spacing: 0.5px;
+      }
+
+      .featured-palette-description {
+        font-size: 0.65rem;
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+      }
+
+      .featured-palette-colors {
+        display: flex;
+        gap: 3px;
+        height: 28px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+      }
+
+      .featured-color {
+        flex: 1;
+        min-width: 8px;
+      }
+
+      .featured-palette-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--text-secondary);
+        grid-column: 1 / -1;
+      }
+
+      .empty-state i {
+        font-size: 2rem;
+        color: var(--color-pink);
+        opacity: 0.3;
+        margin-bottom: 0.5rem;
+      }
+
+      .empty-state h3 {
+        font-size: 1rem;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        margin-bottom: 0.2rem;
+        letter-spacing: 0.5px;
+      }
+
+      .empty-state p {
+        font-family: var(--font-condensed);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-pink);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-pink-dark);
+        border-color: var(--color-pink);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-pink);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-pink);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
+      @media (max-width: 768px) {
+        .tool-main {
+          padding: 1rem 0 3rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .tool-header h1 {
+          font-size: 2rem;
+        }
+
+        .tool-header p {
+          font-size: 1rem;
+        }
+
+        .generator-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .controls-sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .display-area {
+          padding: 1rem;
+        }
+
+        .saved-palettes-grid,
+        .featured-palettes-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .tool-header::after {
+          font-size: 1.5rem;
+          right: 10px;
+          bottom: 5px;
+          opacity: 0.02;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tool-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .controls-sidebar {
+          padding: 1rem;
+        }
+
+        .display-area {
+          padding: 0.75rem;
+        }
+
+        .action-buttons .btn {
+          font-size: 0.65rem;
+          padding: 0.4rem 0.8rem;
+        }
+
+        .color-swatches {
+          gap: 0.3rem;
+        }
+
+        .color-swatch {
+          padding: 0.15rem 0.4rem 0.15rem 0.15rem;
+        }
+
+        .color-info {
+          font-size: 0.5rem;
+        }
+
+        .color-preview {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Header - Updated with working notification system -->
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -138,85 +1368,93 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--color-pink)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link active"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link active">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                  <a
+                    href="/pages/tools/color-palette-generator.html"
+                    style="color: var(--color-pink)"
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -224,12 +1462,13 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -266,7 +1505,7 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -274,8 +1513,20 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
+
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -285,6 +1536,7 @@
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -308,117 +1560,130 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN ====== -->
     <main class="tool-main">
       <div class="container">
-        <!-- Tool Header -->
-        <div class="tool-header-compact">
-          <h1>Color Palette Generator</h1>
+        <!-- Header -->
+        <div class="tool-header">
+          <h1>
+            Color
+            <span class="glitch-header" data-text="Palette">Palette</span>
+            Generator
+          </h1>
           <p>
-            Create, save, and share beautiful color schemes in your brand's pink
+            Create, save, and share beautiful color schemes with cyberpunk pink
             aesthetic
           </p>
         </div>
 
-        <!-- All-in-One Generator Container -->
-        <div class="palette-generator-compact" id="generator">
-          <!-- Left Side: Controls -->
+        <!-- Generator Grid -->
+        <div class="generator-grid">
+          <!-- Controls Sidebar -->
           <div class="controls-sidebar">
-            <div class="control-section">
-              <h3><i class="fas fa-sliders-h"></i> Controls</h3>
-              <div class="control-group-compact">
-                <label for="base-color">Base Color</label>
-                <div class="color-input-compact">
-                  <input type="color" id="base-color" value="#f705d7" />
-                  <span class="color-hex" id="base-color-hex">#f705d7</span>
-                </div>
-              </div>
-              <div class="control-group-compact">
-                <label for="harmony-select">Color Harmony</label>
-                <select id="harmony-select">
-                  <option value="complementary">Complementary</option>
-                  <option value="analogous">Analogous</option>
-                  <option value="triadic">Triadic</option>
-                  <option value="tetradic">Tetradic</option>
-                  <option value="monochromatic">Monochromatic</option>
-                  <option value="split-complementary">
-                    Split Complementary
-                  </option>
-                  <option value="pink-harmony" selected>Pink Harmony</option>
-                </select>
-              </div>
-              <div class="control-group-compact">
-                <label for="palette-size">Colors Count</label>
-                <select id="palette-size">
-                  <option value="4">4 Colors</option>
-                  <option value="5" selected>5 Colors</option>
-                  <option value="6">6 Colors</option>
-                </select>
-              </div>
-              <div class="control-group-compact">
-                <label for="saturation"
-                  >Saturation <span id="saturation-value">80%</span></label
-                >
-                <input
-                  type="range"
-                  id="saturation"
-                  min="0"
-                  max="100"
-                  value="80"
-                />
-              </div>
-              <div class="control-group-compact">
-                <label for="palette-name">Palette Name</label>
+            <h3><i class="fas fa-sliders-h"></i> Controls</h3>
+
+            <div class="control-group">
+              <label for="base-color">Base Color</label>
+              <div class="color-input-wrapper">
+                <input type="color" id="base-color" value="#f024df" />
                 <input
                   type="text"
-                  id="palette-name"
-                  placeholder="My Awesome Palette"
-                  maxlength="30"
+                  class="color-hex-input"
+                  id="base-color-hex-input"
+                  value="#f024df"
+                  placeholder="#000000"
                 />
               </div>
             </div>
+
+            <div class="control-group">
+              <label for="harmony-select">Harmony</label>
+              <select id="harmony-select">
+                <option value="truly-yours" selected>✦ Truly Yours</option>
+                <option value="complementary">✦ Complementary</option>
+                <option value="analogous">✦ Analogous</option>
+                <option value="triadic">✦ Triadic</option>
+                <option value="tetradic">✦ Tetradic</option>
+                <option value="monochromatic">✦ Monochromatic</option>
+                <option value="split-complementary">
+                  ✦ Split Complementary
+                </option>
+                <option value="custom">✦ Custom</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="palette-size">Colors</label>
+              <select id="palette-size">
+                <option value="3">3 Colors</option>
+                <option value="4">4 Colors</option>
+                <option value="5" selected>5 Colors</option>
+                <option value="6">6 Colors</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="palette-name">Palette Name</label>
+              <input
+                type="text"
+                id="palette-name"
+                placeholder="My Awesome Palette"
+                maxlength="30"
+              />
+            </div>
+
+            <!-- Custom Color Pickers -->
+            <div
+              class="control-group"
+              id="custom-color-group"
+              style="display: none"
+            >
+              <label>Custom Colors</label>
+              <div class="custom-color-pickers" id="custom-color-pickers"></div>
+            </div>
+
             <div class="action-buttons">
-              <button id="generate-btn" class="btn btn-primary btn-compact">
+              <button id="generate-btn" class="btn btn-primary">
                 <i class="fas fa-wand-magic-sparkles"></i> Generate
               </button>
-              <button id="random-btn" class="btn btn-secondary btn-compact">
+              <button id="random-btn" class="btn btn-secondary">
                 <i class="fas fa-random"></i> Random
               </button>
-              <button id="save-btn" class="btn btn-outline btn-compact">
-                <i class="fas fa-heart"></i> Save Palette
+              <button id="save-btn" class="btn btn-outline">
+                <i class="fas fa-heart"></i> Save
               </button>
             </div>
+
             <div class="social-sharing">
-              <h4><i class="fas fa-share-alt"></i> Share Palette</h4>
+              <h4><i class="fas fa-share-alt"></i> Share</h4>
               <div class="share-buttons">
                 <button
                   class="btn-share"
                   data-platform="twitter"
-                  title="Share on Twitter"
+                  title="Twitter"
                 >
                   <i class="fab fa-twitter"></i>
                 </button>
                 <button
                   class="btn-share"
                   data-platform="pinterest"
-                  title="Share on Pinterest"
+                  title="Pinterest"
                 >
                   <i class="fab fa-pinterest"></i>
                 </button>
                 <button
                   class="btn-share"
                   data-platform="link"
-                  title="Copy Share Link"
+                  title="Copy Link"
                 >
                   <i class="fas fa-link"></i>
                 </button>
                 <button
                   class="btn-share"
                   data-platform="download"
-                  title="Download Palette"
+                  title="Download PNG"
                 >
                   <i class="fas fa-download"></i>
                 </button>
@@ -426,31 +1691,30 @@
             </div>
           </div>
 
-          <!-- Right Side: Display & Export -->
-          <div class="display-main">
-            <div class="palette-display-compact">
-              <div class="palette-canvas-compact">
-                <canvas id="palette-canvas" width="600" height="200"></canvas>
-              </div>
-              <div class="color-swatches-compact" id="current-colors"></div>
+          <!-- Display Area -->
+          <div class="display-area">
+            <div class="palette-display">
+              <canvas id="palette-canvas" width="600" height="200"></canvas>
+              <div class="color-swatches" id="current-colors"></div>
             </div>
-            <div class="export-section-compact" id="export">
-              <h4><i class="fas fa-download"></i> Export Options</h4>
-              <div class="export-buttons-compact">
-                <button id="export-css" class="btn btn-outline btn-small">
+
+            <div class="export-section">
+              <h4><i class="fas fa-download"></i> Export</h4>
+              <div class="export-buttons">
+                <button id="export-css" class="btn btn-secondary btn-small">
                   <i class="fab fa-css3-alt"></i> CSS
                 </button>
-                <button id="export-json" class="btn btn-outline btn-small">
+                <button id="export-json" class="btn btn-secondary btn-small">
                   <i class="fas fa-code"></i> JSON
                 </button>
-                <button id="export-png" class="btn btn-outline btn-small">
+                <button id="export-png" class="btn btn-secondary btn-small">
                   <i class="fas fa-image"></i> PNG
                 </button>
-                <button id="copy-hex" class="btn btn-outline btn-small">
+                <button id="copy-hex" class="btn btn-secondary btn-small">
                   <i class="fas fa-copy"></i> HEX
                 </button>
               </div>
-              <div class="export-output-compact" id="export-output">
+              <div class="export-output" id="export-output">
                 <div class="export-placeholder">
                   <i class="fas fa-arrow-up"></i>
                   <p>Select an export option</p>
@@ -460,10 +1724,10 @@
           </div>
         </div>
 
-        <!-- Saved Palettes Section -->
-        <div class="saved-palettes-section" id="saved">
+        <!-- Saved Palettes -->
+        <div class="saved-palettes-section">
           <div class="section-header">
-            <h2><i class="fas fa-history"></i> Recently Saved Palettes</h2>
+            <h2><i class="fas fa-history"></i> Saved Palettes</h2>
             <button id="clear-saved" class="btn btn-outline btn-small">
               <i class="fas fa-trash"></i> Clear All
             </button>
@@ -472,103 +1736,1002 @@
             <div class="empty-state">
               <i class="fas fa-palette"></i>
               <h3>No palettes saved yet</h3>
-              <p>Generate and save your first color palette to see it here!</p>
+              <p>Generate and save your first palette!</p>
             </div>
           </div>
         </div>
 
-        <!-- Featured Palettes Section -->
-        <div class="featured-palettes-section" id="featured">
+        <!-- Featured Palettes -->
+        <div class="featured-palettes-section">
           <div class="section-header">
             <h2><i class="fas fa-star"></i> Featured Palettes</h2>
-            <span class="section-subtitle"
-              >Inspiration from the Art Mecca community</span
-            >
+            <span class="section-subtitle">Inspiration from the community</span>
           </div>
           <div class="featured-palettes-grid" id="featured-palettes"></div>
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i></a
-              ><a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i></a
-              ><a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i></a
-              ><a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i></a
-              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
-              ><a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const particleCanvas = document.getElementById("particleCanvas");
+        if (particleCanvas) {
+          const ctx = particleCanvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * particleCanvas.width;
+              this.y = Math.random() * particleCanvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#f024df",
+                "#ff42ef",
+                "#ff57f1",
+                "#fb74fb",
+                "#ff8af5",
+                "#58ebfe",
+                "#4ff3a6",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > particleCanvas.width ||
+                this.y < 0 ||
+                this.y > particleCanvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#f024df";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#f024df";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== DOM REFS ======
+        const paletteCanvas = document.getElementById("palette-canvas");
+        const ctx = paletteCanvas.getContext("2d");
+        const baseColorInput = document.getElementById("base-color");
+        const baseColorHexInput = document.getElementById(
+          "base-color-hex-input",
+        );
+        const harmonySelect = document.getElementById("harmony-select");
+        const paletteSizeSelect = document.getElementById("palette-size");
+        const paletteNameInput = document.getElementById("palette-name");
+        const generateBtn = document.getElementById("generate-btn");
+        const randomBtn = document.getElementById("random-btn");
+        const saveBtn = document.getElementById("save-btn");
+        const exportCssBtn = document.getElementById("export-css");
+        const exportJsonBtn = document.getElementById("export-json");
+        const exportPngBtn = document.getElementById("export-png");
+        const copyHexBtn = document.getElementById("copy-hex");
+        const exportOutput = document.getElementById("export-output");
+        const currentColorsContainer =
+          document.getElementById("current-colors");
+        const savedPalettesContainer =
+          document.getElementById("saved-palettes");
+        const featuredContainer = document.getElementById("featured-palettes");
+        const clearSavedBtn = document.getElementById("clear-saved");
+        const customColorGroup = document.getElementById("custom-color-group");
+        const customColorPickers = document.getElementById(
+          "custom-color-pickers",
+        );
+
+        // ====== STATE ======
+        let currentColors = [];
+        let baseColor = "#f024df";
+        let savedPalettes = JSON.parse(
+          localStorage.getItem("artisanHubSavedPalettes") || "[]",
+        );
+        let customColors = [
+          "#f024df",
+          "#ff42ef",
+          "#ff57f1",
+          "#fb74fb",
+          "#ff8af5",
+          "#f024df",
+        ];
+
+        // ====== FEATURED PALETTES ======
+        const featuredPalettes = [
+          {
+            id: "f1",
+            name: "Truly Yours",
+            colors: ["#f024df", "#ff42ef", "#ff57f1", "#fb74fb", "#ff8af5"],
+          },
+          {
+            id: "f2",
+            name: "Cyber Sunset",
+            colors: ["#FF6B6B", "#FF9E7D", "#FFD166", "#8ECAE6", "#219EBC"],
+          },
+          {
+            id: "f3",
+            name: "Neon Forest",
+            colors: ["#386641", "#6A994E", "#A7C957", "#F2E8CF", "#BC4749"],
+          },
+          {
+            id: "f4",
+            name: "Deep Ocean",
+            colors: ["#03045E", "#0077B6", "#00B4D8", "#90E0EF", "#CAF0F8"],
+          },
+        ];
+
+        // ====== HELPERS ======
+        function hexToHSL(hex) {
+          hex = hex.replace("#", "");
+          let r = parseInt(hex.substring(0, 2), 16) / 255;
+          let g = parseInt(hex.substring(2, 4), 16) / 255;
+          let b = parseInt(hex.substring(4, 6), 16) / 255;
+          const max = Math.max(r, g, b),
+            min = Math.min(r, g, b);
+          let h,
+            s,
+            l = (max + min) / 2;
+          if (max === min) {
+            h = s = 0;
+          } else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+              case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+              case g:
+                h = (b - r) / d + 2;
+                break;
+              case b:
+                h = (r - g) / d + 4;
+                break;
+            }
+            h /= 6;
+          }
+          return {
+            h: Math.round(h * 360),
+            s: Math.round(s * 100),
+            l: Math.round(l * 100),
+          };
+        }
+
+        function HSLToHex(h, s, l) {
+          s /= 100;
+          l /= 100;
+          const c = (1 - Math.abs(2 * l - 1)) * s;
+          const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+          const m = l - c / 2;
+          let r, g, b;
+          if (h < 60) {
+            r = c;
+            g = x;
+            b = 0;
+          } else if (h < 120) {
+            r = x;
+            g = c;
+            b = 0;
+          } else if (h < 180) {
+            r = 0;
+            g = c;
+            b = x;
+          } else if (h < 240) {
+            r = 0;
+            g = x;
+            b = c;
+          } else if (h < 300) {
+            r = x;
+            g = 0;
+            b = c;
+          } else {
+            r = c;
+            g = 0;
+            b = x;
+          }
+          return (
+            "#" +
+            [r, g, b]
+              .map((v) =>
+                Math.round((v + m) * 255)
+                  .toString(16)
+                  .padStart(2, "0"),
+              )
+              .join("")
+          );
+        }
+
+        function generateHarmony(baseHSL, type, count) {
+          const colors = [{ h: baseHSL.h, s: baseHSL.s, l: baseHSL.l }];
+          switch (type) {
+            case "truly-yours":
+              const trulyColors = [
+                { h: baseHSL.h, s: baseHSL.s, l: baseHSL.l },
+                {
+                  h: (baseHSL.h + 340) % 360,
+                  s: Math.min(100, baseHSL.s + 10),
+                  l: Math.min(90, baseHSL.l + 12),
+                },
+                {
+                  h: (baseHSL.h + 20) % 360,
+                  s: Math.max(0, baseHSL.s - 15),
+                  l: Math.min(90, baseHSL.l + 18),
+                },
+                {
+                  h: (baseHSL.h + 310) % 360,
+                  s: Math.min(100, baseHSL.s + 5),
+                  l: Math.max(10, baseHSL.l - 8),
+                },
+                {
+                  h: (baseHSL.h + 350) % 360,
+                  s: Math.max(0, baseHSL.s - 20),
+                  l: Math.min(90, baseHSL.l + 22),
+                },
+              ];
+              return trulyColors.slice(0, count);
+            case "complementary":
+              colors.push({
+                h: (baseHSL.h + 180) % 360,
+                s: baseHSL.s,
+                l: baseHSL.l,
+              });
+              break;
+            case "analogous":
+              for (let i = 1; i < count; i++)
+                colors.push({
+                  h: (baseHSL.h + i * 30) % 360,
+                  s: baseHSL.s,
+                  l: baseHSL.l,
+                });
+              break;
+            case "triadic":
+              colors.push(
+                { h: (baseHSL.h + 120) % 360, s: baseHSL.s, l: baseHSL.l },
+                { h: (baseHSL.h + 240) % 360, s: baseHSL.s, l: baseHSL.l },
+              );
+              break;
+            case "tetradic":
+              colors.push(
+                { h: (baseHSL.h + 90) % 360, s: baseHSL.s, l: baseHSL.l },
+                { h: (baseHSL.h + 180) % 360, s: baseHSL.s, l: baseHSL.l },
+                { h: (baseHSL.h + 270) % 360, s: baseHSL.s, l: baseHSL.l },
+              );
+              break;
+            case "monochromatic":
+              for (let i = 1; i < count; i++) {
+                const lv = Math.max(10, Math.min(90, baseHSL.l + i * 15 - 30));
+                colors.push({ h: baseHSL.h, s: baseHSL.s, l: lv });
+              }
+              break;
+            case "split-complementary":
+              colors.push(
+                { h: (baseHSL.h + 150) % 360, s: baseHSL.s, l: baseHSL.l },
+                { h: (baseHSL.h + 210) % 360, s: baseHSL.s, l: baseHSL.l },
+              );
+              break;
+            default:
+              return colors.slice(0, count);
+          }
+          while (colors.length < count) {
+            const last = colors[colors.length - 1];
+            colors.push({
+              h: (last.h + 30) % 360,
+              s: last.s,
+              l: Math.max(20, Math.min(80, last.l + 5)),
+            });
+          }
+          return colors.slice(0, count);
+        }
+
+        function generatePalette() {
+          const harmony = harmonySelect.value;
+          if (harmony === "custom") {
+            const count = parseInt(paletteSizeSelect.value);
+            currentColors = customColors.slice(0, count);
+            renderPalette();
+            updateSwatches();
+            exportOutput.innerHTML = `<div class="export-placeholder"><i class="fas fa-arrow-up"></i><p>Select an export option</p></div>`;
+            return;
+          }
+          const baseHSL = hexToHSL(baseColor);
+          const count = parseInt(paletteSizeSelect.value);
+          const hslColors = generateHarmony(baseHSL, harmony, count);
+          currentColors = hslColors.map((h) => HSLToHex(h.h, h.s, h.l));
+          renderPalette();
+          updateSwatches();
+          exportOutput.innerHTML = `<div class="export-placeholder"><i class="fas fa-arrow-up"></i><p>Select an export option</p></div>`;
+        }
+
+        function renderPalette() {
+          const w = paletteCanvas.width / currentColors.length;
+          ctx.clearRect(0, 0, paletteCanvas.width, paletteCanvas.height);
+          currentColors.forEach((c, i) => {
+            ctx.fillStyle = c;
+            ctx.fillRect(i * w, 0, w, paletteCanvas.height);
+          });
+        }
+
+        function updateSwatches() {
+          currentColorsContainer.innerHTML = currentColors
+            .map(
+              (c) => `
+            <div class="color-swatch">
+              <div class="color-preview" style="background:${c};"></div>
+              <div class="color-info">
+                <span>${c.toUpperCase()}</span>
+                <button class="btn-copy-color" data-color="${c}"><i class="fas fa-copy"></i></button>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+          currentColorsContainer
+            .querySelectorAll(".btn-copy-color")
+            .forEach((btn) => {
+              btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                copyToClipboard(btn.dataset.color);
+                showToast(`Copied ${btn.dataset.color}`);
+              });
+            });
+        }
+
+        function copyToClipboard(text) {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+        }
+
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        // ====== BASE COLOR INPUT ======
+        // Color picker -> hex input
+        baseColorInput.addEventListener("input", function () {
+          baseColor = this.value;
+          baseColorHexInput.value = this.value;
+          if (harmonySelect.value !== "custom") generatePalette();
+        });
+
+        // Hex input -> color picker
+        baseColorHexInput.addEventListener("input", function () {
+          let val = this.value.trim();
+          if (val.startsWith("#")) {
+            if (val.length === 7 && /^#[0-9A-Fa-f]{6}$/.test(val)) {
+              baseColor = val;
+              baseColorInput.value = val;
+              if (harmonySelect.value !== "custom") generatePalette();
+            }
+          } else if (val.length === 6 && /^[0-9A-Fa-f]{6}$/.test(val)) {
+            baseColor = "#" + val;
+            baseColorInput.value = "#" + val;
+            if (harmonySelect.value !== "custom") generatePalette();
+          }
+        });
+
+        baseColorHexInput.addEventListener("blur", function () {
+          let val = this.value.trim();
+          if (val.length === 6 && /^[0-9A-Fa-f]{6}$/.test(val)) {
+            this.value = "#" + val;
+          } else if (
+            !val.startsWith("#") &&
+            val.length === 7 &&
+            /^#[0-9A-Fa-f]{6}$/.test(val)
+          ) {
+            // Already valid
+          } else if (val.length === 0) {
+            this.value = baseColor;
+          } else {
+            this.value = baseColor;
+          }
+        });
+
+        // ====== SAVE / LOAD ======
+        function saveCurrentPalette() {
+          if (currentColors.length === 0) {
+            showToast("Generate a palette first!");
+            return;
+          }
+          const name =
+            paletteNameInput.value.trim() ||
+            `Palette ${new Date().toLocaleDateString()}`;
+          const palette = {
+            id: Date.now(),
+            name,
+            colors: [...currentColors],
+            baseColor,
+            harmony: harmonySelect.value,
+            createdAt: new Date().toISOString(),
+          };
+          savedPalettes.unshift(palette);
+          if (savedPalettes.length > 12)
+            savedPalettes = savedPalettes.slice(0, 12);
+          localStorage.setItem(
+            "artisanHubSavedPalettes",
+            JSON.stringify(savedPalettes),
+          );
+          renderSavedPalettes();
+          paletteNameInput.value = "";
+          showToast(`"${name}" saved!`);
+        }
+
+        function loadPalette(id) {
+          const p = savedPalettes.find((p) => p.id === id);
+          if (!p) return;
+          currentColors = [...p.colors];
+          baseColor = p.baseColor;
+          baseColorInput.value = baseColor;
+          baseColorHexInput.value = baseColor;
+          harmonySelect.value = p.harmony;
+          paletteNameInput.value = p.name;
+          if (p.harmony === "custom") {
+            customColors = [...p.colors];
+            while (customColors.length < 6) customColors.push("#f024df");
+            customColorGroup.style.display = "block";
+            updateCustomPickers();
+          } else {
+            customColorGroup.style.display = "none";
+          }
+          renderPalette();
+          updateSwatches();
+          showToast(`"${p.name}" loaded`);
+        }
+
+        function deletePalette(id) {
+          savedPalettes = savedPalettes.filter((p) => p.id !== id);
+          localStorage.setItem(
+            "artisanHubSavedPalettes",
+            JSON.stringify(savedPalettes),
+          );
+          renderSavedPalettes();
+          showToast("Palette deleted");
+        }
+
+        function clearSaved() {
+          if (savedPalettes.length === 0) {
+            showToast("No palettes to clear");
+            return;
+          }
+          if (confirm("Clear all saved palettes?")) {
+            savedPalettes = [];
+            localStorage.setItem(
+              "artisanHubSavedPalettes",
+              JSON.stringify(savedPalettes),
+            );
+            renderSavedPalettes();
+            showToast("All cleared");
+          }
+        }
+
+        function renderSavedPalettes() {
+          if (savedPalettes.length === 0) {
+            savedPalettesContainer.innerHTML = `<div class="empty-state"><i class="fas fa-palette"></i><h3>No palettes saved yet</h3><p>Generate and save your first palette!</p></div>`;
+            return;
+          }
+          savedPalettesContainer.innerHTML = savedPalettes
+            .map(
+              (p) => `
+            <div class="saved-palette-card">
+              <div class="palette-card-header">
+                <span class="palette-name" title="${p.name}">${p.name}</span>
+                <span class="palette-date">${new Date(p.createdAt).toLocaleDateString()}</span>
+              </div>
+              <div class="palette-colors-preview">
+                ${p.colors.map((c) => `<div class="palette-color" style="background:${c};"></div>`).join("")}
+              </div>
+              <div class="palette-card-actions">
+                <button class="palette-action-btn" data-action="load" data-id="${p.id}"><i class="fas fa-undo"></i> Load</button>
+                <button class="palette-action-btn" data-action="delete" data-id="${p.id}"><i class="fas fa-trash"></i> Delete</button>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+          savedPalettesContainer
+            .querySelectorAll('[data-action="load"]')
+            .forEach((btn) => {
+              btn.addEventListener("click", () =>
+                loadPalette(parseInt(btn.dataset.id)),
+              );
+            });
+          savedPalettesContainer
+            .querySelectorAll('[data-action="delete"]')
+            .forEach((btn) => {
+              btn.addEventListener("click", () =>
+                deletePalette(parseInt(btn.dataset.id)),
+              );
+            });
+        }
+
+        // ====== CUSTOM COLOR PICKERS ======
+        function updateCustomPickers() {
+          const count = parseInt(paletteSizeSelect.value);
+          customColorPickers.innerHTML = "";
+          for (let i = 0; i < count; i++) {
+            const color = customColors[i] || "#f024df";
+            const div = document.createElement("div");
+            div.className = "custom-color-picker";
+            div.innerHTML = `
+              <label>Color ${i + 1}</label>
+              <input type="color" class="custom-color-input" data-index="${i}" value="${color}" />
+              <span class="custom-hex">${color.toUpperCase()}</span>
+            `;
+            customColorPickers.appendChild(div);
+          }
+          customColorPickers
+            .querySelectorAll(".custom-color-input")
+            .forEach((input) => {
+              input.addEventListener("input", function () {
+                const idx = parseInt(this.dataset.index);
+                customColors[idx] = this.value;
+                const hexSpan = this.parentElement.querySelector(".custom-hex");
+                if (hexSpan) hexSpan.textContent = this.value.toUpperCase();
+                if (harmonySelect.value === "custom") generatePalette();
+              });
+            });
+        }
+
+        // ====== FEATURED ======
+        function renderFeatured() {
+          featuredContainer.innerHTML = featuredPalettes
+            .map(
+              (p) => `
+            <div class="featured-palette-card">
+              <h3>${p.name}</h3>
+              <div class="featured-palette-colors">
+                ${p.colors.map((c) => `<div class="featured-color" style="background:${c};"></div>`).join("")}
+              </div>
+              <div class="featured-palette-actions">
+                <button class="btn btn-primary btn-small" data-featured="${p.id}" style="flex:2;"><i class="fas fa-magic"></i> Use</button>
+                <button class="btn btn-outline btn-small" data-featured-copy="${p.id}"><i class="fas fa-copy"></i></button>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+          featuredContainer
+            .querySelectorAll("[data-featured]")
+            .forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const p = featuredPalettes.find(
+                  (f) => f.id === btn.dataset.featured,
+                );
+                if (p) {
+                  currentColors = [...p.colors];
+                  baseColor = p.colors[0];
+                  baseColorInput.value = baseColor;
+                  baseColorHexInput.value = baseColor;
+                  paletteNameInput.value = p.name;
+                  harmonySelect.value = "truly-yours";
+                  customColorGroup.style.display = "none";
+                  renderPalette();
+                  updateSwatches();
+                  showToast(`"${p.name}" loaded`);
+                }
+              });
+            });
+          featuredContainer
+            .querySelectorAll("[data-featured-copy]")
+            .forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const p = featuredPalettes.find(
+                  (f) => f.id === btn.dataset.featuredCopy,
+                );
+                if (p) {
+                  copyToClipboard(p.colors.join(", "));
+                  showToast("Colors copied!");
+                }
+              });
+            });
+        }
+
+        // ====== EXPORTS ======
+        function exportCss() {
+          if (currentColors.length === 0) {
+            showToast("Generate a palette first!");
+            return;
+          }
+          const name = paletteNameInput.value.trim() || "palette";
+          const vars = currentColors
+            .map((c, i) => `  --${name}-${i + 1}: ${c};`)
+            .join("\n");
+          const css = `/* ${name} */\n:root {\n${vars}\n}`;
+          exportOutput.innerHTML = `<pre style="color:var(--text-secondary);font-family:var(--font-mono);font-size:0.7rem;margin:0;">${css}</pre>`;
+          copyToClipboard(css);
+          showToast("CSS copied!");
+        }
+
+        function exportJson() {
+          if (currentColors.length === 0) {
+            showToast("Generate a palette first!");
+            return;
+          }
+          const data = {
+            name: paletteNameInput.value.trim() || "My Palette",
+            colors: currentColors,
+            baseColor,
+            harmony: harmonySelect.value,
+          };
+          const json = JSON.stringify(data, null, 2);
+          exportOutput.innerHTML = `<pre style="color:var(--text-secondary);font-family:var(--font-mono);font-size:0.7rem;margin:0;">${json}</pre>`;
+          copyToClipboard(json);
+          showToast("JSON copied!");
+        }
+
+        function exportPng() {
+          if (currentColors.length === 0) {
+            showToast("Generate a palette first!");
+            return;
+          }
+          const temp = document.createElement("canvas");
+          temp.width = 800;
+          temp.height = 250;
+          const tctx = temp.getContext("2d");
+          tctx.fillStyle = "#0a0508";
+          tctx.fillRect(0, 0, 800, 250);
+          const w = 800 / currentColors.length;
+          currentColors.forEach((c, i) => {
+            tctx.fillStyle = c;
+            tctx.fillRect(i * w, 30, w, 160);
+          });
+          tctx.fillStyle = "#f5eaff";
+          tctx.font = "bold 16px Orbitron, sans-serif";
+          tctx.textAlign = "center";
+          currentColors.forEach((c, i) => {
+            tctx.fillText(c.toUpperCase(), i * w + w / 2, 220);
+          });
+          const name = paletteNameInput.value.trim() || "palette";
+          tctx.font = "bold 20px Orbitron, sans-serif";
+          tctx.fillText(name, 400, 245);
+          const link = document.createElement("a");
+          link.download = `${name.toLowerCase().replace(/\s+/g, "-")}-palette.png`;
+          link.href = temp.toDataURL();
+          link.click();
+          showToast("PNG downloaded!");
+        }
+
+        function copyHex() {
+          if (currentColors.length === 0) {
+            showToast("Generate a palette first!");
+            return;
+          }
+          copyToClipboard(currentColors.join(", "));
+          showToast("HEX codes copied!");
+        }
+
+        // ====== RANDOM ======
+        function randomPalette() {
+          const hex =
+            "#" +
+            Math.floor(Math.random() * 16777215)
+              .toString(16)
+              .padStart(6, "0");
+          baseColor = hex;
+          baseColorInput.value = hex;
+          baseColorHexInput.value = hex;
+          const harmonies = [
+            "truly-yours",
+            "complementary",
+            "analogous",
+            "triadic",
+            "tetradic",
+            "monochromatic",
+            "split-complementary",
+            "custom",
+          ];
+          const randomHarmony =
+            harmonies[Math.floor(Math.random() * harmonies.length)];
+          harmonySelect.value = randomHarmony;
+          if (randomHarmony === "custom") {
+            customColorGroup.style.display = "block";
+            for (let i = 0; i < 5; i++) {
+              customColors[i] =
+                "#" +
+                Math.floor(Math.random() * 16777215)
+                  .toString(16)
+                  .padStart(6, "0");
+            }
+            updateCustomPickers();
+          } else {
+            customColorGroup.style.display = "none";
+          }
+          generatePalette();
+        }
+
+        // ====== SHARE ======
+        function sharePalette(platform) {
+          if (currentColors.length === 0) {
+            showToast("Generate a palette first!");
+            return;
+          }
+          const name = paletteNameInput.value.trim() || "My Palette";
+          const text = `🎨 "${name}" · ${currentColors.join(" ")} · created with Art Mecca`;
+          switch (platform) {
+            case "twitter":
+              window.open(
+                `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`,
+                "_blank",
+              );
+              break;
+            case "pinterest":
+              copyToClipboard(text);
+              showToast("Copied! Paste on Pinterest.");
+              break;
+            case "link":
+              copyToClipboard(text);
+              showToast("Link copied!");
+              break;
+            case "download":
+              exportPng();
+              break;
+            default:
+              showToast("Share via " + platform);
+          }
+        }
+
+        // ====== EVENT LISTENERS ======
+        harmonySelect.addEventListener("change", function () {
+          if (this.value === "custom") {
+            customColorGroup.style.display = "block";
+            updateCustomPickers();
+            if (currentColors.length > 0) {
+              customColors = [...currentColors];
+              while (customColors.length < 6) customColors.push("#f024df");
+              updateCustomPickers();
+            }
+            generatePalette();
+          } else {
+            customColorGroup.style.display = "none";
+            generatePalette();
+          }
+        });
+
+        paletteSizeSelect.addEventListener("change", function () {
+          if (harmonySelect.value === "custom") {
+            updateCustomPickers();
+            generatePalette();
+          } else {
+            generatePalette();
+          }
+        });
+
+        generateBtn.addEventListener("click", generatePalette);
+        randomBtn.addEventListener("click", randomPalette);
+        saveBtn.addEventListener("click", saveCurrentPalette);
+        clearSavedBtn.addEventListener("click", clearSaved);
+
+        exportCssBtn.addEventListener("click", exportCss);
+        exportJsonBtn.addEventListener("click", exportJson);
+        exportPngBtn.addEventListener("click", exportPng);
+        copyHexBtn.addEventListener("click", copyHex);
+
+        document.querySelectorAll(".btn-share").forEach((btn) => {
+          btn.addEventListener("click", () =>
+            sharePalette(btn.dataset.platform),
+          );
+        });
+
+        // ====== AUTH ======
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
           }
         }, 300);
+
+        // ====== INIT ======
+        generatePalette();
+        renderSavedPalettes();
+        renderFeatured();
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <!-- Page Scripts -->
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script type="module" src="/js/tools/color-palette-generator.js"></script>
   </body>
 </html>

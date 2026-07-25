@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Calendar Template — Art Mecca</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* ================================================================
+       CONTENT CALENDAR TEMPLATE — NEON CYBERPUNK STYLE
+       ================================================================ */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0a0508;
+        --glass: rgba(10, 5, 20, 0.9);
+        --border: rgba(255, 0, 234, 0.12);
+        --text: #f5eaff;
+        --text-muted: #5a3a6a;
+        --text-dim: #2a1a3a;
+        --accent: #ff00ea;
+        --accent-dim: rgba(255, 0, 234, 0.06);
+        --accent-glow: 0 0 40px rgba(255, 0, 234, 0.08);
+        --accent-secondary: #58ebfe;
+        --accent-green: #4ff3a6;
+        --accent-gold: #ffc72e;
+
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, sans-serif;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      /* --- SCANLINES --- */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* --- CALENDAR CONTAINER --- */
+      .calendar-container {
+        max-width: 1000px;
+        width: 100%;
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 50px 60px;
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.8),
+          var(--accent-glow);
+        position: relative;
+        z-index: 1;
+        overflow-x: auto;
+      }
+
+      /* --- CORNER BRACKETS --- */
+      .calendar-container::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 20px;
+        height: 20px;
+        border-top: 2px solid var(--accent);
+        border-left: 2px solid var(--accent);
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      .calendar-container::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 20px;
+        height: 20px;
+        border-bottom: 2px solid var(--accent);
+        border-right: 2px solid var(--accent);
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      /* --- DOWNLOAD BAR --- */
+      .download-bar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 24px;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .btn-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 24px;
+        background: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: 2px;
+        font-family: var(--font-condensed);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: var(--accent-glow);
+        text-decoration: none;
+      }
+
+      .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 60px rgba(255, 0, 234, 0.2);
+      }
+
+      .btn-download i {
+        font-size: 0.9rem;
+      }
+
+      .btn-download-outline {
+        background: transparent;
+        color: var(--accent-secondary);
+        border: 1px solid var(--border);
+        box-shadow: none;
+      }
+
+      .btn-download-outline:hover {
+        background: var(--accent-dim);
+        border-color: var(--accent-secondary);
+        box-shadow: 0 0 40px rgba(88, 235, 254, 0.1);
+      }
+
+      /* --- HEADER --- */
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .calendar-header .logo {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+      }
+
+      .calendar-header .logo span {
+        color: var(--accent);
+      }
+
+      .calendar-header .month {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        color: var(--accent-secondary);
+        letter-spacing: 2px;
+        padding: 4px 16px;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        background: var(--accent-dim);
+      }
+
+      /* --- LEGEND --- */
+      .calendar-legend {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 12px 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        border: 1px solid var(--border);
+      }
+
+      .legend-dot.post {
+        background: var(--accent);
+      }
+      .legend-dot.process {
+        background: var(--accent-secondary);
+      }
+      .legend-dot.client {
+        background: var(--accent-green);
+      }
+      .legend-dot.event {
+        background: var(--accent-gold);
+      }
+
+      /* --- CALENDAR GRID --- */
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 20px;
+        min-width: 600px;
+      }
+
+      .calendar-grid .day-header {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        padding: 8px 4px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .calendar-grid .day-cell {
+        min-height: 80px;
+        padding: 6px 8px;
+        border: 1px solid rgba(255, 255, 255, 0.02);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .calendar-grid .day-cell:hover {
+        background: var(--accent-dim);
+        border-color: var(--border);
+      }
+
+      .calendar-grid .day-cell .day-number {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
+
+      .calendar-grid .day-cell .day-number.today {
+        color: var(--accent);
+        text-shadow: 0 0 20px rgba(255, 0, 234, 0.2);
+      }
+
+      .calendar-grid .day-cell .event-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 2px;
+        margin: 1px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .calendar-grid .day-cell .event-dot.post {
+        background: var(--accent);
+      }
+      .calendar-grid .day-cell .event-dot.process {
+        background: var(--accent-secondary);
+      }
+      .calendar-grid .day-cell .event-dot.client {
+        background: var(--accent-green);
+      }
+      .calendar-grid .day-cell .event-dot.event {
+        background: var(--accent-gold);
+      }
+
+      .calendar-grid .day-cell .event-label {
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 2px;
+        opacity: 0.7;
+      }
+
+      .calendar-grid .day-cell .event-label.post {
+        color: var(--accent);
+      }
+      .calendar-grid .day-cell .event-label.process {
+        color: var(--accent-secondary);
+      }
+      .calendar-grid .day-cell .event-label.client {
+        color: var(--accent-green);
+      }
+      .calendar-grid .day-cell .event-label.event {
+        color: var(--accent-gold);
+      }
+
+      .calendar-grid .day-cell.empty {
+        opacity: 0.2;
+        pointer-events: none;
+      }
+
+      /* --- EVENT LIST --- */
+      .event-list {
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .event-list .list-title {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+      }
+
+      .event-list-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .event-list-item:hover {
+        background: var(--accent-dim);
+      }
+
+      .event-list-item .event-color {
+        width: 4px;
+        height: 24px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .event-list-item .event-color.post {
+        background: var(--accent);
+      }
+      .event-list-item .event-color.process {
+        background: var(--accent-secondary);
+      }
+      .event-list-item .event-color.client {
+        background: var(--accent-green);
+      }
+      .event-list-item .event-color.event {
+        background: var(--accent-gold);
+      }
+
+      .event-list-item .event-date {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        min-width: 70px;
+      }
+
+      .event-list-item .event-title {
+        font-size: 0.8rem;
+        color: var(--text);
+        flex: 1;
+      }
+
+      .event-list-item .event-tag {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        padding: 2px 8px;
+        border: 1px solid var(--border);
+        border-radius: 2px;
+        background: var(--accent-dim);
+      }
+
+      /* --- FOOTER --- */
+      .calendar-footer {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+      }
+
+      .calendar-footer span {
+        color: var(--accent);
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 768px) {
+        .calendar-container {
+          padding: 30px 24px;
+        }
+        .calendar-header .logo {
+          font-size: 1.3rem;
+        }
+        .calendar-grid .day-cell {
+          min-height: 60px;
+          padding: 4px 4px;
+        }
+        .calendar-grid .day-cell .day-number {
+          font-size: 0.55rem;
+        }
+        .event-list-item {
+          flex-wrap: wrap;
+        }
+        .event-list-item .event-date {
+          min-width: 60px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .calendar-container {
+          padding: 20px 16px;
+        }
+        .calendar-header .logo {
+          font-size: 1.1rem;
+        }
+        .calendar-header .month {
+          font-size: 0.9rem;
+        }
+        .calendar-grid .day-cell {
+          min-height: 50px;
+        }
+        .calendar-grid .day-cell .day-number {
+          font-size: 0.5rem;
+        }
+        .calendar-legend {
+          gap: 8px;
+        }
+        .legend-item {
+          font-size: 0.5rem;
+        }
+        .event-list-item .event-title {
+          font-size: 0.7rem;
+        }
+        .download-bar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .btn-download {
+          justify-content: center;
+        }
+      }
+
+      /* --- PRINT STYLES --- */
+      @media print {
+        .scanlines {
+          display: none;
+        }
+        .calendar-container {
+          background: #0a0508;
+          box-shadow: none;
+          border: 1px solid #1a0a2a;
+          padding: 30px 40px;
+        }
+        .calendar-container::before,
+        .calendar-container::after {
+          opacity: 0.05;
+        }
+        .download-bar {
+          display: none !important;
+        }
+        .btn-download {
+          display: none !important;
+        }
+        .calendar-grid .day-cell:hover {
+          background: transparent;
+        }
+        .event-list-item:hover {
+          background: transparent;
+        }
+      }
+
+      /* --- EDITABLE FIELDS --- */
+      .editable {
+        border-bottom: 1px dashed var(--border);
+        padding: 2px 4px;
+        outline: none;
+        transition: all 0.3s ease;
+        cursor: text;
+        min-width: 20px;
+        display: inline-block;
+      }
+
+      .editable:focus {
+        border-color: var(--accent);
+        background: var(--accent-dim);
+        box-shadow: 0 0 20px rgba(255, 0, 234, 0.05);
+      }
+
+      .editable-placeholder {
+        color: var(--text-muted);
+        opacity: 0.4;
+      }
+
+      .editable-placeholder:focus {
+        color: var(--text);
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scanlines"></div>
+
+    <div class="calendar-container">
+      <!-- Download Bar -->
+      <div class="download-bar">
+        <button
+          class="btn-download btn-download-outline"
+          onclick="window.print()"
+        >
+          <i class="fas fa-print"></i> Print
+        </button>
+        <button class="btn-download" onclick="exportPDF()">
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+      </div>
+
+      <!-- HEADER -->
+      <div class="calendar-header">
+        <div class="logo">✦ <span>ART MECCA</span></div>
+        <div class="month editable" contenteditable="true">
+          <i
+            class="fas fa-calendar-alt"
+            style="color: var(--accent-secondary); margin-right: 8px"
+          ></i>
+          JANUARY 2026
+        </div>
+      </div>
+
+      <!-- LEGEND -->
+      <div class="calendar-legend">
+        <span class="legend-item">
+          <span class="legend-dot post"></span> Post
+        </span>
+        <span class="legend-item">
+          <span class="legend-dot process"></span> Process
+        </span>
+        <span class="legend-item">
+          <span class="legend-dot client"></span> Client Work
+        </span>
+        <span class="legend-item">
+          <span class="legend-dot event"></span> Event
+        </span>
+      </div>
+
+      <!-- CALENDAR GRID -->
+      <div class="calendar-grid">
+        <!-- Day Headers -->
+        <div class="day-header">Sun</div>
+        <div class="day-header">Mon</div>
+        <div class="day-header">Tue</div>
+        <div class="day-header">Wed</div>
+        <div class="day-header">Thu</div>
+        <div class="day-header">Fri</div>
+        <div class="day-header">Sat</div>
+
+        <!-- Week 1 -->
+        <div class="day-cell empty"><div class="day-number"></div></div>
+        <div class="day-cell empty"><div class="day-number"></div></div>
+        <div class="day-cell empty"><div class="day-number"></div></div>
+        <div class="day-cell">
+          <div class="day-number">1</div>
+          <div class="event-dot post"></div>
+          <div class="event-label post">New Post</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">2</div>
+          <div class="event-dot process"></div>
+          <div class="event-label process">Sketching</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">3</div>
+          <div class="event-dot client"></div>
+          <div class="event-label client">Client Call</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">4</div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="day-cell">
+          <div class="day-number">5</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">6</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">7</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">8</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">9</div>
+          <div class="event-dot post"></div>
+          <div class="event-label post">Tutorial</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">10</div>
+          <div class="event-dot process"></div>
+          <div class="event-label process">WIP Update</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">11</div>
+          <div class="event-dot event"></div>
+          <div class="event-label event">Art Show</div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="day-cell">
+          <div class="day-number">12</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">13</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">14</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">15</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">16</div>
+          <div class="event-dot post"></div>
+          <div class="event-label post">New Art</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">17</div>
+          <div class="event-dot client"></div>
+          <div class="event-label client">Commission</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">18</div>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="day-cell">
+          <div class="day-number">19</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">20</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">21</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">22</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">23</div>
+          <div class="event-dot post"></div>
+          <div class="event-label post">Timelapse</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">24</div>
+          <div class="event-dot process"></div>
+          <div class="event-label process">Concept</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">25</div>
+        </div>
+
+        <!-- Week 5 -->
+        <div class="day-cell">
+          <div class="day-number">26</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">27</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">28</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">29</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">30</div>
+          <div class="event-dot post"></div>
+          <div class="event-label post">Monthly Recap</div>
+        </div>
+        <div class="day-cell">
+          <div class="day-number">31</div>
+          <div class="event-dot event"></div>
+          <div class="event-label event">Deadline</div>
+        </div>
+        <div class="day-cell empty"><div class="day-number"></div></div>
+      </div>
+
+      <!-- EVENT LIST -->
+      <div class="event-list">
+        <div class="list-title">✦ Upcoming Events</div>
+
+        <div class="event-list-item">
+          <span class="event-color post"></span>
+          <span class="event-date">Jan 1</span>
+          <span class="event-title editable" contenteditable="true"
+            >New Year Art Post</span
+          >
+          <span class="event-tag">Post</span>
+        </div>
+
+        <div class="event-list-item">
+          <span class="event-color process"></span>
+          <span class="event-date">Jan 2</span>
+          <span class="event-title editable" contenteditable="true"
+            >Character Sketch Session</span
+          >
+          <span class="event-tag">Process</span>
+        </div>
+
+        <div class="event-list-item">
+          <span class="event-color client"></span>
+          <span class="event-date">Jan 3</span>
+          <span class="event-title editable" contenteditable="true"
+            >Client Meeting — Project Review</span
+          >
+          <span class="event-tag">Client</span>
+        </div>
+
+        <div class="event-list-item">
+          <span class="event-color post"></span>
+          <span class="event-date">Jan 9</span>
+          <span class="event-title editable" contenteditable="true"
+            >Tutorial: Lighting Basics</span
+          >
+          <span class="event-tag">Post</span>
+        </div>
+
+        <div class="event-list-item">
+          <span class="event-color event"></span>
+          <span class="event-date">Jan 11</span>
+          <span class="event-title editable" contenteditable="true"
+            >Digital Art Exhibition Opening</span
+          >
+          <span class="event-tag">Event</span>
+        </div>
+
+        <div class="event-list-item">
+          <span class="event-color post"></span>
+          <span class="event-date">Jan 16</span>
+          <span class="event-title editable" contenteditable="true"
+            >New Artwork Reveal</span
+          >
+          <span class="event-tag">Post</span>
+        </div>
+
+        <div class="event-list-item">
+          <span class="event-color client"></span>
+          <span class="event-date">Jan 17</span>
+          <span class="event-title editable" contenteditable="true"
+            >Commission Delivery</span
+          >
+          <span class="event-tag">Client</span>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="calendar-footer">✦ <span>KEEP IT FRESH</span> ✦</div>
+    </div>
+
+    <script>
+      function exportPDF() {
+        window.print();
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const editables = document.querySelectorAll(".editable");
+        editables.forEach((el) => {
+          if (!el.textContent.trim()) {
+            el.classList.add("editable-placeholder");
+          }
+          el.addEventListener("focus", function () {
+            this.classList.remove("editable-placeholder");
+          });
+          el.addEventListener("blur", function () {
+            if (!this.textContent.trim()) {
+              this.classList.add("editable-placeholder");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

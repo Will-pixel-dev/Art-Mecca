@@ -41,8 +41,10 @@ class EditArtwork {
 
             // Check if user owns this artwork
             if (!this.currentUser || this.currentUser.uid !== this.artwork.artistId) {
-                alert('You do not have permission to edit this artwork');
-                window.location.href = '/pages/community/gallery.html';
+                this.showToast('You do not have permission to edit this artwork', 'error');
+                setTimeout(() => {
+                    window.location.href = '/pages/community/gallery.html';
+                }, 2000);
                 return;
             }
 
@@ -63,13 +65,28 @@ class EditArtwork {
         document.getElementById('artDescription').value = this.artwork.description || '';
         document.getElementById('artTags').value = (this.artwork.tags || []).join(', ');
 
+        // Set character count
+        const desc = document.getElementById('artDescription');
+        document.getElementById('descCount').textContent = desc.value.length;
+
         // Show preview image
-        const previewContainer = document.getElementById('previewImage');
-        previewContainer.innerHTML = `<img src="${this.artwork.imageUrl}" alt="${this.artwork.title}">`;
+        const previewImg = document.getElementById('previewImg');
+        previewImg.src = this.artwork.imageUrl;
+        previewImg.alt = this.artwork.title || 'Artwork';
 
         // Setup event listeners
         document.getElementById('saveBtn').addEventListener('click', () => this.saveChanges());
         document.getElementById('deleteBtn').addEventListener('click', () => this.deleteArtwork());
+
+        // Character count on description
+        desc.addEventListener('input', () => {
+            const count = desc.value.length;
+            document.getElementById('descCount').textContent = count;
+            if (count > 500) {
+                desc.value = desc.value.substring(0, 500);
+                document.getElementById('descCount').textContent = 500;
+            }
+        });
     }
 
     async saveChanges() {
@@ -79,7 +96,7 @@ class EditArtwork {
         const tagsInput = document.getElementById('artTags').value;
 
         if (!title) {
-            alert('Please enter a title');
+            this.showToast('Please enter a title', 'error');
             return;
         }
 
@@ -99,19 +116,21 @@ class EditArtwork {
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
 
-            alert('Artwork updated successfully!');
-            window.location.href = `/pages/community/artwork-detail.html?id=${this.artworkId}`;
+            this.showToast('✅ Artwork updated successfully!');
+            setTimeout(() => {
+                window.location.href = `/pages/community/artwork-detail.html?id=${this.artworkId}`;
+            }, 1500);
 
         } catch (error) {
             console.error('Error saving artwork:', error);
-            alert('Error saving artwork: ' + error.message);
+            this.showToast('Error saving artwork: ' + error.message, 'error');
             saveBtn.disabled = false;
             saveBtn.innerHTML = originalText;
         }
     }
 
     async deleteArtwork() {
-        const confirmed = confirm('Are you sure you want to delete this artwork? This action cannot be undone.');
+        const confirmed = confirm('⚠️ Are you sure you want to delete this artwork? This action cannot be undone.');
 
         if (!confirmed) return;
 
@@ -151,12 +170,14 @@ class EditArtwork {
             // Delete the artwork
             await firebase.firestore().collection('artworks').doc(this.artworkId).delete();
 
-            alert('Artwork deleted successfully!');
-            window.location.href = '/pages/community/gallery.html';
+            this.showToast('✅ Artwork deleted successfully!');
+            setTimeout(() => {
+                window.location.href = '/pages/community/gallery.html';
+            }, 1500);
 
         } catch (error) {
             console.error('Error deleting artwork:', error);
-            alert('Error deleting artwork: ' + error.message);
+            this.showToast('Error deleting artwork: ' + error.message, 'error');
             deleteBtn.disabled = false;
             deleteBtn.innerHTML = originalText;
         }
@@ -165,6 +186,68 @@ class EditArtwork {
     showError() {
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('errorState').style.display = 'block';
+    }
+
+    showToast(message, type = 'success') {
+        let toast = document.getElementById('customToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'customToast';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: var(--bg-card);
+                backdrop-filter: blur(20px);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                padding: 12px 24px;
+                box-shadow: var(--shadow-card), var(--glow-green);
+                color: var(--text-primary);
+                font-family: var(--font-condensed);
+                font-size: 0.85rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 10000;
+                transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                opacity: 0;
+                pointer-events: none;
+                max-width: 90%;
+            `;
+            document.body.appendChild(toast);
+        }
+
+        const icon = toast.querySelector('i') || document.createElement('i');
+        if (!toast.querySelector('i')) {
+            icon.style.cssText = 'font-size: 1.2rem;';
+            toast.prepend(icon);
+        }
+
+        const span = toast.querySelector('span') || document.createElement('span');
+        if (!toast.querySelector('span')) {
+            toast.appendChild(span);
+        }
+
+        if (type === 'error') {
+            icon.className = 'fas fa-exclamation-circle';
+            icon.style.color = '#ef4444';
+            toast.style.borderColor = 'rgba(239,68,68,0.2)';
+        } else {
+            icon.className = 'fas fa-check-circle';
+            icon.style.color = '#10b981';
+            toast.style.borderColor = 'var(--border-color)';
+        }
+
+        span.textContent = message;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+        }, 3000);
     }
 }
 

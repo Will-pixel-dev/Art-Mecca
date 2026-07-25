@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Support — Art Mecca</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <!-- ====== ANIMATED BACKGROUND ====== -->
+    <div class="cloud-bg">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="cloud cloud-3"></div>
+      <div class="cloud cloud-4"></div>
+      <div class="cloud cloud-5"></div>
+    </div>
+
+    <!-- ====== ADMIN HEADER ====== -->
+    <header class="admin-header">
+      <div class="container">
+        <div class="logo">
+          <a href="/">
+            <i class="fas fa-palette"></i>
+            Art <span>Mecca</span>
+          </a>
+        </div>
+        <div class="header-actions">
+          <button class="btn-icon" aria-label="Search">
+            <i class="fas fa-search"></i>
+          </button>
+          <div class="auth-buttons">
+            <a href="/pages/auth/login.html" class="btn btn-login">Log In</a>
+            <a href="/pages/auth/register.html" class="btn btn-signup"
+              >Sign Up</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="admin-page">
+      <div class="container">
+        <section class="admin-hero">
+          <div class="admin-hero-content">
+            <span class="admin-hero-icon">✦</span>
+            <h1>Support</h1>
+            <p class="subtitle">Get help with Art Mecca</p>
+            <div class="graffiti">✦ HELP ✦</div>
+          </div>
+        </section>
+
+        <nav class="admin-breadcrumb">
+          <a href="/">Home</a><span class="sep">/</span>
+          <a href="/pages/admin/">Admin</a><span class="sep">/</span>
+          <span class="current">Support</span>
+        </nav>
+
+        <div class="admin-content">
+          <p>
+            Welcome to the Art Mecca Support Center. Find answers to common
+            questions and guides to help you get started.
+          </p>
+
+          <h2>Getting Started</h2>
+
+          <h3>Creating an Account</h3>
+          <ul>
+            <li>Click "Sign Up" in the top right</li>
+            <li>Enter your email, username, and password</li>
+            <li>Verify your email address</li>
+          </ul>
+
+          <h3>Uploading Artwork</h3>
+          <ul>
+            <li>Go to your profile and click "Upload"</li>
+            <li>Select an image (PNG, JPG, WebP, max 10MB)</li>
+            <li>Add a title, description, tags, and category</li>
+          </ul>
+
+          <h2>Troubleshooting</h2>
+
+          <h3>Can't Login?</h3>
+          <ul>
+            <li>Check your email and password</li>
+            <li>Use "Forgot Password" to reset</li>
+            <li>Clear your browser cache</li>
+          </ul>
+
+          <h3>Upload Issues</h3>
+          <ul>
+            <li>File must be under 10MB</li>
+            <li>Use supported formats: PNG, JPG, WebP</li>
+            <li>Check your internet connection</li>
+          </ul>
+
+          <div class="highlight-box">
+            <p>
+              Still need help?
+              <a href="contact.html">Contact our support team</a>
+            </p>
+          </div>
+
+          <p class="last-updated">✦ Last updated: July 2026</p>
+        </div>
+
+        <div class="admin-related">
+          <span class="label">Related:</span>
+          <a href="guidelines.html">Guidelines</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms-of-service.html">Terms</a>
+          <a href="support.html">Support</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- ====== ADMIN FOOTER ====== -->
+    <footer class="admin-footer">
+      <div class="container">
+        <nav class="footer-nav">
+          <a href="/">Home</a>
+          <a href="/pages/community/gallery.html">Gallery</a>
+          <a href="/pages/tutorials/tutorials.html">Tutorials</a>
+          <a href="/pages/community/hub.html">Community</a>
+        </nav>
+        <div class="footer-copy">
+          &copy; 2026 Art Mecca — <span>✦ KEEP IT FRESH ✦</span>
+        </div>
+      </div>
+    </footer>
+
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <script>
+      (function initThemeToggle() {
+        const themeToggle = document.getElementById("themeToggle");
+        if (!themeToggle) return;
+        const savedTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        const icon = themeToggle.querySelector(".toggle-icon");
+        const label = themeToggle.querySelector(".toggle-label");
+        if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+        if (label) label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+        themeToggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          const current = document.documentElement.getAttribute("data-theme");
+          const next = current === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          localStorage.setItem("theme", next);
+          const iconEl = this.querySelector(".toggle-icon");
+          const labelEl = this.querySelector(".toggle-label");
+          if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+          if (labelEl) labelEl.textContent = next === "dark" ? "Dark" : "Light";
+        });
+      })();
+    </script>
+  </body>
+</html>

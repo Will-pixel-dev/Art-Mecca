@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,57 +8,38 @@
       name="description"
       content="Generate creative character prompts, story ideas, and landscape concepts. Perfect for overcoming creative block and finding inspiration."
     />
-    <meta
-      name="keywords"
-      content="prompt generator, character prompts, creative inspiration, art prompts, story ideas, landscape prompts"
-    />
-
-    <!-- Open Graph -->
-    <meta
-      property="og:title"
-      content="Character Prompt Generator - Creative Inspiration For Artists"
-    />
-    <meta
-      property="og:description"
-      content="Generate creative character prompts, story ideas, and landscape concepts. Perfect for overcoming creative block."
-    />
-    <meta property="og:image" content="/images/og-prompts.jpg" />
-    <meta
-      property="og:url"
-      content="https://artisanhub.com/pages/tools/prompt-generator.html"
-    />
-    <meta property="og:type" content="website" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Character Prompt Generator - Creative Inspiration For Artists"
-    />
-    <meta
-      name="twitter:description"
-      content="Generate creative character prompts, story ideas, and landscape concepts."
-    />
-    <meta name="twitter:image" content="/images/og-prompts.jpg" />
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/tools.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -69,68 +50,1326 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ================================================================
+         PROMPT GENERATOR — CYBERPUNK GOLD HUD AESTHETIC
+         ================================================================ */
+
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(255, 143, 46, 0.06);
+        --bg-card-hover: rgba(255, 199, 46, 0.12);
+        --bg-elevated: rgba(255, 199, 46, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(255, 199, 46, 0.15);
+
+        /* Theme Colors - Gold */
+        --color-gold: #ffc72e;
+        --color-gold-dark: #d4a000;
+        --color-gold-light: #ffd966;
+        --color-gold-lighter: #ffe699;
+        --color-gold-mid: #ffc72e;
+        --color-amber: #ff6b00;
+
+        /* Glitch Colors - Gold Only */
+        --color-glitch-a: #ffcc00;
+        --color-glitch-b: #fc7c20;
+        --color-glitch-c: #ad03fc;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-magenta: #ff00ea;
+
+        /* Spray */
+        --color-spray-gold: #ffc72e;
+        --color-spray-red: #ff0040;
+
+        /* Gradients */
+        --gradient-gold: linear-gradient(135deg, #ffc72e, #ff6b00, #d4a000);
+        --gradient-cyber: linear-gradient(135deg, #f2ff00, #ad03fc, #ffc72e);
+        --gradient-neon: linear-gradient(135deg, #ffc72e, #ff6b00);
+
+        /* Glows */
+        --glow-gold:
+          0 0 40px rgba(243, 97, 18, 0.3), 0 0 80px rgba(255, 199, 46, 0.1);
+        --glow-amber:
+          0 0 40px rgba(255, 107, 0, 0.3), 0 0 80px rgba(255, 107, 0, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(255, 199, 46, 0.2);
+
+        --glow-gold:
+          0 0 40px rgba(255, 199, 46, 0.08), 0 0 80px rgba(255, 199, 46, 0.03);
+        --glow-amber:
+          0 0 40px rgba(255, 107, 0, 0.08), 0 0 80px rgba(255, 107, 0, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(255, 199, 46, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         GLASS CARD
+         ============================================================ */
+      .glass-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-gold);
+        transition: all var(--transition);
+      }
+
+      .glass-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(255, 199, 46, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-amber);
+      }
+
+      /* ============================================================
+         MAIN CONTENT
+         ============================================================ */
+      .tool-main {
+        position: relative;
+        z-index: 2;
+        padding: 2rem 0 4rem;
+        min-height: 100vh;
+      }
+
+      /* ============================================================
+         HEADER
+         ============================================================ */
+      .tool-header {
+        text-align: center;
+        padding: 3rem 0 2rem;
+        position: relative;
+      }
+
+      .tool-header::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-gold);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
+      }
+
+      .tool-header h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        line-height: 1.1;
+      }
+
+      .tool-header h1 .highlight {
+        background: var(--gradient-gold);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmerGold 4s ease-in-out infinite;
+        background-size: 200% 200%;
+      }
+
+      @keyframes shimmerGold {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .tool-header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         GENERATOR GRID
+         ============================================================ */
+      .generator-grid {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-gold);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .generator-grid::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-gold);
+        opacity: 0.4;
+      }
+
+      @media (max-width: 860px) {
+        .generator-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ============================================================
+         CONTROLS SIDEBAR
+         ============================================================ */
+      .controls-sidebar {
+        padding: 1.5rem;
+        background: var(--bg-elevated);
+        border-right: 1px solid var(--border-color);
+      }
+
+      .controls-sidebar h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        color: var(--color-gold);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      /* Category Cards */
+      .category-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .category-card {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem 1rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .category-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-gold);
+        opacity: 0;
+        transition: opacity var(--transition);
+        border-radius: 8px;
+      }
+
+      .category-card:hover {
+        transform: translateX(4px);
+        border-color: rgba(255, 199, 46, 0.3);
+      }
+
+      .category-card.active {
+        border-color: var(--color-gold);
+        box-shadow: 0 0 40px rgba(255, 199, 46, 0.05);
+      }
+
+      .category-card.active::before {
+        opacity: 0.04;
+      }
+
+      .category-card .category-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+        transition: all var(--transition);
+        border: 1px solid var(--border-color);
+        position: relative;
+        z-index: 1;
+      }
+
+      .category-card.active .category-icon {
+        background: var(--gradient-gold);
+        color: var(--text-inverse);
+        border-color: var(--color-gold);
+        box-shadow: 0 0 30px rgba(255, 199, 46, 0.2);
+      }
+
+      .category-card .category-icon.character {
+        background: rgba(255, 199, 46, 0.08);
+        color: var(--color-gold);
+      }
+      .category-card .category-icon.landscape {
+        background: rgba(255, 107, 0, 0.08);
+        color: var(--color-amber);
+      }
+      .category-card .category-icon.story {
+        background: rgba(255, 215, 0, 0.08);
+        color: #ffd700;
+      }
+
+      .category-card .category-info {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+      }
+
+      .category-card .category-info h4 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        letter-spacing: 0.5px;
+      }
+
+      .category-card .category-info p {
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         QUICK ACTIONS
+         ============================================================ */
+      .quick-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+        border: none;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        justify-content: center;
+      }
+
+      .btn-full {
+        width: 100%;
+      }
+
+      .btn-primary {
+        background: var(--gradient-gold);
+        color: var(--text-inverse);
+        box-shadow: var(--glow-gold);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          var(--glow-amber),
+          0 8px 40px rgba(255, 199, 46, 0.2);
+      }
+
+      .btn-secondary {
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--color-gold);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-gold);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+      }
+
+      .btn-outline:hover {
+        border-color: var(--color-gold);
+        color: var(--color-gold);
+        transform: translateY(-2px);
+        box-shadow: var(--glow-gold);
+      }
+
+      /* ============================================================
+         SAVED PROMPTS PREVIEW
+         ============================================================ */
+      .saved-prompts-preview h3 {
+        font-size: 0.7rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.6rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .saved-prompts-list {
+        max-height: 200px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 199, 46, 0.2) transparent;
+      }
+
+      .saved-prompts-list::-webkit-scrollbar {
+        width: 4px;
+      }
+      .saved-prompts-list::-webkit-scrollbar-thumb {
+        background: rgba(255, 199, 46, 0.3);
+        border-radius: 4px;
+      }
+
+      .saved-prompt-preview {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 0.5rem 0.6rem;
+        cursor: pointer;
+        transition: all var(--transition);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .saved-prompt-preview:hover {
+        background: rgba(255, 199, 46, 0.04);
+        border-color: rgba(255, 199, 46, 0.2);
+        transform: translateX(4px);
+      }
+
+      .saved-prompt-preview .prompt-text {
+        font-size: 0.65rem;
+        color: var(--text-secondary);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        flex: 1;
+        line-height: 1.3;
+        font-family: var(--font-condensed);
+      }
+
+      .saved-prompt-preview .saved-prompt-meta {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.1rem;
+        flex-shrink: 0;
+        font-size: 0.45rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        opacity: 0.5;
+      }
+
+      .saved-prompt-preview .delete-prompt-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0.1rem 0.3rem;
+        border-radius: 2px;
+        transition: all var(--transition);
+        font-size: 0.5rem;
+        opacity: 0.3;
+      }
+
+      .saved-prompt-preview:hover .delete-prompt-btn {
+        opacity: 0.7;
+      }
+      .saved-prompt-preview .delete-prompt-btn:hover {
+        color: var(--color-spray-red);
+        opacity: 1;
+        background: rgba(255, 0, 64, 0.08);
+      }
+
+      .empty-state-small {
+        text-align: center;
+        color: var(--text-secondary);
+        padding: 1rem 0;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+      }
+
+      .empty-state-small i {
+        font-size: 1.2rem;
+        color: var(--color-gold);
+        opacity: 0.3;
+        margin-bottom: 0.2rem;
+        display: block;
+      }
+
+      /* ============================================================
+         PROMPT DISPLAY
+         ============================================================ */
+      .prompt-display {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .prompt-card {
+        background: var(--bg-elevated);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: all var(--transition);
+      }
+
+      .prompt-card:hover {
+        border-color: rgba(255, 199, 46, 0.15);
+      }
+
+      .prompt-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1.2rem;
+        border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .prompt-category-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        padding: 0.2rem 0.8rem;
+        border-radius: 4px;
+        background: rgba(255, 199, 46, 0.06);
+        color: var(--color-gold);
+        border: 1px solid rgba(255, 199, 46, 0.08);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .prompt-actions {
+        display: flex;
+        gap: 0.3rem;
+      }
+
+      .prompt-actions .btn-icon {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 4px;
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        border: 1px solid var(--border-color);
+      }
+
+      .prompt-actions .btn-icon:hover {
+        background: rgba(255, 199, 46, 0.08);
+        color: var(--color-gold);
+        transform: scale(1.05);
+        border-color: var(--color-gold);
+      }
+
+      .prompt-content {
+        padding: 1.5rem 1.2rem;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .prompt-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        background: rgba(255, 199, 46, 0.02);
+        border-left: 3px solid var(--color-gold);
+        min-height: 60px;
+        transition: opacity 0.3s;
+      }
+
+      .prompt-visual {
+        background: rgba(255, 199, 46, 0.02);
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        border: 1px dashed var(--border-color);
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .visual-content {
+        text-align: center;
+        width: 100%;
+      }
+
+      .visual-title {
+        font-size: 0.55rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.2rem;
+      }
+
+      .visual-description {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+        font-family: var(--font-condensed);
+      }
+
+      .visual-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        justify-content: center;
+      }
+
+      .visual-tag {
+        padding: 0.15rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.55rem;
+        font-weight: 600;
+        font-family: var(--font-mono);
+        background: rgba(255, 199, 46, 0.06);
+        color: var(--color-gold);
+        border: 1px solid rgba(255, 199, 46, 0.06);
+        transition: all var(--transition);
+      }
+
+      .visual-tag:hover {
+        background: rgba(255, 199, 46, 0.12);
+        transform: scale(1.05);
+      }
+
+      .visual-tag:nth-child(2) {
+        background: rgba(255, 107, 0, 0.06);
+        color: var(--color-amber);
+        border-color: rgba(255, 107, 0, 0.06);
+      }
+      .visual-tag:nth-child(3) {
+        background: rgba(88, 235, 254, 0.06);
+        color: var(--color-neon-cyan);
+        border-color: rgba(88, 235, 254, 0.06);
+      }
+      .visual-tag:nth-child(4) {
+        background: rgba(79, 243, 166, 0.06);
+        color: var(--color-neon-green);
+        border-color: rgba(79, 243, 166, 0.06);
+      }
+
+      .prompt-generate-section {
+        padding: 0.8rem 1.2rem;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+      }
+
+      .btn-large {
+        padding: 0.8rem 2rem;
+        font-size: 0.85rem;
+      }
+
+      .btn-sparkle {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-sparkle .sparkle {
+        position: absolute;
+        pointer-events: none;
+        width: 20px;
+        height: 20px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 215, 0, 0.8) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        animation: sparkleAnim 0.8s ease-out forwards;
+      }
+
+      @keyframes sparkleAnim {
+        0% {
+          transform: scale(0) rotate(0deg);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.5) rotate(180deg);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .prompt-meta {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.6rem 1.2rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.6rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .meta-label {
+        opacity: 0.5;
+      }
+      .meta-value {
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      /* ============================================================
+         CATEGORY OPTIONS
+         ============================================================ */
+      .category-options {
+        background: var(--bg-elevated);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        padding: 1rem;
+        max-height: 300px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 199, 46, 0.2) transparent;
+      }
+
+      .category-options::-webkit-scrollbar {
+        width: 4px;
+      }
+      .category-options::-webkit-scrollbar-thumb {
+        background: rgba(255, 199, 46, 0.3);
+        border-radius: 4px;
+      }
+
+      .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+
+      @media (max-width: 700px) {
+        .options-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .option-group h4 {
+        font-size: 0.55rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .option-group h4 i {
+        font-size: 0.5rem;
+        color: var(--color-gold);
+      }
+
+      .options-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.2rem;
+      }
+
+      .option-item {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+        padding: 0.15rem 0.5rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all var(--transition);
+        font-size: 0.6rem;
+        font-family: var(--font-condensed);
+        color: var(--text-secondary);
+      }
+
+      .option-item:hover {
+        background: rgba(255, 199, 46, 0.04);
+        transform: translateY(-2px);
+        border-color: rgba(255, 199, 46, 0.15);
+      }
+
+      .option-item.active {
+        background: rgba(255, 199, 46, 0.08);
+        border-color: var(--color-gold);
+        color: var(--text-primary);
+      }
+
+      .option-item .option-checkbox {
+        width: 10px;
+        height: 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition);
+        flex-shrink: 0;
+      }
+
+      .option-item.active .option-checkbox {
+        background: var(--color-gold);
+        border-color: var(--color-gold);
+      }
+
+      .option-item.active .option-checkbox::after {
+        content: "✓";
+        color: var(--text-inverse);
+        font-size: 0.4rem;
+        font-weight: bold;
+      }
+
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-gold);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-amber);
+        border-color: var(--color-gold);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-gold);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-gold);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
+      @media (max-width: 768px) {
+        .tool-main {
+          padding: 1rem 0 3rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .tool-header h1 {
+          font-size: 2rem;
+        }
+
+        .tool-header p {
+          font-size: 1rem;
+        }
+
+        .generator-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .controls-sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .prompt-display {
+          padding: 1rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .tool-header::after {
+          font-size: 1.5rem;
+          right: 10px;
+          bottom: 5px;
+          opacity: 0.02;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tool-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .controls-sidebar {
+          padding: 1rem;
+        }
+
+        .prompt-display {
+          padding: 0.75rem;
+        }
+
+        .prompt-text {
+          font-size: 0.95rem;
+        }
+
+        .options-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .category-cards {
+          gap: 0.4rem;
+        }
+
+        .category-card {
+          padding: 0.6rem 0.8rem;
+        }
+      }
+    </style>
   </head>
   <body>
-    <!-- Header - Updated with working notification system -->
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -138,85 +1377,93 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--color-gold)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link active"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link active">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                  <a
+                    href="/pages/tools/prompt-generator.html"
+                    style="color: var(--color-gold)"
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -224,12 +1471,13 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -266,7 +1514,7 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -274,8 +1522,20 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
+
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -285,6 +1545,7 @@
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -308,62 +1569,75 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN ====== -->
     <main class="tool-main">
       <div class="container">
-        <!-- Tool Header -->
-        <div class="tool-header-compact">
-          <h1>Creative Prompt Generator</h1>
+        <!-- Header -->
+        <div class="tool-header">
+          <h1>
+            Creative
+            <span class="glitch-header" data-text="Prompt">Prompt</span>
+            Generator
+          </h1>
           <p>
             Spark your imagination with endless creative prompts for characters,
             landscapes, and stories
           </p>
         </div>
 
-        <!-- Main Generator Container -->
-        <div class="prompt-generator-container">
-          <!-- Left Side: Category Selection -->
-          <div class="prompt-controls">
-            <div class="category-selection">
-              <h3><i class="fas fa-magic"></i> Prompt Category</h3>
-              <div class="category-cards">
-                <div class="category-card active" data-category="character">
-                  <div class="category-icon">
-                    <i class="fas fa-user-astronaut"></i>
-                  </div>
-                  <h4>Characters</h4>
-                  <p>Unique personas and creatures</p>
+        <!-- Generator Grid -->
+        <div class="generator-grid">
+          <!-- Controls Sidebar -->
+          <div class="controls-sidebar">
+            <h3><i class="fas fa-magic"></i> Category</h3>
+
+            <div class="category-cards">
+              <div class="category-card active" data-category="character">
+                <div class="category-icon character">
+                  <i class="fas fa-user-astronaut"></i>
                 </div>
-                <div class="category-card" data-category="landscape">
-                  <div class="category-icon">
-                    <i class="fas fa-mountain"></i>
-                  </div>
+                <div class="category-info">
+                  <h4>Characters</h4>
+                  <p>Unique personas &amp; creatures</p>
+                </div>
+              </div>
+              <div class="category-card" data-category="landscape">
+                <div class="category-icon landscape">
+                  <i class="fas fa-mountain"></i>
+                </div>
+                <div class="category-info">
                   <h4>Landscapes</h4>
                   <p>Breathtaking environments</p>
                 </div>
-                <div class="category-card" data-category="story">
-                  <div class="category-icon">
-                    <i class="fas fa-book-open"></i>
-                  </div>
+              </div>
+              <div class="category-card" data-category="story">
+                <div class="category-icon story">
+                  <i class="fas fa-book-open"></i>
+                </div>
+                <div class="category-info">
                   <h4>Stories</h4>
                   <p>Compelling narratives</p>
                 </div>
               </div>
             </div>
+
             <div class="quick-actions">
-              <button id="random-all-btn" class="btn btn-secondary btn-full">
+              <button id="random-btn" class="btn btn-secondary btn-full">
                 <i class="fas fa-random"></i> Random Everything
               </button>
-              <button id="save-prompt-btn" class="btn btn-outline btn-full">
+              <button id="save-btn" class="btn btn-outline btn-full">
                 <i class="fas fa-heart"></i> Save Prompt
               </button>
             </div>
+
             <div class="saved-prompts-preview">
-              <h3><i class="fas fa-history"></i> Saved Prompts</h3>
-              <div class="saved-prompts-list" id="saved-prompts-preview">
+              <h3>
+                <i class="fas fa-history"></i> Saved
+                <span id="saved-count"></span>
+              </h3>
+              <div class="saved-prompts-list" id="saved-prompts">
                 <div class="empty-state-small">
                   <i class="fas fa-lightbulb"></i>
                   <p>No prompts saved yet</p>
@@ -372,150 +1646,1002 @@
             </div>
           </div>
 
-          <!-- Right Side: Prompt Display & Generation -->
+          <!-- Display Area -->
           <div class="prompt-display">
             <div class="prompt-card">
               <div class="prompt-header">
                 <div class="prompt-category-badge">
-                  <i class="fas fa-user-astronaut"></i><span>Character</span>
+                  <i class="fas fa-user-astronaut"></i>
+                  <span id="category-label">Character</span>
                 </div>
                 <div class="prompt-actions">
-                  <button
-                    class="btn-icon"
-                    id="copy-prompt-btn"
-                    title="Copy Prompt"
-                  >
+                  <button class="btn-icon" id="copy-btn" title="Copy Prompt">
                     <i class="fas fa-copy"></i>
                   </button>
-                  <button
-                    class="btn-icon"
-                    id="refresh-prompt-btn"
-                    title="New Prompt"
-                  >
+                  <button class="btn-icon" id="refresh-btn" title="New Prompt">
                     <i class="fas fa-redo"></i>
                   </button>
                 </div>
               </div>
+
               <div class="prompt-content">
                 <div class="prompt-text" id="prompt-text">
-                  Click "Generate Prompt" to create your first creative
+                  Click "Generate New Prompt" to create your first creative
                   inspiration!
                 </div>
                 <div class="prompt-visual" id="prompt-visual">
-                  <div class="visual-placeholder">
-                    <i class="fas fa-palette"></i>
-                    <p>Your visual inspiration will appear here</p>
+                  <div class="visual-content">
+                    <div class="visual-title">Visual Elements</div>
+                    <div class="visual-description">
+                      Select options to see visual tags
+                    </div>
+                    <div class="visual-tags">
+                      <span class="visual-tag">✨</span>
+                    </div>
                   </div>
                 </div>
               </div>
+
               <div class="prompt-generate-section">
                 <button
-                  id="generate-prompt-btn"
-                  class="btn btn-primary btn-sparkle btn-large"
+                  id="generate-btn"
+                  class="btn btn-primary btn-large btn-sparkle"
                 >
                   <i class="fas fa-wand-magic-sparkles"></i> Generate New Prompt
                 </button>
               </div>
+
               <div class="prompt-meta">
                 <div class="meta-item">
-                  <span class="meta-label">Category:</span
-                  ><span class="meta-value" id="current-category"
+                  <span class="meta-label">Category:</span>
+                  <span class="meta-value" id="current-category"
                     >Character</span
                   >
                 </div>
                 <div class="meta-item">
-                  <span class="meta-label">Complexity:</span
-                  ><span class="meta-value" id="current-complexity"
+                  <span class="meta-label">Complexity:</span>
+                  <span class="meta-value" id="current-complexity"
                     >Detailed</span
                   >
                 </div>
               </div>
             </div>
+
             <div class="category-options" id="category-options"></div>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i></a
-              ><a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i></a
-              ><a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i></a
-              ><a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i></a
-              ><a href="#" class="social-link"><i class="fab fa-discord"></i></a
-              ><a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const particleCanvas = document.getElementById("particleCanvas");
+        if (particleCanvas) {
+          const ctx = particleCanvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * particleCanvas.width;
+              this.y = Math.random() * particleCanvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#ffc72e",
+                "#ff6b00",
+                "#ff00ea",
+                "#58ebfe",
+                "#4ff3a6",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > particleCanvas.width ||
+                this.y < 0 ||
+                this.y > particleCanvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#ffc72e";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#ffc72e";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== DATA ======
+        const categoryData = {
+          character: {
+            type: [
+              "Monster",
+              "Angel",
+              "Demon",
+              "Human",
+              "Lion",
+              "Bunny",
+              "Horse",
+              "Stag",
+              "Dragon",
+              "Robot",
+              "Alien",
+              "Ghost",
+            ],
+            status: [
+              "Royal",
+              "Thief",
+              "Barbarian",
+              "Soldier",
+              "Royal Guard",
+              "Jester",
+              "Commoner",
+              "Celebrity",
+              "Musician",
+              "Dancer",
+              "Scholar",
+              "Merchant",
+            ],
+            body: [
+              "Vitiligo",
+              "Scars",
+              "Star Freckles",
+              "Tattoos",
+              "Many Eyes",
+              "Heterochromia",
+              "Amputation",
+              "Muscular",
+              "Chubby",
+              "Thick",
+              "Cracks",
+              "Cyborg",
+              "Wings",
+              "Tail",
+              "Horns",
+            ],
+            season: ["Summer", "Winter", "Spring", "Autumn"],
+            accessories: [
+              "Glasses",
+              "Gloves",
+              "Crown",
+              "Gun",
+              "Sword",
+              "Axe",
+              "Hammer",
+              "Motorbike",
+              "Jacket",
+              "Nothing",
+              "Hat",
+              "Crowbar",
+              "Pet",
+              "Mask",
+              "Jewelry",
+            ],
+          },
+          landscape: {
+            aesthetic: [
+              "Light Fairy",
+              "Dark Fairy",
+              "Cyberpunk",
+              "Hydropunk",
+              "Biopunk",
+              "Solarpunk",
+              "Old England",
+              "Medieval",
+              "Tokyo 1931",
+              "Eastern Empire",
+              "Sky Islands",
+              "Steampunk",
+            ],
+            climate: [
+              "Hellscape",
+              "Oceanic",
+              "Hot Desert",
+              "Cold Desert",
+              "Dense Forest",
+              "Meadow",
+              "Mountains",
+              "Canyons",
+              "Tundra",
+              "Jungle",
+              "Volcanic",
+            ],
+            timeOfDay: [
+              "Night",
+              "Twilight",
+              "Sunset",
+              "Mid-day",
+              "Morning",
+              "Golden Hour",
+              "Blue Hour",
+            ],
+            weather: [
+              "Rain",
+              "Sunny",
+              "Storm",
+              "Snow",
+              "Fog",
+              "Windy",
+              "Clear",
+              "Overcast",
+            ],
+            sky: [
+              "Rainbow",
+              "Green Sky",
+              "Tornado",
+              "Aurora Borealis",
+              "Shooting Stars",
+              "Eclipse",
+              "Cracked Sky",
+              "Half n Half",
+              "Double Suns",
+              "Floating Islands",
+            ],
+          },
+          story: {
+            genre: [
+              "Romance",
+              "Horror",
+              "Crime",
+              "Comedy",
+              "Fantasy",
+              "Sci-Fi",
+              "Mystery",
+              "Thriller",
+              "Drama",
+              "Adventure",
+            ],
+            tone: [
+              "Bittersweet",
+              "Heart Warming",
+              "Nostalgic",
+              "Tragic",
+              "Hopeful",
+              "Dark",
+              "Whimsical",
+              "Epic",
+              "Intimate",
+            ],
+            plot: [
+              "Rescue",
+              "Mental Breakdown",
+              "Falling in Love",
+              "Opposites Attract",
+              "Freak Friday",
+              "World is Ending",
+              "Amnesia",
+              "The Weirdest Dream",
+              "The World Ended Yesterday",
+              "Discovery",
+              "Revenge",
+              "Redemption",
+            ],
+            characters: ["1", "2", "3", "4", "5", "6", "7", "Large Cast"],
+            protagonist: [
+              "Villain",
+              "Hero",
+              "NPC",
+              "Thief",
+              "Princess",
+              "Prince",
+              "King",
+              "Queen",
+              "Jester",
+              "Uber Driver",
+              "Orphan",
+              "Detective",
+              "Zombie",
+              "Theater Kid",
+              "Gay Guy",
+              "Gay Girl",
+              "Non-binary",
+            ],
+            protagonistAge: [
+              "5-12",
+              "13-17",
+              "18-25",
+              "26-35",
+              "36-45",
+              "46-55",
+              "56-65",
+              "66-75",
+            ],
+            setting: [
+              "Future",
+              "Past",
+              "Post Apocalyptic",
+              "Urban City",
+              "Overpopulated City",
+              "Middle of Nowhere",
+              "School",
+              "Office Job",
+              "Abandoned Gas Station",
+              "Space Station",
+              "Small Town",
+              "Fantasy Kingdom",
+            ],
+          },
+        };
+
+        const categoryIcons = {
+          character: "fas fa-user-astronaut",
+          landscape: "fas fa-mountain",
+          story: "fas fa-book-open",
+        };
+
+        // ====== DOM REFS ======
+        const categoryCards = document.querySelectorAll(".category-card");
+        const generateBtn = document.getElementById("generate-btn");
+        const randomBtn = document.getElementById("random-btn");
+        const saveBtn = document.getElementById("save-btn");
+        const copyBtn = document.getElementById("copy-btn");
+        const refreshBtn = document.getElementById("refresh-btn");
+        const promptText = document.getElementById("prompt-text");
+        const promptVisual = document.getElementById("prompt-visual");
+        const categoryLabel = document.getElementById("category-label");
+        const currentCategoryEl = document.getElementById("current-category");
+        const currentComplexityEl =
+          document.getElementById("current-complexity");
+        const optionsContainer = document.getElementById("category-options");
+        const savedContainer = document.getElementById("saved-prompts");
+        const savedCountEl = document.getElementById("saved-count");
+
+        // ====== STATE ======
+        let currentCategory = "character";
+        let currentPrompt = "";
+        let selectedOptions = {
+          character: new Set(),
+          landscape: new Set(),
+          story: new Set(),
+        };
+        let savedPrompts = JSON.parse(
+          localStorage.getItem("artisanHubSavedPrompts") || "[]",
+        );
+
+        // ====== HELPERS ======
+        function randomItem(arr) {
+          return arr[Math.floor(Math.random() * arr.length)];
+        }
+        function capitalize(str) {
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+        function formatCategoryName(cat) {
+          return cat
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (s) => s.toUpperCase());
+        }
+
+        function getCategoryIconKey(cat) {
+          const icons = {
+            type: "paw",
+            status: "crown",
+            body: "user",
+            season: "tree",
+            accessories: "glasses",
+            aesthetic: "palette",
+            climate: "cloud-sun",
+            timeOfDay: "clock",
+            weather: "cloud-rain",
+            sky: "cloud",
+            genre: "theater-masks",
+            tone: "heart",
+            plot: "book",
+            characters: "users",
+            protagonist: "user-tie",
+            protagonistAge: "birthday-cake",
+            setting: "map-marker",
+          };
+          return icons[cat] || "circle";
+        }
+
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        function copyToClipboard(text) {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+
+        // ====== GET SELECTED ======
+        function getSelected(category) {
+          const selected = {};
+          selectedOptions[category].forEach((key) => {
+            const parts = key.split("-");
+            if (parts.length === 3) {
+              const [, cat, val] = parts;
+              if (!selected[cat]) selected[cat] = [];
+              selected[cat].push(val);
+            }
+          });
+          return selected;
+        }
+
+        // ====== GENERATE PROMPT ======
+        function generatePrompt() {
+          const data = categoryData[currentCategory];
+          const selected = getSelected(currentCategory);
+          let prompt = "";
+
+          switch (currentCategory) {
+            case "character":
+              prompt = generateCharacter(data, selected);
+              break;
+            case "landscape":
+              prompt = generateLandscape(data, selected);
+              break;
+            case "story":
+              prompt = generateStory(data, selected);
+              break;
+          }
+
+          currentPrompt = prompt;
+          displayPrompt(prompt);
+        }
+
+        function generateCharacter(data, selected) {
+          const type = selected.type?.length
+            ? randomItem(selected.type)
+            : randomItem(data.type);
+          const status = selected.status?.length
+            ? randomItem(selected.status)
+            : randomItem(data.status);
+          const body = selected.body?.length
+            ? randomItem(selected.body)
+            : randomItem(data.body);
+          const season = selected.season?.length
+            ? randomItem(selected.season)
+            : randomItem(data.season);
+          const accessories = selected.accessories?.length
+            ? randomItem(selected.accessories)
+            : randomItem(data.accessories);
+
+          const templates = [
+            `A ${type} ${status} with ${body.toLowerCase()} during ${season} season, carrying ${accessories.toLowerCase()}`,
+            `${season}'s ${type} ${status} marked by ${body.toLowerCase()}, always seen with ${accessories.toLowerCase()}`,
+            `The ${status} ${type} whose ${body.toLowerCase()} tells a story, wandering through ${season} with their ${accessories.toLowerCase()}`,
+            `A ${type} of ${status} descent, bearing ${body.toLowerCase()}, embracing ${season} while holding ${accessories.toLowerCase()}`,
+          ];
+          return randomItem(templates);
+        }
+
+        function generateLandscape(data, selected) {
+          const aesthetic = selected.aesthetic?.length
+            ? randomItem(selected.aesthetic)
+            : randomItem(data.aesthetic);
+          const climate = selected.climate?.length
+            ? randomItem(selected.climate)
+            : randomItem(data.climate);
+          const timeOfDay = selected.timeOfDay?.length
+            ? randomItem(selected.timeOfDay)
+            : randomItem(data.timeOfDay);
+          const weather = selected.weather?.length
+            ? randomItem(selected.weather)
+            : randomItem(data.weather);
+          const sky = selected.sky?.length
+            ? randomItem(selected.sky)
+            : randomItem(data.sky);
+
+          const templates = [
+            `A ${aesthetic} ${climate} landscape at ${timeOfDay.toLowerCase()} during ${weather.toLowerCase()} weather, under a sky filled with ${sky.toLowerCase()}`,
+            `${timeOfDay} in a ${aesthetic} ${climate}, where ${weather.toLowerCase()} weather meets ${sky.toLowerCase()} above`,
+            `The ${climate} transformed by ${aesthetic} aesthetic, captured at ${timeOfDay.toLowerCase()} with ${weather.toLowerCase()} conditions and ${sky.toLowerCase()} overhead`,
+            `${aesthetic} inspired ${climate} during ${timeOfDay.toLowerCase()}, experiencing ${weather.toLowerCase()} beneath ${sky.toLowerCase()}`,
+          ];
+          return randomItem(templates);
+        }
+
+        function generateStory(data, selected) {
+          const genre = selected.genre?.length
+            ? randomItem(selected.genre)
+            : randomItem(data.genre);
+          const tone = selected.tone?.length
+            ? randomItem(selected.tone)
+            : randomItem(data.tone);
+          const plot = selected.plot?.length
+            ? randomItem(selected.plot)
+            : randomItem(data.plot);
+          const chars = selected.characters?.length
+            ? randomItem(selected.characters)
+            : randomItem(data.characters);
+          const protagonist = selected.protagonist?.length
+            ? randomItem(selected.protagonist)
+            : randomItem(data.protagonist);
+          const age = selected.protagonistAge?.length
+            ? randomItem(selected.protagonistAge)
+            : randomItem(data.protagonistAge);
+          const setting = selected.setting?.length
+            ? randomItem(selected.setting)
+            : randomItem(data.setting);
+
+          const templates = [
+            `A ${tone} ${genre} story about ${plot.toLowerCase()} featuring ${chars} character${chars !== "1" ? "s" : ""}, centered on a ${age} year old ${protagonist.toLowerCase()} in ${setting.toLowerCase()} setting`,
+            `${genre} tale with ${tone.toLowerCase()} tones following ${plot.toLowerCase()} through the eyes of a ${age} year old ${protagonist.toLowerCase()} in ${setting.toLowerCase()}, involving ${chars} main character${chars !== "1" ? "s" : ""}`,
+            `In ${setting.toLowerCase()}, a ${age} year old ${protagonist.toLowerCase()} faces ${plot.toLowerCase()} in this ${tone.toLowerCase()} ${genre} story with ${chars} central character${chars !== "1" ? "s" : ""}`,
+            `A ${genre} narrative set in ${setting.toLowerCase()} where ${plot.toLowerCase()} unfolds for a ${age} year old ${protagonist.toLowerCase()} and ${chars} other${chars !== "1" ? "s" : " character"}, delivering ${tone.toLowerCase()} emotions`,
+          ];
+          return randomItem(templates);
+        }
+
+        // ====== DISPLAY PROMPT ======
+        function displayPrompt(prompt) {
+          promptText.style.opacity = "0";
+          setTimeout(() => {
+            promptText.textContent = `"${prompt}"`;
+            promptText.style.opacity = "1";
+          }, 300);
+
+          // Visual tags
+          const words = prompt.split(" ").slice(0, 10);
+          const tags = [...new Set(words.map((w) => w.replace(/[.,!?]/g, "")))]
+            .filter((w) => w.length > 2)
+            .slice(0, 4);
+          const tagColors = ["#ffc72e", "#ff6b00", "#58ebfe", "#4ff3a6"];
+          promptVisual.innerHTML = `
+            <div class="visual-content">
+              <div class="visual-title">Visual Elements</div>
+              <div class="visual-description">Key themes to focus on</div>
+              <div class="visual-tags">
+                ${tags.length ? tags.map((t, i) => `<span class="visual-tag" style="border-color:${tagColors[i % 4]}40;color:${tagColors[i % 4]};">${t}</span>`).join("") : '<span class="visual-tag">✨</span>'}
+              </div>
+            </div>
+          `;
+
+          // Complexity
+          const complexities = [
+            "Simple",
+            "Detailed",
+            "Complex",
+            "Rich",
+            "Intricate",
+          ];
+          currentComplexityEl.textContent = randomItem(complexities);
+        }
+
+        // ====== LOAD OPTIONS ======
+        function loadOptions() {
+          const data = categoryData[currentCategory];
+          let html = '<div class="options-grid">';
+
+          for (const [cat, items] of Object.entries(data)) {
+            html += `
+              <div class="option-group">
+                <h4><i class="fas fa-${getCategoryIconKey(cat)}"></i> ${formatCategoryName(cat)}</h4>
+                <div class="options-list">
+                  ${items
+                    .map(
+                      (item) => `
+                    <div class="option-item" data-category="${cat}" data-value="${item}">
+                      <div class="option-checkbox"></div>
+                      <span class="option-text">${item}</span>
+                    </div>
+                  `,
+                    )
+                    .join("")}
+                </div>
+              </div>
+            `;
+          }
+
+          html += "</div>";
+          optionsContainer.innerHTML = html;
+
+          // Restore selections
+          optionsContainer.querySelectorAll(".option-item").forEach((el) => {
+            const cat = el.dataset.category;
+            const val = el.dataset.value;
+            const key = `${currentCategory}-${cat}-${val}`;
+            if (selectedOptions[currentCategory].has(key)) {
+              el.classList.add("active");
+            }
+
+            el.addEventListener("click", function () {
+              const c = this.dataset.category;
+              const v = this.dataset.value;
+              const k = `${currentCategory}-${c}-${v}`;
+              if (selectedOptions[currentCategory].has(k)) {
+                selectedOptions[currentCategory].delete(k);
+                this.classList.remove("active");
+              } else {
+                selectedOptions[currentCategory].add(k);
+                this.classList.add("active");
+              }
+              generatePrompt();
+            });
+          });
+
+          // Update badge
+          const label = capitalize(currentCategory);
+          categoryLabel.textContent = label;
+          currentCategoryEl.textContent = label;
+        }
+
+        // ====== RANDOM ALL ======
+        function randomAll() {
+          const data = categoryData[currentCategory];
+          selectedOptions[currentCategory].clear();
+
+          for (const [cat, items] of Object.entries(data)) {
+            const count = Math.floor(Math.random() * 2) + 1;
+            const shuffled = [...items].sort(() => 0.5 - Math.random());
+            const chosen = shuffled.slice(0, count);
+            chosen.forEach((item) => {
+              selectedOptions[currentCategory].add(
+                `${currentCategory}-${cat}-${item}`,
+              );
+            });
+          }
+
+          loadOptions();
+          generatePrompt();
+        }
+
+        // ====== SAVE PROMPT ======
+        function savePrompt() {
+          if (!currentPrompt) {
+            showToast("Generate a prompt first!");
+            return;
+          }
+
+          const prompt = {
+            id: Date.now(),
+            text: currentPrompt,
+            category: currentCategory,
+            options: Array.from(selectedOptions[currentCategory]),
+            createdAt: new Date().toISOString(),
+          };
+
+          savedPrompts.unshift(prompt);
+          if (savedPrompts.length > 50)
+            savedPrompts = savedPrompts.slice(0, 50);
+          localStorage.setItem(
+            "artisanHubSavedPrompts",
+            JSON.stringify(savedPrompts),
+          );
+          renderSaved();
+          showToast("Prompt saved!");
+        }
+
+        // ====== DELETE SAVED ======
+        function deleteSaved(id, e) {
+          e.stopPropagation();
+          savedPrompts = savedPrompts.filter((p) => p.id !== id);
+          localStorage.setItem(
+            "artisanHubSavedPrompts",
+            JSON.stringify(savedPrompts),
+          );
+          renderSaved();
+          showToast("Prompt deleted");
+        }
+
+        // ====== LOAD SAVED ======
+        function loadSaved(id) {
+          const prompt = savedPrompts.find((p) => p.id === id);
+          if (!prompt) return;
+
+          currentCategory = prompt.category;
+          selectedOptions[currentCategory] = new Set(prompt.options || []);
+
+          categoryCards.forEach((c) => c.classList.remove("active"));
+          document
+            .querySelector(`.category-card[data-category="${prompt.category}"]`)
+            ?.classList.add("active");
+
+          loadOptions();
+          currentPrompt = prompt.text;
+          displayPrompt(prompt.text);
+          showToast("Prompt loaded!");
+        }
+
+        // ====== RENDER SAVED ======
+        function renderSaved() {
+          const recent = savedPrompts.slice(0, 8);
+          if (savedCountEl)
+            savedCountEl.textContent = `(${savedPrompts.length})`;
+
+          if (recent.length === 0) {
+            savedContainer.innerHTML = `
+              <div class="empty-state-small">
+                <i class="fas fa-lightbulb"></i>
+                <p>No prompts saved yet</p>
+              </div>
+            `;
+            return;
+          }
+
+          savedContainer.innerHTML = recent
+            .map(
+              (p) => `
+            <div class="saved-prompt-preview" data-id="${p.id}">
+              <span class="prompt-text">${p.text}</span>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.1rem;flex-shrink:0;">
+                <div class="saved-prompt-meta">
+                  <span>${capitalize(p.category)}</span>
+                  <span>${new Date(p.createdAt).toLocaleDateString()}</span>
+                </div>
+                <button class="delete-prompt-btn" data-id="${p.id}" title="Delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+
+          savedContainer
+            .querySelectorAll(".saved-prompt-preview")
+            .forEach((el) => {
+              const id = parseInt(el.dataset.id);
+              el.addEventListener("click", function (e) {
+                if (e.target.closest(".delete-prompt-btn")) return;
+                loadSaved(id);
+              });
+              const delBtn = el.querySelector(".delete-prompt-btn");
+              if (delBtn) {
+                delBtn.addEventListener("click", (e) => deleteSaved(id, e));
+              }
+            });
+        }
+
+        // ====== COPY PROMPT ======
+        function copyPrompt() {
+          if (!currentPrompt) {
+            showToast("Generate a prompt first!");
+            return;
+          }
+          copyToClipboard(currentPrompt);
+          showToast("Copied to clipboard!");
+        }
+
+        // ====== CATEGORY SWITCHING ======
+        categoryCards.forEach((card) => {
+          card.addEventListener("click", function () {
+            categoryCards.forEach((c) => c.classList.remove("active"));
+            this.classList.add("active");
+            currentCategory = this.dataset.category;
+            loadOptions();
+            generatePrompt();
+          });
+        });
+
+        // ====== EVENT LISTENERS ======
+        generateBtn.addEventListener("click", generatePrompt);
+        randomBtn.addEventListener("click", randomAll);
+        saveBtn.addEventListener("click", savePrompt);
+        copyBtn.addEventListener("click", copyPrompt);
+        refreshBtn.addEventListener("click", generatePrompt);
+
+        // Sparkle effect
+        generateBtn.addEventListener("click", function (e) {
+          const sparkle = document.createElement("div");
+          sparkle.className = "sparkle";
+          const rect = this.getBoundingClientRect();
+          sparkle.style.left = e.clientX - rect.left + "px";
+          sparkle.style.top = e.clientY - rect.top + "px";
+          this.appendChild(sparkle);
+          setTimeout(() => sparkle.remove(), 800);
+        });
+
+        // ====== AUTH ======
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
           }
         }, 300);
+
+        // ====== INIT ======
+        loadOptions();
+        generatePrompt();
+        renderSaved();
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <!-- Page Scripts -->
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/tools/prompt-generator.js"></script>
   </body>
 </html>

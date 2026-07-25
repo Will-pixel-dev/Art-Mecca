@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Art Mecca — Ultimate Title Screen</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* ================================================================
+           ART MECCA — ULTIMATE TITLE SCREEN FINAL
+           Full viewport text · 180×120 buttons · Glass panel · Subtle glow
+           ================================================================ */
+
+      /* ============================================================
+           THEME VARIABLES
+           ============================================================ */
+      :root {
+        --bg-body: #0a0508;
+        --bg-glass: rgba(255, 255, 255, 0.04);
+        --bg-glass-hover: rgba(255, 255, 255, 0.08);
+        --bg-glass-border: rgba(255, 255, 255, 0.06);
+
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.6);
+        --shadow-glass-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        --border-color: rgba(255, 255, 255, 0.06);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-glass: rgba(255, 255, 255, 0.5);
+        --bg-glass-hover: rgba(255, 255, 255, 0.7);
+        --bg-glass-border: rgba(0, 0, 0, 0.06);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-glass-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      /* ============================================================
+           BASE
+           ============================================================ */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-condensed);
+        background: var(--bg-body);
+        color: var(--text-primary);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+        transition:
+          background var(--transition),
+          color var(--transition);
+        position: relative;
+      }
+
+      /* ============================================================
+           SCANLINES
+           ============================================================ */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 3px
+        );
+        pointer-events: none;
+        z-index: 9996;
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* ============================================================
+           VIGNETTE
+           ============================================================ */
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 30%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+           GRID LINES
+           ============================================================ */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.015) 1px,
+            transparent 1px
+          );
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 9997;
+      }
+
+      /* ============================================================
+           PARTICLES — 150+
+           ============================================================ */
+      .particles-container {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        animation: floatParticle linear infinite;
+        opacity: 0.25;
+      }
+
+      @keyframes floatParticle {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.4;
+        }
+        90% {
+          opacity: 0.4;
+        }
+        100% {
+          transform: translateY(-10vh) translateX(50px) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* ============================================================
+           THEME TOGGLE
+           ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-glass);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-glass);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-glass-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-glass-hover);
+        border-color: var(--neon-cyan);
+      }
+
+      .toggle-icon {
+        font-size: 1rem;
+      }
+      .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+           TITLE SCREEN
+           ============================================================ */
+      .title-screen {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        overflow: hidden;
+        user-select: none;
+      }
+
+      /* ============================================================
+           BACKGROUND GLITCH TEXT — FITS IN BOX
+           15px top/bottom, 7px left/right
+           ============================================================ */
+      .bg-glitch-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        padding: 15px 7px;
+        /* 15px top/bottom, 7px left/right */
+      }
+
+      .bg-glitch-text .glitch-layer {
+        position: absolute;
+        display: flex;
+        gap: 4vw;
+        align-items: center;
+        justify-content: center;
+        font-size: 0;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-family: var(--font-display);
+        transform: scaleY(2.2);
+        transform-origin: center;
+        white-space: nowrap;
+        padding: 0 5px;
+        transition:
+          color 1.2s ease,
+          text-shadow 1.2s ease,
+          opacity 1.2s ease;
+        width: 100%;
+        height: 100%;
+      }
+
+      .bg-glitch-text .glitch-layer .word {
+        display: inline-block;
+        transition: inherit;
+        text-shadow: none;
+        font-weight: 900;
+        font-family: var(--font-display);
+        transform: scaleY(2.2);
+        transform-origin: center;
+        font-size: 22vw;
+        letter-spacing: 3vw;
+        line-height: 1;
+      }
+
+      .bg-glitch-text .glitch-layer .word-spacer {
+        display: inline-block;
+        width: 4vw;
+      }
+
+      /* Main layer — extra tall */
+      .bg-glitch-text .glitch-layer.main-layer .word {
+        transform: scaleY(2.5);
+        letter-spacing: 4vw;
+        font-size: 22vw;
+      }
+
+      /* Dynamic sizing to fill the box */
+      @media (min-aspect-ratio: 16/9) {
+        .bg-glitch-text .glitch-layer .word {
+          font-size: 22vh;
+          letter-spacing: 3vh;
+        }
+        .bg-glitch-text .glitch-layer .word-spacer {
+          width: 4vh;
+        }
+      }
+
+      @media (max-aspect-ratio: 12/9) {
+        .bg-glitch-text .glitch-layer .word {
+          font-size: 22vw;
+          letter-spacing: 3vw;
+        }
+        .bg-glitch-text .glitch-layer .word-spacer {
+          width: 4vw;
+        }
+      }
+
+      /* ============================================================
+           GLITCH ANIMATIONS — SUBTLE GLOW
+           ============================================================ */
+      .bg-glitch-text .glitch-layer {
+        animation: glitchBackground 8s ease-in-out infinite;
+      }
+
+      @keyframes glitchBackground {
+        0%,
+        100% {
+          transform: translateX(0) scaleY(2.2) scaleX(1) skewX(0deg);
+          opacity: 1;
+        }
+        10% {
+          transform: translateX(-12px) scaleY(2.25) scaleX(1.015) skewX(2deg);
+          opacity: 0.85;
+        }
+        20% {
+          transform: translateX(12px) scaleY(2.15) scaleX(0.985) skewX(-2deg);
+          opacity: 1;
+        }
+        30% {
+          transform: translateX(-6px) scaleY(2.22) scaleX(1.01) skewX(1.2deg);
+          opacity: 0.9;
+        }
+        40% {
+          transform: translateX(6px) scaleY(2.18) scaleX(0.99) skewX(-1.2deg);
+          opacity: 1;
+        }
+        50% {
+          transform: translateX(-16px) scaleY(2.3) scaleX(1.02) skewX(3deg);
+          opacity: 0.75;
+        }
+        60% {
+          transform: translateX(16px) scaleY(2.1) scaleX(0.98) skewX(-3deg);
+          opacity: 1;
+        }
+        70% {
+          transform: translateX(-8px) scaleY(2.22) scaleX(1.012) skewX(1.5deg);
+          opacity: 0.92;
+        }
+        80% {
+          transform: translateX(8px) scaleY(2.18) scaleX(0.988) skewX(-1.5deg);
+          opacity: 1;
+        }
+        90% {
+          transform: translateX(-3px) scaleY(2.2) scaleX(1.004) skewX(0.6deg);
+          opacity: 0.96;
+        }
+      }
+
+      .bg-glitch-text .glitch-layer.main-layer {
+        animation: glitchMain 10s ease-in-out infinite;
+      }
+
+      @keyframes glitchMain {
+        0%,
+        100% {
+          transform: translateX(0) scaleY(2.5) scaleX(1) skewX(0deg);
+          opacity: 0.8;
+        }
+        15% {
+          transform: translateX(-18px) scaleY(2.55) scaleX(1.02) skewX(2.5deg);
+          opacity: 0.6;
+        }
+        30% {
+          transform: translateX(18px) scaleY(2.45) scaleX(0.98) skewX(-2.5deg);
+          opacity: 0.8;
+        }
+        45% {
+          transform: translateX(-10px) scaleY(2.52) scaleX(1.012) skewX(1.5deg);
+          opacity: 0.7;
+        }
+        60% {
+          transform: translateX(10px) scaleY(2.48) scaleX(0.988) skewX(-1.5deg);
+          opacity: 0.8;
+        }
+        75% {
+          transform: translateX(-22px) scaleY(2.6) scaleX(1.025) skewX(4deg);
+          opacity: 0.55;
+        }
+        90% {
+          transform: translateX(22px) scaleY(2.4) scaleX(0.975) skewX(-4deg);
+          opacity: 0.8;
+        }
+      }
+
+      /* ============================================================
+           GLOW — SUBTLE (LESS GLOW)
+           ============================================================ */
+      .glitch-layer .word {
+        text-shadow: none !important;
+      }
+
+      .glitch-layer.main-layer .word {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.02) !important;
+      }
+
+      /* ============================================================
+           BOTTOM CONTENT — GLASS PANEL
+           ============================================================ */
+      .bottom-content {
+        position: fixed;
+        bottom: 40px;
+        left: 40px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        max-width: 500px;
+        pointer-events: none;
+      }
+
+      .bottom-content * {
+        pointer-events: auto;
+      }
+
+      .glass-panel {
+        background: var(--bg-glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 24px 28px;
+        box-shadow: var(--shadow-glass);
+        transition: all var(--transition);
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glass-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, #b3001b, #ff00ea, #58ebfe);
+        opacity: 0.15;
+      }
+
+      .glass-panel:hover {
+        background: var(--bg-glass-hover);
+        box-shadow: var(--shadow-glass-hover);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .panel-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 4px;
+      }
+
+      .panel-logo .logo-icon {
+        font-size: 1.6rem;
+        background: linear-gradient(135deg, #b3001b, #ff00ea);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 20px rgba(255, 0, 234, 0.05));
+      }
+
+      .panel-logo .logo-text {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #b3001b, #ff00ea);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 20px rgba(255, 0, 234, 0.05));
+      }
+
+      .panel-tagline {
+        font-family: var(--font-tag);
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+        margin-bottom: 2px;
+        text-shadow: 0 0 20px rgba(255, 0, 234, 0.02);
+      }
+
+      .panel-desc {
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 14px;
+        max-width: 90%;
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .panel-actions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      /* ============================================================
+           BUTTONS — 180px WIDE × 120px HEIGHT
+           ============================================================ */
+      .btn-cyber {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 100px;
+        height: 30px;
+        padding: 0 24px;
+        border: none;
+        border-radius: 4px;
+        font-family: var(--font-condensed);
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        flex-direction: column;
+        /* Stack icon + text vertically */
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 0 20px rgba(255, 0, 234, 0.02);
+      }
+
+      .btn-cyber .btn-icon {
+        font-size: 1.4rem;
+        transition: transform 0.3s ease;
+      }
+
+      .btn-cyber .btn-text {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        margin-top: 2px;
+      }
+
+      /* Primary — gradient border with subtle glow */
+      .btn-cyber-primary {
+        background: linear-gradient(
+          135deg,
+          rgba(179, 0, 27, 0.08),
+          rgba(255, 0, 234, 0.08)
+        );
+        border: 1px solid rgba(255, 0, 234, 0.15);
+        box-shadow:
+          0 0 20px rgba(255, 0, 234, 0.02),
+          inset 0 0 20px rgba(255, 0, 234, 0.01);
+        color: #fff;
+      }
+
+      .btn-cyber-primary::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 4px;
+        background: linear-gradient(135deg, #b3001b, #ff00ea);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .btn-cyber-primary:hover::before {
+        opacity: 1;
+      }
+
+      .btn-cyber-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          0 0 40px rgba(255, 0, 234, 0.08),
+          inset 0 0 30px rgba(255, 0, 234, 0.03);
+        border-color: transparent;
+        color: #fff;
+      }
+
+      .btn-cyber-primary:hover .btn-icon {
+        transform: translateY(-2px) scale(1.05);
+      }
+
+      /* Secondary — cyan ghost */
+      .btn-cyber-secondary {
+        background: rgba(88, 235, 254, 0.03);
+        border: 1px solid rgba(88, 235, 254, 0.1);
+        box-shadow:
+          0 0 20px rgba(88, 235, 254, 0.02),
+          inset 0 0 20px rgba(88, 235, 254, 0.01);
+        color: var(--text-secondary);
+      }
+
+      .btn-cyber-secondary::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 4px;
+        background: linear-gradient(135deg, #58ebfe, #0088ff);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .btn-cyber-secondary:hover::before {
+        opacity: 1;
+      }
+
+      .btn-cyber-secondary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          0 0 40px rgba(88, 235, 254, 0.06),
+          inset 0 0 30px rgba(88, 235, 254, 0.03);
+        border-color: transparent;
+        color: #fff;
+      }
+
+      .btn-cyber-secondary:hover .btn-icon {
+        transform: translateY(-2px) scale(1.05);
+      }
+
+      /* ============================================================
+           CONTINUE GAME — RIGHT SIDE
+           ============================================================ */
+      .continue-game {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        z-index: 10;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+      }
+
+      .continue-game * {
+        pointer-events: auto;
+      }
+
+      .continue-panel {
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
+        transition: all var(--transition);
+        text-align: right;
+        min-width: auto;
+        position: relative;
+        overflow: visible;
+      }
+
+      .continue-panel:hover {
+        background: transparent;
+        box-shadow: none;
+        border: none;
+      }
+
+      .continue-label {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: block;
+        opacity: 0.4;
+      }
+
+      .continue-action {
+        font-family: var(--font-condensed);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: all var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: flex-end;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .continue-action:hover {
+        color: var(--neon-cyan);
+        border-bottom-color: var(--neon-cyan);
+        text-shadow: 0 0 30px rgba(88, 235, 254, 0.05);
+      }
+
+      .continue-action .arrow {
+        transition: transform var(--transition);
+      }
+
+      .continue-action:hover .arrow {
+        transform: translateX(6px);
+      }
+
+      .continue-status {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--neon-green);
+        letter-spacing: 1px;
+        animation: statusPulse 2s ease-in-out infinite;
+        opacity: 0.4;
+      }
+
+      @keyframes statusPulse {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* ============================================================
+           GLITCH FLASH OVERLAY
+           ============================================================ */
+      .glitch-flash {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        background: #ff00ea;
+        opacity: 0;
+        transition: opacity 0.05s ease;
+      }
+
+      .glitch-flash.active {
+        animation: glitchFlash 0.3s ease 2;
+      }
+
+      @keyframes glitchFlash {
+        0% {
+          opacity: 0.12;
+          transform: translate(0, 0);
+        }
+        25% {
+          opacity: 0.03;
+          transform: translate(-8px, 4px);
+        }
+        50% {
+          opacity: 0.15;
+          transform: translate(8px, -4px);
+        }
+        75% {
+          opacity: 0.03;
+          transform: translate(-4px, 8px);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(0, 0);
+        }
+      }
+
+      /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+      @media (max-width: 1024px) {
+        .bg-glitch-text .glitch-layer .word {
+          font-size: 18vh;
+          letter-spacing: 2.5vh;
+        }
+        .bg-glitch-text .glitch-layer .word-spacer {
+          width: 3.5vh;
+        }
+        .btn-cyber {
+          width: 150px;
+          height: 100px;
+          font-size: 0.75rem;
+        }
+        .btn-cyber .btn-icon {
+          font-size: 1.2rem;
+        }
+        .bottom-content {
+          left: 30px;
+        }
+        .continue-game {
+          right: 30px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .bg-glitch-text .glitch-layer .word {
+          font-size: 14vh;
+          letter-spacing: 2vh;
+        }
+        .bg-glitch-text .glitch-layer .word-spacer {
+          width: 2.5vh;
+        }
+        .btn-cyber {
+          width: 120px;
+          height: 80px;
+          font-size: 0.65rem;
+        }
+        .btn-cyber .btn-icon {
+          font-size: 1rem;
+        }
+        .bottom-content {
+          bottom: 30px;
+          left: 20px;
+          max-width: 70%;
+        }
+        .continue-game {
+          bottom: 30px;
+          right: 20px;
+        }
+        .glass-panel {
+          padding: 18px 20px;
+        }
+        .panel-logo .logo-text {
+          font-size: 1.1rem;
+          letter-spacing: 2px;
+        }
+        .panel-tagline {
+          font-size: 0.95rem;
+        }
+        .panel-desc {
+          font-size: 0.75rem;
+          display: none;
+        }
+        .continue-action {
+          font-size: 0.85rem;
+        }
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+        .theme-toggle {
+          padding: 8px 14px;
+          font-size: 0.65rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .bg-glitch-text .glitch-layer .word {
+          font-size: 10vh;
+          letter-spacing: 1.5vh;
+        }
+        .bg-glitch-text .glitch-layer .word-spacer {
+          width: 2vh;
+        }
+        .bg-glitch-text {
+          padding: 10px 5px;
+        }
+        .btn-cyber {
+          width: 100px;
+          height: 70px;
+          font-size: 0.55rem;
+          padding: 0 12px;
+        }
+        .btn-cyber .btn-icon {
+          font-size: 0.85rem;
+        }
+        .btn-cyber .btn-text {
+          font-size: 0.55rem;
+        }
+        .bottom-content {
+          bottom: 20px;
+          left: 12px;
+          max-width: 60%;
+        }
+        .continue-game {
+          bottom: 20px;
+          right: 12px;
+        }
+        .glass-panel {
+          padding: 14px 16px;
+        }
+        .panel-logo .logo-icon {
+          font-size: 1.2rem;
+        }
+        .panel-logo .logo-text {
+          font-size: 0.9rem;
+          letter-spacing: 1px;
+        }
+        .panel-tagline {
+          font-size: 0.8rem;
+        }
+        .panel-desc {
+          display: none;
+        }
+        .continue-label {
+          font-size: 0.4rem;
+        }
+        .continue-action {
+          font-size: 0.7rem;
+        }
+        .continue-status {
+          font-size: 0.4rem;
+        }
+        .theme-toggle-wrapper {
+          bottom: 12px;
+          right: 12px;
+        }
+        .theme-toggle {
+          padding: 6px 12px;
+          font-size: 0.55rem;
+        }
+        .toggle-label {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Vignette -->
+    <div class="vignette"></div>
+
+    <!-- Glitch Flash -->
+    <div class="glitch-flash" id="glitchFlash"></div>
+
+    <!-- ====== PARTICLES — 150+ ====== -->
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== TITLE SCREEN ====== -->
+    <div class="title-screen">
+      <!-- ====== BACKGROUND GLITCH TEXT — BOX: 15px top/bottom, 7px sides ====== -->
+      <div class="bg-glitch-text" id="glitchTextContainer">
+        <!-- Layer 1 — Main (biggest, most visible) -->
+        <div class="glitch-layer main-layer" id="layer1">
+          <span class="word">ART</span>
+          <span class="word-spacer"></span>
+          <span class="word">MECCA</span>
+        </div>
+
+        <!-- Layer 2 — Cyan -->
+        <div class="glitch-layer" id="layer2">
+          <span class="word">ART</span>
+          <span class="word-spacer"></span>
+          <span class="word">MECCA</span>
+        </div>
+
+        <!-- Layer 3 — Magenta -->
+        <div class="glitch-layer" id="layer3">
+          <span class="word">ART</span>
+          <span class="word-spacer"></span>
+          <span class="word">MECCA</span>
+        </div>
+
+        <!-- Layer 4 — Gold -->
+        <div class="glitch-layer" id="layer4">
+          <span class="word">ART</span>
+          <span class="word-spacer"></span>
+          <span class="word">MECCA</span>
+        </div>
+
+        <!-- Layer 5 — Rainbow Gradient -->
+        <div class="glitch-layer" id="layer5">
+          <span class="word">ART</span>
+          <span class="word-spacer"></span>
+          <span class="word">MECCA</span>
+        </div>
+
+        <!-- Layer 6 — Pink -->
+        <div class="glitch-layer" id="layer6">
+          <span class="word">ART</span>
+          <span class="word-spacer"></span>
+          <span class="word">MECCA</span>
+        </div>
+      </div>
+
+      <!-- ====== BOTTOM CONTENT — GLASS PANEL ====== -->
+      <div class="bottom-content">
+        <div class="glass-panel">
+          <div class="panel-logo">
+            <span class="logo-icon">✦</span>
+            <span class="logo-text" id="logoText">ART MECCA</span>
+          </div>
+          <div class="panel-tagline" id="tagline">✦ where artists gather ✦</div>
+          <p class="panel-desc" id="panelDesc">
+            A cyberpunk community for digital artists. Create, connect, and
+            level up your craft.
+          </p>
+          <div class="panel-actions">
+            <a href="#" class="btn-cyber btn-cyber-primary" id="joinBtn">
+              <span class="btn-icon">▶</span>
+              <span class="btn-text">Join</span>
+            </a>
+            <a href="#" class="btn-cyber btn-cyber-secondary" id="exploreBtn">
+              <span class="btn-icon">◆</span>
+              <span class="btn-text">Explore</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== CONTINUE GAME — RIGHT ====== -->
+      <div class="continue-game">
+        <div class="continue-panel" id="continuePanel">
+          <span class="continue-label" id="continueLabel">✦ continue game</span>
+          <a href="#" class="continue-action" id="continueAction">
+            Log In <span class="arrow">→</span>
+          </a>
+          <span class="continue-status" id="continueStatus">● ONLINE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script>
+      // ============================================================
+      // 1. CREATE 150+ PARTICLES
+      // ============================================================
+      const container = document.getElementById("particlesContainer");
+      const colors = [
+        "#ff00ea",
+        "#58ebfe",
+        "#ffc72e",
+        "#4ff3a6",
+        "#ff66f2",
+        "#0088ff",
+        "#ad03fc",
+        "#ff0040",
+        "#b3001b",
+        "#e06c00",
+        "#f5c105",
+        "#00f0a0",
+        "#006b25",
+        "#00ffd9",
+        "#0006b3",
+        "#5900b3",
+        "#7a00b3",
+        "#e000b0",
+      ];
+      const particleCount = 150;
+
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        const size = Math.random() * 4 + 1;
+        p.style.width = size + "px";
+        p.style.height = size + "px";
+        p.style.left = Math.random() * 100 + "%";
+        p.style.animationDuration = Math.random() * 20 + 10 + "s";
+        p.style.animationDelay = Math.random() * 15 + "s";
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.boxShadow = `0 0 ${size * 3}px ${p.style.background}`;
+        p.style.opacity = Math.random() * 0.3 + 0.05;
+        container.appendChild(p);
+      }
+
+      // ============================================================
+      // 2. THEME TOGGLE
+      // ============================================================
+      const toggle = document.getElementById("themeToggle");
+      const icon = toggle.querySelector(".toggle-icon");
+      const label = toggle.querySelector(".toggle-label");
+
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      updateToggleUI(savedTheme);
+
+      toggle.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        updateToggleUI(next);
+        playSound("click");
+        triggerGlitchFlash();
+      });
+
+      function updateToggleUI(theme) {
+        if (theme === "dark") {
+          icon.textContent = "🌙";
+          label.textContent = "Dark";
+        } else {
+          icon.textContent = "☀️";
+          label.textContent = "Light";
+        }
+      }
+
+      // ============================================================
+      // 3. COLOR CYCLING ENGINE
+      // ============================================================
+      const colorPalettes = [
+        { c1: "#b3001b", c2: "#ff00ea" },
+        { c1: "#e06c00", c2: "#f5c105" },
+        { c1: "#00f0a0", c2: "#006b25" },
+        { c1: "#00ffd9", c2: "#0006b3" },
+        { c1: "#5900b3", c2: "#7a00b3" },
+        { c1: "#e000b0", c2: "#ff00ea" },
+      ];
+
+      let currentPalette = 0;
+      const cycleDuration = 12000;
+
+      function applyColors(palette) {
+        const { c1, c2 } = palette;
+
+        const layers = document.querySelectorAll(
+          ".glitch-layer:not(.main-layer)",
+        );
+        const mainLayer = document.querySelector(".glitch-layer.main-layer");
+
+        if (mainLayer) {
+          mainLayer.style.color = c1;
+          mainLayer.style.textShadow = `0 0 30px ${c1}33, 0 0 60px ${c1}11`;
+          mainLayer.style.opacity = "0.6";
+          mainLayer.querySelectorAll(".word").forEach((word) => {
+            word.style.color = c1;
+            word.style.textShadow = `0 0 30px ${c1}33, 0 0 60px ${c1}11`;
+          });
+        }
+
+        layers.forEach((layer, index) => {
+          const opacity = 0.03 + index * 0.005;
+          layer.style.color = c2;
+          layer.style.textShadow = `0 0 20px ${c2}22`;
+          layer.style.opacity = opacity;
+          layer.querySelectorAll(".word").forEach((word) => {
+            word.style.color = c2;
+            word.style.textShadow = `0 0 20px ${c2}22`;
+          });
+        });
+
+        // Update logo
+        const logoText = document.getElementById("logoText");
+        if (logoText) {
+          logoText.style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
+          logoText.style.webkitBackgroundClip = "text";
+          logoText.style.webkitTextFillColor = "transparent";
+          logoText.style.backgroundClip = "text";
+          logoText.style.filter = `drop-shadow(0 0 20px ${c1}22)`;
+        }
+
+        // Update tagline
+        const tagline = document.getElementById("tagline");
+        if (tagline) {
+          tagline.style.color = c2;
+          tagline.style.textShadow = `0 0 20px ${c2}22`;
+        }
+
+        // Update continue action
+        const continueAction = document.getElementById("continueAction");
+        if (continueAction) {
+          continueAction.style.color = c2;
+          continueAction.style.textShadow = `0 0 20px ${c2}22`;
+          continueAction.style.borderBottomColor = `${c2}22`;
+        }
+
+        // Update continue status
+        const status = document.getElementById("continueStatus");
+        if (status) {
+          status.style.color = c2;
+        }
+
+        // Update join button
+        const joinBtn = document.getElementById("joinBtn");
+        if (joinBtn) {
+          joinBtn.style.background = `linear-gradient(135deg, ${c1}11, ${c2}11)`;
+          joinBtn.style.borderColor = `${c1}44`;
+          joinBtn.style.boxShadow = `0 0 20px ${c1}11, inset 0 0 20px ${c1}05`;
+        }
+
+        // Update explore button
+        const exploreBtn = document.getElementById("exploreBtn");
+        if (exploreBtn) {
+          exploreBtn.style.background = `linear-gradient(135deg, ${c2}08, ${c1}08)`;
+          exploreBtn.style.borderColor = `${c2}33`;
+          exploreBtn.style.boxShadow = `0 0 20px ${c2}08, inset 0 0 20px ${c2}05`;
+        }
+      }
+
+      function cycleColors() {
+        const palette = colorPalettes[currentPalette];
+        applyColors(palette);
+        currentPalette = (currentPalette + 1) % colorPalettes.length;
+      }
+
+      setTimeout(() => {
+        cycleColors();
+      }, 200);
+      setInterval(cycleColors, cycleDuration);
+
+      // ============================================================
+      // 4. GLITCH FLASH
+      // ============================================================
+      function triggerGlitchFlash() {
+        const flash = document.getElementById("glitchFlash");
+        flash.classList.remove("active");
+        void flash.offsetWidth;
+        flash.classList.add("active");
+        setTimeout(() => {
+          flash.classList.remove("active");
+        }, 400);
+      }
+
+      // ============================================================
+      // 5. SOUND EFFECTS
+      // ============================================================
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      let audioCtx = null;
+
+      function playSound(type) {
+        try {
+          if (!audioCtx) audioCtx = new AudioContext();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          if (type === "hover") {
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(
+              1200,
+              audioCtx.currentTime + 0.05,
+            );
+            gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(
+              0.001,
+              audioCtx.currentTime + 0.05,
+            );
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.05);
+          } else if (type === "click") {
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(
+              400,
+              audioCtx.currentTime + 0.08,
+            );
+            gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(
+              0.001,
+              audioCtx.currentTime + 0.08,
+            );
+            osc.type = "square";
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.08);
+          } else if (type === "glitch") {
+            osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(
+              800,
+              audioCtx.currentTime + 0.1,
+            );
+            gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(
+              0.001,
+              audioCtx.currentTime + 0.1,
+            );
+            osc.type = "sawtooth";
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.1);
+          }
+        } catch (e) {
+          /* Silently fail */
+        }
+      }
+
+      // ============================================================
+      // 6. SOUND EVENT BINDING
+      // ============================================================
+      document
+        .querySelectorAll(".btn-cyber, .continue-action, .theme-toggle")
+        .forEach((el) => {
+          el.addEventListener("mouseenter", () => playSound("hover"));
+          el.addEventListener("click", () => {
+            playSound("click");
+            triggerGlitchFlash();
+          });
+        });
+
+      // ============================================================
+      // 7. RANDOM BACKGROUND GLITCH
+      // ============================================================
+      setInterval(() => {
+        if (Math.random() < 0.1) {
+          triggerGlitchFlash();
+          playSound("glitch");
+
+          const layers = document.querySelectorAll(".glitch-layer");
+          layers.forEach((layer) => {
+            if (Math.random() < 0.3) {
+              const words = layer.querySelectorAll(".word");
+              words.forEach((word) => {
+                const original = word.textContent;
+                const glitched = original
+                  .split("")
+                  .map((char) => {
+                    if (Math.random() > 0.5) {
+                      const chars = "!@#$%^&*()_+-=[]{}|;:,.<>?/\\'\"";
+                      return chars[Math.floor(Math.random() * chars.length)];
+                    }
+                    return char;
+                  })
+                  .join("");
+                word.textContent = glitched;
+                setTimeout(
+                  () => {
+                    word.textContent = original;
+                  },
+                  200 + Math.random() * 300,
+                );
+              });
+            }
+          });
+        }
+      }, 4000);
+
+      // ============================================================
+      // 8. KEYBOARD SHORTCUTS
+      // ============================================================
+      document.addEventListener("keydown", (e) => {
+        const key = e.key.toLowerCase();
+
+        if (key === "g") {
+          triggerGlitchFlash();
+          playSound("glitch");
+        }
+        if (key === "j") {
+          document.querySelector(".btn-cyber-primary")?.click();
+        }
+        if (key === "e") {
+          document.querySelector(".btn-cyber-secondary")?.click();
+        }
+        if (key === "c") {
+          document.querySelector(".continue-action")?.click();
+        }
+      });
+
+      // ============================================================
+      // 9. CONSOLE EASTER EGG
+      // ============================================================
+      console.log(
+        "%c✦ ART MECCA — ULTIMATE TITLE SCREEN",
+        "font-size:24px; font-weight:bold; color:#ff00ea; text-shadow: 0 0 20px #ff00ea, 0 0 40px #ff00ea;",
+      );
+      console.log(
+        "%c🎮 Press J to Join | E to Explore | C to Continue | G to Glitch",
+        "font-size:12px; color:#58ebfe;",
+      );
+      console.log(
+        "%c🌈 Colors cycle every 12 seconds through 6 palettes",
+        "font-size:12px; color:#ffc72e;",
+      );
+      console.log(
+        "%c✨ 150+ particles floating",
+        "font-size:12px; color:#4ff3a6;",
+      );
+      console.log(
+        "%c🖌️ Keep it fresh. Hack the future.",
+        "font-size:14px; color:#ff6b00;",
+      );
+    </script>
+  </body>
+</html>
+
+/*

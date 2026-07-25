@@ -1,0 +1,1240 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earn as an Artist — Art Mecca</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Learn how to earn money as an artist. Commissions, print-on-demand, digital products, freelance, and more. Practical advice for creative professionals."
+    />
+    <meta
+      name="keywords"
+      content="earn as an artist, art commissions, print-on-demand, digital products, freelance artist, monetize art"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Earn as an Artist — Art Mecca" />
+    <meta
+      property="og:description"
+      content="Learn how to earn money as an artist. Commissions, print-on-demand, digital products, and more."
+    />
+    <meta property="og:image" content="/images/og-earn.jpg" />
+    <meta property="og:type" content="website" />
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/earn.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  </head>
+  <body class="earn-page">
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link"
+                >Tutorials <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+                >Software <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link"
+                >Tools <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link"
+                >Community <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link active"
+                >Equip <span class="dropdown-arrow">▼</span></a
+              >
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/cv-templates.html">✦ CV Templates</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+                <li>
+                  <a href="/pages/Equip/templates.html">✦ Download Templates</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+                >Truly Yours ✦</a
+              >
+            </li>
+          </ul>
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button class="btn-icon notification-btn" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+            <button class="btn-icon search-btn" id="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+            <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i
+              ><input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- EARN HERO                                                     -->
+    <!-- ============================================================ -->
+    <section class="earn-hero">
+      <div class="earn-hero-bg"></div>
+      <div class="earn-hero-content glass-panel">
+        <span class="hero-badge"
+          ><i class="fas fa-chart-line"></i> MAKE MONEY</span
+        >
+        <h1>
+          <span class="glitch-header" data-text="Earn As An Artist">
+            Earn As An <span class="gradient-text">Artist</span>
+            <span class="glitch-layer" data-text="Earn As An Artist"></span>
+            <span class="rgb-split" data-text="Earn As An Artist"></span>
+            <span class="glitch-flash"></span>
+          </span>
+        </h1>
+        <p class="hero-subhead">
+          Turn your passion into profit. Learn the proven strategies to monetize
+          your art — from commissions and print-on-demand to digital products
+          and freelance work.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-value">6</span
+            ><span class="stat-label">Income Streams</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">$100+</span
+            ><span class="stat-label">Avg Commission</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">🚀</span
+            ><span class="stat-label">Start Today</span>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-text">▼ SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- INCOME STREAMS GRID                                           -->
+    <!-- ============================================================ -->
+    <section class="income-streams-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">✦ INCOME STREAMS ✦</div>
+          <h2>
+            <span class="glitch-header" data-text="How to Make Money">
+              How to <span class="gradient-text">Make Money</span>
+              <span class="glitch-layer" data-text="How to Make Money"></span>
+              <span class="rgb-split" data-text="How to Make Money"></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h2>
+          <p>
+            Multiple ways to monetize your art — choose what works best for you.
+          </p>
+        </div>
+
+        <div class="income-grid">
+          <!-- 1. Commissions -->
+          <div class="income-card glass-panel">
+            <div class="income-icon"><i class="fas fa-handshake"></i></div>
+            <span class="income-tag popular">🔥 Most Popular</span>
+            <h3>Commissions</h3>
+            <p>
+              Get paid to create custom artwork for clients. One of the most
+              direct ways to earn money as an artist.
+            </p>
+            <div class="income-details">
+              <div class="detail-item">
+                <span class="detail-label">Earning Potential</span>
+                <span class="detail-value">$50 – $1,000+ per piece</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Best For</span>
+                <span class="detail-value">Portrait artists, illustrators</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Time Investment</span>
+                <span class="detail-value">Medium</span>
+              </div>
+            </div>
+            <div class="income-tips">
+              <span class="tip-tag">✦ Set clear prices</span>
+              <span class="tip-tag">✦ Define terms</span>
+              <span class="tip-tag">✦ Build a portfolio</span>
+            </div>
+            <button class="btn-expand" onclick="toggleExpand('commissions')">
+              <i class="fas fa-chevron-down"></i> Learn More
+            </button>
+            <div class="income-expand" id="commissions">
+              <h4>How to Get Started</h4>
+              <ul>
+                <li>Create a commission sheet with pricing and examples</li>
+                <li>Share your work on social media</li>
+                <li>Join art communities and commission platforms</li>
+                <li>Always use contracts and take deposits</li>
+              </ul>
+              <div class="platform-links">
+                <a href="#" class="platform-link"
+                  ><i class="fab fa-twitter"></i> Twitter</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fab fa-instagram"></i> Instagram</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-users"></i> Art Communities</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Print-on-Demand -->
+          <div class="income-card glass-panel">
+            <div class="income-icon"><i class="fas fa-shopping-bag"></i></div>
+            <span class="income-tag">✦ Easy Start</span>
+            <h3>Print-on-Demand</h3>
+            <p>
+              Sell your artwork on merchandise, prints, and products without
+              holding inventory. Let someone else handle production.
+            </p>
+            <div class="income-details">
+              <div class="detail-item">
+                <span class="detail-label">Earning Potential</span>
+                <span class="detail-value">$5 – $50 per item</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Best For</span>
+                <span class="detail-value">Any artist with a following</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Time Investment</span>
+                <span class="detail-value">Low</span>
+              </div>
+            </div>
+            <div class="income-tips">
+              <span class="tip-tag">✦ Upload once, sell forever</span>
+              <span class="tip-tag">✦ Use quality mockups</span>
+              <span class="tip-tag">✦ Promote consistently</span>
+            </div>
+            <button class="btn-expand" onclick="toggleExpand('pod')">
+              <i class="fas fa-chevron-down"></i> Learn More
+            </button>
+            <div class="income-expand" id="pod">
+              <h4>Top Platforms</h4>
+              <ul>
+                <li>Redbubble — Wide variety of products</li>
+                <li>Society6 — Home decor and apparel</li>
+                <li>Printful — Integration with your own store</li>
+                <li>Displate — Metal prints</li>
+              </ul>
+              <div class="platform-links">
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-store"></i> Redbubble</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-store"></i> Society6</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-store"></i> Printful</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Digital Products -->
+          <div class="income-card glass-panel">
+            <div class="income-icon"><i class="fas fa-file-download"></i></div>
+            <span class="income-tag premium">✦ Passive Income</span>
+            <h3>Digital Products</h3>
+            <p>
+              Create and sell digital products like brushes, presets, e-books,
+              courses, and printable art. Sell once, earn forever.
+            </p>
+            <div class="income-details">
+              <div class="detail-item">
+                <span class="detail-label">Earning Potential</span>
+                <span class="detail-value">$10 – $200+ per product</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Best For</span>
+                <span class="detail-value">Artists with tutorials</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Time Investment</span>
+                <span class="detail-value">Medium</span>
+              </div>
+            </div>
+            <div class="income-tips">
+              <span class="tip-tag">✦ Create once, sell forever</span>
+              <span class="tip-tag">✦ Bundle products</span>
+              <span class="tip-tag">✦ Build an email list</span>
+            </div>
+            <button class="btn-expand" onclick="toggleExpand('digital')">
+              <i class="fas fa-chevron-down"></i> Learn More
+            </button>
+            <div class="income-expand" id="digital">
+              <h4>What to Sell</h4>
+              <ul>
+                <li>Procreate brushes and Photoshop actions</li>
+                <li>Printable art and wallpapers</li>
+                <li>E-books and art tutorials</li>
+                <li>Stock photos and illustrations</li>
+              </ul>
+              <div class="platform-links">
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-store"></i> Gumroad</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-store"></i> Etsy</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-store"></i> Your own site</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Freelance -->
+          <div class="income-card glass-panel">
+            <div class="income-icon"><i class="fas fa-briefcase"></i></div>
+            <span class="income-tag">✦ Professional</span>
+            <h3>Freelance Work</h3>
+            <p>
+              Work with clients on design, illustration, and creative projects.
+              Build a portfolio and get paid for your skills.
+            </p>
+            <div class="income-details">
+              <div class="detail-item">
+                <span class="detail-label">Earning Potential</span>
+                <span class="detail-value">$25 – $150+ / hour</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Best For</span>
+                <span class="detail-value">Designers, illustrators</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Time Investment</span>
+                <span class="detail-value">High</span>
+              </div>
+            </div>
+            <div class="income-tips">
+              <span class="tip-tag">✦ Build a portfolio</span>
+              <span class="tip-tag">✦ Set clear rates</span>
+              <span class="tip-tag">✦ Network regularly</span>
+            </div>
+            <button class="btn-expand" onclick="toggleExpand('freelance')">
+              <i class="fas fa-chevron-down"></i> Learn More
+            </button>
+            <div class="income-expand" id="freelance">
+              <h4>Where to Find Work</h4>
+              <ul>
+                <li>Upwork — Freelance marketplace</li>
+                <li>Fiverr — Services starting at $5</li>
+                <li>Behance — Creative community</li>
+                <li>Networking — Word of mouth</li>
+              </ul>
+              <div class="platform-links">
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-briefcase"></i> Upwork</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-briefcase"></i> Fiverr</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-users"></i> Networking</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Patreon / Subscriptions -->
+          <div class="income-card glass-panel">
+            <div class="income-icon"><i class="fas fa-users"></i></div>
+            <span class="income-tag premium">✦ Recurring Income</span>
+            <h3>Patreon & Subscriptions</h3>
+            <p>
+              Build a community of supporters who pay you monthly for exclusive
+              content, early access, and behind-the-scenes access.
+            </p>
+            <div class="income-details">
+              <div class="detail-item">
+                <span class="detail-label">Earning Potential</span>
+                <span class="detail-value">$100 – $5,000+ / month</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Best For</span>
+                <span class="detail-value">Artists with a following</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Time Investment</span>
+                <span class="detail-value">Medium</span>
+              </div>
+            </div>
+            <div class="income-tips">
+              <span class="tip-tag">✦ Offer exclusive content</span>
+              <span class="tip-tag">✦ Engage your community</span>
+              <span class="tip-tag">✦ Grow your following</span>
+            </div>
+            <button class="btn-expand" onclick="toggleExpand('patreon')">
+              <i class="fas fa-chevron-down"></i> Learn More
+            </button>
+            <div class="income-expand" id="patreon">
+              <h4>What to Offer</h4>
+              <ul>
+                <li>Behind-the-scenes content</li>
+                <li>Early access to new work</li>
+                <li>Exclusive art and wallpapers</li>
+                <li>Monthly art tutorials or process videos</li>
+              </ul>
+              <div class="platform-links">
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-users"></i> Patreon</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-users"></i> Ko-Fi</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-users"></i> Substack</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Licensing -->
+          <div class="income-card glass-panel">
+            <div class="income-icon"><i class="fas fa-file-contract"></i></div>
+            <span class="income-tag">✦ Advanced</span>
+            <h3>Art Licensing</h3>
+            <p>
+              License your artwork to companies for use on products, packaging,
+              and advertising. Earn royalties while you sleep.
+            </p>
+            <div class="income-details">
+              <div class="detail-item">
+                <span class="detail-label">Earning Potential</span>
+                <span class="detail-value">$100 – $5,000+ per license</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Best For</span>
+                <span class="detail-value">Illustrators, pattern artists</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Time Investment</span>
+                <span class="detail-value">Low (once licensed)</span>
+              </div>
+            </div>
+            <div class="income-tips">
+              <span class="tip-tag">✦ Understand contracts</span>
+              <span class="tip-tag">✦ Protect your copyright</span>
+              <span class="tip-tag">✦ Build a portfolio</span>
+            </div>
+            <button class="btn-expand" onclick="toggleExpand('licensing')">
+              <i class="fas fa-chevron-down"></i> Learn More
+            </button>
+            <div class="income-expand" id="licensing">
+              <h4>How to Get Started</h4>
+              <ul>
+                <li>Create a portfolio of licensable work</li>
+                <li>Research companies that license art</li>
+                <li>Submit your portfolio to licensing agents</li>
+                <li>Understand licensing agreements</li>
+              </ul>
+              <div class="platform-links">
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-file-contract"></i> Licensing Agents</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-building"></i> Brands</a
+                >
+                <a href="#" class="platform-link"
+                  ><i class="fas fa-store"></i> Platforms</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PRICING GUIDE                                                 -->
+    <!-- ============================================================ -->
+    <section class="pricing-section">
+      <div class="container">
+        <div class="pricing-container glass-panel">
+          <div class="pricing-content">
+            <span class="pricing-badge"
+              ><i class="fas fa-tag"></i> PRICING GUIDE</span
+            >
+            <h2>
+              <span class="glitch-header" data-text="How to Price Your Art">
+                How to <span class="gradient-text">Price Your Art</span>
+                <span
+                  class="glitch-layer"
+                  data-text="How to Price Your Art"
+                ></span>
+                <span
+                  class="rgb-split"
+                  data-text="How to Price Your Art"
+                ></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>
+              Pricing your art can be challenging. Here's a framework to help
+              you value your work fairly.
+            </p>
+
+            <div class="pricing-grid">
+              <div class="pricing-method">
+                <h4><i class="fas fa-clock"></i> Hourly Rate</h4>
+                <p>Calculate your desired hourly rate × hours worked.</p>
+                <div class="pricing-example">
+                  <span>Example: $50/hour × 10 hours = $500</span>
+                </div>
+              </div>
+
+              <div class="pricing-method">
+                <h4><i class="fas fa-ruler"></i> Size-Based</h4>
+                <p>Price per square inch or centimeter.</p>
+                <div class="pricing-example">
+                  <span>Example: $5/sq inch × 100 sq inches = $500</span>
+                </div>
+              </div>
+
+              <div class="pricing-method">
+                <h4><i class="fas fa-star"></i> Value-Based</h4>
+                <p>Price based on the value to the client.</p>
+                <div class="pricing-example">
+                  <span>Example: Commercial use = higher price</span>
+                </div>
+              </div>
+
+              <div class="pricing-method">
+                <h4><i class="fas fa-chart-simple"></i> Market Research</h4>
+                <p>See what similar artists are charging.</p>
+                <div class="pricing-example">
+                  <span>Example: Research competitors' prices</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pricing-tips">
+              <h4>💡 Pricing Tips</h4>
+              <ul>
+                <li>Don't undervalue your work</li>
+                <li>Factor in materials, time, and overhead</li>
+                <li>Raise your prices as your skills grow</li>
+                <li>Be transparent with clients about pricing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SUCCESS STORIES                                               -->
+    <!-- ============================================================ -->
+    <section class="success-stories-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-badge">✦ SUCCESS STORIES ✦</div>
+          <h2>
+            <span class="glitch-header" data-text="Real Artists, Real Success">
+              Real Artists, <span class="gradient-text">Real Success</span>
+              <span
+                class="glitch-layer"
+                data-text="Real Artists, Real Success"
+              ></span>
+              <span
+                class="rgb-split"
+                data-text="Real Artists, Real Success"
+              ></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h2>
+          <p>
+            Inspiring stories from artists who turned their passion into a
+            career.
+          </p>
+        </div>
+
+        <div class="stories-grid">
+          <div class="story-card glass-panel">
+            <div class="story-avatar">🎨</div>
+            <div class="story-content">
+              <h4>From Hobby to Full-Time</h4>
+              <p>
+                "I started doing commissions on the side while working a 9-5.
+                Within 6 months, I was making enough to quit my job and go
+                full-time."
+              </p>
+              <span class="story-author">— Maya Chen, Digital Artist</span>
+              <div class="story-stats">
+                <span><i class="fas fa-handshake"></i> 50+ Commissions</span>
+                <span><i class="fas fa-dollar-sign"></i> $3K/month</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card glass-panel">
+            <div class="story-avatar">🖌️</div>
+            <div class="story-content">
+              <h4>Passive Income Success</h4>
+              <p>
+                "I created a set of Procreate brushes and sold them on Gumroad.
+                They're still selling 2 years later — best investment of time I
+                ever made."
+              </p>
+              <span class="story-author">— Alex Rivera, Illustrator</span>
+              <div class="story-stats">
+                <span><i class="fas fa-download"></i> 2,000+ Downloads</span>
+                <span><i class="fas fa-dollar-sign"></i> $8K+ Earned</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-card glass-panel">
+            <div class="story-avatar">🌟</div>
+            <div class="story-content">
+              <h4>Print-on-Demand Empire</h4>
+              <p>
+                "I started selling my art on Redbubble and Society6. Now I have
+                products selling in 30+ countries every month."
+              </p>
+              <span class="story-author">— Jamie K., Surface Designer</span>
+              <div class="story-stats">
+                <span><i class="fas fa-globe"></i> 30+ Countries</span>
+                <span><i class="fas fa-dollar-sign"></i> $1.5K/month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- TAX TIPS SECTION                                              -->
+    <!-- ============================================================ -->
+    <section class="tax-section">
+      <div class="container">
+        <div class="tax-container glass-panel">
+          <div class="tax-content">
+            <span class="tax-badge"
+              ><i class="fas fa-file-invoice-dollar"></i> TAX TIPS</span
+            >
+            <h2>
+              <span class="glitch-header" data-text="Tax Tips for Artists">
+                Tax Tips for <span class="gradient-text">Artists</span>
+                <span
+                  class="glitch-layer"
+                  data-text="Tax Tips for Artists"
+                ></span>
+                <span class="rgb-split" data-text="Tax Tips for Artists"></span>
+                <span class="glitch-flash"></span>
+              </span>
+            </h2>
+            <p>
+              Don't let taxes scare you — here's what every artist needs to
+              know.
+            </p>
+
+            <div class="tax-grid">
+              <div class="tax-tip">
+                <h4><i class="fas fa-receipt"></i> Track Everything</h4>
+                <p>
+                  Keep receipts for all art supplies, software, and equipment.
+                </p>
+              </div>
+              <div class="tax-tip">
+                <h4><i class="fas fa-home"></i> Home Office Deduction</h4>
+                <p>
+                  If you work from home, you may be able to deduct a portion of
+                  your rent/mortgage.
+                </p>
+              </div>
+              <div class="tax-tip">
+                <h4><i class="fas fa-chart-line"></i> Set Aside 30%</h4>
+                <p>
+                  Put aside 30% of your income for taxes — you'll thank yourself
+                  later.
+                </p>
+              </div>
+              <div class="tax-tip">
+                <h4><i class="fas fa-user-tie"></i> Consult a Pro</h4>
+                <p>
+                  Find an accountant who specializes in creative professionals.
+                </p>
+              </div>
+            </div>
+
+            <div class="tax-resources">
+              <span class="tax-note"
+                >✦ Not tax advice — consult a professional!</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CTA SECTION                                                   -->
+    <!-- ============================================================ -->
+    <section class="earn-cta-section">
+      <div class="container">
+        <div class="earn-cta glass-panel">
+          <div class="cta-glow"></div>
+          <span class="cta-graffiti-tag tag-1">✧ START EARNING ✧</span>
+          <span class="cta-graffiti-tag tag-2">★ TODAY ★</span>
+
+          <h2>
+            <span class="glitch-header" data-text="Ready to Start Earning?">
+              Ready to <span class="gradient-text">Start Earning</span>?
+              <span
+                class="glitch-layer"
+                data-text="Ready to Start Earning?"
+              ></span>
+              <span
+                class="rgb-split"
+                data-text="Ready to Start Earning?"
+              ></span>
+              <span class="glitch-flash"></span>
+            </span>
+          </h2>
+          <p>
+            Join thousands of artists who are already monetizing their passion.
+          </p>
+          <div class="cta-buttons">
+            <a href="/pages/auth/register.html" class="btn-primary-cta">
+              <i class="fas fa-rocket"></i> Join Art Mecca
+            </a>
+            <a href="/pages/community/gallery.html" class="btn-outline-cta">
+              <i class="fas fa-eye"></i> View Success Stories
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- THEME TOGGLE                                                 -->
+    <!-- ============================================================ -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS                                                      -->
+    <!-- ============================================================ -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+    <script src="/js/auth/page-redirect.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ============================================================
+        // THEME TOGGLE
+        // ============================================================
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ============================================================
+        // PARTICLES
+        // ============================================================
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const particleCount = 50;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.2 + 0.05;
+              const colors = [
+                "#ff00ea",
+                "#ad03fc",
+                "#58ebfe",
+                "#4ff3a6",
+                "#ffc72e",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < particleCount; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.04;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#ff00ea";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#ff00ea";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ============================================================
+        // NOISE OVERLAY (glitch effect on G key)
+        // ============================================================
+        document.addEventListener("keydown", (e) => {
+          if (e.key.toLowerCase() === "g") {
+            const noise = document.getElementById("noiseOverlay");
+            if (noise) {
+              noise.classList.add("active");
+              setTimeout(() => noise.classList.remove("active"), 500);
+            }
+          }
+        });
+
+        // ============================================================
+        // TOGGLE EXPAND
+        // ============================================================
+        window.toggleExpand = function (id) {
+          const expand = document.getElementById(id);
+          const btn = expand.parentElement.querySelector(".btn-expand");
+          if (expand.classList.contains("active")) {
+            expand.classList.remove("active");
+            btn.innerHTML = '<i class="fas fa-chevron-down"></i> Learn More';
+          } else {
+            expand.classList.add("active");
+            btn.innerHTML = '<i class="fas fa-chevron-up"></i> Show Less';
+          }
+        };
+
+        // ============================================================
+        // SMOOTH SCROLL FOR INCOME CARDS
+        // ============================================================
+        document.querySelectorAll(".btn-expand").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+        });
+
+        console.log("⚡ Earn page initialized!");
+      });
+    </script>
+  </body>
+</html>

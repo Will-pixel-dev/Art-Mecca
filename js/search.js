@@ -1,29 +1,109 @@
-// search.js - Complete Working Version with Artists & Artworks
+// ================================================================
+// SEARCH.JS — COMPLETE VERSION WITH DYNAMIC LOADING
+// ================================================================
+
 class SearchEngine {
     constructor() {
         this.searchData = [];
+        this.isLoading = false;
+        this.loadComplete = false;
         this.init();
     }
 
     async init() {
-        await this.loadSearchData();
-        await this.loadArtistsToSearch();   // ✅ Added - loads artists from Firestore
-        await this.loadArtworksToSearch();  // ✅ Added - loads artworks from Firestore
+        console.log('🔍 Initializing search engine...');
+        await this.loadAllData();
         this.setupSearchListeners();
-        console.log('Search engine initialized with artists and artworks!');
+        console.log('✅ Search engine initialized with', this.searchData.length, 'items');
     }
 
-    async loadSearchData() {
-        // TUTORIALS - Static data
-        this.searchData = [
-            // Eye Rendering Tutorials
+    // ============================================================
+    // LOAD ALL DATA DYNAMICALLY
+    // ============================================================
+    async loadAllData() {
+        this.isLoading = true;
+        this.searchData = [];
+
+        try {
+            // Load all in parallel for speed
+            const [tutorials, artists, artworks, tools, resources] = await Promise.all([
+                this.loadTutorials(),
+                this.loadArtists(),
+                this.loadArtworks(),
+                this.loadTools(),
+                this.loadResources()
+            ]);
+
+            this.searchData = [
+                ...tutorials,
+                ...artists,
+                ...artworks,
+                ...tools,
+                ...resources
+            ];
+
+            this.loadComplete = true;
+            console.log(`📊 Loaded ${this.searchData.length} searchable items`);
+        } catch (error) {
+            console.error('Error loading search data:', error);
+        } finally {
+            this.isLoading = false;
+        }
+    }
+
+    // ============================================================
+    // LOAD TUTORIALS FROM FIRESTORE
+    // ============================================================
+    async loadTutorials() {
+        try {
+            const snapshot = await firebase.firestore()
+                .collection('tutorials')
+                .where('status', '==', 'published')
+                .orderBy('createdAt', 'desc')
+                .get();
+
+            if (snapshot.empty) {
+                console.warn('⚠️ No tutorials found in Firestore, using fallback data');
+                return this.getFallbackTutorials();
+            }
+
+            const tutorials = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                tutorials.push({
+                    id: doc.id,
+                    title: data.title || 'Untitled Tutorial',
+                    type: 'tutorial',
+                    category: data.category || 'tutorial',
+                    description: data.description || data.excerpt || 'Learn digital art techniques',
+                    tags: data.tags || [],
+                    url: data.url || `/pages/tutorials/tutorial-detail.html?id=${doc.id}`,
+                    difficulty: data.difficulty || 'intermediate',
+                    createdAt: data.createdAt,
+                    imageUrl: data.imageUrl || null
+                });
+            });
+
+            console.log(`📚 Loaded ${tutorials.length} tutorials from Firestore`);
+            return tutorials;
+        } catch (error) {
+            console.warn('Error loading tutorials, using fallback:', error);
+            return this.getFallbackTutorials();
+        }
+    }
+
+    // ============================================================
+    // FALLBACK TUTORIALS (for when Firestore is empty)
+    // ============================================================
+    getFallbackTutorials() {
+        return [
             {
                 id: 'eye-basics',
                 title: 'Eye Rendering Basics',
                 type: 'tutorial',
                 category: 'eyes',
                 description: 'Learn fundamental eye rendering techniques for digital art',
-                tags: ['eyes', 'rendering', 'basics', 'digital painting', 'anatomy'],
+                tags: ['eyes', 'rendering', 'basics', 'digital painting'],
                 url: '/pages/tutorials/eye-render-tutorial.html',
                 difficulty: 'beginner'
             },
@@ -32,45 +112,41 @@ class SearchEngine {
                 title: 'Advanced Eye Rendering',
                 type: 'tutorial',
                 category: 'eyes',
-                description: 'Master advanced eye rendering with realistic reflections and textures',
-                tags: ['eyes', 'advanced', 'realistic', 'reflections', 'textures'],
+                description: 'Master advanced eye rendering with realistic reflections',
+                tags: ['eyes', 'advanced', 'realistic', 'reflections'],
                 url: '/pages/tutorials/advanced-eye-rendering.html',
                 difficulty: 'advanced'
             },
-            // Nose Tutorials
             {
                 id: 'nose-basics',
                 title: 'Nose Anatomy & Rendering',
                 type: 'tutorial',
                 category: 'nose',
                 description: 'Complete guide to nose anatomy and rendering techniques',
-                tags: ['nose', 'anatomy', 'rendering', 'face', 'structure'],
+                tags: ['nose', 'anatomy', 'rendering', 'face'],
                 url: '/pages/tutorials/nose-rendering-tutorial.html',
                 difficulty: 'beginner'
             },
-            // Lip Tutorials
             {
                 id: 'lips-basics',
                 title: 'Lip Rendering Techniques',
                 type: 'tutorial',
                 category: 'lips',
                 description: 'Learn to render realistic lips with proper texture and lighting',
-                tags: ['lips', 'rendering', 'texture', 'lighting', 'mouth'],
+                tags: ['lips', 'rendering', 'texture', 'lighting'],
                 url: '/pages/tutorials/lip-rendering-tutorial.html',
                 difficulty: 'intermediate'
             },
-            // Skin Tutorials
             {
                 id: 'skin-rendering',
                 title: 'Skin Texture & Rendering',
                 type: 'tutorial',
                 category: 'skin',
                 description: 'Master skin rendering with pores, subsurface scattering and textures',
-                tags: ['skin', 'texture', 'rendering', 'pores', 'subsurface scattering'],
+                tags: ['skin', 'texture', 'rendering', 'pores'],
                 url: '/pages/tutorials/skin-rendering-tutorial.html',
                 difficulty: 'advanced'
             },
-            // Facial Anatomy
             {
                 id: 'facial-anatomy',
                 title: 'Facial Anatomy Basics',
@@ -81,7 +157,6 @@ class SearchEngine {
                 url: '/pages/tutorials/facial-anatomy-basics.html',
                 difficulty: 'beginner'
             },
-            // Character Design
             {
                 id: 'character-design',
                 title: 'Character Design Fundamentals',
@@ -92,7 +167,6 @@ class SearchEngine {
                 url: '/pages/tutorials/character-design.html',
                 difficulty: 'intermediate'
             },
-            // Digital Painting
             {
                 id: 'digital-painting',
                 title: 'Digital Painting Fundamentals',
@@ -103,15 +177,169 @@ class SearchEngine {
                 url: '/pages/tutorials/digital-painting.html',
                 difficulty: 'intermediate'
             },
+            {
+                id: 'color-theory',
+                title: 'Color Theory for Digital Artists',
+                type: 'tutorial',
+                category: 'color',
+                description: 'Understand color theory to create stunning digital artwork',
+                tags: ['color', 'theory', 'harmony', 'palette'],
+                url: '/pages/tutorials/color-theory.html',
+                difficulty: 'beginner'
+            },
+            {
+                id: 'composition-basics',
+                title: 'Composition Fundamentals',
+                type: 'tutorial',
+                category: 'composition',
+                description: 'Learn the principles of composition to improve your artwork',
+                tags: ['composition', 'design', 'rule of thirds', 'golden ratio'],
+                url: '/pages/tutorials/composition-basics.html',
+                difficulty: 'beginner'
+            }
+        ];
+    }
 
-            // TOOLS
+    // ============================================================
+    // LOAD ARTISTS FROM FIRESTORE
+    // ============================================================
+    async loadArtists() {
+        try {
+            const snapshot = await firebase.firestore()
+                .collection('users')
+                .get();
+
+            const artists = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                // Only add if user has a display name
+                if (data.displayName || data.fullname || data.username) {
+                    artists.push({
+                        id: doc.id,
+                        title: data.displayName || data.fullname || data.username || 'Artist',
+                        type: 'artist',
+                        category: 'artist',
+                        description: data.bio || 'Check out this artist\'s portfolio',
+                        tags: ['artist', 'profile', data.username, data.displayName],
+                        url: `/pages/community/profiles.html?user=${doc.id}`,
+                        avatar: data.photoURL || data.avatarUrl || null,
+                        username: data.username || data.displayName
+                    });
+                }
+            });
+
+            console.log(`👤 Loaded ${artists.length} artists from Firestore`);
+            return artists;
+        } catch (error) {
+            console.warn('Error loading artists:', error);
+            return [];
+        }
+    }
+
+    // ============================================================
+    // LOAD ARTWORKS FROM FIRESTORE (ALL)
+    // ============================================================
+    async loadArtworks() {
+        try {
+            // Load ALL published artworks with pagination
+            let allArtworks = [];
+            let lastDoc = null;
+            let hasMore = true;
+            const batchSize = 100;
+
+            while (hasMore) {
+                let query = firebase.firestore()
+                    .collection('artworks')
+                    .where('status', '==', 'published')
+                    .orderBy('createdAt', 'desc')
+                    .limit(batchSize);
+
+                if (lastDoc) {
+                    query = query.startAfter(lastDoc);
+                }
+
+                const snapshot = await query.get();
+
+                if (snapshot.empty) {
+                    hasMore = false;
+                    break;
+                }
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    allArtworks.push({
+                        id: doc.id,
+                        title: data.title || 'Untitled',
+                        type: 'artwork',
+                        category: 'artwork',
+                        description: data.description || data.caption || 'View this artwork',
+                        tags: data.tags || [],
+                        url: `/pages/community/artwork-detail.html?id=${doc.id}`,
+                        imageUrl: data.imageUrl || null,
+                        artistId: data.artistId || null,
+                        artistName: data.artistName || null
+                    });
+                });
+
+                lastDoc = snapshot.docs[snapshot.docs.length - 1];
+                if (snapshot.docs.length < batchSize) {
+                    hasMore = false;
+                }
+            }
+
+            console.log(`🖼️ Loaded ${allArtworks.length} artworks from Firestore`);
+            return allArtworks;
+        } catch (error) {
+            console.warn('Error loading artworks:', error);
+            return [];
+        }
+    }
+
+    // ============================================================
+    // LOAD TOOLS FROM FIRESTORE
+    // ============================================================
+    async loadTools() {
+        try {
+            const snapshot = await firebase.firestore()
+                .collection('tools')
+                .where('status', '==', 'published')
+                .get();
+
+            const tools = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                tools.push({
+                    id: doc.id,
+                    title: data.title || 'Untitled Tool',
+                    type: 'tool',
+                    category: data.category || 'tool',
+                    description: data.description || 'Tool for digital artists',
+                    tags: data.tags || [],
+                    url: data.url || `/pages/tools/tool-detail.html?id=${doc.id}`,
+                    icon: data.icon || null
+                });
+            });
+
+            console.log(`🛠️ Loaded ${tools.length} tools from Firestore`);
+            return tools;
+        } catch (error) {
+            console.warn('Error loading tools:', error);
+            return this.getFallbackTools();
+        }
+    }
+
+    // ============================================================
+    // FALLBACK TOOLS
+    // ============================================================
+    getFallbackTools() {
+        return [
             {
                 id: 'color-palette',
                 title: 'Color Palette Generator',
                 type: 'tool',
                 category: 'color-tools',
                 description: 'Generate beautiful color palettes for your artwork',
-                tags: ['color', 'palette', 'generator', 'tools', 'design'],
+                tags: ['color', 'palette', 'generator', 'tools'],
                 url: '/pages/tools/color-palette-generator.html'
             },
             {
@@ -120,7 +348,7 @@ class SearchEngine {
                 type: 'tool',
                 category: 'color-tools',
                 description: 'Analyze and improve your color schemes for better harmony',
-                tags: ['color', 'analyzer', 'scheme', 'harmony', 'tools'],
+                tags: ['color', 'analyzer', 'scheme', 'harmony'],
                 url: '/pages/tools/color-scheme-analyzer.html'
             },
             {
@@ -129,7 +357,7 @@ class SearchEngine {
                 type: 'tool',
                 category: 'prompt-tools',
                 description: 'Get inspired with random character creation prompts',
-                tags: ['character', 'prompt', 'generator', 'inspiration', 'tools'],
+                tags: ['character', 'prompt', 'generator', 'inspiration'],
                 url: '/pages/tools/prompt-generator.html'
             },
             {
@@ -138,148 +366,83 @@ class SearchEngine {
                 type: 'tool',
                 category: 'quiz',
                 description: 'Find your perfect digital art software',
-                tags: ['quiz', 'software', 'recommendation', 'tools'],
+                tags: ['quiz', 'software', 'recommendation'],
                 url: '/pages/tools/software-quiz.html'
-            },
-
-            // COMMUNITY
-            {
-                id: 'community-hub',
-                title: 'Community Hub',
-                type: 'community',
-                category: 'hub',
-                description: 'Connect with other artists in our community hub',
-                tags: ['community', 'hub', 'social', 'networking', 'artists'],
-                url: '/pages/community/hub.html'
-            },
-            {
-                id: 'gallery',
-                title: 'Community Gallery',
-                type: 'community',
-                category: 'gallery',
-                description: 'Browse artwork from our community members',
-                tags: ['gallery', 'community', 'artwork', 'portfolio', 'showcase'],
-                url: '/pages/community/gallery.html'
-            },
-            {
-                id: 'search-artists',
-                title: 'Find Artists',
-                type: 'community',
-                category: 'search',
-                description: 'Discover and connect with talented artists',
-                tags: ['artists', 'search', 'discover', 'community'],
-                url: '/pages/community/search-users.html'
-            },
-
-            // SOFTWARE
-            {
-                id: 'software-comparison',
-                title: 'Digital Art Software Comparison',
-                type: 'software',
-                category: 'software-guides',
-                description: 'Compare Photoshop, Procreate, Clip Studio Paint and more',
-                tags: ['software', 'comparison', 'photoshop', 'procreate', 'clip studio'],
-                url: '/pages/software/software-comparison.html'
-            },
-
-            // TRULY YOURS
-            {
-                id: 'truly-yours',
-                title: 'Truly Yours Project',
-                type: 'project',
-                category: 'truly-yours',
-                description: 'Discover the Truly Yours collaborative art project',
-                tags: ['truly yours', 'project', 'collaborative', 'community', 'art'],
-                url: '/pages/truly-yours/truly-yours-project.html'
-            },
-
-            // EQUIP
-            {
-                id: 'equip',
-                title: 'Equip for Artists',
-                type: 'resource',
-                category: 'equip',
-                description: 'Portfolio templates, CV templates, and career resources',
-                tags: ['portfolio', 'cv', 'career', 'templates', 'resources'],
-                url: '/pages/Equip/Equip.html'
             }
         ];
     }
 
-    // ARTISTS (from Firestore - dynamically loaded)
-    async loadArtistsToSearch() {
-        try {
-            // Wait for auth to be ready
-            const snapshot = await firebase.firestore().collection('users').get();
-
-            snapshot.forEach(doc => {
-                const userData = doc.data();
-                this.searchData.push({
-                    id: doc.id,
-                    title: userData.fullname || 'Artist',
-                    type: 'artist',
-                    category: 'artist',
-                    description: userData.bio || 'Check out this artist\'s portfolio',
-                    tags: ['artist', 'profile', userData.username, userData.fullname],
-                    url: `/pages/community/profiles.html?user=${doc.id}`,
-                    avatar: userData.avatarUrl
-                });
-            });
-            console.log(`Loaded ${snapshot.size} artists to search`);
-        } catch (error) {
-            console.error('Error loading artists:', error);
-        }
-    }
-
-    // ARTWORKS (from Firestore - dynamically loaded)
-    async loadArtworksToSearch() {
+    // ============================================================
+    // LOAD RESOURCES FROM FIRESTORE
+    // ============================================================
+    async loadResources() {
         try {
             const snapshot = await firebase.firestore()
-                .collection('artworks')
+                .collection('resources')
                 .where('status', '==', 'published')
-                .limit(50)
                 .get();
 
+            const resources = [];
             snapshot.forEach(doc => {
-                const artwork = doc.data();
-                this.searchData.push({
+                const data = doc.data();
+                resources.push({
                     id: doc.id,
-                    title: artwork.title,
-                    type: 'artwork',
-                    category: 'artwork',
-                    description: artwork.description || 'View this artwork',
-                    tags: artwork.tags || [],
-                    url: `/pages/community/artwork-detail.html?id=${doc.id}`,
-                    imageUrl: artwork.imageUrl
+                    title: data.title || 'Untitled Resource',
+                    type: 'resource',
+                    category: data.category || 'resource',
+                    description: data.description || 'Resource for digital artists',
+                    tags: data.tags || [],
+                    url: data.url || `/pages/resources/resource-detail.html?id=${doc.id}`
                 });
             });
-            console.log(`Loaded ${snapshot.size} artworks to search`);
+
+            console.log(`📄 Loaded ${resources.length} resources from Firestore`);
+            return resources;
         } catch (error) {
-            console.error('Error loading artworks:', error);
+            console.warn('Error loading resources:', error);
+            return [
+                {
+                    id: 'software-comparison',
+                    title: 'Digital Art Software Comparison',
+                    type: 'resource',
+                    category: 'software-guides',
+                    description: 'Compare Photoshop, Procreate, Clip Studio Paint and more',
+                    tags: ['software', 'comparison', 'photoshop', 'procreate'],
+                    url: '/pages/software/software-comparison.html'
+                },
+                {
+                    id: 'equip',
+                    title: 'Equip for Artists',
+                    type: 'resource',
+                    category: 'equip',
+                    description: 'Portfolio templates, CV templates, and career resources',
+                    tags: ['portfolio', 'cv', 'career', 'templates', 'resources'],
+                    url: '/pages/Equip/Equip.html'
+                }
+            ];
         }
     }
 
+    // ============================================================
+    // SEARCH SETUP (unchanged from your version)
+    // ============================================================
     setupSearchListeners() {
-        const searchInput = document.getElementById('search-input');
-        const searchClose = document.getElementById('search-close');
+        const searchBtn = document.getElementById('search-btn');
         const searchOverlay = document.getElementById('search-overlay');
+        const searchClose = document.getElementById('search-close');
+        const searchInput = document.getElementById('search-input');
 
-        if (searchInput) {
-            let searchTimeout;
-            searchInput.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    this.performSearch(e.target.value);
-                }, 300);
-            });
-
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    this.performSearch(e.target.value);
-                }
+        // Open search
+        if (searchBtn && searchOverlay) {
+            searchBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                searchOverlay.classList.add('active');
+                setTimeout(() => searchInput?.focus(), 100);
+                this.showPlaceholder();
             });
         }
 
+        // Close search
         if (searchClose && searchOverlay) {
             searchClose.addEventListener('click', () => {
                 searchOverlay.classList.remove('active');
@@ -287,6 +450,7 @@ class SearchEngine {
             });
         }
 
+        // Click outside to close
         if (searchOverlay) {
             searchOverlay.addEventListener('click', (e) => {
                 if (e.target === searchOverlay) {
@@ -296,60 +460,120 @@ class SearchEngine {
             });
         }
 
+        // Escape key to close
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && searchOverlay?.classList.contains('active')) {
                 searchOverlay.classList.remove('active');
                 this.showPlaceholder();
             }
         });
+
+        // Search input
+        if (searchInput) {
+            let searchTimeout;
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    if (!this.loadComplete) {
+                        this.showLoading();
+                        return;
+                    }
+                    this.performSearch(e.target.value);
+                }, 250);
+            });
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.performSearch(e.target.value);
+                }
+            });
+        }
     }
 
+    // ============================================================
+    // PERFORM SEARCH (improved)
+    // ============================================================
     performSearch(query) {
-        if (!query.trim()) {
+        const trimmedQuery = query.trim();
+        if (!trimmedQuery) {
             this.showPlaceholder();
             return;
         }
 
-        const results = this.searchContent(query);
-        this.displayResults(results, query);
-    }
+        if (!this.loadComplete) {
+            this.showLoading();
+            return;
+        }
 
-    searchContent(query) {
-        const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
-        if (searchTerms.length === 0) return [];
-
-        return this.searchData.filter(item => {
+        const results = this.searchData.filter(item => {
             const searchableText = `
-                ${item.title} ${item.description} ${item.tags.join(' ')}
-                ${item.type} ${item.category} ${item.difficulty || ''}
+                ${item.title} ${item.description} ${item.tags?.join(' ') || ''}
+                ${item.type} ${item.category || ''} ${item.difficulty || ''}
+                ${item.username || ''} ${item.artistName || ''}
             `.toLowerCase();
 
-            return searchTerms.some(term => searchableText.includes(term));
-        }).sort((a, b) => {
-            const scoreA = this.calculateScore(a, searchTerms);
-            const scoreB = this.calculateScore(b, searchTerms);
+            const terms = trimmedQuery.toLowerCase().split(' ');
+            return terms.some(term => searchableText.includes(term));
+        });
+
+        // Sort results by relevance
+        const sortedResults = results.sort((a, b) => {
+            const scoreA = this.calculateScore(a, trimmedQuery);
+            const scoreB = this.calculateScore(b, trimmedQuery);
             return scoreB - scoreA;
         });
+
+        this.displayResults(sortedResults, trimmedQuery);
     }
 
-    calculateScore(item, searchTerms) {
+    // ============================================================
+    // CALCULATE SCORE (improved)
+    // ============================================================
+    calculateScore(item, query) {
         let score = 0;
+        const terms = query.toLowerCase().split(' ');
         const title = item.title.toLowerCase();
-        const description = item.description.toLowerCase();
-        const tags = item.tags.join(' ').toLowerCase();
+        const description = item.description?.toLowerCase() || '';
+        const tags = item.tags?.join(' ').toLowerCase() || '';
 
-        searchTerms.forEach(term => {
-            if (title === term) score += 20;
+        terms.forEach(term => {
+            // Exact title match - highest priority
+            if (title === term) score += 30;
+            else if (title.startsWith(term)) score += 20;
             else if (title.includes(term)) score += 10;
-            if (tags.includes(term)) score += 5;
-            if (description.includes(term)) score += 3;
-            if (item.type?.toLowerCase().includes(term)) score += 2;
-            if (item.category?.toLowerCase().includes(term)) score += 2;
-            if (item.difficulty && item.difficulty.toLowerCase().includes(term)) score += 3;
+
+            // Tag matches - high priority
+            if (tags.includes(term)) score += 8;
+
+            // Description matches
+            if (description.includes(term)) score += 4;
+
+            // Type/category matches
+            if (item.type?.toLowerCase().includes(term)) score += 3;
+            if (item.category?.toLowerCase().includes(term)) score += 3;
+
+            // Difficulty matches
+            if (item.difficulty?.toLowerCase().includes(term)) score += 5;
+
+            // Username/artist matches
+            if (item.username?.toLowerCase().includes(term)) score += 5;
+            if (item.artistName?.toLowerCase().includes(term)) score += 5;
         });
+
+        // Boost tutorials with matching difficulty
+        if (item.type === 'tutorial' && item.difficulty) {
+            const diff = item.difficulty.toLowerCase();
+            if (terms.some(t => diff.includes(t))) {
+                score += 10;
+            }
+        }
+
         return score;
     }
 
+    // ============================================================
+    // DISPLAY RESULTS (improved with better grouping)
+    // ============================================================
     displayResults(results, query) {
         const searchResults = document.getElementById('search-results');
         if (!searchResults) return;
@@ -359,30 +583,44 @@ class SearchEngine {
             return;
         }
 
-        searchResults.innerHTML = this.getResultsHTML(results, query);
-    }
+        const grouped = this.groupResults(results);
 
-    getResultsHTML(results, query) {
-        const groupedResults = this.groupResultsByType(results);
-        return `
+        let html = `
             <div class="search-results-header">
-                <h3>Search Results for "${query}"</h3>
-                <span class="results-count">${results.length} results found</span>
+                <h3>Results for "${this.escapeHtml(query)}"</h3>
+                <span class="results-count">${results.length} found</span>
             </div>
-            ${this.getGroupedResultsHTML(groupedResults)}
         `;
+
+        Object.values(grouped).forEach(group => {
+            html += this.getGroupHTML(group);
+        });
+
+        searchResults.innerHTML = html;
+
+        // Add click handlers
+        searchResults.querySelectorAll('.search-result-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const url = item.dataset.url;
+                if (url) {
+                    const overlay = document.getElementById('search-overlay');
+                    if (overlay) overlay.classList.remove('active');
+                    window.location.href = url;
+                }
+            });
+        });
     }
 
-    groupResultsByType(results) {
+    // ============================================================
+    // GROUP RESULTS (updated order)
+    // ============================================================
+    groupResults(results) {
         const groups = {
-            tutorial: { title: '📚 Tutorials', items: [] },
-            tool: { title: '🛠️ Tools', items: [] },
-            community: { title: '👥 Community', items: [] },
-            software: { title: '💻 Software', items: [] },
-            project: { title: '🎨 Projects', items: [] },
-            resource: { title: '📄 Resources', items: [] },
-            artist: { title: '👤 Artists', items: [] },
-            artwork: { title: '🖼️ Artworks', items: [] }
+            artist: { title: '👤 Artists', items: [], order: 0 },
+            artwork: { title: '🖼️ Artworks', items: [], order: 1 },
+            tutorial: { title: '📚 Tutorials', items: [], order: 2 },
+            tool: { title: '🛠️ Tools', items: [], order: 3 },
+            resource: { title: '📄 Resources', items: [], order: 4 }
         };
 
         results.forEach(item => {
@@ -391,99 +629,150 @@ class SearchEngine {
             }
         });
 
-        return Object.entries(groups)
-            .filter(([_, group]) => group.items.length > 0)
-            .reduce((acc, [key, group]) => {
-                acc[key] = group;
-                return acc;
-            }, {});
+        return Object.fromEntries(
+            Object.entries(groups)
+                .filter(([_, g]) => g.items.length > 0)
+                .sort((a, b) => a[1].order - b[1].order)
+        );
     }
 
-    getGroupedResultsHTML(groupedResults) {
-        return Object.entries(groupedResults).map(([type, group]) => `
-            <div class="results-group" data-type="${type}">
-                <h4 class="group-title">${group.title}</h4>
-                <div class="group-results">
-                    ${group.items.map(item => this.getResultItemHTML(item)).join('')}
-                </div>
+    // ============================================================
+    // GET GROUP HTML
+    // ============================================================
+    getGroupHTML(group) {
+        return `
+            <div class="results-group">
+                <div class="group-title">${group.title}</div>
+                ${group.items.map(item => this.getResultItemHTML(item)).join('')}
             </div>
-        `).join('');
+        `;
     }
 
+    // ============================================================
+    // GET RESULT ITEM HTML (improved)
+    // ============================================================
     getResultItemHTML(item) {
+        let badgeContent = '';
+        let subtitle = '';
+
+        switch (item.type) {
+            case 'artist':
+                badgeContent = '👤';
+                subtitle = `@${item.username || 'artist'}`;
+                break;
+            case 'artwork':
+                badgeContent = '🖼️';
+                subtitle = item.artistName ? `By ${item.artistName}` : 'Artwork';
+                break;
+            case 'tutorial':
+                badgeContent = '📚';
+                subtitle = item.difficulty ? `${item.difficulty} tutorial` : 'Tutorial';
+                break;
+            case 'tool':
+                badgeContent = '🛠️';
+                subtitle = 'Tool';
+                break;
+            case 'resource':
+                badgeContent = '📄';
+                subtitle = 'Resource';
+                break;
+            default:
+                badgeContent = '📄';
+                subtitle = 'Resource';
+        }
+
         const difficultyBadge = item.difficulty ?
             `<span class="difficulty-badge ${item.difficulty}">${item.difficulty}</span>` : '';
 
+        const tags = item.tags && item.tags.length > 0 ?
+            `<div class="result-tags">${item.tags.slice(0, 3).map(tag =>
+                `<span class="result-tag">${this.escapeHtml(tag)}</span>`
+            ).join('')}</div>` : '';
+
         return `
-            <div class="search-result-item" data-type="${item.type}">
+            <div class="search-result-item" data-type="${item.type}" data-url="${item.url}">
+                <div class="result-type-badge">${badgeContent}</div>
                 <div class="result-content">
-                    <div class="result-type-badge">${this.getTypeIcon(item.type)}</div>
-                    <div class="result-details">
-                        <div class="result-header">
-                            <h4 class="result-title">
-                                <a href="${item.url}" onclick="closeSearch()">${this.escapeHtml(item.title)}</a>
-                            </h4>
-                            ${difficultyBadge}
-                        </div>
-                        <p class="result-description">${this.escapeHtml(item.description)}</p>
-                        <div class="result-meta">
-                            <span class="result-category">${this.formatCategory(item.category)}</span>
-                            <div class="result-tags">
-                                ${item.tags.slice(0, 3).map(tag => `<span class="result-tag">${this.escapeHtml(tag)}</span>`).join('')}
-                            </div>
-                        </div>
+                    <div class="result-title">${this.escapeHtml(item.title)}</div>
+                    ${subtitle ? `<div class="result-subtitle">${this.escapeHtml(subtitle)}</div>` : ''}
+                    <div class="result-meta">
+                        ${difficultyBadge}
+                        ${item.category && item.type !== 'artist' && item.type !== 'artwork' ?
+                            `<span class="result-category">${this.formatCategory(item.category)}</span>` : ''}
                     </div>
+                    ${tags}
+                </div>
+                <div class="result-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        `;
+    }
+
+    // ============================================================
+    // LOADING STATE
+    // ============================================================
+    showLoading() {
+        const searchResults = document.getElementById('search-results');
+        if (searchResults) {
+            searchResults.innerHTML = `
+                <div class="search-loading">
+                    <div class="spinner"></div>
+                    <p>Loading search data...</p>
+                </div>
+            `;
+        }
+    }
+
+    // ============================================================
+    // PLACEHOLDER
+    // ============================================================
+    showPlaceholder() {
+        const searchResults = document.getElementById('search-results');
+        if (searchResults) {
+            if (!this.loadComplete) {
+                this.showLoading();
+                return;
+            }
+            searchResults.innerHTML = `
+                <div class="search-placeholder">
+                    <p>🔍 Type to search tutorials, tools, artists, and artworks</p>
+                    <div class="search-hints">
+                        <span class="hint-tag">📚 tutorial</span>
+                        <span class="hint-tag">🛠️ tool</span>
+                        <span class="hint-tag">👤 artist</span>
+                        <span class="hint-tag">🖼️ artwork</span>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // ============================================================
+    // NO RESULTS
+    // ============================================================
+    getNoResultsHTML(query) {
+        return `
+            <div class="search-no-results">
+                <div class="no-results-icon">🔍</div>
+                <h3>No results for "${this.escapeHtml(query)}"</h3>
+                <p>Try adjusting your search terms or browse our categories:</p>
+                <div class="search-suggestions">
+                    <a href="/pages/tutorials/tutorials.html" class="suggestion-link" onclick="closeSearch()">📚 Tutorials</a>
+                    <a href="/pages/tools/tools.html" class="suggestion-link" onclick="closeSearch()">🛠️ Tools</a>
+                    <a href="/pages/community/gallery.html" class="suggestion-link" onclick="closeSearch()">🖼️ Gallery</a>
+                    <a href="/pages/community/search-users.html" class="suggestion-link" onclick="closeSearch()">👤 Find Artists</a>
                 </div>
             </div>
         `;
     }
 
-    getTypeIcon(type) {
-        const icons = {
-            'tutorial': '📚',
-            'tool': '🛠️',
-            'software': '💻',
-            'community': '👥',
-            'project': '🎨',
-            'resource': '📄',
-            'artist': '👤',
-            'artwork': '🖼️'
-        };
-        return icons[type] || '📄';
-    }
-
+    // ============================================================
+    // UTILITY
+    // ============================================================
     formatCategory(category) {
         if (!category) return 'General';
         return category.split('-').map(word =>
             word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
-    }
-
-    getNoResultsHTML(query) {
-        return `
-            <div class="search-no-results">
-                <div class="no-results-icon">🔍</div>
-                <h3>No results found for "${query}"</h3>
-                <p>Try adjusting your search terms or browse our categories:</p>
-                <div class="search-suggestions">
-                    <a href="/pages/tutorials/tutorials.html" class="suggestion-link" onclick="closeSearch()">Tutorials</a>
-                    <a href="/pages/tools/tools.html" class="suggestion-link" onclick="closeSearch()">Tools</a>
-                    <a href="/pages/community/gallery.html" class="suggestion-link" onclick="closeSearch()">Gallery</a>
-                    <a href="/pages/community/search-users.html" class="suggestion-link" onclick="closeSearch()">Find Artists</a>
-                </div>
-            </div>
-        `;
-    }
-
-    showPlaceholder() {
-        const searchResults = document.getElementById('search-results');
-        if (searchResults) {
-            searchResults.innerHTML = `
-                <div class="search-placeholder">
-                    <p>Type to search for tutorials, tools, artists, or artworks</p>
-                </div>
-            `;
-        }
     }
 
     escapeHtml(text) {
@@ -494,6 +783,9 @@ class SearchEngine {
     }
 }
 
+// ============================================================
+// GLOBAL CLOSE FUNCTION
+// ============================================================
 function closeSearch() {
     const searchOverlay = document.getElementById('search-overlay');
     if (searchOverlay) {
@@ -501,6 +793,22 @@ function closeSearch() {
     }
 }
 
+// ============================================================
+// INITIALIZE
+// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    new SearchEngine();
+    // Wait for Firebase
+    const checkFirebase = () => {
+        if (typeof firebase !== 'undefined' && firebase.firestore) {
+            // Small delay to ensure everything is ready
+            setTimeout(() => {
+                window.searchEngine = new SearchEngine();
+            }, 300);
+        } else {
+            console.warn('⏳ Firebase not ready, retrying search...');
+            setTimeout(checkFirebase, 500);
+        }
+    };
+
+    checkFirebase();
 });

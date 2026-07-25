@@ -8,14 +8,22 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -30,214 +38,933 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
-      .activity-feed-main {
-        padding: 3rem 0;
-        background: linear-gradient(135deg, #f8f8f8 0%, #f0f0f5 100%);
-        min-height: 100vh;
+      /* ============================================ */
+      /* ACTIVITY FEED - SCI-FI CYBERPUNK             */
+      /* Glass + Neon + HUD + Color Themes           */
+      /* ============================================ */
+
+      :root {
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --glass-blur: blur(20px);
+        --text-primary: #e8e0f0;
+        --text-secondary: #a090b8;
+        --text-muted: #6a5a7a;
+        --bg-primary: #0a0810;
+        --bg-secondary: #12101f;
+        --neon-purple: #8a19e1;
+        --neon-cyan: #58ebfe;
+        --neon-pink: #ff00ea;
+        --neon-green: #4ff3a6;
+        --neon-gold: #ffc72e;
+        --neon-orange: #ff6b00;
+        --neon-red: #ff0040;
+        --purple-glow: rgba(138, 25, 225, 0.3);
+        --cyan-glow: rgba(88, 235, 254, 0.15);
+        --shadow-glow: 0 8px 40px rgba(0, 0, 0, 0.6);
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 20px;
+        --font-mono: "Share Tech Mono", "Courier New", monospace;
+        --font-display: "Orbitron", "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        --accent-1: #ff00ea;
+        --accent-2: #8a19e1;
+        --accent-3: #ff69b4;
+        --accent-gradient: linear-gradient(135deg, #ff00ea, #8a19e1);
       }
+
+      /* Blue/Green theme */
+      body.blue-green {
+        --accent-1: #58ebfe;
+        --accent-2: #4ff3a6;
+        --accent-3: #3b82f6;
+        --accent-gradient: linear-gradient(135deg, #58ebfe, #4ff3a6);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition: background 0.4s ease;
+      }
+
+      /* ============================================ */
+      /* GRADIENT BACKGROUND                          */
+      /* ============================================ */
+
+      .gradient-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        background:
+          radial-gradient(
+            ellipse at 0% 0%,
+            var(--accent-2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 100% 100%,
+            var(--accent-1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 50% 50%,
+            var(--accent-3) 0%,
+            transparent 60%
+          );
+        background-size: 200% 200%;
+        animation: gradientWarm 25s ease-in-out infinite alternate;
+        opacity: 0.2;
+        pointer-events: none;
+        transition: background 0.8s ease;
+      }
+
+      @keyframes gradientWarm {
+        0%,
+        100% {
+          background-position: 0% 0%;
+          opacity: 0.15;
+        }
+        50% {
+          background-position: 100% 100%;
+          opacity: 0.25;
+        }
+      }
+
+      body.blue-green .gradient-bg {
+        background:
+          radial-gradient(ellipse at 0% 0%, #58ebfe 0%, transparent 50%),
+          radial-gradient(ellipse at 100% 100%, #4ff3a6 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 50%, #3b82f6 0%, transparent 60%);
+      }
+
+      /* ============================================ */
+      /* SCANLINE OVERLAY                            */
+      /* ============================================ */
+
+      .scanline-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9997;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 3px
+        );
+        opacity: 1;
+        transition: opacity 0.5s ease;
+      }
+
+      .scanline-overlay:not(.active) {
+        opacity: 0;
+      }
+
+      body.hud-mode .scanline-overlay {
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(88, 235, 254, 0.015) 2px,
+          rgba(88, 235, 254, 0.015) 3px,
+          transparent 3px,
+          transparent 5px,
+          rgba(138, 25, 225, 0.015) 5px,
+          rgba(138, 25, 225, 0.015) 6px
+        );
+        animation: scanMove 0.5s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(6px);
+        }
+      }
+
+      /* ============================================ */
+      /* GRID OVERLAY                                */
+      /* ============================================ */
+
+      .grid-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 9996;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        background-image:
+          linear-gradient(rgba(88, 235, 254, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(88, 235, 254, 0.06) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      body.grid-mode .grid-overlay {
+        opacity: 1;
+      }
+
+      /* ============================================ */
+      /* PARTICLES                                   */
+      /* ============================================ */
+
+      .particle-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        opacity: 0.3;
+      }
+
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        background: var(--accent-1);
+        border-radius: 50%;
+        animation: floatParticle 20s infinite linear;
+        opacity: 0;
+        box-shadow: 0 0 10px var(--accent-1);
+        transition:
+          background 0.8s ease,
+          box-shadow 0.8s ease;
+      }
+
+      .particle:nth-child(1) {
+        left: 10%;
+        animation-delay: 0s;
+        animation-duration: 22s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(2) {
+        left: 20%;
+        animation-delay: 2s;
+        animation-duration: 18s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(3) {
+        left: 30%;
+        animation-delay: 4s;
+        animation-duration: 25s;
+        background: var(--accent-3);
+      }
+      .particle:nth-child(4) {
+        left: 40%;
+        animation-delay: 1s;
+        animation-duration: 20s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(5) {
+        left: 50%;
+        animation-delay: 3s;
+        animation-duration: 23s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(6) {
+        left: 60%;
+        animation-delay: 5s;
+        animation-duration: 19s;
+        background: var(--accent-3);
+      }
+      .particle:nth-child(7) {
+        left: 70%;
+        animation-delay: 2s;
+        animation-duration: 21s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(8) {
+        left: 80%;
+        animation-delay: 4s;
+        animation-duration: 24s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(9) {
+        left: 15%;
+        animation-delay: 6s;
+        animation-duration: 17s;
+        background: var(--accent-3);
+      }
+      .particle:nth-child(10) {
+        left: 45%;
+        animation-delay: 3s;
+        animation-duration: 26s;
+        background: var(--accent-2);
+      }
+      .particle:nth-child(11) {
+        left: 75%;
+        animation-delay: 5s;
+        animation-duration: 22s;
+        background: var(--accent-1);
+      }
+      .particle:nth-child(12) {
+        left: 90%;
+        animation-delay: 7s;
+        animation-duration: 20s;
+        background: var(--accent-3);
+      }
+
+      @keyframes floatParticle {
+        0% {
+          top: -10%;
+          opacity: 0;
+          transform: translateX(0) scale(0);
+        }
+        10% {
+          opacity: 0.8;
+          transform: translateX(10px) scale(1);
+        }
+        90% {
+          opacity: 0.8;
+          transform: translateX(-10px) scale(1);
+        }
+        100% {
+          top: 110%;
+          opacity: 0;
+          transform: translateX(0) scale(0);
+        }
+      }
+
+      body.light-mode .particle-overlay {
+        opacity: 0.1;
+      }
+
+      /* ============================================ */
+      /* HUD CORNERS                                 */
+      /* ============================================ */
+
+      body.hud-mode::before {
+        content: "";
+        position: fixed;
+        inset: 20px;
+        pointer-events: none;
+        z-index: 9998;
+        border: 1px solid rgba(88, 235, 254, 0.05);
+        border-radius: 4px;
+      }
+
+      body.hud-mode::after {
+        content: "⏣ SYS: ONLINE  |  ACTIVITY: 0  |  HUD: v2.1";
+        position: fixed;
+        bottom: 80px;
+        right: 30px;
+        font-family: var(--font-mono);
+        font-size: 0.45rem;
+        color: rgba(88, 235, 254, 0.15);
+        letter-spacing: 2px;
+        z-index: 9998;
+        pointer-events: none;
+      }
+
+      /* ============================================ */
+      /* THEME CONTROLS                              */
+      /* ============================================ */
+
+      .theme-controls {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(13, 11, 21, 0.85);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        padding: 6px 10px;
+        border-radius: 40px;
+        border: 1px solid rgba(138, 25, 225, 0.15);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .theme-controls button {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgba(138, 25, 225, 0.12);
+        background: rgba(138, 25, 225, 0.06);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .theme-controls button:hover {
+        background: rgba(138, 25, 225, 0.15);
+        transform: scale(1.05);
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+      }
+
+      .theme-controls button.active {
+        background: var(--accent-gradient);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 0 20px rgba(138, 25, 225, 0.25);
+      }
+
+      .theme-controls .separator {
+        width: 1px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* ============================================ */
+      /* MAIN CONTENT                                */
+      /* ============================================ */
+
+      .feed-main {
+        padding-top: 90px;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+
+      .feed-main .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* ============================================ */
+      /* PAGE HEADER                                 */
+      /* ============================================ */
 
       .page-header {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        padding: 1rem 0;
       }
 
       .page-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        font-size: 2.5rem;
+        font-weight: 800;
+        font-family: var(--font-display);
+        letter-spacing: 2px;
+        background: var(--accent-gradient);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
         margin-bottom: 0.5rem;
+        text-shadow: none;
+        filter: drop-shadow(0 0 40px rgba(138, 25, 225, 0.15));
+        transition: background 0.8s ease;
+      }
+
+      .page-header h1 i {
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
 
       .page-header p {
-        color: #6b7280;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
       }
 
-      /* Tabs */
+      /* ============================================ */
+      /* AUTH REQUIRED                               */
+      /* ============================================ */
+
+      .auth-required {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(13, 11, 21, 0.5);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-glow);
+        max-width: 500px;
+        margin: 3rem auto;
+      }
+
+      body.light-mode .auth-required {
+        background: rgba(255, 255, 255, 0.6);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .auth-required i {
+        font-size: 3.5rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 1rem;
+        display: block;
+        opacity: 0.6;
+      }
+
+      .auth-required h3 {
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        font-family: var(--font-display);
+        margin-bottom: 0.5rem;
+      }
+
+      .auth-required p {
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .btn-login {
+        display: inline-block;
+        padding: 0.7rem 2rem;
+        border-radius: var(--radius-sm);
+        background: var(--accent-gradient);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: var(--font-mono);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(138, 25, 225, 0.2);
+      }
+
+      .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(138, 25, 225, 0.3);
+      }
+
+      /* ============================================ */
+      /* STATS BAR                                   */
+      /* ============================================ */
+
+      .feed-stats-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        padding: 1.2rem 2rem;
+        margin-bottom: 1.5rem;
+        background: rgba(13, 11, 21, 0.4);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-glow);
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        transition:
+          background 0.4s ease,
+          border-color 0.4s ease;
+      }
+
+      body.light-mode .feed-stats-bar {
+        background: rgba(255, 255, 255, 0.6);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-number {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        font-family: var(--font-display);
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        transition: background 0.8s ease;
+      }
+
+      .stat-label {
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .stat-divider {
+        width: 1px;
+        height: 30px;
+        background: rgba(88, 235, 254, 0.08);
+      }
+
+      /* ============================================ */
+      /* TABS                                        */
+      /* ============================================ */
+
       .feed-tabs {
         display: flex;
         justify-content: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
         flex-wrap: wrap;
       }
 
       .tab-btn {
-        background: white;
-        border: 2px solid #e5e7eb;
-        padding: 0.6rem 1.5rem;
-        border-radius: 50px;
-        font-weight: 600;
-        color: #4b5563;
+        padding: 0.4rem 1.2rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        background: rgba(13, 11, 21, 0.3);
+        color: var(--text-secondary);
+        font-size: 0.7rem;
+        font-weight: 500;
         cursor: pointer;
         transition: all 0.3s ease;
+        font-family: var(--font-mono);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      body.light-mode .tab-btn {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(0, 0, 0, 0.06);
+        color: var(--text-secondary);
       }
 
       .tab-btn:hover {
-        border-color: #fe67ea;
-        color: #fe67ea;
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+        transform: translateY(-2px);
       }
 
       .tab-btn.active {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
-        border-color: transparent;
-        color: white;
+        background: rgba(138, 25, 225, 0.12);
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+        box-shadow: 0 0 20px rgba(138, 25, 225, 0.05);
       }
 
-      /* Feed Container */
+      .tab-btn i {
+        font-size: 0.7rem;
+      }
+
+      /* ============================================ */
+      /* FEED CONTAINER                              */
+      /* ============================================ */
+
       .feed-container {
-        max-width: 700px;
-        margin: 0 auto;
+        background: rgba(13, 11, 21, 0.3);
+        backdrop-filter: var(--glass-blur);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        box-shadow: var(--shadow-glow);
+        min-height: 300px;
+        transition:
+          background 0.4s ease,
+          border-color 0.4s ease;
       }
 
-      /* Feed Items */
+      body.light-mode .feed-container {
+        background: rgba(255, 255, 255, 0.4);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
       .feed-list {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
       }
 
+      /* ============================================ */
+      /* FEED ITEM                                   */
+      /* ============================================ */
+
       .feed-item {
-        background: white;
-        border-radius: 1rem;
-        padding: 1.2rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
         display: flex;
         gap: 1rem;
+        padding: 1rem;
+        background: rgba(13, 11, 21, 0.3);
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(88, 235, 254, 0.04);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+      }
+
+      body.light-mode .feed-item {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(0, 0, 0, 0.04);
       }
 
       .feed-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(254, 103, 234, 0.12);
+        background: rgba(13, 11, 21, 0.5);
+        border-color: rgba(88, 235, 254, 0.08);
+        transform: translateX(4px);
       }
 
-      /* Feed Avatar */
+      body.light-mode .feed-item:hover {
+        background: rgba(255, 255, 255, 0.5);
+        border-color: rgba(138, 25, 225, 0.08);
+      }
+
+      .feed-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: var(--accent-gradient);
+        opacity: 0;
+        transition:
+          opacity 0.3s ease,
+          background 0.8s ease;
+        border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+      }
+
+      .feed-item:hover::before {
+        opacity: 0.5;
+      }
+
       .feed-avatar {
-        width: 48px;
-        height: 48px;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
         color: white;
-        font-weight: bold;
-        font-size: 1.2rem;
         flex-shrink: 0;
+        background: var(--accent-gradient);
+        border: 1px solid rgba(88, 235, 254, 0.1);
+        flex-shrink: 0;
+        transition: background 0.8s ease;
       }
 
-      /* Feed Content */
+      .feed-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
       .feed-content {
         flex: 1;
+        min-width: 0;
       }
 
       .feed-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.3rem;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 0.3rem;
+        margin-bottom: 0.2rem;
       }
 
       .feed-user {
         font-weight: 600;
-        color: #1f2937;
-        font-size: 0.9rem;
+        color: var(--text-primary);
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-family: var(--font-display);
+        letter-spacing: 0.5px;
+      }
+
+      .feed-user .verified-badge {
+        color: var(--accent-2);
+        font-size: 0.6rem;
+      }
+
+      .feed-time {
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
         display: flex;
         align-items: center;
         gap: 0.3rem;
       }
 
-      .feed-user i {
-        color: #fe67ea;
-        font-size: 0.8rem;
-      }
-
-      .feed-time {
-        font-size: 0.7rem;
-        color: #9ca3af;
-        display: flex;
-        align-items: center;
-        gap: 0.2rem;
-      }
-
       .feed-action {
-        font-size: 0.75rem;
-        color: #fe67ea;
-        margin-bottom: 0.3rem;
+        font-size: 0.65rem;
+        color: var(--accent-1);
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+        font-family: var(--font-mono);
+        letter-spacing: 0.5px;
+        transition: color 0.8s ease;
+      }
+
+      .feed-action .action-icon {
+        margin-right: 0.3rem;
       }
 
       .feed-title {
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 600;
-        color: #1f2937;
-        margin-bottom: 0.3rem;
+        color: var(--text-primary);
+        margin-bottom: 0.2rem;
+        font-family: var(--font-display);
+        letter-spacing: 0.5px;
       }
 
       .feed-description {
         font-size: 0.8rem;
-        color: #6b7280;
-        line-height: 1.4;
+        color: var(--text-secondary);
+        line-height: 1.6;
         margin-bottom: 0.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
-      /* Image Preview */
       .feed-image-preview {
         margin-top: 0.5rem;
-        border-radius: 0.75rem;
+        border-radius: var(--radius-sm);
         overflow: hidden;
         cursor: pointer;
         transition: all 0.3s ease;
         max-width: 100%;
+        position: relative;
+        border: 1px solid rgba(88, 235, 254, 0.04);
+      }
+
+      body.light-mode .feed-image-preview {
+        border-color: rgba(0, 0, 0, 0.04);
       }
 
       .feed-image-preview img {
         width: 100%;
-        max-height: 350px;
+        max-height: 300px;
         object-fit: cover;
-        transition: transform 0.3s ease;
+        transition: transform 0.4s ease;
+        display: block;
       }
 
       .feed-image-preview:hover img {
         transform: scale(1.02);
       }
 
-      /* Tags */
+      .feed-image-preview .image-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0.8rem;
+        background: linear-gradient(to top, rgba(10, 8, 16, 0.8), transparent);
+        color: white;
+        font-size: 0.65rem;
+        font-weight: 500;
+        font-family: var(--font-mono);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .feed-image-preview:hover .image-overlay {
+        opacity: 1;
+      }
+
       .feed-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 0.3rem;
         margin-top: 0.5rem;
       }
 
       .feed-tag {
-        background: #f3f4f6;
-        padding: 0.2rem 0.7rem;
-        border-radius: 50px;
-        font-size: 0.65rem;
-        color: #4b5563;
+        background: rgba(13, 11, 21, 0.4);
+        padding: 0.1rem 0.6rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        border: 1px solid rgba(88, 235, 254, 0.04);
+        transition: all 0.3s ease;
+        font-family: var(--font-mono);
+        cursor: pointer;
       }
 
-      /* Empty & Loading States */
+      body.light-mode .feed-tag {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(0, 0, 0, 0.04);
+      }
+
+      .feed-tag:hover {
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+      }
+
+      .feed-stats {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+      }
+
+      .feed-stats span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .feed-stats .like-count {
+        color: #ef4444;
+      }
+
+      .feed-stats .cheer-count {
+        color: var(--accent-3);
+      }
+
+      .feed-stats .view-count {
+        color: var(--accent-1);
+      }
+
+      /* ============================================ */
+      /* LOADING & EMPTY STATES                      */
+      /* ============================================ */
+
       .loading-state {
         text-align: center;
         padding: 3rem;
-        background: white;
-        border-radius: 1rem;
+        color: var(--text-secondary);
       }
 
-      .spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid #e5e7eb;
-        border-top-color: #fe67ea;
+      .loading-state .spinner {
+        width: 36px;
+        height: 36px;
+        border: 2px solid rgba(88, 235, 254, 0.06);
+        border-top-color: var(--accent-1);
         border-radius: 50%;
-        animation: spin 1s linear infinite;
+        animation: spin 0.8s linear infinite;
         margin: 0 auto 1rem;
+        transition: border-top-color 0.8s ease;
       }
 
       @keyframes spin {
@@ -246,69 +973,289 @@
         }
       }
 
+      .loading-state p {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+      }
+
       .empty-state {
         text-align: center;
-        padding: 3rem;
-        background: white;
-        border-radius: 1rem;
+        padding: 3rem 2rem;
+        color: var(--text-secondary);
       }
 
       .empty-state i {
         font-size: 3rem;
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+        background: var(--accent-gradient);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
         margin-bottom: 1rem;
+        display: block;
+        opacity: 0.5;
+        transition: background 0.8s ease;
       }
 
       .empty-state h3 {
-        margin-bottom: 0.5rem;
-        color: #1f2937;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        font-family: var(--font-display);
+        margin-bottom: 0.3rem;
       }
 
       .empty-state p {
-        color: #6b7280;
-        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
       }
 
-      .btn-primary {
-        background: linear-gradient(135deg, #fe67ea, #63dbee);
+      .btn-shadow-find {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.5rem;
+        border-radius: var(--radius-sm);
+        background: var(--accent-gradient);
         color: white;
-        padding: 0.6rem 1.5rem;
-        border-radius: 50px;
         text-decoration: none;
-        display: inline-block;
         font-weight: 600;
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+        transition:
+          all 0.3s ease,
+          background 0.8s ease;
       }
+
+      .btn-shadow-find:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(138, 25, 225, 0.2);
+      }
+
+      /* ============================================ */
+      /* LOAD MORE                                   */
+      /* ============================================ */
+
+      #loadMoreContainer {
+        text-align: center;
+        padding: 1rem;
+        display: none;
+      }
+
+      .btn-load-more {
+        padding: 0.5rem 2rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        background: rgba(13, 11, 21, 0.3);
+        color: var(--text-secondary);
+        font-size: 0.7rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: var(--font-mono);
+      }
+
+      body.light-mode .btn-load-more {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      .btn-load-more:hover {
+        border-color: var(--accent-1);
+        color: var(--accent-1);
+        transform: translateY(-2px);
+      }
+
+      /* ============================================ */
+      /* LIGHT MODE                                  */
+      /* ============================================ */
+
+      body.light-mode {
+        --bg-primary: #f0ecf5;
+        --bg-secondary: #e8e0f0;
+        --text-primary: #1a1028;
+        --text-secondary: #5a4a70;
+        --text-muted: #8a7a9a;
+      }
+
+      body.light-mode .gradient-bg {
+        opacity: 0.08;
+      }
+
+      body.light-mode .theme-controls {
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      body.light-mode .theme-controls button {
+        color: var(--text-secondary);
+        border-color: rgba(0, 0, 0, 0.06);
+      }
+
+      body.light-mode .theme-controls button:hover {
+        background: rgba(138, 25, 225, 0.08);
+        color: var(--accent-1);
+      }
+
+      body.light-mode .theme-controls button.active {
+        background: var(--accent-gradient);
+        color: white;
+      }
+
+      /* ============================================ */
+      /* RESPONSIVE                                  */
+      /* ============================================ */
 
       @media (max-width: 768px) {
+        .feed-main {
+          padding-top: 80px;
+        }
+
+        .feed-main .container {
+          padding: 0 16px;
+        }
+
+        .page-header h1 {
+          font-size: 2rem;
+        }
+
+        .feed-stats-bar {
+          gap: 1.5rem;
+          padding: 1rem;
+        }
+
+        .stat-number {
+          font-size: 1.2rem;
+        }
+
         .feed-item {
           flex-direction: column;
           align-items: flex-start;
+          gap: 0.8rem;
+          padding: 0.8rem;
         }
 
         .feed-avatar {
-          width: 40px;
-          height: 40px;
-          font-size: 1rem;
+          width: 38px;
+          height: 38px;
+          font-size: 0.9rem;
         }
 
         .feed-header {
           flex-direction: column;
           align-items: flex-start;
         }
+
+        .feed-tabs {
+          gap: 0.3rem;
+        }
+
+        .tab-btn {
+          padding: 0.3rem 0.8rem;
+          font-size: 0.6rem;
+        }
+
+        .feed-container {
+          padding: 0.8rem;
+        }
+
+        body.hud-mode::before {
+          inset: 10px;
+        }
+
+        body.hud-mode::after {
+          bottom: 70px;
+          right: 20px;
+          font-size: 0.35rem;
+        }
+
+        .theme-controls {
+          bottom: 16px;
+          right: 16px;
+          padding: 4px 8px;
+        }
+
+        .theme-controls button {
+          width: 28px;
+          height: 28px;
+          font-size: 0.6rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .feed-main {
+          padding-top: 70px;
+        }
+
+        .page-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .page-header p {
+          font-size: 0.9rem;
+        }
+
+        .feed-stats-bar {
+          flex-direction: row;
+          justify-content: space-around;
+          gap: 0.5rem;
+          padding: 0.8rem;
+        }
+
+        .stat-divider {
+          display: none;
+        }
+
+        .feed-item {
+          padding: 0.6rem;
+        }
+
+        .feed-title {
+          font-size: 0.85rem;
+        }
+
+        .feed-action {
+          font-size: 0.55rem;
+        }
+
+        .tab-btn span {
+          display: none;
+        }
+
+        .tab-btn i {
+          font-size: 0.9rem;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Header - Updated Navbar -->
+    <!-- ====== BACKGROUND EFFECTS ====== -->
+    <div class="gradient-bg"></div>
+    <div class="scanline-overlay active" id="scanlineOverlay"></div>
+    <div class="grid-overlay" id="gridOverlay"></div>
+
+    <!-- ====== PARTICLES ====== -->
+    <div class="particle-overlay" id="particleOverlay">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
             <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+              <span class="logo-icon">✦</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
@@ -329,39 +1276,43 @@
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/tutorials/character-design-landing.html"
-                    >🎨 Character Design</a
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/color-lighting-landing.html"
-                    >💡 Color & Lighting</a
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/digital-painting-landing.html"
-                    >🖌️ Digital Painting</a
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/facial-anatomy-basics.html"
-                    >😌 Facial Features</a
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/software-guides-landing.html"
-                    >💻 Software Guide</a
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/workflow-process-landing.html"
-                    >⚙️ Workflow Process</a
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -374,11 +1325,18 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--accent-1)"
+                    >❖ Software Journals</a
+                  >
                 </li>
               </ul>
             </li>
@@ -389,17 +1347,17 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
@@ -411,25 +1369,25 @@
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
@@ -439,15 +1397,13 @@
               >
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -455,12 +1411,11 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
+                >Truly Yours ✦</a
               >
             </li>
           </ul>
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -497,7 +1452,6 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -505,7 +1459,16 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
           <button
             class="mobile-menu-btn"
@@ -539,116 +1502,204 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
-    <main class="activity-feed-main">
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="feed-main">
       <div class="container">
         <div class="page-header">
           <h1><i class="fas fa-rss"></i> Activity Feed</h1>
           <p>See what artists you shadow are creating</p>
         </div>
 
-        <div id="authRequired" style="display: none">
-          <div class="empty-state">
-            <i class="fas fa-lock"></i>
-            <h3>Please Login</h3>
-            <p>You need to be logged in to see your activity feed.</p>
-            <a href="/pages/auth/login.html" class="btn-primary">Login</a>
-          </div>
+        <!-- Auth Required -->
+        <div id="authRequired" class="auth-required" style="display: none">
+          <i class="fas fa-lock"></i>
+          <h3>Authentication Required</h3>
+          <p>You need to be logged in to see your activity feed.</p>
+          <a href="/pages/auth/login.html" class="btn-login">Login</a>
         </div>
 
+        <!-- Feed Content -->
         <div id="feedContent" style="display: none">
-          <div class="feed-tabs">
-            <button class="tab-btn active" data-tab="all">
-              📢 All Activity
-            </button>
-            <button class="tab-btn" data-tab="artworks">🎨 New Artworks</button>
+          <!-- Stats Bar -->
+          <div class="feed-stats-bar">
+            <div class="stat-item">
+              <span class="stat-number" id="shadowCount">0</span>
+              <span class="stat-label">Shadowing</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number" id="activityCount">0</span>
+              <span class="stat-label">Activities</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number" id="recentCount">0</span>
+              <span class="stat-label">Recent</span>
+            </div>
           </div>
 
+          <!-- Tabs -->
+          <div class="feed-tabs">
+            <button class="tab-btn active" data-tab="all">
+              <i class="fas fa-globe"></i> <span>All Activity</span>
+            </button>
+            <button class="tab-btn" data-tab="artworks">
+              <i class="fas fa-palette"></i> <span>Artworks</span>
+            </button>
+            <button class="tab-btn" data-tab="likes">
+              <i class="fas fa-heart"></i> <span>Likes</span>
+            </button>
+            <button class="tab-btn" data-tab="cheers">
+              <i class="fas fa-glass-cheers"></i> <span>Cheers</span>
+            </button>
+          </div>
+
+          <!-- Feed Container -->
           <div class="feed-container">
-            <div id="feedList" class="feed-list">
+            <div class="feed-list" id="feedList">
               <div class="loading-state">
                 <div class="spinner"></div>
                 <p>Loading your feed...</p>
               </div>
+            </div>
+
+            <!-- Load More -->
+            <div
+              id="loadMoreContainer"
+              style="display: none; text-align: center; padding: 1rem"
+            >
+              <button class="btn-load-more" id="loadMoreBtn">
+                Load More <i class="fas fa-arrow-down"></i>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </main>
 
-    <footer class="tutorial-footer">
+    <!-- ====== THEME CONTROLS ====== -->
+    <div class="theme-controls">
+      <!-- Color Theme Toggles -->
+      <button id="themePinkPurple" class="active" title="Pink/Purple Theme">
+        <i class="fas fa-fill-drip" style="color: #ff00ea"></i>
+      </button>
+      <button id="themeBlueGreen" title="Blue/Green Theme">
+        <i class="fas fa-fill-drip" style="color: #58ebfe"></i>
+      </button>
+      <span class="separator"></span>
+      <!-- Dark/Light Toggles -->
+      <button id="themeDark" class="active" title="Dark Mode">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="themeLight" title="Light Mode">
+        <i class="fas fa-sun"></i>
+      </button>
+      <span class="separator"></span>
+      <!-- HUD Controls -->
+      <button id="hudToggle" class="active" title="HUD Mode (H)">
+        <i class="fas fa-vr-cardboard"></i>
+      </button>
+      <button id="scanlineToggle" class="active" title="Scanlines (S)">
+        <i class="fas fa-grip-lines"></i>
+      </button>
+      <button id="gridToggle" class="active" title="Grid Overlay (G)">
+        <i class="fas fa-th"></i>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/community/activity-feed.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Apply saved theme
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        if (savedTheme === "light") {
+          document.body.classList.add("light-mode");
+        } else {
+          document.body.classList.remove("light-mode");
+        }
+
+        // Apply saved color theme
+        const savedColorTheme =
+          localStorage.getItem("colorTheme") || "pink-purple";
+        if (savedColorTheme === "blue-green") {
+          document.body.classList.add("blue-green");
+        } else {
+          document.body.classList.remove("blue-green");
+        }
+
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
@@ -656,10 +1707,5 @@
         }, 300);
       });
     </script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
-    <script src="/js/components/avatar-manager.js"></script>
-    <script src="/js/community/activity-feed.js"></script>
   </body>
 </html>

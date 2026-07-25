@@ -1,0 +1,41 @@
+/* ============================================ */
+/* CUSTOM FONTS - Art Mecca                    */
+/* ============================================ */
+
+/* Gandover - Display Font */
+@font-face {
+  font-family: 'Gandover';
+  src: url('fonts/Gandover.woff2') format('woff2'),
+       url('fonts/Gandover.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gandover';
+  src: url('fonts/Gandover-Bold.woff2') format('woff2'),
+       url('fonts/Gandover-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Urban Star Blues Demo - Heading Font */
+@font-face {
+  font-family: 'Urban Star Blues Demo';
+  src: url('fonts/UrbanStarBluesDemo.woff2') format('woff2'),
+       url('fonts/UrbanStarBluesDemo.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback if fonts don't load */
+.font-display {
+  font-family: 'Gandover', 'Inter', sans-serif;
+}
+
+.font-heading {
+  font-family: 'Urban Star Blues Demo', 'Inter', sans-serif;
+}

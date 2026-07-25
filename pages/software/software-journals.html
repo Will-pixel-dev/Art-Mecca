@@ -1,0 +1,2047 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Software Journals - Art Mecca</title>
+    <meta
+      name="description"
+      content="Real artist journeys documenting their experience with digital art software. Learn from others' successes and struggles."
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Software Journals - Real Artist Journeys"
+    />
+    <meta
+      property="og:description"
+      content="Real artist journeys documenting their experience with digital art software. Learn from others' successes and struggles."
+    />
+    <meta property="og:image" content="/images/og-journals.jpg" />
+    <meta
+      property="og:url"
+      content="https://artisanhub.com/pages/software/software-journals.html"
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+
+    <!-- Google Fonts + Font Awesome -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <style>
+      /* ================================================================
+         SOFTWARE JOURNALS — CYBERPUNK BLUE HUD AESTHETIC
+         ================================================================ */
+
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(59, 130, 246, 0.06);
+        --bg-card-hover: rgba(59, 130, 246, 0.12);
+        --bg-elevated: rgba(59, 130, 246, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(59, 130, 246, 0.15);
+
+        /* Theme Colors - Blue */
+        --color-blue: #3b82f6;
+        --color-blue-dark: #2563eb;
+        --color-blue-darker: #1d4ed8;
+        --color-blue-light: #60a5fa;
+        --color-blue-lighter: #93bbfc;
+        --color-cyan: #58ebfe;
+
+        /* Glitch Colors - Blue Only */
+        --color-glitch-a: #00eaff;
+        --color-glitch-b: #3b82f6;
+        --color-glitch-c: #1d4ed8;
+
+        /* Neon Accents */
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-magenta: #ff00ea;
+
+        /* Spray */
+        --color-spray-blue: #3b82f6;
+        --color-spray-cyan: #58ebfe;
+
+        /* Gradients */
+        --gradient-blue: linear-gradient(135deg, #3b82f6, #2563eb, #1d4ed8);
+        --gradient-cyber: linear-gradient(135deg, #00eaff, #3b82f6, #58ebfe);
+        --gradient-neon: linear-gradient(135deg, #3b82f6, #2563eb);
+
+        /* Glows */
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.1);
+        --glow-cyan:
+          0 0 40px rgba(88, 235, 254, 0.3), 0 0 80px rgba(88, 235, 254, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(59, 130, 246, 0.2);
+
+        --glow-blue:
+          0 0 40px rgba(59, 130, 246, 0.08), 0 0 80px rgba(59, 130, 246, 0.03);
+        --glow-cyan:
+          0 0 40px rgba(88, 235, 254, 0.08), 0 0 80px rgba(88, 235, 254, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         GLITCH HEADER
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(59, 130, 246, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         GLASS CARD
+         ============================================================ */
+      .glass-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        transition: all var(--transition);
+      }
+
+      .glass-card:hover {
+        background: var(--bg-card-hover);
+        border-color: rgba(59, 130, 246, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      /* ============================================================
+         MAIN CONTENT
+         ============================================================ */
+      .journals-main {
+        position: relative;
+        z-index: 2;
+        padding: 2rem 0 4rem;
+        min-height: 100vh;
+      }
+
+      /* ============================================================
+         HERO SECTION — CYBER HUD
+         ============================================================ */
+      .journals-hero {
+        text-align: center;
+        padding: 4rem 0 3rem;
+        position: relative;
+      }
+
+      .journals-hero::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 2rem;
+        color: var(--color-blue);
+        opacity: 0.04;
+        pointer-events: none;
+        letter-spacing: 4px;
+        transform: rotate(-4deg);
+      }
+
+      .hero-badge {
+        display: inline-block;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--color-cyan);
+        padding: 0.4rem 1.2rem;
+        border: 1px solid rgba(88, 235, 254, 0.15);
+        border-radius: 2px;
+        background: rgba(88, 235, 254, 0.03);
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+        animation: badgePulse 3s ease-in-out infinite;
+      }
+
+      @keyframes badgePulse {
+        0%,
+        100% {
+          border-color: rgba(88, 235, 254, 0.15);
+          box-shadow: 0 0 0px rgba(88, 235, 254, 0);
+        }
+        50% {
+          border-color: rgba(88, 235, 254, 0.3);
+          box-shadow: 0 0 20px rgba(88, 235, 254, 0.05);
+        }
+      }
+
+      .journals-hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        line-height: 1.1;
+      }
+
+      .journals-hero h1 .highlight {
+        background: var(--gradient-blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmerBlue 4s ease-in-out infinite;
+        background-size: 200% 200%;
+      }
+
+      @keyframes shimmerBlue {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .journals-hero p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         CONTROLS — CYBER HUD
+         ============================================================ */
+      .journals-controls {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        position: relative;
+      }
+
+      .journals-controls::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-blue);
+        opacity: 0.4;
+      }
+
+      .controls-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-end;
+        margin-bottom: 1rem;
+      }
+
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex: 1;
+        min-width: 140px;
+      }
+
+      .filter-group label {
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .filter-select {
+        padding: 0.6rem 1rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-size: 0.85rem;
+        font-family: var(--font-condensed);
+        cursor: pointer;
+        transition: all var(--transition);
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a3a6a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 12px 12px;
+        padding-right: 2.5rem;
+      }
+
+      .filter-select:hover {
+        border-color: rgba(59, 130, 246, 0.3);
+      }
+
+      .filter-select:focus {
+        outline: none;
+        border-color: var(--color-cyan);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      .filter-select option {
+        background: var(--bg-body);
+        color: var(--text-primary);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.4rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        font-family: var(--font-condensed);
+        border: none;
+        cursor: pointer;
+        transition: all var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .btn-primary {
+        background: var(--gradient-blue);
+        color: var(--text-inverse);
+        box-shadow: var(--glow-blue);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          var(--glow-cyan),
+          0 8px 40px rgba(59, 130, 246, 0.2);
+      }
+
+      .btn-large {
+        padding: 0.8rem 2.4rem;
+        font-size: 0.85rem;
+      }
+
+      .stats-row {
+        display: flex;
+        gap: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        flex-wrap: wrap;
+      }
+
+      .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+      }
+
+      .stat-item i {
+        color: var(--color-cyan);
+        font-size: 0.9rem;
+      }
+
+      .stat-item span {
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      /* ============================================================
+         JOURNAL GRID
+         ============================================================ */
+      .journals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+      }
+
+      /* ============================================================
+         JOURNAL CARD — GLASS BLUE
+         ============================================================ */
+      .journal-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        transition: all var(--transition-slow);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .journal-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-blue);
+        opacity: 0;
+        transition: opacity var(--transition);
+      }
+
+      .journal-card:hover::before {
+        opacity: 0.6;
+      }
+
+      .journal-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(59, 130, 246, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      .journal-card .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+        gap: 0.5rem;
+      }
+
+      .journal-card .card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        font-family: var(--font-display);
+        color: var(--text-primary);
+        flex: 1;
+        letter-spacing: 0.5px;
+        line-height: 1.3;
+      }
+
+      .journal-card .card-software {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.55rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        background: rgba(59, 130, 246, 0.08);
+        color: var(--color-cyan);
+        border: 1px solid rgba(59, 130, 246, 0.1);
+        white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .journal-card .card-software.photoshop {
+        background: rgba(59, 130, 246, 0.08);
+        color: #60a5fa;
+        border-color: rgba(59, 130, 246, 0.1);
+      }
+      .journal-card .card-software.procreate {
+        background: rgba(255, 105, 180, 0.08);
+        color: #ff69b4;
+        border-color: rgba(255, 105, 180, 0.1);
+      }
+      .journal-card .card-software.clipstudio {
+        background: rgba(139, 92, 246, 0.08);
+        color: #a78bfa;
+        border-color: rgba(139, 92, 246, 0.1);
+      }
+      .journal-card .card-software.krita {
+        background: rgba(16, 185, 129, 0.08);
+        color: #34d399;
+        border-color: rgba(16, 185, 129, 0.1);
+      }
+      .journal-card .card-software.affinity {
+        background: rgba(245, 158, 11, 0.08);
+        color: #fbbf24;
+        border-color: rgba(245, 158, 11, 0.1);
+      }
+
+      .journal-card .card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        font-size: 0.6rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        margin-bottom: 0.75rem;
+      }
+
+      .journal-card .card-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      .journal-card .card-meta i {
+        color: var(--color-cyan);
+        font-size: 0.55rem;
+      }
+
+      .journal-card .card-description {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-family: var(--font-condensed);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .journal-card .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 1rem;
+      }
+
+      .journal-card .card-tags .tag {
+        padding: 0.1rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.55rem;
+        font-family: var(--font-mono);
+        background: rgba(59, 130, 246, 0.04);
+        color: var(--text-muted);
+        border: 1px solid var(--border-color);
+      }
+
+      .journal-card .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .journal-card .card-author {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .journal-card .card-author .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--gradient-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.65rem;
+        font-family: var(--font-display);
+        color: var(--text-inverse);
+        flex-shrink: 0;
+      }
+
+      .journal-card .card-author .name {
+        font-weight: 600;
+        font-size: 0.8rem;
+        font-family: var(--font-condensed);
+        color: var(--text-primary);
+      }
+
+      .journal-card .card-author .level {
+        font-size: 0.55rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+      }
+
+      .journal-card .card-stats {
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.6rem;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+      }
+
+      .journal-card .card-stats i {
+        color: var(--color-cyan);
+        font-size: 0.55rem;
+      }
+
+      .example-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+        padding: 0.1rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.5rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        background: rgba(245, 158, 11, 0.12);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.15);
+        margin-left: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .example-badge i {
+        font-size: 0.4rem;
+      }
+
+      /* ============================================================
+         EMPTY STATE
+         ============================================================ */
+      .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+      }
+
+      .empty-state i {
+        font-size: 3.5rem;
+        color: var(--color-cyan);
+        opacity: 0.3;
+        margin-bottom: 1rem;
+      }
+
+      .empty-state h3 {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .empty-state p {
+        color: var(--text-secondary);
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         CTA SECTION
+         ============================================================ */
+      .cta-journals {
+        padding: 3rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+      }
+
+      .cta-journals::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gradient-blue);
+        opacity: 0.4;
+      }
+
+      .cta-journals::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        font-family: var(--font-tag);
+        font-size: 3rem;
+        color: var(--color-blue);
+        opacity: 0.03;
+        pointer-events: none;
+        letter-spacing: 6px;
+        transform: rotate(-4deg);
+      }
+
+      .cta-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .cta-content h2 {
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        letter-spacing: 1px;
+      }
+
+      .cta-content p {
+        color: var(--text-secondary);
+        max-width: 500px;
+        margin: 0 auto 1.5rem;
+        font-family: var(--font-condensed);
+      }
+
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-blue);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+        border-color: var(--color-cyan);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         TOAST NOTIFICATION
+         ============================================================ */
+      .toast-notification-custom {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        z-index: 10000;
+        animation: toastSlideIn 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-blue);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toast-notification-custom i {
+        color: var(--color-cyan);
+        font-size: 1.1rem;
+      }
+
+      @keyframes toastSlideIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
+      @media (max-width: 768px) {
+        .journals-main {
+          padding: 1rem 0 3rem;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .journals-hero h1 {
+          font-size: 2rem;
+        }
+
+        .journals-hero p {
+          font-size: 1rem;
+        }
+
+        .controls-row {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .filter-group {
+          min-width: 100%;
+        }
+
+        .journals-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-row {
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+
+        .cta-journals {
+          padding: 2rem 1.5rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .journal-card .card-header {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .journals-hero::after {
+          font-size: 1.5rem;
+          right: 10px;
+          bottom: 5px;
+          opacity: 0.02;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .journal-card {
+          padding: 1rem;
+        }
+
+        .btn {
+          padding: 0.5rem 1rem;
+          font-size: 0.65rem;
+        }
+
+        .btn-large {
+          padding: 0.6rem 1.6rem;
+          font-size: 0.75rem;
+        }
+
+        .journal-card .card-title {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+
+          <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link active"
+              >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+                <li>
+                  <a
+                    href="/pages/software/software-journals.html"
+                    style="color: var(--color-cyan)"
+                    >📖 Software Journals</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+              >
+                Truly Yours ✦
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-actions">
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="journals-main">
+      <div class="container">
+        <!-- Hero Section -->
+        <section class="journals-hero">
+          <span class="hero-badge">
+            <i class="fas fa-book-open"></i> Artist Stories
+          </span>
+
+          <h1>
+            <span class="glitch-header" data-text="Software">Software</span> Journals
+          </h1>
+
+          <p>
+            Real artists document their journey with different software — the
+            struggles, breakthroughs, and everything in between.
+          </p>
+        </section>
+
+        <!-- Controls -->
+        <section class="journals-controls glass-card">
+          <div class="controls-row">
+            <div class="filter-group">
+              <label for="filter-software">Software</label>
+              <select id="filter-software" class="filter-select">
+                <option value="all">All Software</option>
+                <option value="photoshop">Photoshop</option>
+                <option value="procreate">Procreate</option>
+                <option value="clipstudio">Clip Studio Paint</option>
+                <option value="krita">Krita</option>
+                <option value="affinity">Affinity Photo</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filter-skill">Skill Level</label>
+              <select id="filter-skill" class="filter-select">
+                <option value="all">All Levels</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filter-sort">Sort By</label>
+              <select id="filter-sort" class="filter-select">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="popular">Most Popular</option>
+                <option value="entries">Most Entries</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="startJournalBtn">
+              <i class="fas fa-plus"></i> Start Journal
+            </button>
+          </div>
+          <div class="stats-row">
+            <span class="stat-item">
+              <i class="fas fa-pen-fancy"></i>
+              <span id="totalJournals">0</span> Journals
+            </span>
+            <span class="stat-item">
+              <i class="fas fa-file-alt"></i>
+              <span id="totalEntries">0</span> Entries
+            </span>
+            <span class="stat-item">
+              <i class="fas fa-users"></i>
+              <span id="activeWriters">0</span> Writers
+            </span>
+          </div>
+        </section>
+
+        <!-- Journal Grid -->
+        <section class="journals-grid" id="journalsGrid">
+          <!-- Rendered by JavaScript -->
+          <div class="empty-state">
+            <i class="fas fa-book-open"></i>
+            <h3>No journals found</h3>
+            <p>Be the first to share your software journey!</p>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-journals glass-card">
+          <div class="cta-content">
+            <h2>Share Your Software Journey</h2>
+            <p>
+              Your experience could help another artist find their perfect tool.
+              Start documenting your journey today.
+            </p>
+            <button class="btn btn-primary btn-large" id="ctaStartJournal">
+              <i class="fas fa-pen-fancy"></i> Start Your Journal
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#3b82f6",
+                "#2563eb",
+                "#58ebfe",
+                "#60a5fa",
+                "#93bbfc",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#3b82f6";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#3b82f6";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== SAMPLE JOURNALS ======
+        const sampleJournals = [
+          {
+            id: "sample-1",
+            title: "My Journey with Clip Studio Paint",
+            software: "clipstudio",
+            softwareName: "Clip Studio Paint",
+            author: "Mira Chen",
+            avatar: "MC",
+            skillLevel: "intermediate",
+            description:
+              "From struggling with vectors to creating my first webtoon — my 6-month journey with CSP.",
+            entries: 12,
+            likes: 34,
+            tags: ["manga", "webtoon", "vectors", "ipad"],
+            createdAt: "2026-02-15T10:30:00Z",
+            isExample: true,
+          },
+          {
+            id: "sample-2",
+            title: "Learning Procreate as a Photoshop User",
+            software: "procreate",
+            softwareName: "Procreate",
+            author: "Alex Rivera",
+            avatar: "AR",
+            skillLevel: "intermediate",
+            description:
+              "Switching from Photoshop to Procreate was a journey. Here's what I learned about brushes, layers, and workflow.",
+            entries: 8,
+            likes: 27,
+            tags: ["ipad", "sketching", "workflow", "brushes"],
+            createdAt: "2026-02-10T14:45:00Z",
+            isExample: true,
+          },
+          {
+            id: "sample-3",
+            title: "From Zero to Hero: My Krita Adventure",
+            software: "krita",
+            softwareName: "Krita",
+            author: "Sam Taylor",
+            avatar: "ST",
+            skillLevel: "beginner",
+            description:
+              "I started with zero art experience. Here's my 3-month journey learning digital painting with free software.",
+            entries: 15,
+            likes: 42,
+            tags: ["beginner", "free", "digital painting", "linux"],
+            createdAt: "2026-02-05T09:15:00Z",
+            isExample: true,
+          },
+          {
+            id: "sample-4",
+            title: "Photoshop for Photographers: A Love-Hate Story",
+            software: "photoshop",
+            softwareName: "Photoshop",
+            author: "Jordan Lee",
+            avatar: "JL",
+            skillLevel: "advanced",
+            description:
+              "10 years of Photoshop, 1000+ edits. Here's my honest take on the good, the bad, and the subscription model.",
+            entries: 20,
+            likes: 56,
+            tags: ["photography", "editing", "workflow", "subscription"],
+            createdAt: "2026-01-28T16:20:00Z",
+            isExample: true,
+          },
+          {
+            id: "sample-5",
+            title: "Affinity Photo: Breaking Free from Adobe",
+            software: "affinity",
+            softwareName: "Affinity Photo",
+            author: "Taylor Kim",
+            avatar: "TK",
+            skillLevel: "advanced",
+            description:
+              "After 5 years with Photoshop, I made the switch. Here's what I gained and what I miss.",
+            entries: 6,
+            likes: 19,
+            tags: ["transition", "one-time-payment", "alternatives"],
+            createdAt: "2026-01-20T11:00:00Z",
+            isExample: true,
+          },
+        ];
+
+        // ====== STATE ======
+        let journals = [];
+        let filteredJournals = [];
+
+        // ====== DOM REFS ======
+        const grid = document.getElementById("journalsGrid");
+        const filterSoftware = document.getElementById("filter-software");
+        const filterSkill = document.getElementById("filter-skill");
+        const filterSort = document.getElementById("filter-sort");
+        const startBtns = document.querySelectorAll(
+          "#startJournalBtn, #ctaStartJournal",
+        );
+        const totalJournalsEl = document.getElementById("totalJournals");
+        const totalEntriesEl = document.getElementById("totalEntries");
+        const activeWritersEl = document.getElementById("activeWriters");
+
+        // ====== TOAST ======
+        function showToast(message) {
+          const existing = document.querySelector(".toast-notification-custom");
+          if (existing) existing.remove();
+
+          const toast = document.createElement("div");
+          toast.className = "toast-notification-custom";
+          toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+          document.body.appendChild(toast);
+
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(120%)";
+            setTimeout(() => toast.remove(), 500);
+          }, 3000);
+        }
+
+        // ====== INIT ======
+        function initJournals() {
+          journals = [...sampleJournals];
+          applyFilters();
+          updateStats();
+        }
+
+        // ====== FILTERS ======
+        function applyFilters() {
+          const software = filterSoftware.value;
+          const skill = filterSkill.value;
+          const sort = filterSort.value;
+
+          filteredJournals = [...journals];
+
+          if (software !== "all") {
+            filteredJournals = filteredJournals.filter(
+              (j) => j.software === software,
+            );
+          }
+
+          if (skill !== "all") {
+            filteredJournals = filteredJournals.filter(
+              (j) => j.skillLevel === skill,
+            );
+          }
+
+          switch (sort) {
+            case "newest":
+              filteredJournals.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+              );
+              break;
+            case "oldest":
+              filteredJournals.sort(
+                (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+              );
+              break;
+            case "popular":
+              filteredJournals.sort((a, b) => b.likes - a.likes);
+              break;
+            case "entries":
+              filteredJournals.sort((a, b) => b.entries - a.entries);
+              break;
+          }
+
+          renderJournals();
+        }
+
+        // ====== RENDER ======
+        function renderJournals() {
+          if (filteredJournals.length === 0) {
+            grid.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <h3>No journals found</h3>
+                <p>Be the first to share your software journey!</p>
+              </div>
+            `;
+            return;
+          }
+
+          grid.innerHTML = filteredJournals
+            .map((journal) => {
+              const skillColors = {
+                beginner: "🟢",
+                intermediate: "🟡",
+                advanced: "🔴",
+              };
+
+              const date = new Date(journal.createdAt);
+              const formattedDate = date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              });
+
+              return `
+              <div class="journal-card" data-id="${journal.id}">
+                <div class="card-header">
+                  <span class="card-title">${journal.title}</span>
+                  <span class="card-software ${journal.software}">
+                    <i class="fas fa-${getSoftwareIcon(journal.software)}"></i>
+                    ${journal.softwareName}
+                    ${journal.isExample ? '<span class="example-badge"><i class="fas fa-info-circle"></i> Example</span>' : ""}
+                  </span>
+                </div>
+
+                <div class="card-meta">
+                  <span><i class="fas fa-user"></i> ${journal.author}</span>
+                  <span>${skillColors[journal.skillLevel] || "🟡"} ${capitalize(journal.skillLevel)}</span>
+                  <span><i class="fas fa-calendar"></i> ${formattedDate}</span>
+                  <span><i class="fas fa-file-alt"></i> ${journal.entries} entries</span>
+                </div>
+
+                <p class="card-description">${journal.description}</p>
+
+                <div class="card-tags">
+                  ${journal.tags.map((tag) => `<span class="tag">#${tag}</span>`).join("")}
+                </div>
+
+                <div class="card-footer">
+                  <div class="card-author">
+                    <div class="avatar">${journal.avatar}</div>
+                    <div>
+                      <div class="name">${journal.author}</div>
+                      <div class="level">${capitalize(journal.skillLevel)}</div>
+                    </div>
+                  </div>
+                  <div class="card-stats">
+                    <span><i class="fas fa-heart"></i> ${journal.likes}</span>
+                    <span><i class="fas fa-comment"></i> ${Math.floor(journal.entries * 0.3)}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+            })
+            .join("");
+
+          // Click listeners
+          grid.querySelectorAll(".journal-card").forEach((card) => {
+            card.addEventListener("click", function () {
+              const id = this.dataset.id;
+              const journal = journals.find((j) => j.id === id);
+              if (journal) {
+                showToast(
+                  `📖 "${journal.title}" — ${journal.entries} entries by ${journal.author}`,
+                );
+              }
+            });
+          });
+        }
+
+        // ====== UTILITY ======
+        function getSoftwareIcon(software) {
+          const icons = {
+            photoshop: "image",
+            procreate: "paintbrush-fine",
+            clipstudio: "pen-fancy",
+            krita: "palette",
+            affinity: "crown",
+          };
+          return icons[software] || "code";
+        }
+
+        function capitalize(str) {
+          return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // ====== STATS ======
+        function updateStats() {
+          const totalEntries = journals.reduce((sum, j) => sum + j.entries, 0);
+          const uniqueAuthors = new Set(journals.map((j) => j.author));
+
+          totalJournalsEl.textContent = journals.length;
+          totalEntriesEl.textContent = totalEntries;
+          activeWritersEl.textContent = uniqueAuthors.size;
+        }
+
+        // ====== EVENT LISTENERS ======
+        filterSoftware.addEventListener("change", applyFilters);
+        filterSkill.addEventListener("change", applyFilters);
+        filterSort.addEventListener("change", applyFilters);
+
+        startBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const user = firebase.auth().currentUser;
+            if (user) {
+              showToast("📝 Starting a new journal! Feature coming soon.");
+            } else {
+              showToast("🔐 Please log in to start a journal.");
+            }
+          });
+        });
+
+        // ====== AUTH ======
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            console.log("User logged in:", user.displayName || user.email);
+          }
+        });
+
+        // ====== INIT ======
+        initJournals();
+
+        // ====== AUTH ======
+        setTimeout(function () {
+          if (typeof authManager !== "undefined") {
+            authManager.updateUI();
+          }
+        }, 300);
+
+        console.log("📖 Software Journals loaded successfully!");
+      });
+    </script>
+  </body>
+</html>

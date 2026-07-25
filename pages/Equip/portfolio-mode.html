@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Mode — Art Mecca</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Turn your Art Mecca profile into a professional portfolio. Showcase your artworks, bio, and commission info in a clean, shareable format."
+    />
+
+    <!-- ===== FONTS ===== -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
+    <link rel="stylesheet" href="/css/avatar.css" />
+    <link rel="stylesheet" href="/css/equip.css" />
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <style>
+      /* ============================================================
+         PORTFOLIO MODE PAGE — EXPLANATION + TOGGLE
+         ============================================================ */
+
+      .portfolio-mode-page {
+        background: var(--bg-body);
+        min-height: 100vh;
+        padding-top: 0;
+        overflow-x: hidden;
+      }
+
+      .portfolio-mode-hero {
+        position: relative;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 40px 20px;
+        background: var(--bg-body);
+      }
+
+      .portfolio-mode-hero .hero-bg-fallback {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 20% 30%,
+            rgba(99, 219, 238, 0.12),
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 80% 70%,
+            rgba(254, 103, 234, 0.1),
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 50% 50%,
+            rgba(88, 235, 254, 0.06),
+            transparent 40%
+          ),
+          radial-gradient(ellipse at 60% 40%, #1a0a2a, #0a0508 80%);
+        z-index: 0;
+      }
+
+      .portfolio-mode-hero .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        width: 100%;
+        padding: 50px 60px;
+        text-align: center;
+      }
+
+      .portfolio-mode-hero .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--neon-cyan);
+        padding: 4px 14px;
+        border: 1px solid rgba(88, 235, 254, 0.2);
+        border-radius: 2px;
+        background: rgba(88, 235, 254, 0.05);
+        margin-bottom: 16px;
+      }
+
+      .portfolio-mode-hero h1 {
+        font-family: var(--font-display);
+        font-size: 3rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+
+      .portfolio-mode-hero h1 .gradient-text {
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .portfolio-mode-hero .hero-subhead {
+        font-size: 1.15rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        max-width: 600px;
+        margin: 0 auto 1.5rem;
+      }
+
+      /* Feature Grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 2rem 0 2.5rem;
+        text-align: left;
+      }
+
+      .feature-card {
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        transition: all var(--transition);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255, 0, 234, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-purple);
+      }
+
+      .feature-card .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      .feature-card h3 {
+        font-family: var(--font-display);
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.3rem;
+      }
+
+      .feature-card p {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      /* Toggle Button */
+      .portfolio-toggle-section {
+        margin-top: 1.5rem;
+        padding: 2rem;
+        border-radius: 12px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card), var(--glow-magenta);
+      }
+
+      .portfolio-toggle-section .toggle-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 1rem;
+      }
+
+      .portfolio-toggle-section .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .portfolio-toggle-section .status-dot.off {
+        background: var(--text-muted);
+      }
+
+      .portfolio-toggle-section .status-dot.on {
+        background: var(--neon-green);
+        box-shadow: 0 0 20px rgba(79, 243, 166, 0.3);
+        animation: statusPulse 2s ease-in-out infinite;
+      }
+
+      .portfolio-toggle-section .status-text {
+        font-family: var(--font-condensed);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .btn-toggle-portfolio {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 40px;
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all var(--transition);
+        background: var(--gradient-neon);
+        color: var(--text-inverse);
+        box-shadow: var(--glow-magenta);
+      }
+
+      .btn-toggle-portfolio:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow:
+          var(--glow-purple),
+          0 0 60px rgba(255, 0, 234, 0.2);
+      }
+
+      .btn-toggle-portfolio:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+
+      .btn-toggle-portfolio .btn-icon {
+        font-size: 1.1rem;
+      }
+
+      .toggle-hint {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 0.75rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .portfolio-mode-hero .hero-content {
+          padding: 30px 24px;
+        }
+
+        .portfolio-mode-hero h1 {
+          font-size: 2.2rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+          max-width: 400px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .portfolio-toggle-section {
+          padding: 1.5rem;
+        }
+
+        .btn-toggle-portfolio {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .portfolio-mode-hero h1 {
+          font-size: 1.8rem;
+        }
+
+        .portfolio-mode-hero .hero-subhead {
+          font-size: 0.95rem;
+        }
+
+        .portfolio-toggle-section .toggle-status {
+          flex-direction: column;
+          gap: 6px;
+        }
+      }
+
+      /* Light theme */
+      [data-theme="light"] .portfolio-mode-hero .hero-content {
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      [data-theme="light"] .feature-card {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      [data-theme="light"] .feature-card:hover {
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      [data-theme="light"] .portfolio-toggle-section {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      [data-theme="light"] .portfolio-mode-hero .hero-bg-fallback {
+        background:
+          radial-gradient(
+            ellipse at 20% 30%,
+            rgba(99, 219, 238, 0.06),
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 80% 70%,
+            rgba(254, 103, 234, 0.05),
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 50% 50%,
+            rgba(88, 235, 254, 0.03),
+            transparent 40%
+          ),
+          radial-gradient(ellipse at 60% 40%, #e8dce8, #f5f0e8 80%);
+      }
+    </style>
+  </head>
+  <body class="portfolio-mode-page">
+    <!-- ====== STATIC NOISE OVERLAY ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+
+    <!-- ====== VIGNETTE ====== -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLE CANVAS ====== -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== SCANLINES ====== -->
+    <div class="scanlines"></div>
+
+    <!-- ====== HEADER ====== -->
+    <!-- ====== HEADER ====== -->
+    <header class="main-header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <!-- Logo -->
+          <div class="nav-brand">
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </a>
+          </div>
+
+          <!-- Navigation Links -->
+          <ul class="nav-links" id="nav-links">
+            <li>
+              <a href="/" class="nav-link" data-section="home" id="navHome"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="/#about" class="nav-link" data-section="about">About</a>
+            </li>
+            <li class="nav-dropdown" data-section="tutorials">
+              <a href="/pages/tutorials/tutorials.html" class="nav-link">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="/pages/tutorials/character-design/character-design-tutorials.html"
+                    >◈ Character Design</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
+                    >◆ Digital Painting</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
+                    >◈ Facial Features</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/software-guides/software-guides-tutorials.html"
+                    >⌘ Software Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
+                    >⚙ Workflow Process</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="software">
+              <a
+                href="/pages/software/software-comparison.html"
+                class="nav-link"
+              >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/software/software-comparison.html"
+                    >◈ Software Comparison</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="tools">
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/tools/color-palette-generator.html"
+                    >◈ Color Palette Generator</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/color-scheme-analyzer.html"
+                    >✦ Color Scheme Analyzer</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/tools/prompt-generator.html"
+                    >◆ Character Prompt Generator</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="community">
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/community/hub.html#daily-challenge"
+                    >◆ Daily Challenge</a
+                  >
+                </li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
+                <li>
+                  <a href="/pages/community/search-users.html"
+                    >✦ Find Artists</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/activity-feed.html"
+                    >⌘ Activity Feed</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
+                </li>
+                <li>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-dropdown" data-section="equip">
+              <a href="/pages/Equip/Equip.html" class="nav-link active">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/pages/Equip/portfolio-mode.html"
+                    >◈ Portfolio Template</a
+                  >
+                </li>
+                <li>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
+                </li>
+                <li>
+                  <a href="/pages/Equip/cv-templates.html">✦ CV Template</a>
+                </li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                href="/pages/truly-yours/truly-yours-project.html"
+                class="nav-link truly-yours-link"
+                data-section="truly-yours"
+              >
+                Truly Yours ✦
+              </a>
+            </li>
+          </ul>
+
+          <!-- Nav Actions -->
+          <div class="nav-actions">
+            <!-- Notification Bell -->
+            <div class="notification-container">
+              <button
+                class="btn-icon notification-btn"
+                id="notificationBtn"
+                aria-label="Notifications"
+              >
+                <i class="fas fa-bell"></i>
+              </button>
+              <span
+                class="notification-badge"
+                id="notificationBadge"
+                style="display: none"
+                >0</span
+              >
+              <div
+                class="notification-dropdown"
+                id="notificationDropdown"
+                style="display: none"
+              >
+                <div class="notification-header">
+                  <h3>Notifications</h3>
+                  <button id="markAllReadBtn" class="mark-read-btn">
+                    Mark all read
+                  </button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                  <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>No notifications yet</p>
+                  </div>
+                </div>
+                <div class="notification-footer">
+                  <a href="/pages/community/notifications.html">View All</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search -->
+            <button
+              class="btn-icon search-btn"
+              id="search-btn"
+              aria-label="Search"
+            >
+              <i class="fas fa-search"></i>
+            </button>
+
+            <!-- Hybrid Status -->
+            <span class="hybrid-status" id="hybridStatus">● OFFLINE</span>
+
+            <!-- Avatar -->
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <!-- Auth Buttons -->
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            class="mobile-menu-btn"
+            id="mobile-menu-btn"
+            aria-label="Toggle menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Search Overlay -->
+      <div class="search-overlay" id="search-overlay">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-input-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search tutorials, tools, artists..."
+                id="search-input"
+                autocomplete="off"
+              />
+            </div>
+            <button class="btn-icon search-close" id="search-close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-results" id="search-results">
+            <div class="search-placeholder">
+              <p>Type to search for tutorials, tools, or artists</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- PORTFOLIO MODE HERO                                          -->
+    <!-- ============================================================ -->
+    <section class="portfolio-mode-hero">
+      <div class="hero-bg-fallback"></div>
+
+      <div class="hero-content glass-panel">
+        <span class="hero-badge">
+          <i class="fas fa-folder-open"></i> PORTFOLIO MODE
+        </span>
+
+        <h1>
+          <span
+            class="glitch-header"
+            data-text="Turn Your Profile Into a Portfolio"
+          >
+            Turn Your Profile Into a
+            <span class="gradient-text">Portfolio</span>
+            <span
+              class="glitch-layer"
+              data-text="Turn Your Profile Into a Portfolio"
+            ></span>
+            <span
+              class="rgb-split"
+              data-text="Turn Your Profile Into a Portfolio"
+            ></span>
+            <span class="glitch-flash"></span>
+          </span>
+        </h1>
+
+        <p class="hero-subhead">
+          Showcase your art in a clean, professional format. Portfolio Mode
+          transforms your Art Mecca profile into a shareable portfolio — perfect
+          for clients, galleries, and job applications.
+        </p>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+          <div class="feature-card glass-panel">
+            <span class="feature-icon">🎨</span>
+            <h3>Showcase Your Art</h3>
+            <p>
+              Your uploaded artworks take center stage in a clean gallery layout
+            </p>
+          </div>
+          <div class="feature-card glass-panel">
+            <span class="feature-icon">📋</span>
+            <h3>Professional Bio</h3>
+            <p>
+              Your artist statement, specialties, and badge are prominently
+              displayed
+            </p>
+          </div>
+          <div class="feature-card glass-panel">
+            <span class="feature-icon">🔗</span>
+            <h3>Shareable Link</h3>
+            <p>
+              Get a clean URL to share with clients, galleries, or on social
+              media
+            </p>
+          </div>
+        </div>
+
+        <!-- Toggle Section -->
+        <div class="portfolio-toggle-section" id="portfolioToggleSection">
+          <div class="toggle-status">
+            <span class="status-dot off" id="statusDot"></span>
+            <span class="status-text" id="statusText"
+              >Portfolio Mode is Off</span
+            >
+          </div>
+
+          <button class="btn-toggle-portfolio" id="enablePortfolioBtn">
+            <span class="btn-icon">▶</span>
+            <span id="btnText">Enable Portfolio Mode</span>
+          </button>
+
+          <p class="toggle-hint">
+            <i class="fas fa-info-circle"></i>
+            This will open your profile in Portfolio Mode. You can switch back
+            anytime.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- THEME TOGGLE                                                 -->
+    <!-- ============================================================ -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
+            </div>
+          </div>
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-tag">✧ KEEP IT FRESH ✧</div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS                                                      -->
+    <!-- ============================================================ -->
+
+    <script src="/config/firebase-config.js"></script>
+    <script src="/js/auth/auth-manager.js"></script>
+    <script src="/js/auth/auth-check.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/navbar-active.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
+    <script src="/js/auth/page-redirect.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ============================================================
+        // THEME TOGGLE
+        // ============================================================
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ============================================================
+        // PORTFOLIO MODE TOGGLE
+        // ============================================================
+
+        const enableBtn = document.getElementById("enablePortfolioBtn");
+        const statusDot = document.getElementById("statusDot");
+        const statusText = document.getElementById("statusText");
+        const btnText = document.getElementById("btnText");
+
+        // Check if user is logged in
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (!user) {
+            // User not logged in — show login prompt
+            enableBtn.disabled = true;
+            enableBtn.innerHTML = `
+              <span class="btn-icon">🔒</span>
+              <span>Log In to Enable Portfolio Mode</span>
+            `;
+            enableBtn.style.cursor = "pointer";
+            enableBtn.addEventListener("click", function () {
+              window.location.href =
+                "/pages/auth/login.html?redirect=" +
+                encodeURIComponent(window.location.pathname);
+            });
+            return;
+          }
+
+          // User is logged in — enable the button
+          enableBtn.disabled = false;
+          enableBtn.innerHTML = `
+            <span class="btn-icon">▶</span>
+            <span>Enable Portfolio Mode</span>
+          `;
+
+          // Check if user already has portfolio mode enabled somewhere?
+          // We'll just handle the click
+
+          enableBtn.addEventListener("click", function () {
+            // Get the user's profile URL
+            const userId = user.uid;
+            const profileUrl = `/pages/community/profiles.html?user=${userId}&mode=portfolio`;
+
+            // Show loading state
+            enableBtn.disabled = true;
+            enableBtn.innerHTML = `
+              <span class="btn-icon"><i class="fas fa-spinner fa-spin"></i></span>
+              <span>Loading Portfolio...</span>
+            `;
+
+            // Navigate to portfolio
+            window.location.href = profileUrl;
+          });
+        });
+
+        // ============================================================
+        // PARTICLES
+        // ============================================================
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const particleCount = 50;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.2 + 0.05;
+              const colors = [
+                "#ff00ea",
+                "#ad03fc",
+                "#58ebfe",
+                "#4ff3a6",
+                "#ffc72e",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < particleCount; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.04;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#ff00ea";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#ff00ea";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ============================================================
+        // NOISE OVERLAY (glitch effect on G key)
+        // ============================================================
+        document.addEventListener("keydown", (e) => {
+          if (e.key.toLowerCase() === "g") {
+            const noise = document.getElementById("noiseOverlay");
+            if (noise) {
+              noise.classList.add("active");
+              setTimeout(() => noise.classList.remove("active"), 500);
+            }
+          }
+        });
+
+        console.log("⚡ Portfolio Mode page initialized!");
+      });
+    </script>
+  </body>
+</html>

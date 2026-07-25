@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,16 +8,34 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/header.css" />
-    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/components/header.css" />
+    <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
 
     <!-- Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -30,107 +48,457 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
     <style>
-      /* ============================================
-           CHARACTER DESIGN LANDING PAGE
-           Orange Theme
-           ============================================ */
+      /* ================================================================
+         CHARACTER DESIGN — CYBERPUNK GOLD/ORANGE AESTHETIC
+         ================================================================ */
 
-      .cd-hero {
-        background: linear-gradient(
-          135deg,
-          rgba(255, 149, 0, 0.08) 0%,
-          rgba(255, 187, 0, 0.05) 100%
+      /* ============================================================
+         THEME VARIABLES
+         ============================================================ */
+      :root {
+        /* Background */
+        --bg-body: #0a0508;
+        --bg-card: rgba(255, 149, 0, 0.06);
+        --bg-card-hover: rgba(255, 149, 0, 0.12);
+        --bg-elevated: rgba(255, 149, 0, 0.04);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.85);
+
+        /* Text */
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        /* Shadows */
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.645);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        /* Borders */
+        --border-color: rgba(255, 149, 0, 0.15);
+
+        /* Theme Colors - Gold/Orange */
+        --color-gold: #ffc72e;
+        --color-orange: #ff6b00;
+        --color-orange-deep: #e55a00;
+        --color-gold-light: #ffd966;
+        --color-orange-light: #ff8533;
+
+        /* Glitch Colors - from demo */
+        --color-glitch-a: #f2ff00; /* Yellow-green */
+        --color-glitch-b: #ff9900; /* Orange */
+        --color-glitch-c: #ad03fc; /* Purple */
+
+        /* Neon Accents */
+        --color-neon-magenta: #ff00ea;
+        --color-neon-cyan: #58ebfe;
+        --color-neon-green: #4ff3a6;
+        --color-neon-pink: #ff66f2;
+
+        /* Spray */
+        --color-spray-orange: #ff6b00;
+        --color-spray-gold: #ffc72e;
+        --color-spray-red: #ff0040;
+
+        /* Gradients */
+        --gradient-gold: linear-gradient(135deg, #ffc72e, #ff6b00);
+        --gradient-cyber: linear-gradient(135deg, #f2ff00, #ad03fc, #ff9900);
+        --gradient-neon: linear-gradient(135deg, #ffc72e, #ff6b00);
+
+        /* Glows */
+        --glow-gold:
+          0 0 40px rgba(255, 199, 46, 0.3), 0 0 80px rgba(255, 199, 46, 0.1);
+        --glow-orange:
+          0 0 40px rgba(255, 107, 0, 0.3), 0 0 80px rgba(255, 107, 0, 0.1);
+
+        /* Fonts */
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-tag: "Rubik Spray Paint", "Permanent Marker", cursive;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        /* Transitions */
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        --transition-slow: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.6);
+        --bg-card-hover: rgba(255, 255, 255, 0.8);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.85);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(255, 149, 0, 0.2);
+
+        --glow-gold:
+          0 0 40px rgba(255, 199, 46, 0.08), 0 0 80px rgba(255, 199, 46, 0.03);
+        --glow-orange:
+          0 0 40px rgba(255, 107, 0, 0.08), 0 0 80px rgba(255, 107, 0, 0.03);
+      }
+
+      /* ============================================================
+         GLOBAL EFFECTS
+         ============================================================ */
+      #particleCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      .noise-overlay.active {
+        opacity: 1;
+      }
+
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
         );
-        padding: 4rem 0;
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 60%,
+          rgba(0, 0, 0, 0.3) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+         BODY
+         ============================================================ */
+      body {
+        background: var(--bg-body);
+        min-height: 100vh;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+         GLITCH HEADER — Medium Glitch (from demo)
+         ============================================================ */
+      .glitch-header {
+        position: relative;
+        display: inline-block;
+        font-family: var(--font-display);
+        font-weight: 900;
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        animation: glitchTextLoop 0.3s infinite;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 60px rgba(255, 0, 234, 0.2));
+        line-height: 1.1;
+      }
+
+      .glitch-header::before,
+      .glitch-header::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.3;
+        -webkit-text-fill-color: initial;
+      }
+
+      .glitch-header::before {
+        color: var(--color-glitch-b);
+        z-index: -1;
+        animation: glitchOffset1 0.15s infinite;
+        text-shadow: 2px 0 var(--color-glitch-a);
+      }
+
+      .glitch-header::after {
+        color: var(--color-glitch-a);
+        z-index: -2;
+        animation: glitchOffset2 0.2s infinite;
+        text-shadow: -2px 0 var(--color-glitch-b);
+      }
+
+      /* ============================================================
+         GLITCH KEYFRAMES
+         ============================================================ */
+      @keyframes glitchOffset1 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(-1px, 1px);
+        }
+        20% {
+          transform: translate(1px, -1px);
+        }
+        30% {
+          transform: translate(-1px, 1px);
+        }
+        40% {
+          transform: translate(1px, -1px);
+        }
+        50% {
+          transform: translate(-2px, 2px);
+        }
+        60% {
+          transform: translate(2px, -2px);
+        }
+        70% {
+          transform: translate(-1px, 1px);
+        }
+        80% {
+          transform: translate(1px, -1px);
+        }
+        90% {
+          transform: translate(-1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      @keyframes glitchOffset2 {
+        0% {
+          transform: translate(0);
+        }
+        10% {
+          transform: translate(1px, -1px);
+        }
+        20% {
+          transform: translate(-1px, 1px);
+        }
+        30% {
+          transform: translate(1px, -1px);
+        }
+        40% {
+          transform: translate(-1px, 1px);
+        }
+        50% {
+          transform: translate(2px, -2px);
+        }
+        60% {
+          transform: translate(-2px, 2px);
+        }
+        70% {
+          transform: translate(1px, -1px);
+        }
+        80% {
+          transform: translate(-1px, 1px);
+        }
+        90% {
+          transform: translate(1px, -1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* ============================================================
+         HERO SECTION
+         ============================================================ */
+      .cd-hero {
+        padding: 6rem 0 5rem;
         text-align: center;
-        border-bottom: 1px solid rgba(255, 149, 0, 0.15);
         position: relative;
         overflow: hidden;
+        background: var(--bg-body);
+        z-index: 2;
       }
 
       .cd-hero::before {
         content: "";
         position: absolute;
-        top: -30%;
-        left: -20%;
-        width: 140%;
-        height: 140%;
-        background: radial-gradient(
-          circle,
-          rgba(255, 149, 0, 0.08),
-          transparent
-        );
+        inset: 0;
+        z-index: 0;
+        background:
+          radial-gradient(
+            ellipse at 50% 100%,
+            rgba(255, 199, 46, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 30% 0%,
+            rgba(255, 107, 0, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 70% 50%,
+            rgba(255, 199, 46, 0.04) 0%,
+            transparent 40%
+          );
         pointer-events: none;
+      }
+
+      .cd-hero::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        bottom: 20px;
+        right: 40px;
+        font-family: var(--font-tag);
+        font-size: 3rem;
+        color: var(--color-gold);
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 0;
+        letter-spacing: 6px;
+        transform: rotate(-6deg);
       }
 
       .hero-badge {
         display: inline-block;
-        background: rgba(255, 149, 0, 0.12);
-        backdrop-filter: blur(2px);
-        padding: 0.4rem 1rem;
-        border-radius: 100px;
-        font-size: 0.8rem;
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
         font-weight: 600;
-        color: #f56200;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(255, 149, 0, 0.3);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--color-gold);
+        padding: 0.4rem 1.2rem;
+        border: 1px solid rgba(255, 199, 46, 0.15);
+        border-radius: 2px;
+        background: rgba(255, 199, 46, 0.03);
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+        animation: badgePulse 3s ease-in-out infinite;
       }
 
-      .cd-hero h1 {
-        font-size: clamp(2rem, 5vw, 3rem);
-        font-weight: 800;
-        background: linear-gradient(135deg, #1f2937 20%, #ff9500 70%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        margin-bottom: 1rem;
-        letter-spacing: -0.02em;
+      @keyframes badgePulse {
+        0%,
+        100% {
+          border-color: rgba(255, 199, 46, 0.15);
+          box-shadow: 0 0 0px rgba(255, 199, 46, 0);
+        }
+        50% {
+          border-color: rgba(255, 199, 46, 0.3);
+          box-shadow: 0 0 20px rgba(255, 199, 46, 0.05);
+        }
       }
 
       .hero-subhead {
         font-size: 1.1rem;
-        color: #6b7280;
-        max-width: 800px;
+        color: var(--text-secondary);
+        max-width: 700px;
         margin: 0 auto;
-        line-height: 1.6;
+        line-height: 1.8;
+        font-family: var(--font-condensed);
+        position: relative;
+        z-index: 1;
       }
 
-      /* Section Header */
+      .hero-subhead .highlight {
+        color: var(--color-gold);
+        font-weight: 700;
+      }
+
+      /* ============================================================
+         SECTION HEADERS
+         ============================================================ */
       .section-header {
         text-align: center;
-        margin-bottom: 3rem;
-      }
-
-      .section-header h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(135deg, #ff9500, #f56200);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        margin-bottom: 3.5rem;
+        position: relative;
+        z-index: 2;
       }
 
       .section-header p {
-        color: #6b7280;
-        font-size: 1rem;
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        font-family: var(--font-condensed);
       }
 
-      /* Tutorials Grid */
+      /* ============================================================
+         TUTORIALS GRID
+         ============================================================ */
       .tutorials-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
         gap: 2rem;
         margin: 3rem 0;
+        position: relative;
+        z-index: 2;
       }
 
-      /* Tutorial Card */
+      /* ============================================================
+         TUTORIAL CARD
+         ============================================================ */
       .tutorial-card {
-        background: white;
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
         border-radius: 1rem;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
+        box-shadow: var(--shadow-card), var(--glow-gold);
+        transition: all var(--transition-slow);
         position: relative;
         text-decoration: none;
         display: block;
@@ -139,10 +507,10 @@
 
       .tutorial-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 20px 30px -12px rgba(255, 149, 0, 0.25);
+        border-color: rgba(255, 199, 46, 0.25);
+        box-shadow: var(--shadow-card-hover), var(--glow-orange);
       }
 
-      /* Gradient border on hover */
       .tutorial-card::before {
         content: "";
         position: absolute;
@@ -152,7 +520,7 @@
         bottom: 0;
         border-radius: 1rem;
         padding: 2px;
-        background: linear-gradient(135deg, #ff9500, #f56200, #ffbb00);
+        background: var(--gradient-gold);
         -webkit-mask:
           linear-gradient(#fff 0 0) content-box,
           linear-gradient(#fff 0 0);
@@ -167,47 +535,117 @@
         opacity: 1;
       }
 
+      .tutorial-card .card-scanline {
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 199, 46, 0.02) 2px,
+          rgba(255, 199, 46, 0.02) 4px
+        );
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+      }
+
+      .tutorial-card:hover .card-scanline {
+        opacity: 1;
+        animation: cardScan 2s linear infinite;
+      }
+
+      @keyframes cardScan {
+        0% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(100%);
+        }
+      }
+
       .card-image {
         width: 100%;
         height: 200px;
-        object-fit: cover;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-image .image-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+        background: var(--gradient-gold);
+        color: white;
+        transition: transform 0.6s ease;
+      }
+
+      .tutorial-card:hover .image-placeholder {
+        transform: scale(1.05);
+      }
+
+      .card-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 50%,
+          var(--bg-body) 100%
+        );
+        opacity: 0.3;
+        pointer-events: none;
       }
 
       .card-content {
         padding: 1.5rem;
+        position: relative;
+        z-index: 2;
       }
 
       .card-category {
         display: inline-block;
-        padding: 0.25rem 0.75rem;
-        background: rgba(255, 149, 0, 0.1);
-        color: #ff9500;
+        padding: 0.2rem 0.75rem;
+        background: rgba(255, 199, 46, 0.08);
+        color: var(--color-gold);
         border-radius: 20px;
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         font-weight: 600;
+        font-family: var(--font-mono);
+        letter-spacing: 1px;
+        border: 1px solid rgba(255, 199, 46, 0.1);
         margin-bottom: 0.75rem;
       }
 
       .card-title {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #1f2937;
+        font-family: var(--font-display);
+        color: var(--text-primary);
         margin-bottom: 0.5rem;
         line-height: 1.3;
+        letter-spacing: 0.5px;
       }
 
       .card-description {
         font-size: 0.85rem;
-        color: #6b7280;
-        line-height: 1.5;
+        color: var(--text-secondary);
+        line-height: 1.6;
         margin-bottom: 1rem;
+        font-family: var(--font-condensed);
       }
 
       .card-meta {
         display: flex;
-        gap: 1rem;
+        gap: 1.2rem;
         font-size: 0.7rem;
-        color: #9ca3af;
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        flex-wrap: wrap;
       }
 
       .card-meta span {
@@ -216,183 +654,359 @@
         gap: 0.3rem;
       }
 
+      .card-meta i {
+        color: var(--color-gold);
+        font-size: 0.65rem;
+      }
+
       .difficulty-badge {
         position: absolute;
         top: 1rem;
         right: 1rem;
         padding: 0.25rem 0.75rem;
         border-radius: 20px;
-        font-size: 0.65rem;
-        font-weight: 600;
-        background: white;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        font-size: 0.6rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        background: var(--bg-card);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-card);
+        z-index: 3;
+        letter-spacing: 0.5px;
       }
 
-      .difficulty-beginner {
-        color: #10b981;
+      .difficulty-badge.beginner {
+        color: var(--color-neon-green);
+        border-color: rgba(79, 243, 166, 0.2);
       }
-      .difficulty-intermediate {
-        color: #f59e0b;
+      .difficulty-badge.intermediate {
+        color: var(--color-gold);
+        border-color: rgba(255, 199, 46, 0.2);
       }
-      .difficulty-advanced {
-        color: #ef4444;
+      .difficulty-badge.advanced {
+        color: var(--color-spray-red);
+        border-color: rgba(255, 0, 64, 0.2);
       }
 
-      /* Coming Soon Card */
+      /* ============================================================
+         COMING SOON
+         ============================================================ */
       .coming-soon {
-        background: linear-gradient(135deg, #f8f8f8, #f0f0f5);
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         min-height: 380px;
+        cursor: default;
+        opacity: 0.6;
+        transition: all var(--transition);
+      }
+
+      .coming-soon:hover {
+        opacity: 0.8;
+        transform: translateY(-4px);
       }
 
       .coming-soon .card-icon {
         font-size: 3rem;
-        color: #ff9500;
+        color: var(--color-gold);
         margin-bottom: 1rem;
-        opacity: 0.5;
+        opacity: 0.4;
       }
 
       .coming-soon .card-title {
-        color: #9ca3af;
+        color: var(--text-muted);
       }
 
       .coming-soon .card-description {
-        color: #9ca3af;
+        color: var(--text-muted);
       }
 
-      /* CTA Section */
+      .coming-soon .card-category {
+        background: rgba(156, 163, 175, 0.08);
+        color: var(--text-muted);
+        border-color: rgba(156, 163, 175, 0.1);
+      }
+
+      /* ============================================================
+         CTA SECTION
+         ============================================================ */
       .cd-cta {
-        background: linear-gradient(135deg, #ff9500, #f56200);
+        background: var(--gradient-gold);
         border-radius: 1.5rem;
-        padding: 3rem;
+        padding: 4rem;
         text-align: center;
         margin: 4rem 0;
-        box-shadow: 0 10px 30px rgba(255, 149, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 60px rgba(255, 199, 46, 0.2);
+        z-index: 2;
+      }
+
+      .cd-cta::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 255, 255, 0.03) 2px,
+          rgba(255, 255, 255, 0.03) 4px
+        );
+        pointer-events: none;
+        animation: ctaScan 3s linear infinite;
+      }
+
+      @keyframes ctaScan {
+        0% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(100%);
+        }
+      }
+
+      .cd-cta::after {
+        content: "✦ GO MECCA STAR ✦";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-6deg);
+        font-family: var(--font-tag);
+        font-size: 8rem;
+        color: rgba(255, 255, 255, 0.03);
+        pointer-events: none;
+        letter-spacing: 10px;
       }
 
       .cd-cta h2 {
-        font-size: 1.8rem;
-        font-weight: 700;
+        font-size: 2rem;
+        font-weight: 800;
+        font-family: var(--font-display);
         color: white;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
+        letter-spacing: 2px;
       }
 
       .cd-cta p {
         color: rgba(255, 255, 255, 0.9);
         margin-bottom: 1.5rem;
+        font-family: var(--font-condensed);
+        position: relative;
+        z-index: 1;
+        font-size: 1.1rem;
       }
 
       .btn-primary-cta {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.8rem 2rem;
+        padding: 0.8rem 2.5rem;
         background: white;
-        border-radius: 50px;
-        color: #ff9500;
+        border-radius: 4px;
+        color: #1a102a;
         font-weight: 700;
+        font-family: var(--font-condensed);
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all var(--transition);
+        position: relative;
+        z-index: 1;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
       }
 
       .btn-primary-cta:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
         gap: 0.8rem;
       }
 
+      /* ============================================================
+         THEME TOGGLE
+         ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-gold);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-orange);
+        border-color: var(--color-gold);
+      }
+
+      .theme-toggle .toggle-icon {
+        font-size: 1rem;
+      }
+
+      .theme-toggle .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
       @media (max-width: 768px) {
         .tutorials-grid {
           grid-template-columns: 1fr;
-          margin: 2rem 1rem;
+          margin: 2rem 0;
         }
 
         .cd-hero {
-          padding: 2rem 0;
+          padding: 3rem 0;
         }
 
         .cd-cta {
-          padding: 2rem;
-          margin: 2rem 1rem;
+          padding: 2.5rem 1.5rem;
+          margin: 2rem 0;
         }
 
         .cd-cta h2 {
-          font-size: 1.4rem;
+          font-size: 1.5rem;
+        }
+
+        .cd-cta::after {
+          font-size: 4rem;
+        }
+
+        .cd-hero::after {
+          font-size: 2rem;
+          right: 20px;
+          bottom: 10px;
+        }
+
+        .container {
+          padding: 0 1rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .cd-hero h1 {
+          font-size: 2rem;
+        }
+
+        .hero-subhead {
+          font-size: 0.95rem;
+        }
+
+        .card-image {
+          height: 160px;
+        }
+
+        .cd-cta::after {
+          font-size: 2.5rem;
+        }
+
+        .cd-hero::after {
+          font-size: 1.5rem;
+          right: 10px;
+          bottom: 5px;
+          opacity: 0.02;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Header - Updated with working notification system -->
+    <!-- ====== GLOBAL EFFECTS ====== -->
+    <div class="noise-overlay" id="noiseOverlay"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
         <nav class="navbar">
           <div class="nav-brand">
-            <a href="/index.html" class="logo">
-              <span class="logo-icon">🎨</span>
+            <a href="/" class="logo" id="logoLink">
+              <span class="logo-icon">✧</span>
               <span class="logo-text">Art Mecca</span>
             </a>
           </div>
+
           <ul class="nav-links" id="nav-links">
+            <li><a href="/" class="nav-link" data-section="home">Home</a></li>
             <li>
-              <a href="/index.html" class="nav-link" data-section="home"
-                >Home</a
-              >
-            </li>
-            <li>
-              <a href="/index.html#about" class="nav-link" data-section="about"
-                >About</a
-              >
+              <a href="/#about" class="nav-link" data-section="about">About</a>
             </li>
             <li class="nav-dropdown" data-section="tutorials">
-              <a href="/pages/tutorials/tutorials.html" class="nav-link active"
-                >Tutorials <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tutorials/tutorials.html" class="nav-link active">
+                Tutorials <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a
                     href="/pages/tutorials/character-design/character-design-tutorials.html"
-                    >🎨 Character Design</a
+                    >◈ Character Design</a
                   >
                 </li>
                 <li>
                   <a
-                    href="/pages/tutorials/color&lighting/color-lighting-tutorials.html"
-                    >💡 Color & Lighting</a
+                    href="/pages/tutorials/color-lighting/color-lighting-tutorials.html"
+                    >✦ Color & Lighting</a
                   >
                 </li>
                 <li>
                   <a
                     href="/pages/tutorials/digital-painting/digital-painting-tutorials.html"
-                    >🖌️ Digital Painting</a
+                    >◆ Digital Painting</a
                   >
                 </li>
                 <li>
                   <a
                     href="/pages/tutorials/facial-features/facial-anatomy-tutorials.html"
-                    >😌 Facial Features</a
+                    >◈ Facial Features</a
                   >
                 </li>
                 <li>
                   <a
                     href="/pages/tutorials/software-guides/software-guides-tutorials.html"
-                    >💻 Software Guide</a
+                    >⌘ Software Guide</a
                   >
                 </li>
                 <li>
                   <a
                     href="/pages/tutorials/workflow-process/workflow-process-tutorials.html"
-                    >⚙️ Workflow Process</a
+                    >⚙ Workflow Process</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tutorials/tutorials.html"
-                    >📚 Full Catalogue</a
-                  >
+                  <a href="/pages/tutorials/tutorials.html">◈ Full Catalogue</a>
                 </li>
               </ul>
             </li>
@@ -400,85 +1014,84 @@
               <a
                 href="/pages/software/software-comparison.html"
                 class="nav-link"
-                >Software <span class="dropdown-arrow">▼</span></a
               >
+                Software <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/software/software-comparison.html"
-                    >⚖️ Software Comparison</a
+                    >◈ Software Comparison</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/tools/software-quiz.html">📝 Software Quiz</a>
+                  <a href="/pages/tools/software-quiz.html">⌘ Software Quiz</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="tools">
-              <a href="/pages/tools/tools.html" class="nav-link"
-                >Tools <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/tools/tools.html" class="nav-link">
+                Tools <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/tools/color-palette-generator.html"
-                    >🎨 Color Palette Generator</a
+                    >◈ Color Palette Generator</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/color-scheme-analyzer.html"
-                    >🔍 Color Scheme Analyzer</a
+                    >✦ Color Scheme Analyzer</a
                   >
                 </li>
                 <li>
                   <a href="/pages/tools/prompt-generator.html"
-                    >🤖 Character Prompt Generator</a
+                    >◆ Character Prompt Generator</a
                   >
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="community">
-              <a href="/pages/community/hub.html" class="nav-link"
-                >Community <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/community/hub.html" class="nav-link">
+                Community <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="/pages/community/hub.html#daily-challenge"
-                    >🔥 Daily Challenge</a
+                    >◆ Daily Challenge</a
                   >
                 </li>
-                <li><a href="/pages/community/gallery.html">🖼️ Gallery</a></li>
+                <li><a href="/pages/community/gallery.html">◈ Gallery</a></li>
                 <li>
                   <a href="/pages/community/search-users.html"
-                    >🔍 Find Artists</a
+                    >✦ Find Artists</a
                   >
                 </li>
                 <li>
                   <a href="/pages/community/activity-feed.html"
-                    >📰 Activity Feed</a
+                    >⌘ Activity Feed</a
                   >
                 </li>
                 <li>
-                  <a href="/pages/community/challenges.html">🏆 Challenges</a>
+                  <a href="/pages/community/challenges.html">◈ Challenges</a>
                 </li>
                 <li>
-                  <a href="/pages/community/analytics.html">📊 Analytics</a>
+                  <a href="/pages/community/analytics.html">◆ Analytics</a>
                 </li>
               </ul>
             </li>
             <li class="nav-dropdown" data-section="equip">
-              <a href="/pages/Equip/Equip.html" class="nav-link"
-                >Equip <span class="dropdown-arrow">▼</span></a
-              >
+              <a href="/pages/Equip/Equip.html" class="nav-link">
+                Equip <span class="dropdown-arrow">▼</span>
+              </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="/pages/Equip/Equip.html">📁 Portfolio Template</a>
+                  <a href="/pages/Equip/Equip.html">◈ Portfolio Template</a>
                 </li>
                 <li>
-                  <a href="/pages/Equip/price-comparison.html"
-                    >📄 CV Template</a
-                  >
+                  <a href="/pages/Equip/price-comparison.html">✦ CV Template</a>
                 </li>
-                <li><a href="/pages/Equip/earn.html">💰 Earn</a></li>
-                <li><a href="/pages/Equip/blog.html">📝 Blog</a></li>
+                <li><a href="/pages/Equip/earn.html">◆ Earn</a></li>
+                <li><a href="/pages/Equip/blog.html">⌘ Blog</a></li>
               </ul>
             </li>
             <li>
@@ -486,12 +1099,13 @@
                 href="/pages/truly-yours/truly-yours-project.html"
                 class="nav-link truly-yours-link"
                 data-section="truly-yours"
-                >Truly Yours ✨</a
               >
+                Truly Yours ✦
+              </a>
             </li>
           </ul>
+
           <div class="nav-actions">
-            <!-- Bell icon - NOTIFICATION SYSTEM -->
             <div class="notification-container">
               <button
                 class="btn-icon notification-btn"
@@ -528,7 +1142,7 @@
                 </div>
               </div>
             </div>
-            <!-- Search button -->
+
             <button
               class="btn-icon search-btn"
               id="search-btn"
@@ -536,8 +1150,20 @@
             >
               <i class="fas fa-search"></i>
             </button>
-            <div class="auth-buttons"></div>
+
+            <span class="hybrid-status" id="hybridStatus">● ONLINE</span>
+            <div class="nav-avatar-container" id="navAvatar"></div>
+
+            <div class="auth-buttons" id="authButtons">
+              <a href="/pages/auth/login.html" class="btn btn-outline btn-sm"
+                >Log In</a
+              >
+              <a href="/pages/auth/register.html" class="btn btn-primary btn-sm"
+                >Sign Up</a
+              >
+            </div>
           </div>
+
           <button
             class="mobile-menu-btn"
             id="mobile-menu-btn"
@@ -547,6 +1173,7 @@
           </button>
         </nav>
       </div>
+
       <div class="search-overlay" id="search-overlay">
         <div class="search-container">
           <div class="search-box">
@@ -570,30 +1197,40 @@
           </div>
         </div>
       </div>
-      <!-- Avatar container - add this where you want the avatar to appear -->
-      <div class="nav-avatar-container" id="navAvatar"></div>
     </header>
 
+    <!-- ====== MAIN ====== -->
     <main>
-      <!-- Hero Section -->
-      <div class="cd-hero">
+      <section class="cd-hero">
         <div class="container">
-          <span class="hero-badge"
-            ><i class="fas fa-user-astronaut"></i> Character Design</span
-          >
-          <h1>Bring Your Characters to Life</h1>
+          <span class="hero-badge">
+            <i class="fas fa-user-astronaut"></i> Character Design
+          </span>
+
+          <h1>
+            <span
+              class="glitch-header"
+              data-text="Bring Your Characters to Life"
+            >
+              Bring Your Characters to Life
+            </span>
+          </h1>
+
           <p class="hero-subhead">
             Master the art of character design with our comprehensive tutorials.
-            From concept to final render, learn techniques used by professional
-            artists.
+            From concept to final render, learn techniques used by
+            <span class="highlight">professional artists</span>.
           </p>
         </div>
-      </div>
+      </section>
 
       <div class="container">
-        <!-- Tutorials Grid -->
         <div class="section-header">
-          <h2>Character Design Tutorials</h2>
+          <h2>
+            <span class="glitch-header" data-text="Character Design Tutorials">
+              Character Design Tutorials
+            </span>
+          </h2>
           <p>
             Learn from industry professionals and level up your character
             creation skills
@@ -601,27 +1238,17 @@
         </div>
 
         <div class="tutorials-grid">
-          <!-- Character Design Tutorial -->
+          <!-- Tutorial 1 -->
           <a
             href="/pages/tutorials/character-design/character-design.html"
             class="tutorial-card"
           >
-            <span class="difficulty-badge difficulty-intermediate"
-              >Intermediate</span
-            >
-            <div
-              class="card-image"
-              style="
-                background: linear-gradient(135deg, #ff9500, #ffbb00);
-                height: 200px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 3rem;
-              "
-            >
-              <i class="fas fa-user-astronaut"></i>
+            <span class="difficulty-badge intermediate">Intermediate</span>
+            <div class="card-scanline"></div>
+            <div class="card-image">
+              <div class="image-placeholder">
+                <i class="fas fa-user-astronaut"></i>
+              </div>
             </div>
             <div class="card-content">
               <span class="card-category">Character Design</span>
@@ -639,21 +1266,16 @@
             </div>
           </a>
 
-          <!-- Creature Design - Coming Soon -->
+          <!-- Coming Soon Cards -->
           <div class="tutorial-card coming-soon">
-            <div class="card-icon">
-              <i class="fas fa-dragon"></i>
-            </div>
+            <div class="card-scanline"></div>
+            <div class="card-icon"><i class="fas fa-dragon"></i></div>
             <div class="card-content">
-              <span
-                class="card-category"
-                style="background: rgba(156, 163, 175, 0.1); color: #9ca3af"
-                >Coming Soon</span
-              >
+              <span class="card-category">Coming Soon</span>
               <h3 class="card-title">Creature Design Fundamentals</h3>
               <p class="card-description">
                 Learn to design believable creatures from mythology and
-                imagination. Coming soon to Art Mecca.
+                imagination.
               </p>
               <div class="card-meta">
                 <span><i class="fas fa-hourglass-half"></i> In Production</span>
@@ -661,21 +1283,15 @@
             </div>
           </div>
 
-          <!-- More Tutorials - Coming Soon -->
           <div class="tutorial-card coming-soon">
-            <div class="card-icon">
-              <i class="fas fa-robot"></i>
-            </div>
+            <div class="card-scanline"></div>
+            <div class="card-icon"><i class="fas fa-robot"></i></div>
             <div class="card-content">
-              <span
-                class="card-category"
-                style="background: rgba(156, 163, 175, 0.1); color: #9ca3af"
-                >Coming Soon</span
-              >
+              <span class="card-category">Coming Soon</span>
               <h3 class="card-title">Costume & Fashion Design</h3>
               <p class="card-description">
                 Master the art of designing clothing that tells your character's
-                story. Coming soon.
+                story.
               </p>
               <div class="card-meta">
                 <span><i class="fas fa-hourglass-half"></i> In Production</span>
@@ -684,19 +1300,14 @@
           </div>
 
           <div class="tutorial-card coming-soon">
-            <div class="card-icon">
-              <i class="fas fa-expand-alt"></i>
-            </div>
+            <div class="card-scanline"></div>
+            <div class="card-icon"><i class="fas fa-expand-alt"></i></div>
             <div class="card-content">
-              <span
-                class="card-category"
-                style="background: rgba(156, 163, 175, 0.1); color: #9ca3af"
-                >Coming Soon</span
-              >
+              <span class="card-category">Coming Soon</span>
               <h3 class="card-title">Character Turnarounds</h3>
               <p class="card-description">
                 Learn to create professional character sheets with multiple
-                views. Coming soon.
+                views.
               </p>
               <div class="card-meta">
                 <span><i class="fas fa-hourglass-half"></i> In Production</span>
@@ -705,19 +1316,13 @@
           </div>
 
           <div class="tutorial-card coming-soon">
-            <div class="card-icon">
-              <i class="fas fa-face-smile"></i>
-            </div>
+            <div class="card-scanline"></div>
+            <div class="card-icon"><i class="fas fa-face-smile"></i></div>
             <div class="card-content">
-              <span
-                class="card-category"
-                style="background: rgba(156, 163, 175, 0.1); color: #9ca3af"
-                >Coming Soon</span
-              >
+              <span class="card-category">Coming Soon</span>
               <h3 class="card-title">Facial Expressions Masterclass</h3>
               <p class="card-description">
                 Master the art of drawing expressive faces that convey emotion.
-                Coming soon.
               </p>
               <div class="card-meta">
                 <span><i class="fas fa-hourglass-half"></i> In Production</span>
@@ -726,19 +1331,14 @@
           </div>
 
           <div class="tutorial-card coming-soon">
-            <div class="card-icon">
-              <i class="fas fa-palette"></i>
-            </div>
+            <div class="card-scanline"></div>
+            <div class="card-icon"><i class="fas fa-palette"></i></div>
             <div class="card-content">
-              <span
-                class="card-category"
-                style="background: rgba(156, 163, 175, 0.1); color: #9ca3af"
-                >Coming Soon</span
-              >
+              <span class="card-category">Coming Soon</span>
               <h3 class="card-title">Color Theory for Characters</h3>
               <p class="card-description">
                 Learn how to use color psychology to enhance character
-                personality. Coming soon.
+                personality.
               </p>
               <div class="card-meta">
                 <span><i class="fas fa-hourglass-half"></i> In Production</span>
@@ -747,12 +1347,11 @@
           </div>
         </div>
 
-        <!-- CTA Section -->
+        <!-- CTA -->
         <div class="cd-cta">
           <h2>Ready to Create Amazing Characters?</h2>
           <p>
-            Join thousands of artists mastering character design with Artisan
-            Hub
+            Join thousands of artists mastering character design with Art Mecca
           </p>
           <a href="/pages/auth/register.html" class="btn-primary-cta">
             Start Learning Free <i class="fas fa-arrow-right"></i>
@@ -761,77 +1360,241 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="tutorial-footer">
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="holographic-footer">
+      <div class="footer-hologram"></div>
+      <div class="footer-scanline"></div>
+
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Art Mecca</h3>
-            <p>
-              Your comprehensive resource for digital art tutorials, tools, and
-              community.
-            </p>
-          </div>
-          <div class="footer-section">
-            <h4>Explore</h4>
-            <ul>
-              <li><a href="/pages/tutorials/tutorials.html">Tutorials</a></li>
-              <li>
-                <a href="/pages/software/software-comparison.html">Software</a>
-              </li>
-              <li><a href="/pages/tools/tools.html">Tools</a></li>
-              <li><a href="/pages/community/hub.html">Community</a></li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h4>Connect</h4>
-            <div class="social-links">
-              <a
-                href="https://www.youtube.com/@Trulyyours26"
-                class="social-link"
-                ><i class="fab fa-youtube"></i
-              ></a>
-              <a
-                href="https://www.instagram.com/_trulyyours26"
-                class="social-link"
-                ><i class="fab fa-instagram"></i
-              ></a>
-              <a href="https://x.com/TrulyYoursMira" class="social-link"
-                ><i class="fab fa-twitter"></i
-              ></a>
-              <a
-                href="https://www.tiktok.com/@truly_yours26"
-                class="social-link"
-                ><i class="fab fa-tiktok"></i
-              ></a>
-              <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
-              <a
-                href="https://za.pinterest.com/TrulyYours26/"
-                class="social-link"
-                ><i class="fab fa-pinterest"></i
-              ></a>
+        <div class="footer-main">
+          <div class="footer-brand">
+            <div class="logo">
+              <span class="logo-icon">✧</span>
+              <span class="logo-text">Art Mecca</span>
+            </div>
+            <p class="footer-tagline">cyber den & studio ✦ est. 2026</p>
+            <div class="footer-status">
+              <span class="status-dot"></span>
+              <span class="status-text">SYSTEM: NOMINAL</span>
             </div>
           </div>
+
+          <nav class="footer-nav">
+            <a href="/#about">about</a>
+            <a href="/pages/admin/guidelines.html">guidelines</a>
+            <a href="/pages/admin/support.html">support</a>
+            <a href="/pages/admin/contact.html">contact</a>
+            <a href="/pages/admin/privacy.html">privacy</a>
+          </nav>
+
+          <div class="social-links">
+            <a href="https://www.youtube.com/@Trulyyours26" class="social-link"
+              ><i class="fab fa-youtube"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/_trulyyours26"
+              class="social-link"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://x.com/TrulyYoursMira" class="social-link"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://www.tiktok.com/@truly_yours26" class="social-link"
+              ><i class="fab fa-tiktok"></i
+            ></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+            <a href="https://za.pinterest.com/TrulyYours26/" class="social-link"
+              ><i class="fab fa-pinterest"></i
+            ></a>
+          </div>
         </div>
+
         <div class="footer-bottom">
-          <p>&copy; 2026 Art Mecca. All rights reserved.</p>
+          <p>&copy; 2026 Art Mecca — CREW: ∞ | STATUS: NOMINAL</p>
+          <div class="footer-links">
+            <a href="/pages/admin/privacy.html">privacy policy</a>
+            <a href="/pages/admin/terms-of-service.html">terms of service</a>
+            <a href="/pages/admin/contact.html">contact</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-tag">✧ GO MECCA STAR ✧</div>
     </footer>
 
-    <!-- Scripts - CORRECT ORDER for notifications to work -->
+    <!-- ====== SCRIPTS ====== -->
     <script src="/config/firebase-config.js"></script>
     <script src="/js/auth/auth-manager.js"></script>
     <script src="/js/auth/auth-check.js"></script>
-
-    <!-- Navbar Active Detection (for colored shadows & active links) -->
     <script src="/js/navbar-active.js"></script>
-
-    <!-- Notifications System (for bell icon dropdown) -->
-    <script src="/js/community/notifications.js"></script>
+    <script src="/js/components/avatar-manager.js"></script>
+    <script src="/js/components/header.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/utils/seo.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ====== THEME TOGGLE ======
+        const themeToggle = document.getElementById("themeToggle");
+        if (themeToggle) {
+          const savedTheme = localStorage.getItem("theme") || "dark";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+
+          const icon = themeToggle.querySelector(".toggle-icon");
+          const label = themeToggle.querySelector(".toggle-label");
+          if (icon) icon.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+          if (label)
+            label.textContent = savedTheme === "dark" ? "Dark" : "Light";
+
+          themeToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            const current = document.documentElement.getAttribute("data-theme");
+            const next = current === "dark" ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+
+            const iconEl = this.querySelector(".toggle-icon");
+            const labelEl = this.querySelector(".toggle-label");
+            if (iconEl) iconEl.textContent = next === "dark" ? "🌙" : "☀️";
+            if (labelEl)
+              labelEl.textContent = next === "dark" ? "Dark" : "Light";
+          });
+        }
+
+        // ====== PARTICLES ======
+        const canvas = document.getElementById("particleCanvas");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          let particles = [];
+          let mouseX = -1000;
+          let mouseY = -1000;
+          const PARTICLE_COUNT = 80;
+
+          function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+
+          window.addEventListener("resize", resizeCanvas);
+          resizeCanvas();
+
+          window.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+          });
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * canvas.width;
+              this.y = Math.random() * canvas.height;
+              this.size = Math.random() * 2.5 + 0.5;
+              this.speedX = (Math.random() - 0.5) * 0.3;
+              this.speedY = (Math.random() - 0.5) * 0.3;
+              this.opacity = Math.random() * 0.3 + 0.05;
+              const colors = [
+                "#ffc72e",
+                "#ff6b00",
+                "#ff00ea",
+                "#58ebfe",
+                "#4ff3a6",
+              ];
+              this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              const dx = mouseX - this.x;
+              const dy = mouseY - this.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 200) {
+                const force = ((200 - dist) / 200) * 0.015;
+                this.speedX += (dx / dist) * force;
+                this.speedY += (dy / dist) * force;
+              }
+              this.speedX *= 0.999;
+              this.speedY *= 0.999;
+              const maxSpeed = 1.2;
+              const speed = Math.sqrt(
+                this.speedX * this.speedX + this.speedY * this.speedY,
+              );
+              if (speed > maxSpeed) {
+                this.speedX = (this.speedX / speed) * maxSpeed;
+                this.speedY = (this.speedY / speed) * maxSpeed;
+              }
+              if (
+                this.x < 0 ||
+                this.x > canvas.width ||
+                this.y < 0 ||
+                this.y > canvas.height
+              )
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.globalAlpha = this.opacity;
+              ctx.shadowColor = this.color;
+              ctx.shadowBlur = 12;
+              ctx.fill();
+              ctx.shadowBlur = 0;
+              ctx.globalAlpha = 1;
+            }
+          }
+
+          for (let i = 0; i < PARTICLE_COUNT; i++)
+            particles.push(new Particle());
+
+          function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                  const opacity = (1 - dist / 120) * 0.05;
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = "#ffc72e";
+                  ctx.globalAlpha = opacity;
+                  ctx.lineWidth = 0.6;
+                  ctx.shadowColor = "#ffc72e";
+                  ctx.shadowBlur = 4;
+                  ctx.stroke();
+                  ctx.shadowBlur = 0;
+                  ctx.globalAlpha = 1;
+                }
+              }
+            }
+          }
+
+          function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawConnections();
+            requestAnimationFrame(animateParticles);
+          }
+
+          animateParticles();
+        }
+
+        // ====== AUTH ======
         setTimeout(function () {
           if (typeof authManager !== "undefined") {
             authManager.updateUI();
@@ -839,9 +1602,5 @@
         }, 300);
       });
     </script>
-    <script src="/js/components/avatar-manager.js"></script>
-
-    <script src="/js/main.js"></script>
-    <script src="/js/search.js"></script>
   </body>
 </html>

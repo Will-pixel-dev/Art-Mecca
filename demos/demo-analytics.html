@@ -1,0 +1,1751 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analytics HUD — Art Mecca</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+      /* ============================================================
+           THEME VARIABLES — SCI-FI HUD
+           ============================================================ */
+      :root {
+        /* Dark Mode (default) */
+        --bg-body: #0a0508;
+        --bg-card: rgba(255, 0, 234, 0.04);
+        --bg-card-hover: rgba(255, 0, 234, 0.08);
+        --bg-card-border: rgba(255, 0, 234, 0.12);
+        --bg-elevated: rgba(255, 0, 234, 0.02);
+        --bg-nav: rgba(10, 5, 8, 0.92);
+        --bg-footer: rgba(10, 5, 8, 0.5);
+
+        --text-primary: #f5eaff;
+        --text-secondary: #b8a0d0;
+        --text-muted: #5a3a6a;
+        --text-inverse: #0a0508;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.7);
+
+        --border-color: rgba(255, 0, 234, 0.12);
+
+        /* Neon */
+        --neon-magenta: #ff00ea;
+        --neon-deep-purple: #ad03fc;
+        --neon-cyan: #58ebfe;
+        --neon-gold: #ffc72e;
+        --neon-green: #4ff3a6;
+        --neon-blue: #0088ff;
+        --neon-pink: #ff66f2;
+
+        /* HUD Colors */
+        --hud-health: #ff0040;
+        --hud-shield: #00d4ff;
+        --hud-energy: #ffc72e;
+        --hud-xp: #4ff3a6;
+
+        --gradient-neon: linear-gradient(135deg, #ff00ea, #ad03fc);
+        --gradient-cyber: linear-gradient(135deg, #ff00ea, #ad03fc, #58ebfe);
+        --gradient-hud: linear-gradient(135deg, #00d4ff, #58ebfe);
+
+        --glow-magenta: 0 0 40px rgba(255, 0, 234, 0.2);
+        --glow-cyan: 0 0 40px rgba(88, 235, 254, 0.2);
+        --glow-gold: 0 0 40px rgba(255, 199, 46, 0.15);
+
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+        --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      [data-theme="light"] {
+        --bg-body: #f5f0e8;
+        --bg-card: rgba(255, 255, 255, 0.5);
+        --bg-card-hover: rgba(255, 255, 255, 0.7);
+        --bg-card-border: rgba(173, 3, 252, 0.15);
+        --bg-elevated: rgba(255, 255, 255, 0.2);
+        --bg-nav: rgba(245, 240, 232, 0.92);
+        --bg-footer: rgba(245, 240, 232, 0.5);
+
+        --text-primary: #1a102a;
+        --text-secondary: #4a3a5a;
+        --text-muted: #8a7a9a;
+        --text-inverse: #f5f0e8;
+
+        --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+        --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.1);
+
+        --border-color: rgba(173, 3, 252, 0.15);
+
+        --glow-magenta: 0 0 40px rgba(255, 0, 234, 0.06);
+        --glow-cyan: 0 0 40px rgba(88, 235, 254, 0.06);
+        --glow-gold: 0 0 40px rgba(255, 199, 46, 0.06);
+      }
+
+      /* ============================================================
+           BASE
+           ============================================================ */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-condensed);
+        background: var(--bg-body);
+        color: var(--text-primary);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        transition:
+          background var(--transition),
+          color var(--transition);
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* ============================================================
+           SCANLINES
+           ============================================================ */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.02) 2px,
+          rgba(0, 0, 0, 0.02) 3px
+        );
+        pointer-events: none;
+        z-index: 9996;
+        animation: scanMove 0.8s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* ============================================================
+           VIGNETTE
+           ============================================================ */
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 65%,
+          rgba(0, 0, 0, 0.15) 100%
+        );
+        pointer-events: none;
+        z-index: 9995;
+      }
+
+      /* ============================================================
+           GRID LINES
+           ============================================================ */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 0, 234, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 0, 234, 0.02) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 9997;
+      }
+
+      /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-body);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--gradient-neon);
+        border-radius: 99px;
+      }
+
+      /* ============================================================
+           THEME TOGGLE
+           ============================================================ */
+      .theme-toggle-wrapper {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+      }
+
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: var(--bg-card);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        color: var(--text-primary);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+        box-shadow: var(--shadow-card), var(--glow-magenta);
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg-card-hover);
+        transform: scale(1.04);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+        border-color: var(--neon-cyan);
+      }
+
+      .toggle-icon {
+        font-size: 1rem;
+      }
+      .toggle-label {
+        font-weight: 600;
+      }
+
+      /* ============================================================
+           PARTICLES — SCI-FI HUD
+           ============================================================ */
+      .particles-container {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: var(--neon-cyan);
+        box-shadow: 0 0 10px var(--neon-cyan);
+        animation: floatParticle linear infinite;
+        opacity: 0.3;
+      }
+
+      .particle:nth-child(1) {
+        left: 10%;
+        animation-duration: 12s;
+        animation-delay: 0s;
+        width: 2px;
+        height: 2px;
+      }
+      .particle:nth-child(2) {
+        left: 20%;
+        animation-duration: 15s;
+        animation-delay: 1s;
+        width: 4px;
+        height: 4px;
+        background: var(--neon-magenta);
+        box-shadow: 0 0 10px var(--neon-magenta);
+      }
+      .particle:nth-child(3) {
+        left: 30%;
+        animation-duration: 10s;
+        animation-delay: 2s;
+        width: 2px;
+        height: 2px;
+      }
+      .particle:nth-child(4) {
+        left: 40%;
+        animation-duration: 18s;
+        animation-delay: 0.5s;
+        width: 3px;
+        height: 3px;
+        background: var(--neon-gold);
+        box-shadow: 0 0 10px var(--neon-gold);
+      }
+      .particle:nth-child(5) {
+        left: 50%;
+        animation-duration: 14s;
+        animation-delay: 3s;
+        width: 2px;
+        height: 2px;
+      }
+      .particle:nth-child(6) {
+        left: 60%;
+        animation-duration: 11s;
+        animation-delay: 1.5s;
+        width: 5px;
+        height: 5px;
+        background: var(--neon-green);
+        box-shadow: 0 0 15px var(--neon-green);
+      }
+      .particle:nth-child(7) {
+        left: 70%;
+        animation-duration: 16s;
+        animation-delay: 2.5s;
+        width: 2px;
+        height: 2px;
+      }
+      .particle:nth-child(8) {
+        left: 80%;
+        animation-duration: 13s;
+        animation-delay: 0.8s;
+        width: 3px;
+        height: 3px;
+        background: var(--neon-blue);
+        box-shadow: 0 0 10px var(--neon-blue);
+      }
+      .particle:nth-child(9) {
+        left: 90%;
+        animation-duration: 17s;
+        animation-delay: 1.8s;
+        width: 2px;
+        height: 2px;
+      }
+      .particle:nth-child(10) {
+        left: 15%;
+        animation-duration: 19s;
+        animation-delay: 3.5s;
+        width: 4px;
+        height: 4px;
+        background: var(--neon-magenta);
+        box-shadow: 0 0 10px var(--neon-magenta);
+      }
+      .particle:nth-child(11) {
+        left: 45%;
+        animation-duration: 20s;
+        animation-delay: 2.2s;
+        width: 3px;
+        height: 3px;
+      }
+      .particle:nth-child(12) {
+        left: 75%;
+        animation-duration: 9s;
+        animation-delay: 0.3s;
+        width: 2px;
+        height: 2px;
+        background: var(--neon-gold);
+        box-shadow: 0 0 10px var(--neon-gold);
+      }
+      .particle:nth-child(13) {
+        left: 85%;
+        animation-duration: 14s;
+        animation-delay: 4s;
+        width: 4px;
+        height: 4px;
+        background: var(--neon-cyan);
+        box-shadow: 0 0 10px var(--neon-cyan);
+      }
+      .particle:nth-child(14) {
+        left: 35%;
+        animation-duration: 12s;
+        animation-delay: 1.2s;
+        width: 3px;
+        height: 3px;
+      }
+      .particle:nth-child(15) {
+        left: 55%;
+        animation-duration: 16s;
+        animation-delay: 2.8s;
+        width: 2px;
+        height: 2px;
+        background: var(--neon-green);
+        box-shadow: 0 0 10px var(--neon-green);
+      }
+
+      @keyframes floatParticle {
+        0% {
+          transform: translateY(100vh) translateX(0) scale(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.6;
+        }
+        90% {
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-10vh) translateX(20px) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* ============================================================
+           HEADER
+           ============================================================ */
+      .hud-header {
+        position: sticky;
+        top: 12px;
+        z-index: 100;
+        background: var(--bg-nav);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        margin: 12px 20px 0;
+        padding: 10px 28px;
+        box-shadow: var(--shadow-card), var(--glow-magenta);
+        transition: all var(--transition);
+      }
+
+      .hud-header:hover {
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+        border-color: var(--neon-cyan);
+      }
+
+      .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-decoration: none;
+        color: var(--text-primary);
+      }
+
+      .header-logo .logo-icon {
+        font-size: 1.2rem;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header-logo .logo-text {
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .header-nav a {
+        font-family: var(--font-condensed);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: all var(--transition);
+        position: relative;
+      }
+
+      .header-nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--gradient-cyber);
+        transition: width var(--transition);
+      }
+
+      .header-nav a:hover {
+        color: var(--text-primary);
+      }
+
+      .header-nav a:hover::after {
+        width: 100%;
+      }
+
+      .header-nav a.active {
+        color: var(--text-primary);
+      }
+
+      .header-nav a.active::after {
+        width: 100%;
+      }
+
+      .header-status {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--neon-green);
+        letter-spacing: 1px;
+        animation: statusPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes statusPulse {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      /* ============================================================
+           MAIN CONTENT
+           ============================================================ */
+      .analytics-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px 20px 80px;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* ============================================================
+           PAGE HEADER
+           ============================================================ */
+      .page-header {
+        margin-bottom: 32px;
+        text-align: center;
+      }
+
+      .page-header h1 {
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 40px rgba(255, 0, 234, 0.1));
+      }
+
+      .page-header h1 i {
+        -webkit-text-fill-color: initial;
+        color: var(--neon-cyan);
+        margin-right: 8px;
+      }
+
+      .page-header p {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+      }
+
+      /* ============================================================
+           PERIOD SELECTOR
+           ============================================================ */
+      .period-selector {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+
+      .period-btn {
+        padding: 8px 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        background: var(--bg-card);
+        color: var(--text-muted);
+        font-family: var(--font-condensed);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all var(--transition);
+      }
+
+      .period-btn:hover {
+        border-color: var(--neon-cyan);
+        color: var(--text-primary);
+        box-shadow: var(--glow-cyan);
+      }
+
+      .period-btn.active {
+        background: var(--gradient-cyber);
+        color: var(--text-inverse);
+        border-color: transparent;
+        box-shadow: var(--glow-magenta);
+      }
+
+      /* ============================================================
+           STATS GRID — HUD STYLE
+           ============================================================ */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 24px 20px;
+        text-align: center;
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--gradient-cyber);
+        opacity: 0.3;
+      }
+
+      .stat-card:hover {
+        background: var(--bg-card-hover);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+        border-color: var(--neon-cyan);
+        transform: translateY(-2px);
+      }
+
+      .stat-card .stat-icon {
+        font-size: 1.6rem;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .stat-card .stat-value {
+        font-family: var(--font-display);
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: block;
+        letter-spacing: 1px;
+      }
+
+      .stat-card .stat-label {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .stat-card .stat-change {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 99px;
+        margin-top: 6px;
+      }
+
+      .stat-card .stat-change.up {
+        color: var(--neon-green);
+        background: rgba(79, 243, 166, 0.08);
+        border: 1px solid rgba(79, 243, 166, 0.1);
+      }
+
+      .stat-card .stat-change.down {
+        color: var(--hud-health);
+        background: rgba(255, 0, 64, 0.08);
+        border: 1px solid rgba(255, 0, 64, 0.1);
+      }
+
+      /* ============================================================
+           CHARTS — HUD STYLE
+           ============================================================ */
+      .charts-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+
+      .chart-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 24px;
+        transition: all var(--transition);
+      }
+
+      .chart-card:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--neon-cyan);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      .chart-card h3 {
+        font-family: var(--font-display);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+      }
+
+      .chart-card h3 i {
+        margin-right: 8px;
+      }
+
+      .chart-container {
+        position: relative;
+        height: 250px;
+      }
+
+      /* ============================================================
+           TOP ARTWORKS — HUD STYLE
+           ============================================================ */
+      .top-artworks-section {
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 24px;
+        margin-bottom: 28px;
+        transition: all var(--transition);
+      }
+
+      .top-artworks-section:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--neon-cyan);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      .top-artworks-section .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .top-artworks-section .section-header h3 {
+        font-family: var(--font-display);
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: var(--text-primary);
+      }
+
+      .top-artworks-section .section-header h3 i {
+        color: var(--neon-gold);
+        margin-right: 8px;
+      }
+
+      .top-artworks-section .section-header a {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color var(--transition);
+        letter-spacing: 1px;
+      }
+
+      .top-artworks-section .section-header a:hover {
+        color: var(--neon-cyan);
+      }
+
+      .top-artworks-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .top-artwork-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 16px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        transition: all var(--transition);
+        cursor: pointer;
+      }
+
+      .top-artwork-item:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--neon-cyan);
+        transform: translateX(4px);
+      }
+
+      .top-artwork-item .artwork-rank {
+        font-family: var(--font-display);
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--neon-gold);
+        width: 24px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .top-artwork-item .artwork-thumb {
+        width: 50px;
+        height: 50px;
+        border-radius: 4px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-color);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: var(--text-muted);
+      }
+
+      .top-artwork-item .artwork-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .top-artwork-item .artwork-info .artwork-title {
+        font-family: var(--font-condensed);
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .top-artwork-item .artwork-info .artwork-meta {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        display: flex;
+        gap: 12px;
+      }
+
+      .top-artwork-item .artwork-info .artwork-meta .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .top-artwork-item .artwork-info .artwork-meta .meta-item .meta-icon {
+        font-size: 0.5rem;
+      }
+
+      /* ============================================================
+           ENGAGEMENT CARD
+           ============================================================ */
+      .engagement-card {
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 24px 28px;
+        text-align: center;
+        transition: all var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .engagement-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-cyber);
+        opacity: 0.02;
+        pointer-events: none;
+      }
+
+      .engagement-card:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--neon-cyan);
+        box-shadow: var(--shadow-card-hover), var(--glow-cyan);
+      }
+
+      .engagement-card .engagement-value {
+        font-family: var(--font-display);
+        font-size: 3rem;
+        font-weight: 700;
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+        letter-spacing: 2px;
+      }
+
+      .engagement-card .engagement-label {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      /* ============================================================
+           FOOTER
+           ============================================================ */
+      .hud-footer {
+        padding: 32px 0 20px;
+        border-top: 1px solid var(--border-color);
+        margin-top: 20px;
+        background: var(--bg-footer);
+        transition: all var(--transition);
+        position: relative;
+        z-index: 2;
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .footer-container .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+      }
+
+      .footer-container .footer-brand .rainbow {
+        background: var(--gradient-cyber);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .footer-container .footer-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .footer-container .footer-links a {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color var(--transition);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .footer-container .footer-links a:hover {
+        color: var(--neon-cyan);
+      }
+
+      .footer-container .footer-social {
+        display: flex;
+        gap: 12px;
+        font-size: 1.1rem;
+      }
+
+      .footer-container .footer-social a {
+        color: var(--text-muted);
+        transition: all var(--transition);
+      }
+
+      .footer-container .footer-social a:hover {
+        color: var(--neon-cyan);
+        transform: scale(1.1);
+      }
+
+      /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+      @media (max-width: 1024px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .charts-row {
+          grid-template-columns: 1fr;
+        }
+
+        .top-artworks-list {
+          grid-template-columns: 1fr;
+        }
+
+        .page-header h1 {
+          font-size: 1.8rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .hud-header {
+          margin: 8px 8px 0;
+          padding: 8px 16px;
+        }
+
+        .header-nav {
+          gap: 12px;
+        }
+
+        .header-nav a {
+          font-size: 0.6rem;
+        }
+
+        .header-status {
+          display: none;
+        }
+
+        .analytics-main {
+          padding: 16px 12px 70px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+
+        .stat-card {
+          padding: 16px;
+        }
+
+        .stat-card .stat-value {
+          font-size: 1.6rem;
+        }
+
+        .period-selector {
+          gap: 4px;
+        }
+
+        .period-btn {
+          font-size: 0.55rem;
+          padding: 6px 12px;
+        }
+
+        .chart-container {
+          height: 180px;
+        }
+
+        .engagement-card .engagement-value {
+          font-size: 2.2rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 16px;
+          right: 16px;
+        }
+
+        .theme-toggle {
+          padding: 8px 14px;
+          font-size: 0.65rem;
+        }
+
+        .footer-container {
+          flex-direction: column;
+          text-align: center;
+          gap: 12px;
+        }
+
+        .footer-container .footer-links {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .page-header h1 {
+          font-size: 1.4rem;
+          letter-spacing: 1px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+
+        .stat-card {
+          padding: 12px;
+        }
+
+        .stat-card .stat-value {
+          font-size: 1.2rem;
+        }
+
+        .stat-card .stat-icon {
+          font-size: 1.2rem;
+          margin-bottom: 4px;
+        }
+
+        .stat-card .stat-label {
+          font-size: 0.5rem;
+        }
+
+        .chart-card {
+          padding: 16px;
+        }
+
+        .chart-card h3 {
+          font-size: 0.7rem;
+        }
+
+        .top-artworks-section {
+          padding: 16px;
+        }
+
+        .top-artwork-item {
+          padding: 8px 12px;
+        }
+
+        .top-artwork-item .artwork-thumb {
+          width: 36px;
+          height: 36px;
+          font-size: 1rem;
+        }
+
+        .top-artwork-item .artwork-info .artwork-title {
+          font-size: 0.7rem;
+        }
+
+        .engagement-card {
+          padding: 16px;
+        }
+
+        .engagement-card .engagement-value {
+          font-size: 1.8rem;
+        }
+
+        .theme-toggle-wrapper {
+          bottom: 12px;
+          right: 12px;
+        }
+
+        .theme-toggle {
+          padding: 6px 12px;
+          font-size: 0.55rem;
+        }
+
+        .toggle-label {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Vignette -->
+    <div class="vignette"></div>
+
+    <!-- ====== PARTICLES ====== -->
+    <div class="particles-container">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <!-- ====== THEME TOGGLE ====== -->
+    <div class="theme-toggle-wrapper">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">🌙</span>
+        <span class="toggle-label">Dark</span>
+      </button>
+    </div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="hud-header">
+      <div class="header-container">
+        <a href="#" class="header-logo">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">ART MECCA</span>
+        </a>
+        <nav class="header-nav">
+          <a href="#" class="active">Analytics</a>
+          <a href="#">Feed</a>
+          <a href="#">Gallery</a>
+          <a href="#">Challenges</a>
+        </nav>
+        <span class="header-status">● ONLINE</span>
+      </div>
+    </header>
+
+    <!-- ====== MAIN ====== -->
+    <main class="analytics-main">
+      <!-- ====== PAGE HEADER ====== -->
+      <div class="page-header">
+        <h1><i class="fas fa-chart-line"></i> ANALYTICS HUD</h1>
+        <p>✦ track your creative performance ✦</p>
+      </div>
+
+      <!-- ====== PERIOD SELECTOR ====== -->
+      <div class="period-selector">
+        <button class="period-btn active" data-period="7d">7 Days</button>
+        <button class="period-btn" data-period="30d">30 Days</button>
+        <button class="period-btn" data-period="90d">90 Days</button>
+        <button class="period-btn" data-period="365d">1 Year</button>
+        <button class="period-btn" data-period="all">All Time</button>
+      </div>
+
+      <!-- ====== STATS GRID ====== -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-icon">🎨</span>
+          <span class="stat-value" id="totalArtworks">0</span>
+          <span class="stat-label">Total Artworks</span>
+          <span class="stat-change up">▲ +12%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">❤️</span>
+          <span class="stat-value" id="totalLikes">0</span>
+          <span class="stat-label">Total Likes</span>
+          <span class="stat-change up">▲ +8%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">🥂</span>
+          <span class="stat-value" id="totalCheers">0</span>
+          <span class="stat-label">Total Cheers</span>
+          <span class="stat-change up">▲ +15%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">📈</span>
+          <span class="stat-value" id="avgEngagement">0%</span>
+          <span class="stat-label">Engagement Rate</span>
+          <span class="stat-change up">▲ +5%</span>
+        </div>
+      </div>
+
+      <!-- ====== CHARTS ====== -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>
+            <i class="fas fa-heart" style="color: var(--neon-pink)"></i> Likes &
+            Cheers Over Time
+          </h3>
+          <div class="chart-container">
+            <canvas id="engagementChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>
+            <i class="fas fa-chart-simple" style="color: var(--neon-cyan)"></i>
+            Performance Breakdown
+          </h3>
+          <div class="chart-container">
+            <canvas id="breakdownChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== TOP ARTWORKS ====== -->
+      <div class="top-artworks-section">
+        <div class="section-header">
+          <h3><i class="fas fa-trophy"></i> Top Performing Artworks</h3>
+          <a href="#">View Gallery →</a>
+        </div>
+        <div class="top-artworks-list" id="topArtworksList">
+          <!-- Rendered by JavaScript -->
+        </div>
+      </div>
+
+      <!-- ====== ENGAGEMENT CARD ====== -->
+      <div class="engagement-card">
+        <span class="engagement-value" id="totalEngagement">0</span>
+        <span class="engagement-label">Total Engagement (Likes + Cheers)</span>
+      </div>
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="hud-footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <span>✦</span>
+          <span class="rainbow">ART MECCA</span>
+          <span
+            style="
+              font-family: var(--font-mono);
+              font-size: 0.6rem;
+              color: var(--text-muted);
+              font-weight: 400;
+            "
+            >✦ analytics hud</span
+          >
+        </div>
+        <div class="footer-links">
+          <a href="#">about</a>
+          <a href="#">guidelines</a>
+          <a href="#">support</a>
+          <a href="#">privacy</a>
+        </div>
+        <div class="footer-social">
+          <a href="#">🐦</a>
+          <a href="#">📷</a>
+          <a href="#">🎮</a>
+          <a href="#">💬</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script>
+      // ============================================================
+      // THEME TOGGLE
+      // ============================================================
+      const toggle = document.getElementById("themeToggle");
+      const icon = toggle.querySelector(".toggle-icon");
+      const label = toggle.querySelector(".toggle-label");
+
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      updateToggleUI(savedTheme);
+
+      toggle.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        updateToggleUI(next);
+      });
+
+      function updateToggleUI(theme) {
+        if (theme === "dark") {
+          icon.textContent = "🌙";
+          label.textContent = "Dark";
+        } else {
+          icon.textContent = "☀️";
+          label.textContent = "Light";
+        }
+      }
+
+      // ============================================================
+      // PERIOD SELECTOR
+      // ============================================================
+      document.querySelectorAll(".period-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".period-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          updateData(btn.dataset.period);
+        });
+      });
+
+      // ============================================================
+      // UPDATE DATA (simulated)
+      // ============================================================
+      function updateData(period) {
+        const multipliers = {
+          "7d": 1,
+          "30d": 3,
+          "90d": 6,
+          "365d": 12,
+          all: 20,
+        };
+        const m = multipliers[period] || 1;
+
+        const artworks = Math.round(24 * m);
+        const likes = Math.round(1247 * m);
+        const cheers = Math.round(342 * m);
+        const engagement =
+          Math.round(((likes + cheers) / artworks) * 100) / 100 || 0;
+
+        document.getElementById("totalArtworks").textContent =
+          artworks.toLocaleString();
+        document.getElementById("totalLikes").textContent =
+          likes.toLocaleString();
+        document.getElementById("totalCheers").textContent =
+          cheers.toLocaleString();
+        document.getElementById("avgEngagement").textContent =
+          engagement.toFixed(1) + "%";
+        document.getElementById("totalEngagement").textContent = (
+          likes + cheers
+        ).toLocaleString();
+
+        // Update charts
+        updateCharts(period);
+        updateTopArtworks(period);
+      }
+
+      // ============================================================
+      // CHARTS
+      // ============================================================
+      let engagementChartInstance = null;
+      let breakdownChartInstance = null;
+
+      function generateData(period, count) {
+        const multipliers = {
+          "7d": 1,
+          "30d": 3,
+          "90d": 6,
+          "365d": 12,
+          all: 20,
+        };
+        const m = multipliers[period] || 1;
+
+        const labels = [];
+        const likesData = [];
+        const cheersData = [];
+
+        const now = new Date();
+        const days = count || 7;
+
+        for (let i = days - 1; i >= 0; i--) {
+          const d = new Date(now);
+          d.setDate(d.getDate() - i);
+          labels.push(
+            d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+          );
+
+          const base = Math.random() * 20 + 5;
+          likesData.push(Math.round((base + Math.random() * 15) * m));
+          cheersData.push(Math.round((base * 0.3 + Math.random() * 5) * m));
+        }
+
+        return { labels, likesData, cheersData };
+      }
+
+      function updateCharts(period) {
+        const data = generateData(
+          period,
+          period === "7d"
+            ? 7
+            : period === "30d"
+              ? 30
+              : period === "90d"
+                ? 12
+                : 12,
+        );
+
+        // Engagement Chart
+        if (engagementChartInstance) {
+          engagementChartInstance.destroy();
+        }
+
+        const ctx1 = document
+          .getElementById("engagementChart")
+          .getContext("2d");
+        engagementChartInstance = new Chart(ctx1, {
+          type: "line",
+          data: {
+            labels: data.labels,
+            datasets: [
+              {
+                label: "Likes",
+                data: data.likesData,
+                borderColor: "#ff66f2",
+                backgroundColor: "rgba(255, 102, 242, 0.1)",
+                fill: true,
+                tension: 0.4,
+                pointRadius: 3,
+                pointBackgroundColor: "#ff66f2",
+              },
+              {
+                label: "Cheers",
+                data: data.cheersData,
+                borderColor: "#ffc72e",
+                backgroundColor: "rgba(255, 199, 46, 0.1)",
+                fill: true,
+                tension: 0.4,
+                pointRadius: 3,
+                pointBackgroundColor: "#ffc72e",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color:
+                    getComputedStyle(document.documentElement)
+                      .getPropertyValue("--text-secondary")
+                      .trim() || "#b8a0d0",
+                  font: {
+                    family: "'Share Tech Mono', monospace",
+                    size: 10,
+                  },
+                  boxWidth: 12,
+                  boxHeight: 12,
+                },
+              },
+            },
+            scales: {
+              x: {
+                grid: {
+                  color: "rgba(255,255,255,0.04)",
+                  drawBorder: false,
+                },
+                ticks: {
+                  color:
+                    getComputedStyle(document.documentElement)
+                      .getPropertyValue("--text-muted")
+                      .trim() || "#5a3a6a",
+                  font: {
+                    family: "'Share Tech Mono', monospace",
+                    size: 9,
+                  },
+                  maxTicksLimit: 12,
+                },
+              },
+              y: {
+                grid: {
+                  color: "rgba(255,255,255,0.04)",
+                  drawBorder: false,
+                },
+                ticks: {
+                  color:
+                    getComputedStyle(document.documentElement)
+                      .getPropertyValue("--text-muted")
+                      .trim() || "#5a3a6a",
+                  font: {
+                    family: "'Share Tech Mono', monospace",
+                    size: 9,
+                  },
+                },
+                beginAtZero: true,
+              },
+            },
+            interaction: {
+              intersect: false,
+              mode: "index",
+            },
+          },
+        });
+
+        // Breakdown Chart
+        if (breakdownChartInstance) {
+          breakdownChartInstance.destroy();
+        }
+
+        const totals =
+          data.likesData.reduce((a, b) => a + b, 0) +
+          data.cheersData.reduce((a, b) => a + b, 0);
+        const likesTotal = data.likesData.reduce((a, b) => a + b, 0);
+        const cheersTotal = data.cheersData.reduce((a, b) => a + b, 0);
+
+        const ctx2 = document.getElementById("breakdownChart").getContext("2d");
+        breakdownChartInstance = new Chart(ctx2, {
+          type: "doughnut",
+          data: {
+            labels: ["Likes", "Cheers"],
+            datasets: [
+              {
+                data: [likesTotal || 1, cheersTotal || 1],
+                backgroundColor: ["#ff66f2", "#ffc72e"],
+                borderColor: "rgba(10, 5, 8, 0.3)",
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "70%",
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  color:
+                    getComputedStyle(document.documentElement)
+                      .getPropertyValue("--text-secondary")
+                      .trim() || "#b8a0d0",
+                  font: {
+                    family: "'Share Tech Mono', monospace",
+                    size: 10,
+                  },
+                  boxWidth: 12,
+                  boxHeight: 12,
+                  padding: 12,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      // ============================================================
+      // TOP ARTWORKS
+      // ============================================================
+      function updateTopArtworks(period) {
+        const m =
+          {
+            "7d": 1,
+            "30d": 3,
+            "90d": 6,
+            "365d": 12,
+            all: 20,
+          }[period] || 1;
+
+        const artworks = [
+          {
+            title: "Neon Tokyo Nights",
+            artist: "@cyber_kiwi",
+            likes: Math.round(847 * m),
+            cheers: Math.round(142 * m),
+            icon: "🌃",
+          },
+          {
+            title: "Ethereal Flow",
+            artist: "@lunar_brush",
+            likes: Math.round(612 * m),
+            cheers: Math.round(87 * m),
+            icon: "🌊",
+          },
+          {
+            title: "Golden Hour",
+            artist: "@royal_pixel",
+            likes: Math.round(534 * m),
+            cheers: Math.round(56 * m),
+            icon: "🌅",
+          },
+          {
+            title: "Cosmic Duality",
+            artist: "@nebula_studio",
+            likes: Math.round(412 * m),
+            cheers: Math.round(68 * m),
+            icon: "🌌",
+          },
+          {
+            title: "Synthwave Sunset",
+            artist: "@outrun_art",
+            likes: Math.round(389 * m),
+            cheers: Math.round(43 * m),
+            icon: "🌇",
+          },
+          {
+            title: "Verdant Valley",
+            artist: "@green_mage",
+            likes: Math.round(276 * m),
+            cheers: Math.round(32 * m),
+            icon: "🌿",
+          },
+        ];
+
+        const container = document.getElementById("topArtworksList");
+        container.innerHTML = artworks
+          .map(
+            (art, i) => `
+                <div class="top-artwork-item">
+                    <span class="artwork-rank">#${i + 1}</span>
+                    <div class="artwork-thumb">${art.icon}</div>
+                    <div class="artwork-info">
+                        <div class="artwork-title">${art.title}</div>
+                        <div class="artwork-meta">
+                            <span class="meta-item"><span class="meta-icon">❤️</span> ${art.likes.toLocaleString()}</span>
+                            <span class="meta-item"><span class="meta-icon">🥂</span> ${art.cheers.toLocaleString()}</span>
+                            <span class="meta-item" style="color:var(--neon-cyan);">${art.artist}</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      // ============================================================
+      // INITIALIZE
+      // ============================================================
+      document.addEventListener("DOMContentLoaded", () => {
+        updateData("7d");
+
+        // Re-render charts on theme change
+        const observer = new MutationObserver(() => {
+          setTimeout(() => {
+            const activePeriod = document.querySelector(".period-btn.active");
+            if (activePeriod) {
+              updateCharts(activePeriod.dataset.period);
+            }
+          }, 100);
+        });
+
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        });
+      });
+
+      // ============================================================
+      // CONSOLE EASTER EGG
+      // ============================================================
+      console.log(
+        "%c✦ ART MECCA — ANALYTICS HUD",
+        "font-size:20px; font-weight:bold; color:#ff00ea; text-shadow: 0 0 20px #ff00ea;",
+      );
+      console.log(
+        "%c📊 Track your creative performance",
+        "font-size:12px; color:#58ebfe;",
+      );
+      console.log(
+        "%c📈 Click the period buttons to update data",
+        "font-size:12px; color:#4ff3a6;",
+      );
+      console.log(
+        "%c🖌️ Keep it fresh. Hack the future.",
+        "font-size:14px; color:#ff6b00;",
+      );
+    </script>
+  </body>
+</html>

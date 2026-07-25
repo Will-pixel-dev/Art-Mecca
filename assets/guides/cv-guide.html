@@ -1,0 +1,2213 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artist's CV Guide — Art Mecca</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* ================================================================
+       ARTIST'S CV GUIDE — LIGHT CYBERPUNK + ELEGANT AESTHETIC
+       ================================================================ */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0f0a18;
+        --card: #1a1028;
+        --glass: rgba(15, 10, 24, 0.92);
+        --border: rgba(173, 3, 252, 0.1);
+        --border-light: rgba(173, 3, 252, 0.06);
+        --text: #f5edff;
+        --text-secondary: #d4c8e8;
+        --text-muted: #7a6a8a;
+        --text-dim: #3a2a4a;
+        --accent: #ad03fc;
+        --accent-dim: rgba(173, 3, 252, 0.05);
+        --accent-soft: rgba(173, 3, 252, 0.08);
+        --accent-glow: 0 0 40px rgba(173, 3, 252, 0.04);
+        --accent-secondary: #58ebfe;
+        --accent-green: #4ff3a6;
+        --accent-gold: #ffc72e;
+        --accent-pink: #ff66b2;
+        --accent-purple: #b388ff;
+
+        --font-display: "Orbitron", "Rajdhani", monospace;
+        --font-condensed: "Rajdhani", "Orbitron", sans-serif;
+        --font-mono: "Share Tech Mono", monospace;
+        --font-body: "Inter", -apple-system, sans-serif;
+        --font-serif: "Playfair Display", Georgia, serif;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      /* --- SCANLINES (softer) --- */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9996;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(173, 3, 252, 0.01) 2px,
+          rgba(173, 3, 252, 0.01) 3px
+        );
+        animation: scanMove 0.8s linear infinite;
+        opacity: 0.3;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* --- NOISE (softer) --- */
+      .noise {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9995;
+        opacity: 0.008;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      /* --- AMBIENT ORB (softer) --- */
+      .ambient-orb {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(173, 3, 252, 0.04),
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+        animation: orbPulse 6s ease-in-out infinite;
+      }
+
+      @keyframes orbPulse {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.2);
+          opacity: 1;
+        }
+      }
+
+      /* --- CONTAINER --- */
+      .guide-container {
+        max-width: 1000px;
+        width: 100%;
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 50px 60px;
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.6),
+          var(--accent-glow);
+        position: relative;
+        z-index: 1;
+      }
+
+      /* --- CORNER BRACKETS (softer) --- */
+      .guide-container::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 24px;
+        height: 24px;
+        border-top: 2px solid var(--accent);
+        border-left: 2px solid var(--accent);
+        opacity: 0.08;
+        pointer-events: none;
+        border-radius: 4px 0 0 0;
+      }
+
+      .guide-container::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        width: 24px;
+        height: 24px;
+        border-bottom: 2px solid var(--accent);
+        border-right: 2px solid var(--accent);
+        opacity: 0.08;
+        pointer-events: none;
+        border-radius: 0 0 4px 0;
+      }
+
+      /* --- DOWNLOAD BAR --- */
+      .download-bar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 30px;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .btn-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 24px;
+        background: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: 4px;
+        font-family: var(--font-condensed);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 30px rgba(173, 3, 252, 0.1);
+        text-decoration: none;
+      }
+
+      .btn-download:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 50px rgba(173, 3, 252, 0.2);
+      }
+
+      .btn-download i {
+        font-size: 0.9rem;
+      }
+
+      .btn-download-outline {
+        background: transparent;
+        color: var(--accent-secondary);
+        border: 1px solid var(--border);
+        box-shadow: none;
+      }
+
+      .btn-download-outline:hover {
+        background: var(--accent-dim);
+        border-color: var(--accent-secondary);
+        box-shadow: 0 0 40px rgba(88, 235, 254, 0.05);
+      }
+
+      /* --- TITLE SECTION --- */
+      .guide-title {
+        text-align: center;
+        padding: 20px 0 30px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 30px;
+      }
+
+      .guide-title .deco {
+        font-size: 1.8rem;
+        color: var(--accent);
+        opacity: 0.2;
+        letter-spacing: 6px;
+      }
+
+      .guide-title h1 {
+        font-family: var(--font-display);
+        font-size: 2.6rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+        margin: 8px 0;
+        background: linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent-purple)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .guide-title .subtitle {
+        font-family: var(--font-serif);
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        font-style: italic;
+        letter-spacing: 0.5px;
+        font-weight: 400;
+      }
+
+      .guide-title .tagline {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        letter-spacing: 3px;
+        margin-top: 8px;
+      }
+
+      /* --- TOC --- */
+      .toc-section {
+        background: var(--accent-soft);
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+        padding: 24px 30px;
+        margin-bottom: 30px;
+      }
+
+      .toc-section .toc-title {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--accent-secondary);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+      }
+
+      .toc-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 24px;
+      }
+
+      .toc-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        cursor: pointer;
+      }
+
+      .toc-item:hover {
+        color: var(--accent);
+        padding-left: 4px;
+      }
+
+      .toc-item .toc-num {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        min-width: 24px;
+      }
+
+      .toc-item .toc-dot {
+        color: var(--accent);
+        font-size: 0.3rem;
+        opacity: 0.3;
+      }
+
+      /* --- CONTENT SECTIONS --- */
+      .content-section {
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .content-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .section-number {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .section-title {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin: 4px 0 12px;
+        color: var(--text);
+      }
+
+      .section-title .highlight {
+        color: var(--accent);
+      }
+
+      .section-title .highlight-cyan {
+        color: var(--accent-secondary);
+      }
+
+      .section-body p {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 12px;
+      }
+
+      .section-body .lead {
+        font-size: 1.05rem;
+        color: var(--text);
+        padding-left: 16px;
+        border-left: 2px solid var(--accent);
+        font-style: italic;
+        opacity: 0.9;
+      }
+
+      /* --- QUOTE BLOCK (softer) --- */
+      .quote-block {
+        margin: 16px 0;
+        padding: 18px 26px;
+        background: var(--accent-soft);
+        border-left: 3px solid var(--accent);
+        border-radius: 4px;
+        position: relative;
+      }
+
+      .quote-block::before {
+        content: '"';
+        font-family: var(--font-serif);
+        font-size: 2.8rem;
+        color: var(--accent);
+        opacity: 0.1;
+        position: absolute;
+        top: 2px;
+        left: 14px;
+        line-height: 1;
+      }
+
+      .quote-block p {
+        font-family: var(--font-serif);
+        font-size: 1rem;
+        color: var(--text);
+        font-style: italic;
+        margin-bottom: 4px;
+        padding-left: 20px;
+      }
+
+      .quote-block .quote-attribution {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--text-muted);
+        padding-left: 20px;
+        font-style: normal;
+      }
+
+      /* --- TABLES (softer, more elegant) --- */
+      .guide-table-wrap {
+        overflow-x: auto;
+        margin: 12px 0 16px;
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.01);
+      }
+
+      .guide-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        min-width: 400px;
+      }
+
+      .guide-table thead th {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--accent-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        text-align: left;
+        padding: 10px 16px;
+        background: var(--accent-soft);
+        border-bottom: 1px solid var(--border-light);
+        font-weight: 600;
+      }
+
+      .guide-table tbody td {
+        padding: 8px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      .guide-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .guide-table tbody tr:hover {
+        background: var(--accent-soft);
+      }
+
+      .guide-table tbody td:first-child {
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .guide-table .td-mono {
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        color: var(--accent-green);
+      }
+
+      .guide-table .td-highlight {
+        color: var(--accent);
+      }
+
+      /* --- PRO TIP (softer) --- */
+      .pro-tip {
+        margin: 12px 0;
+        padding: 12px 18px;
+        background: rgba(88, 235, 254, 0.03);
+        border: 1px solid rgba(88, 235, 254, 0.06);
+        border-radius: 4px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .pro-tip .tip-icon {
+        color: var(--accent-gold);
+        font-size: 1rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      .pro-tip p {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin: 0;
+      }
+
+      .pro-tip p strong {
+        color: var(--text);
+      }
+
+      /* --- LIST (softer) --- */
+      .styled-list {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0 12px;
+      }
+
+      .styled-list li {
+        padding: 4px 0 4px 20px;
+        position: relative;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .styled-list li::before {
+        content: "✦";
+        position: absolute;
+        left: 0;
+        color: var(--accent);
+        font-size: 0.5rem;
+        opacity: 0.4;
+      }
+
+      .styled-list li strong {
+        color: var(--text);
+      }
+
+      /* --- CHECKLIST (softer) --- */
+      .checklist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 24px;
+        margin: 8px 0 12px;
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .checklist-item .check-box {
+        width: 16px;
+        height: 16px;
+        border: 1px solid var(--border);
+        border-radius: 3px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.5rem;
+        color: var(--accent);
+        transition: all 0.3s ease;
+      }
+
+      .checklist-item:hover .check-box {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      /* --- DO/DON'T (softer) --- */
+      .do-dont-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 8px 0 12px;
+      }
+
+      .do-dont-box {
+        padding: 14px 18px;
+        border-radius: 6px;
+        border: 1px solid var(--border-light);
+      }
+
+      .do-dont-box.do {
+        border-color: rgba(79, 243, 166, 0.12);
+        background: rgba(79, 243, 166, 0.02);
+      }
+
+      .do-dont-box.dont {
+        border-color: rgba(255, 0, 64, 0.1);
+        background: rgba(255, 0, 64, 0.02);
+      }
+
+      .do-dont-box .dd-label {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+
+      .do-dont-box.do .dd-label {
+        color: var(--accent-green);
+      }
+
+      .do-dont-box.dont .dd-label {
+        color: #ff6b8a;
+      }
+
+      .do-dont-box ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .do-dont-box ul li {
+        padding: 3px 0 3px 16px;
+        position: relative;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      .do-dont-box ul li::before {
+        position: absolute;
+        left: 0;
+        font-size: 0.5rem;
+      }
+
+      .do-dont-box.do ul li::before {
+        content: "✓";
+        color: var(--accent-green);
+      }
+
+      .do-dont-box.dont ul li::before {
+        content: "✗";
+        color: #ff6b8a;
+      }
+
+      /* --- EXAMPLE BOX (softer) --- */
+      .example-box {
+        margin: 8px 0 12px;
+        padding: 14px 18px;
+        background: var(--accent-soft);
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+      }
+
+      .example-box .example-label {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+      }
+
+      .example-box .example-label.good {
+        color: var(--accent-green);
+      }
+
+      .example-box .example-label.better {
+        color: var(--accent);
+      }
+
+      .example-box p {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .example-box .example-text {
+        color: var(--text);
+        font-style: italic;
+      }
+
+      /* --- RESOURCE GRID --- */
+      .resource-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 8px 0 12px;
+      }
+
+      .resource-card-small {
+        padding: 10px 14px;
+        background: var(--accent-soft);
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .resource-card-small:hover {
+        border-color: var(--accent);
+        background: rgba(173, 3, 252, 0.06);
+      }
+
+      .resource-card-small .res-name {
+        font-weight: 600;
+        color: var(--text);
+        font-size: 0.85rem;
+      }
+
+      .resource-card-small .res-desc {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+
+      /* --- QUICK REFERENCE (softer) --- */
+      .quick-ref {
+        background: var(--accent-soft);
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+        padding: 20px 24px;
+        margin: 12px 0;
+      }
+
+      .quick-ref .qr-title {
+        font-family: var(--font-mono);
+        font-size: 0.55rem;
+        color: var(--accent-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+
+      .quick-ref .qr-steps {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+      }
+
+      .quick-ref .qr-step {
+        text-align: center;
+        padding: 8px 4px;
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid var(--border-light);
+        border-radius: 4px;
+      }
+
+      .quick-ref .qr-step .step-num {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .quick-ref .qr-step .step-label {
+        font-size: 0.55rem;
+        color: var(--text-muted);
+        margin: 2px 0;
+        line-height: 1.3;
+      }
+
+      .quick-ref .qr-step .step-time {
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--accent-green);
+      }
+
+      /* --- RED FLAGS --- */
+      .red-flag {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .red-flag .flag-icon {
+        color: #ff6b8a;
+        font-size: 0.7rem;
+      }
+
+      /* --- FOOTER --- */
+      .guide-footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-light);
+        text-align: center;
+        font-family: var(--font-mono);
+        font-size: 0.5rem;
+        color: var(--text-muted);
+        letter-spacing: 2px;
+      }
+
+      .guide-footer span {
+        color: var(--accent);
+      }
+
+      /* --- INLINE LINK --- */
+      .inline-link {
+        color: var(--accent-secondary);
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(88, 235, 254, 0.12);
+        transition: all 0.3s ease;
+      }
+
+      .inline-link:hover {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+
+      /* --- RESPONSIVE --- */
+      @media (max-width: 768px) {
+        .guide-container {
+          padding: 30px 24px;
+        }
+        .guide-title h1 {
+          font-size: 2rem;
+        }
+        .toc-grid {
+          grid-template-columns: 1fr;
+        }
+        .section-title {
+          font-size: 1.2rem;
+        }
+        .do-dont-grid {
+          grid-template-columns: 1fr;
+        }
+        .checklist {
+          grid-template-columns: 1fr;
+        }
+        .resource-grid {
+          grid-template-columns: 1fr;
+        }
+        .quick-ref .qr-steps {
+          grid-template-columns: 1fr 1fr;
+        }
+        .guide-table {
+          font-size: 0.75rem;
+          min-width: 300px;
+        }
+        .guide-table thead th,
+        .guide-table tbody td {
+          padding: 6px 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .guide-container {
+          padding: 20px 16px;
+        }
+        .guide-title h1 {
+          font-size: 1.5rem;
+        }
+        .guide-title .subtitle {
+          font-size: 1rem;
+        }
+        .section-title {
+          font-size: 1rem;
+        }
+        .section-body p {
+          font-size: 0.85rem;
+        }
+        .quote-block p {
+          font-size: 0.9rem;
+        }
+        .download-bar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .btn-download {
+          justify-content: center;
+        }
+        .guide-table {
+          font-size: 0.65rem;
+          min-width: 250px;
+        }
+        .guide-table thead th,
+        .guide-table tbody td {
+          padding: 4px 8px;
+        }
+        .quick-ref {
+          padding: 14px 16px;
+        }
+        .quick-ref .qr-steps {
+          grid-template-columns: 1fr 1fr;
+          gap: 4px;
+        }
+        .quick-ref .qr-step {
+          padding: 6px 4px;
+        }
+        .quick-ref .qr-step .step-num {
+          font-size: 0.9rem;
+        }
+        .quick-ref .qr-step .step-label {
+          font-size: 0.5rem;
+        }
+        .do-dont-box {
+          padding: 10px 14px;
+        }
+        .toc-section {
+          padding: 16px 18px;
+        }
+        .toc-item {
+          font-size: 0.7rem;
+        }
+        .ambient-orb {
+          width: 300px;
+          height: 300px;
+        }
+      }
+
+      /* --- PRINT STYLES --- */
+      @media print {
+        .scanlines,
+        .noise,
+        .ambient-orb {
+          display: none;
+        }
+        .guide-container {
+          background: #0f0a18;
+          box-shadow: none;
+          border: 1px solid #1a1028;
+          padding: 30px 40px;
+        }
+        .guide-container::before,
+        .guide-container::after {
+          opacity: 0.03;
+        }
+        .download-bar {
+          display: none !important;
+        }
+        .btn-download {
+          display: none !important;
+        }
+        .guide-table tbody tr:hover {
+          background: transparent;
+        }
+        .resource-card-small:hover {
+          background: var(--accent-soft);
+        }
+        .checklist-item:hover .check-box {
+          border-color: var(--border);
+          background: transparent;
+        }
+        .toc-item:hover {
+          padding-left: 0;
+          color: var(--text-secondary);
+        }
+        .section-body p {
+          color: var(--text-secondary);
+        }
+        .guide-table tbody td {
+          color: var(--text-secondary);
+        }
+        .guide-table tbody td:first-child {
+          color: var(--text);
+        }
+        .quote-block {
+          background: var(--accent-soft);
+        }
+        .pro-tip {
+          background: rgba(88, 235, 254, 0.02);
+        }
+        .quick-ref {
+          background: var(--accent-soft);
+        }
+        .example-box {
+          background: var(--accent-soft);
+        }
+        .do-dont-box.do {
+          background: rgba(79, 243, 166, 0.02);
+        }
+        .do-dont-box.dont {
+          background: rgba(255, 0, 64, 0.02);
+        }
+        .guide-title h1 {
+          -webkit-text-fill-color: var(--text);
+          background: none;
+          color: var(--text);
+        }
+        .section-title .highlight {
+          color: var(--accent);
+        }
+      }
+
+      /* --- SCROLL TOP --- */
+      .scroll-top {
+        position: fixed;
+        bottom: 80px;
+        right: 24px;
+        z-index: 9998;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--glass);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .scroll-top.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .scroll-top:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-3px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient-orb"></div>
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+
+    <div class="guide-container" id="guideContainer">
+      <!-- Download Bar -->
+      <div class="download-bar">
+        <button
+          class="btn-download btn-download-outline"
+          onclick="window.print()"
+        >
+          <i class="fas fa-print"></i> Print
+        </button>
+        <button class="btn-download" onclick="exportPDF()">
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+      </div>
+
+      <!-- TITLE -->
+      <div class="guide-title">
+        <div class="deco">✦ ✦</div>
+        <h1>The Artist's CV Guide</h1>
+        <div class="subtitle">Write a CV That Gets Noticed</div>
+        <div class="tagline">✦ ART MECCA — EQUIP ✦</div>
+      </div>
+
+      <!-- TOC -->
+      <div class="toc-section">
+        <div class="toc-title">📋 Table of Contents</div>
+        <div class="toc-grid">
+          <a href="#intro" class="toc-item">
+            <span class="toc-num">01</span>
+            <span class="toc-dot">✦</span>
+            Introduction — Why Your CV Matters
+          </a>
+          <a href="#cv-vs-resume" class="toc-item">
+            <span class="toc-num">02</span>
+            <span class="toc-dot">✦</span>
+            CV vs Resume — What's the Difference?
+          </a>
+          <a href="#what-to-include" class="toc-item">
+            <span class="toc-num">03</span>
+            <span class="toc-dot">✦</span>
+            What to Include — Essential Sections
+          </a>
+          <a href="#structure" class="toc-item">
+            <span class="toc-num">04</span>
+            <span class="toc-dot">✦</span>
+            How to Structure — Organize for Impact
+          </a>
+          <a href="#writing-tips" class="toc-item">
+            <span class="toc-num">05</span>
+            <span class="toc-dot">✦</span>
+            Writing Tips — Make It Stand Out
+          </a>
+          <a href="#formatting" class="toc-item">
+            <span class="toc-num">06</span>
+            <span class="toc-dot">✦</span>
+            Formatting Guide — Look Professional
+          </a>
+          <a href="#industry-expectations" class="toc-item">
+            <span class="toc-num">07</span>
+            <span class="toc-dot">✦</span>
+            Industry Expectations — What Galleries & Studios Want
+          </a>
+          <a href="#portfolio-integration" class="toc-item">
+            <span class="toc-num">08</span>
+            <span class="toc-dot">✦</span>
+            Portfolio Integration — Connect Your CV to Your Work
+          </a>
+          <a href="#launch-checklist" class="toc-item">
+            <span class="toc-num">09</span>
+            <span class="toc-dot">✦</span>
+            Launch Checklist — Before You Send It
+          </a>
+          <a href="#resources" class="toc-item">
+            <span class="toc-num">10</span>
+            <span class="toc-dot">✦</span>
+            Resources & Tools — Everything You Need
+          </a>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 1: INTRODUCTION -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="intro">
+        <div class="section-number">✦ 01</div>
+        <div class="section-title">
+          Introduction — Why Your CV <span class="highlight">Matters</span>
+        </div>
+        <div class="section-body">
+          <p>
+            Your CV is often the <strong>first impression</strong> you make on
+            galleries, studios, and clients. It's your professional story — a
+            snapshot of your experience, skills, and achievements as an artist.
+          </p>
+
+          <div class="quote-block">
+            <p>
+              "A great CV doesn't just list what you've done — it tells a story
+              about who you are as an artist and where you're going."
+            </p>
+            <div class="quote-attribution">— Industry Professional</div>
+          </div>
+
+          <p><strong>Why Artists Need a Strong CV</strong></p>
+
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Reason</th>
+                  <th>Why It Matters</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>First Impression</strong></td>
+                  <td>Often the first thing people see</td>
+                </tr>
+                <tr>
+                  <td><strong>Professional Credibility</strong></td>
+                  <td>Shows you're serious about your practice</td>
+                </tr>
+                <tr>
+                  <td><strong>Career Opportunities</strong></td>
+                  <td>Opens doors to exhibitions, residencies, and jobs</td>
+                </tr>
+                <tr>
+                  <td><strong>Grants & Funding</strong></td>
+                  <td>Required for most applications</td>
+                </tr>
+                <tr>
+                  <td><strong>Networking</strong></td>
+                  <td>Makes it easy for people to understand your work</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 2: CV VS RESUME -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="cv-vs-resume">
+        <div class="section-number">✦ 02</div>
+        <div class="section-title">
+          CV vs Resume — What's the <span class="highlight">Difference</span>?
+        </div>
+        <div class="section-body">
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>CV</th>
+                  <th>Resume</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Length:</strong> 2-4 pages</td>
+                  <td><strong>Length:</strong> 1 page</td>
+                </tr>
+                <tr>
+                  <td><strong>Content:</strong> Comprehensive</td>
+                  <td><strong>Content:</strong> Condensed</td>
+                </tr>
+                <tr>
+                  <td><strong>Focus:</strong> Full career history</td>
+                  <td><strong>Focus:</strong> Relevant experience</td>
+                </tr>
+                <tr>
+                  <td><strong>Use:</strong> Academic, galleries, grants</td>
+                  <td><strong>Use:</strong> Jobs, commercial work</td>
+                </tr>
+                <tr>
+                  <td><strong>For Artists:</strong> Standard</td>
+                  <td><strong>For Artists:</strong> Used for studio jobs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p><strong>Which One Should You Use?</strong></p>
+          <ul class="styled-list">
+            <li>
+              <strong>Use a CV</strong> when applying to galleries, residencies,
+              grants, or academic positions
+            </li>
+            <li>
+              <strong>Use a Resume</strong> when applying for studio jobs,
+              commercial work, or freelance positions
+            </li>
+          </ul>
+
+          <div class="pro-tip">
+            <span class="tip-icon">💡</span>
+            <p>
+              <strong>Pro Tip:</strong> Many artists have both — a full CV for
+              galleries and a condensed 1-page resume for quick applications.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 3: WHAT TO INCLUDE -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="what-to-include">
+        <div class="section-number">✦ 03</div>
+        <div class="section-title">
+          What to Include — <span class="highlight">Essential</span> Sections
+        </div>
+        <div class="section-body">
+          <p><strong>Must-Have Sections</strong></p>
+
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Section</th>
+                  <th>What to Include</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Contact Information</strong></td>
+                  <td>Name, email, phone, location, website, social links</td>
+                </tr>
+                <tr>
+                  <td><strong>Artist Statement</strong></td>
+                  <td>2-3 sentences about your practice</td>
+                </tr>
+                <tr>
+                  <td><strong>Education</strong></td>
+                  <td>Degrees, institutions, years attended</td>
+                </tr>
+                <tr>
+                  <td><strong>Exhibitions</strong></td>
+                  <td>Solo and group shows with dates</td>
+                </tr>
+                <tr>
+                  <td><strong>Experience</strong></td>
+                  <td>Professional experience, teaching, residencies</td>
+                </tr>
+                <tr>
+                  <td><strong>Skills</strong></td>
+                  <td>Technical and artistic skills</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p><strong>Nice-to-Have Sections</strong></p>
+
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Section</th>
+                  <th>What to Include</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Commissions</strong></td>
+                  <td>Notable commissioned projects</td>
+                </tr>
+                <tr>
+                  <td><strong>Awards & Grants</strong></td>
+                  <td>Recognition and funding</td>
+                </tr>
+                <tr>
+                  <td><strong>Publications</strong></td>
+                  <td>Books, magazines, online features</td>
+                </tr>
+                <tr>
+                  <td><strong>Teaching Experience</strong></td>
+                  <td>Workshops, classes, lectures</td>
+                </tr>
+                <tr>
+                  <td><strong>Collections</strong></td>
+                  <td>Public/private collections featuring your work</td>
+                </tr>
+                <tr>
+                  <td><strong>References</strong></td>
+                  <td>2-3 professional references</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 4: STRUCTURE -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="structure">
+        <div class="section-number">✦ 04</div>
+        <div class="section-title">
+          How to Structure — Organize for <span class="highlight">Impact</span>
+        </div>
+        <div class="section-body">
+          <p><strong>The Professional Artist CV Structure</strong></p>
+
+          <div
+            style="
+              font-family: var(--font-mono);
+              font-size: 0.7rem;
+              color: var(--text-muted);
+              padding: 16px 20px;
+              background: var(--accent-soft);
+              border: 1px solid var(--border-light);
+              border-radius: 6px;
+              margin: 8px 0 12px;
+              line-height: 1.9;
+            "
+          >
+            CONTACT INFORMATION<br />
+            └── Name, email, phone, website, location<br />
+            ARTIST STATEMENT (Optional)<br />
+            └── 2-3 sentences on your practice<br />
+            EDUCATION<br />
+            └── Degrees, institutions, years<br />
+            SOLO EXHIBITIONS<br />
+            └── Show title, venue, year<br />
+            GROUP EXHIBITIONS<br />
+            └── Show title, venue, year<br />
+            COMMISSIONS / PROJECTS<br />
+            └── Project name, client, year<br />
+            AWARDS & GRANTS<br />
+            └── Award name, institution, year<br />
+            PUBLICATIONS & PRESS<br />
+            └── Publication name, feature, date<br />
+            TEACHING & LECTURES<br />
+            └── Institution, course, year<br />
+            SKILLS<br />
+            └── Technical skills, media, software<br />
+            REFERENCES<br />
+            └── Name, title, contact info
+          </div>
+
+          <div class="pro-tip">
+            <span class="tip-icon">💡</span>
+            <p>
+              <strong>Pro Tip:</strong> Always list sections in
+              <strong>reverse chronological order</strong> (most recent first).
+              Galleries want to see what you've done recently.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 5: WRITING TIPS -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="writing-tips">
+        <div class="section-number">✦ 05</div>
+        <div class="section-title">
+          Writing Tips — Make It <span class="highlight">Stand Out</span>
+        </div>
+        <div class="section-body">
+          <div class="do-dont-grid">
+            <div class="do-dont-box do">
+              <div class="dd-label">✓ DO</div>
+              <ul>
+                <li>
+                  <strong>Be specific</strong> — "Curated group show featuring
+                  15 artists from 6 countries"
+                </li>
+                <li>
+                  <strong>Use action words</strong> — "Created, developed,
+                  curated, led, directed"
+                </li>
+                <li>
+                  <strong>Quantify achievements</strong> — "Exhibited in 12
+                  shows across 4 countries"
+                </li>
+                <li>
+                  <strong>Tailor to audience</strong> — Research what the
+                  gallery/studio values
+                </li>
+                <li><strong>Proofread</strong> — Typos = unprofessional</li>
+              </ul>
+            </div>
+            <div class="do-dont-box dont">
+              <div class="dd-label">✗ DON'T</div>
+              <ul>
+                <li>
+                  <strong>Be vague</strong> — "Exhibited internationally" → be
+                  specific about where
+                </li>
+                <li>
+                  <strong>Include everything</strong> — Only include relevant
+                  experience
+                </li>
+                <li>
+                  <strong>Use clichés</strong> — "Passionate artist" is overused
+                </li>
+                <li>
+                  <strong>Forget contact info</strong> — Make it easy to reach
+                  you
+                </li>
+                <li><strong>Ignore formatting</strong> — Looks matter</li>
+              </ul>
+            </div>
+          </div>
+
+          <p><strong>Example: Good vs Great</strong></p>
+
+          <div class="example-box">
+            <div class="example-label good">✓ GOOD</div>
+            <p>"I had a show at a gallery in New York."</p>
+          </div>
+
+          <div
+            class="example-box"
+            style="border-color: rgba(173, 3, 252, 0.15)"
+          >
+            <div class="example-label better">✦ BETTER</div>
+            <p class="example-text">
+              "Solo Exhibition: 'Neon Dreams' at Chelsea Gallery, New York —
+              March 2025. Featured 15 works exploring digital identity."
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 6: FORMATTING -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="formatting">
+        <div class="section-number">✦ 06</div>
+        <div class="section-title">
+          Formatting Guide — Look <span class="highlight">Professional</span>
+        </div>
+        <div class="section-body">
+          <p><strong>Font Choices</strong></p>
+
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Vibe</th>
+                  <th>Font Pairing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Modern</strong></td>
+                  <td>Helvetica + Georgia</td>
+                </tr>
+                <tr>
+                  <td><strong>Minimalist</strong></td>
+                  <td>Inter + Playfair Display</td>
+                </tr>
+                <tr>
+                  <td><strong>Elegant</strong></td>
+                  <td>Garamond + Montserrat</td>
+                </tr>
+                <tr>
+                  <td><strong>Creative</strong></td>
+                  <td>Lato + Merriweather</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p><strong>Layout Tips</strong></p>
+
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Tip</th>
+                  <th>Why</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Use consistent headings</strong></td>
+                  <td>Same font, size, and style</td>
+                </tr>
+                <tr>
+                  <td><strong>Keep margins balanced</strong></td>
+                  <td>1-inch margins on all sides</td>
+                </tr>
+                <tr>
+                  <td><strong>Use white space</strong></td>
+                  <td>Don't cram everything together</td>
+                </tr>
+                <tr>
+                  <td><strong>Limit to 2-3 pages</strong></td>
+                  <td>Unless you have extensive experience</td>
+                </tr>
+                <tr>
+                  <td><strong>Export as PDF</strong></td>
+                  <td>Preserves formatting</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p><strong>Sample Formatting</strong></p>
+
+          <div
+            style="
+              font-family: var(--font-mono);
+              font-size: 0.65rem;
+              color: var(--text-muted);
+              padding: 16px 20px;
+              background: var(--accent-soft);
+              border: 1px solid var(--border-light);
+              border-radius: 6px;
+              margin: 8px 0 12px;
+              line-height: 1.8;
+            "
+          >
+            <span style="font-size: 1rem; color: var(--text)">[NAME]</span> —
+            <span style="color: var(--text-secondary)">[TITLE]</span><br />
+            <span style="color: var(--text-muted)">[Contact Info]</span><br />
+            <span style="color: var(--border)"
+              >━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span
+            ><br />
+            <span style="color: var(--accent-secondary)">EDUCATION</span><br />
+            2020–2025 BFA in Fine Arts, University Name<br />
+            City, Country<br />
+            <span style="color: var(--border)"
+              >━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span
+            ><br />
+            <span style="color: var(--accent-secondary)">EXHIBITIONS</span
+            ><br />
+            2025 Solo Exhibition: "Title", Gallery Name<br />
+            City, Country
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 7: INDUSTRY EXPECTATIONS -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="industry-expectations">
+        <div class="section-number">✦ 07</div>
+        <div class="section-title">
+          Industry Expectations — What Galleries & Studios
+          <span class="highlight">Want</span>
+        </div>
+        <div class="section-body">
+          <p><strong>What Galleries Look For</strong></p>
+
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Factor</th>
+                  <th>Why It Matters</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Consistency</strong></td>
+                  <td>Shows you're a working artist</td>
+                </tr>
+                <tr>
+                  <td><strong>Quality over quantity</strong></td>
+                  <td>Fewer, better exhibitions</td>
+                </tr>
+                <tr>
+                  <td><strong>Relevance</strong></td>
+                  <td>Work fits their aesthetic</td>
+                </tr>
+                <tr>
+                  <td><strong>Professionalism</strong></td>
+                  <td>Shows you're easy to work with</td>
+                </tr>
+                <tr>
+                  <td><strong>Career trajectory</strong></td>
+                  <td>Shows growth and commitment</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p><strong>What Studios Look For</strong></p>
+
+          <div class="guide-table-wrap">
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Factor</th>
+                  <th>Why It Matters</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Skills</strong></td>
+                  <td>Can you do the job?</td>
+                </tr>
+                <tr>
+                  <td><strong>Experience</strong></td>
+                  <td>Have you done similar work?</td>
+                </tr>
+                <tr>
+                  <td><strong>Portfolio</strong></td>
+                  <td>Is your work quality?</td>
+                </tr>
+                <tr>
+                  <td><strong>Personality</strong></td>
+                  <td>Will you fit in?</td>
+                </tr>
+                <tr>
+                  <td><strong>Professionalism</strong></td>
+                  <td>Are you reliable?</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p><strong>Red Flags</strong></p>
+          <div class="red-flag">
+            <span class="flag-icon">✗</span>
+            Typos and grammatical errors
+          </div>
+          <div class="red-flag">
+            <span class="flag-icon">✗</span>
+            Outdated information
+          </div>
+          <div class="red-flag">
+            <span class="flag-icon">✗</span>
+            Unprofessional email address (e.g.,
+            <code
+              style="
+                font-family: var(--font-mono);
+                font-size: 0.7rem;
+                color: var(--text-muted);
+              "
+              >coolartist123@gmail.com</code
+            >)
+          </div>
+          <div class="red-flag">
+            <span class="flag-icon">✗</span>
+            Too much personal information
+          </div>
+          <div class="red-flag">
+            <span class="flag-icon">✗</span>
+            Missing contact info
+          </div>
+
+          <div class="pro-tip">
+            <span class="tip-icon">💡</span>
+            <p>
+              <strong>Pro Tip:</strong> Have someone else review your CV before
+              sending it. Fresh eyes catch mistakes you'll miss.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 8: PORTFOLIO INTEGRATION -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="portfolio-integration">
+        <div class="section-number">✦ 08</div>
+        <div class="section-title">
+          Portfolio Integration — Connect Your CV to Your
+          <span class="highlight">Work</span>
+        </div>
+        <div class="section-body">
+          <p><strong>Essential: Include Your Portfolio Link</strong></p>
+          <p>
+            Your CV should always include a link to your portfolio. Make it
+            prominent and easy to find.
+          </p>
+
+          <div
+            style="
+              padding: 12px 16px;
+              background: var(--accent-soft);
+              border: 1px solid var(--border-light);
+              border-radius: 4px;
+              margin: 8px 0 12px;
+              font-family: var(--font-mono);
+              font-size: 0.7rem;
+              color: var(--text-secondary);
+            "
+          >
+            Website:
+            <span style="color: var(--accent-secondary)"
+              >www.yourportfolio.com</span
+            >
+          </div>
+
+          <p><strong>Pro Tip: Link Specific Work</strong></p>
+          <p>
+            If you're applying for a specific opportunity, mention relevant
+            work:
+          </p>
+
+          <div
+            style="
+              padding: 12px 16px;
+              background: var(--accent-soft);
+              border: 1px solid var(--border-light);
+              border-radius: 4px;
+              margin: 8px 0 12px;
+              font-size: 0.85rem;
+              color: var(--text-secondary);
+              font-style: italic;
+            "
+          >
+            "For more information, see my portfolio at
+            <span style="color: var(--accent-secondary)"
+              >www.yourportfolio.com</span
+            >
+            — particularly the 'Cyberpunk Series' (2024-2025)."
+          </div>
+
+          <p><strong>Using Art Mecca Portfolio Mode</strong></p>
+          <p>
+            If you're an Art Mecca user, your portfolio is just a click away:
+          </p>
+          <ul class="styled-list">
+            <li>Go to your profile page</li>
+            <li>Click the <strong>"Portfolio"</strong> tab</li>
+            <li>Share the link</li>
+          </ul>
+
+          <div
+            style="
+              padding: 12px 16px;
+              background: var(--accent-soft);
+              border: 1px solid var(--border-light);
+              border-radius: 4px;
+              margin: 8px 0 12px;
+              font-family: var(--font-mono);
+              font-size: 0.65rem;
+              color: var(--text-muted);
+            "
+          >
+            ✦
+            <span style="color: var(--accent-secondary)"
+              >https://artisanhub.com/pages/community/profiles.html?user=YOUR_USER_ID&mode=portfolio</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 9: LAUNCH CHECKLIST -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="launch-checklist">
+        <div class="section-number">✦ 09</div>
+        <div class="section-title">
+          Launch Checklist — Before You <span class="highlight">Send It</span>
+        </div>
+        <div class="section-body">
+          <p><strong>Content Check</strong></p>
+          <div class="checklist">
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Name is correct and matches your portfolio
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Contact info is accurate and professional
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              All dates are correct
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              No typos or grammatical errors
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Consistent formatting throughout
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Portfolio link works and is up-to-date
+            </div>
+          </div>
+
+          <p><strong>Design Check</strong></p>
+          <div class="checklist">
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Clean, professional layout
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Consistent font usage
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Balanced white space
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              PDF format (not Word)
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              File name is professional (<code
+                style="
+                  font-family: var(--font-mono);
+                  font-size: 0.6rem;
+                  color: var(--text-muted);
+                "
+                >ArtistName_CV.pdf</code
+              >)
+            </div>
+          </div>
+
+          <p><strong>Audience Check</strong></p>
+          <div class="checklist">
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Tailored to the specific opportunity
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Highlights relevant experience
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Shows your best work
+            </div>
+            <div class="checklist-item">
+              <span class="check-box">◻</span>
+              Makes it easy to contact you
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- SECTION 10: RESOURCES -->
+      <!-- ============================================================ -->
+      <div class="content-section" id="resources">
+        <div class="section-number">✦ 10</div>
+        <div class="section-title">
+          Resources & Tools — Everything You <span class="highlight">Need</span>
+        </div>
+        <div class="section-body">
+          <p><strong>CV Templates</strong></p>
+          <ul class="styled-list">
+            <li>
+              <strong>Art Mecca CV Templates</strong> — Download professional
+              templates from the Equip section
+            </li>
+            <li><strong>Canva</strong> — Quick and easy design</li>
+            <li><strong>Google Docs</strong> — Simple, free, professional</li>
+          </ul>
+
+          <p><strong>Writing Help</strong></p>
+          <ul class="styled-list">
+            <li><strong>Grammar Check</strong> — Grammarly</li>
+            <li><strong>Thesaurus</strong> — Power Thesaurus</li>
+            <li><strong>Writing Tips</strong> — Purdue OWL</li>
+          </ul>
+
+          <p><strong>Image Optimization</strong></p>
+          <ul class="styled-list">
+            <li><strong>TinyPNG</strong> — Compress images</li>
+            <li><strong>Squoosh</strong> — Optimize images</li>
+            <li><strong>Canva</strong> — Resize and format</li>
+          </ul>
+
+          <p><strong>Portfolio Integration</strong></p>
+          <ul class="styled-list">
+            <li>
+              <strong>Art Mecca</strong> — Professional profile with portfolio
+              mode
+            </li>
+            <li><strong>ArtStation</strong> — Industry standard portfolio</li>
+            <li><strong>Behance</strong> — Creative community portfolio</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- QUICK REFERENCE -->
+      <!-- ============================================================ -->
+      <div class="quick-ref">
+        <div class="qr-title">📝 Quick Reference: CV Writing Checklist</div>
+        <div class="qr-steps">
+          <div class="qr-step">
+            <div class="step-num">1</div>
+            <div class="step-label">Gather your information</div>
+            <div class="step-time">1-2 hours</div>
+          </div>
+          <div class="qr-step">
+            <div class="step-num">2</div>
+            <div class="step-label">Choose a template</div>
+            <div class="step-time">30 min</div>
+          </div>
+          <div class="qr-step">
+            <div class="step-num">3</div>
+            <div class="step-label">Write and edit</div>
+            <div class="step-time">2-3 hours</div>
+          </div>
+          <div class="qr-step">
+            <div class="step-num">4</div>
+            <div class="step-label">Format and design</div>
+            <div class="step-time">1 hour</div>
+          </div>
+          <div class="qr-step">
+            <div class="step-num">5</div>
+            <div class="step-label">Review and proofread</div>
+            <div class="step-time">1 hour</div>
+          </div>
+          <div class="qr-step">
+            <div class="step-num">6</div>
+            <div class="step-label">Export as PDF</div>
+            <div class="step-time">10 min</div>
+          </div>
+        </div>
+        <div
+          style="
+            text-align: center;
+            margin-top: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+          "
+        >
+          Total: 5-8 hours to write and polish your CV!
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- FINAL REVIEW QUESTIONS -->
+      <!-- ============================================================ -->
+      <div
+        style="
+          margin: 30px 0 20px;
+          padding: 20px 24px;
+          background: var(--accent-soft);
+          border: 1px solid var(--border-light);
+          border-radius: 6px;
+        "
+      >
+        <p
+          style="
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+          "
+        >
+          🎯 Before You Submit — Final Review Questions
+        </p>
+        <ul class="styled-list" style="margin: 0">
+          <li>❓ Does this CV show who I am as an artist?</li>
+          <li>❓ Does it highlight my best work and achievements?</li>
+          <li>❓ Is it tailored to this specific opportunity?</li>
+          <li>❓ Is it free of typos and errors?</li>
+          <li>❓ Would I hire me based on this?</li>
+        </ul>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- ADVICE FROM THE PROS -->
+      <!-- ============================================================ -->
+      <div
+        style="
+          margin: 20px 0;
+          padding: 20px 24px;
+          background: var(--accent-soft);
+          border: 1px solid var(--border-light);
+          border-radius: 6px;
+        "
+      >
+        <p
+          style="
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+          "
+        >
+          💬 Advice from the Pros
+        </p>
+
+        <div class="quote-block" style="margin: 8px 0">
+          <p style="font-size: 0.9rem">
+            "Your CV is a living document — update it regularly. Every
+            exhibition, every award, every new skill deserves a place on your
+            CV."
+          </p>
+          <div class="quote-attribution">— Gallery Director</div>
+        </div>
+
+        <div class="quote-block" style="margin: 8px 0">
+          <p style="font-size: 0.9rem">
+            "Quality over quantity. A CV with 5 strong exhibitions is better
+            than one with 15 weak ones."
+          </p>
+          <div class="quote-attribution">— Artist & Curator</div>
+        </div>
+
+        <div class="quote-block" style="margin: 8px 0">
+          <p style="font-size: 0.9rem">
+            "Your CV should tell a story — not just list jobs. Show your growth,
+            your passion, and your unique journey as an artist."
+          </p>
+          <div class="quote-attribution">— Art Mecca Community</div>
+        </div>
+
+        <div class="quote-block" style="margin: 8px 0">
+          <p style="font-size: 0.9rem">
+            "Don't forget the basics. A professional email address, a working
+            website link, and correct spelling go a long way."
+          </p>
+          <div class="quote-attribution">— Career Coach</div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- FINAL WORDS -->
+      <!-- ============================================================ -->
+      <div
+        style="
+          margin: 30px 0 20px;
+          padding: 20px 24px;
+          background: var(--accent-soft);
+          border: 1px solid var(--border-light);
+          border-radius: 6px;
+          text-align: center;
+        "
+      >
+        <p
+          style="
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            color: var(--text);
+            font-style: italic;
+            margin-bottom: 6px;
+          "
+        >
+          "Your CV is never truly finished — it grows with you as your career
+          develops. Just don't be afraid to put yourself out there. Keep it
+          updated, keep it professional, and most importantly, keep creating."
+        </p>
+        <p
+          style="
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-top: 8px;
+          "
+        >
+          "You Got This Mecca Star!! ✦" — Truly Yours
+        </p>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- ADDITIONAL RESOURCES -->
+      <!-- ============================================================ -->
+      <div
+        style="
+          margin: 20px 0;
+          padding: 16px 20px;
+          background: rgba(88, 235, 254, 0.02);
+          border: 1px solid rgba(88, 235, 254, 0.04);
+          border-radius: 6px;
+        "
+      >
+        <p
+          style="
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+          "
+        >
+          📚 Additional Resources
+        </p>
+        <ul class="styled-list" style="margin: 0">
+          <li>
+            <a href="/pages/Equip/templates.html" class="inline-link"
+              >Portfolio Templates</a
+            >
+            — Free portfolio templates
+          </li>
+          <li>
+            <a href="/pages/Equip/cv-templates.html" class="inline-link"
+              >CV Templates</a
+            >
+            — Free CV templates
+          </li>
+          <li>
+            <a href="/assets/guides/portfolio-guide.pdf" class="inline-link"
+              >Portfolio Guide</a
+            >
+            — Build a portfolio that gets noticed
+          </li>
+          <li>
+            <a href="/pages/community/profiles.html" class="inline-link"
+              >Art Mecca Profile Mode</a
+            >
+            — Use your profile as a portfolio
+          </li>
+        </ul>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- FOOTER -->
+      <!-- ============================================================ -->
+      <div class="guide-footer">
+        © 2026 Art Mecca — All Rights Reserved<br />
+        ✦ <span>KEEP IT FRESH</span> ✦
+      </div>
+    </div>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+      function exportPDF() {
+        window.print();
+      }
+
+      // Scroll to top button
+      document.addEventListener("DOMContentLoaded", function () {
+        const scrollBtn = document.getElementById("scrollTop");
+
+        window.addEventListener("scroll", function () {
+          if (window.scrollY > 600) {
+            scrollBtn.classList.add("visible");
+          } else {
+            scrollBtn.classList.remove("visible");
+          }
+        });
+
+        scrollBtn.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        // Smooth scroll for TOC links
+        document.querySelectorAll(".toc-item").forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href");
+            if (targetId) {
+              const target = document.querySelector(targetId);
+              if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

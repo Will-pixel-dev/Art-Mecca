@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ART MECCA — Title Screen</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      /* ============================================================
+         TITLE SCREEN — CYBERPUNK GLITCH EDITION
+         ============================================================ */
+
+      /* Reset & Base */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0a0508;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* ============================================================
+         PAGE TRANSITION OVERLAY
+         ============================================================ */
+      .page-transition-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        pointer-events: none;
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0a0508;
+        transition: opacity 0.1s ease;
+      }
+
+      .page-transition-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .page-transition-overlay .transition-content {
+        text-align: center;
+        animation: transitionPulse 0.8s ease-in-out infinite alternate;
+      }
+
+      .page-transition-overlay .transition-content .transition-icon {
+        font-size: 4rem;
+        color: #ff00ea;
+        display: block;
+        margin-bottom: 1rem;
+        animation: transitionSpin 1s linear infinite;
+      }
+
+      @keyframes transitionSpin {
+        from {
+          transform: rotate(0deg) scale(1);
+        }
+        to {
+          transform: rotate(360deg) scale(1.1);
+        }
+      }
+
+      @keyframes transitionPulse {
+        0% {
+          opacity: 0.5;
+          transform: scale(0.95);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+      }
+
+      .page-transition-overlay .transition-content .transition-text {
+        font-family: "Orbitron", monospace;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ff00ea;
+        letter-spacing: 4px;
+        text-shadow: 0 0 40px rgba(255, 0, 234, 0.3);
+      }
+
+      .page-transition-overlay .transition-content .transition-subtext {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.2);
+        margin-top: 0.5rem;
+        letter-spacing: 2px;
+      }
+
+      /* ============================================================
+         GLITCH OVERLAY
+         ============================================================ */
+      .glitch-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99998;
+        pointer-events: none;
+        background: #0a0508;
+        opacity: 0;
+        transition: opacity 0.1s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .glitch-overlay.active {
+        opacity: 1;
+        animation:
+          glitchFlash 0.8s ease forwards,
+          glitchColorFlash 0.8s ease forwards;
+        background: #0a0508;
+        /* Add these for color glitch flashes */
+      }
+
+      @keyframes glitchFlash {
+        0% {
+          opacity: 0;
+          clip-path: inset(0 0 100% 0);
+        }
+        2% {
+          opacity: 1;
+          clip-path: inset(10% 0 80% 0);
+          transform: translate(-5px, 2px) scale(1.02);
+        }
+        4% {
+          opacity: 0.8;
+          clip-path: inset(70% 0 20% 0);
+          transform: translate(5px, -3px) scale(0.98);
+        }
+        6% {
+          opacity: 1;
+          clip-path: inset(30% 0 50% 0);
+          transform: translate(-3px, 5px) scale(1.01);
+        }
+        8% {
+          opacity: 0.6;
+          clip-path: inset(60% 0 30% 0);
+          transform: translate(8px, -2px) scale(0.99);
+        }
+        10% {
+          opacity: 1;
+          clip-path: inset(0 0 0 0);
+          transform: translate(-2px, 3px) scale(1.01);
+        }
+        12% {
+          opacity: 0.9;
+          clip-path: inset(20% 0 60% 0);
+          transform: translate(4px, -4px) scale(1.02);
+        }
+        14% {
+          opacity: 1;
+          clip-path: inset(80% 0 10% 0);
+          transform: translate(-6px, 2px) scale(0.98);
+        }
+        16% {
+          opacity: 0.7;
+          clip-path: inset(40% 0 40% 0);
+          transform: translate(3px, 6px) scale(1.01);
+        }
+        18% {
+          opacity: 1;
+          clip-path: inset(50% 0 30% 0);
+          transform: translate(-4px, -5px) scale(0.99);
+        }
+        20% {
+          opacity: 0.9;
+          clip-path: inset(10% 0 70% 0);
+          transform: translate(6px, 3px) scale(1.02);
+        }
+        22% {
+          opacity: 1;
+          clip-path: inset(0 0 0 0);
+          transform: translate(0, 0) scale(1);
+        }
+        30% {
+          opacity: 1;
+          clip-path: inset(0 0 0 0);
+          transform: translate(0, 0) scale(1);
+        }
+        40% {
+          opacity: 0.9;
+          clip-path: inset(15% 0 65% 0);
+          transform: translate(-7px, 4px) scale(1.03);
+        }
+        45% {
+          opacity: 1;
+          clip-path: inset(55% 0 25% 0);
+          transform: translate(7px, -6px) scale(0.97);
+        }
+        50% {
+          opacity: 0.8;
+          clip-path: inset(35% 0 45% 0);
+          transform: translate(-4px, 8px) scale(1.02);
+        }
+        55% {
+          opacity: 1;
+          clip-path: inset(75% 0 15% 0);
+          transform: translate(5px, -2px) scale(0.98);
+        }
+        60% {
+          opacity: 0.9;
+          clip-path: inset(0 0 0 0);
+          transform: translate(0, 0) scale(1);
+        }
+        70% {
+          opacity: 1;
+          clip-path: inset(0 0 0 0);
+          transform: translate(0, 0) scale(1);
+        }
+        80% {
+          opacity: 0.7;
+          clip-path: inset(25% 0 55% 0);
+          transform: translate(-8px, 5px) scale(1.04);
+        }
+        85% {
+          opacity: 1;
+          clip-path: inset(45% 0 35% 0);
+          transform: translate(8px, -7px) scale(0.96);
+        }
+        90% {
+          opacity: 0.8;
+          clip-path: inset(65% 0 20% 0);
+          transform: translate(-5px, 6px) scale(1.02);
+        }
+        95% {
+          opacity: 1;
+          clip-path: inset(0 0 0 0);
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          opacity: 1;
+          clip-path: inset(0 0 0 0);
+          transform: translate(0, 0) scale(1);
+        }
+      }
+
+      @keyframes glitchColorFlash {
+        0%,
+        100% {
+          background: #0a0508;
+        }
+        10% {
+          background: #ff00ea;
+          opacity: 0.3;
+        }
+        20% {
+          background: #0a0508;
+        }
+        30% {
+          background: #58ebfe;
+          opacity: 0.2;
+        }
+        40% {
+          background: #0a0508;
+        }
+        60% {
+          background: #ff00ea;
+          opacity: 0.15;
+        }
+        80% {
+          background: #0a0508;
+        }
+      }
+
+      /* ============================================================
+         TITLE SCREEN
+         ============================================================ */
+      .title-screen {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        background: #0a0508;
+      }
+
+      /* ============================================================
+         BACKGROUND VIDEO
+         ============================================================ */
+
+      .bg-video {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .bg-video video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        /* 'cover' fills the screen, 'contain' shows the whole video with black bars */
+      }
+
+      /* ============================================================
+         BACKGROUND TEXT — From demo (big & long, words next to each other)
+         ============================================================ */
+      .bg-glitch-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        padding: 15px 7px;
+      }
+
+      .bg-glitch-text .big-text {
+        font-family: "Orbitron", monospace;
+        font-size: clamp(2rem, 24vh, 18rem);
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        user-select: none;
+        text-align: center;
+        line-height: 1;
+        max-width: 100%;
+        white-space: nowrap;
+        position: relative;
+        color: rgba(255, 0, 234, 0.8);
+        text-shadow:
+          0 0 10px rgba(255, 0, 234, 0.5),
+          0 0 20px rgba(255, 0, 234, 0.3),
+          0 0 40px rgba(255, 0, 234, 0.2),
+          0 0 80px rgba(255, 0, 234, 0.1),
+          0 0 120px rgba(255, 0, 234, 0.05);
+        animation:
+          textFlicker 4s ease-in-out infinite,
+          textGlitch 0.15s ease-in-out infinite alternate;
+        transform: scaleY(2.5);
+        transform-origin: center;
+      }
+
+      /* Your existing glitch keyframes */
+      @keyframes textFlicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        3% {
+          opacity: 0.7;
+        }
+        6% {
+          opacity: 1;
+        }
+        7% {
+          opacity: 0.8;
+        }
+        8% {
+          opacity: 1;
+        }
+        45% {
+          opacity: 1;
+        }
+        48% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+        92% {
+          opacity: 1;
+        }
+        95% {
+          opacity: 0.3;
+        }
+        97% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes textGlitch {
+        0% {
+          transform: translate(0, 0) scaleY(1.6);
+          text-shadow:
+            0 0 10px rgba(255, 0, 234, 0.5),
+            0 0 20px rgba(255, 0, 234, 0.3),
+            0 0 40px rgba(255, 0, 234, 0.2),
+            0 0 80px rgba(255, 0, 234, 0.1);
+        }
+        10% {
+          transform: translate(-2px, 1px) scaleY(1.6);
+          text-shadow:
+            2px 0 #ff00ea,
+            -2px 0 #58ebfe,
+            0 0 20px rgba(255, 0, 234, 0.5);
+        }
+        20% {
+          transform: translate(2px, -1px) scaleY(1.6);
+          text-shadow:
+            -2px 0 #ff00ea,
+            2px 0 #58ebfe,
+            0 0 30px rgba(255, 0, 234, 0.4);
+        }
+        30% {
+          transform: translate(-1px, 2px) scaleY(1.6);
+          text-shadow:
+            1px 0 #ff00ea,
+            -1px 0 #58ebfe,
+            0 0 40px rgba(255, 0, 234, 0.3);
+        }
+        40% {
+          transform: translate(1px, -2px) scaleY(1.6);
+          text-shadow:
+            -1px 0 #ff00ea,
+            1px 0 #58ebfe,
+            0 0 25px rgba(255, 0, 234, 0.4);
+        }
+        50% {
+          transform: translate(-3px, 0px) scaleY(1.6);
+          text-shadow:
+            3px 0 #ff00ea,
+            -3px 0 #58ebfe,
+            0 0 50px rgba(255, 0, 234, 0.5);
+        }
+        60% {
+          transform: translate(0px, 0px) scaleY(1.6);
+          text-shadow:
+            0 0 10px rgba(255, 0, 234, 0.5),
+            0 0 20px rgba(255, 0, 234, 0.3);
+        }
+        70% {
+          transform: translate(1px, 1px) scaleY(1.6);
+          text-shadow:
+            -1px 0 #ff00ea,
+            1px 0 #58ebfe,
+            0 0 35px rgba(255, 0, 234, 0.4);
+        }
+        80% {
+          transform: translate(-1px, -1px) scaleY(1.6);
+          text-shadow:
+            1px 0 #ff00ea,
+            -1px 0 #58ebfe,
+            0 0 45px rgba(255, 0, 234, 0.3);
+        }
+        90% {
+          transform: translate(2px, 0px) scaleY(1.6);
+          text-shadow:
+            -2px 0 #ff00ea,
+            2px 0 #58ebfe,
+            0 0 30px rgba(255, 0, 234, 0.4);
+        }
+        100% {
+          transform: translate(0, 0) scaleY(1.6);
+          text-shadow:
+            0 0 10px rgba(255, 0, 234, 0.5),
+            0 0 20px rgba(255, 0, 234, 0.3);
+        }
+      }
+
+      /* ============================================================
+         PARTICLES CANVAS
+         ============================================================ */
+      #particleCanvas {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+
+      /* ============================================================
+         CRT SCANLINES
+         ============================================================ */
+      .scanlines {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.05) 2px,
+          rgba(0, 0, 0, 0.05) 3px
+        );
+        animation: scanMove 0.6s linear infinite;
+      }
+
+      @keyframes scanMove {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(3px);
+        }
+      }
+
+      /* ============================================================
+         CRT SCREEN FLICKER
+         ============================================================ */
+      .crt-flicker {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+        background: rgba(255, 255, 255, 0);
+        animation: screenFlicker 8s ease-in-out infinite;
+      }
+
+      @keyframes screenFlicker {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        2% {
+          opacity: 0.02;
+          background: rgba(255, 255, 255, 0.02);
+        }
+        4% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0;
+        }
+        52% {
+          opacity: 0.01;
+          background: rgba(255, 255, 255, 0.01);
+        }
+        54% {
+          opacity: 0;
+        }
+      }
+
+      /* ============================================================
+         VIGNETTE
+         ============================================================ */
+      .vignette {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 40%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
+      }
+
+      /* ============================================================
+         UI OVERLAY — BOTTOM LEFT
+         ============================================================ */
+      .title-ui {
+        position: absolute;
+        bottom: 50px;
+        left: 50px;
+        z-index: 10;
+        max-width: 480px;
+        animation: uiFadeIn 1.2s ease 0.3s both;
+      }
+
+      @keyframes uiFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .title-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+      }
+
+      .title-logo .logo-icon {
+        font-size: 2.2rem;
+        color: #ff00ea;
+        animation: logoPulse 2.5s ease-in-out infinite;
+        text-shadow:
+          0 0 40px rgba(255, 0, 234, 0.4),
+          0 0 80px rgba(255, 0, 234, 0.2);
+      }
+
+      @keyframes logoPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          text-shadow: 0 0 40px rgba(255, 0, 234, 0.3);
+        }
+        50% {
+          transform: scale(1.08) rotate(-4deg);
+          text-shadow:
+            0 0 60px rgba(255, 0, 234, 0.6),
+            0 0 100px rgba(255, 0, 234, 0.3);
+        }
+      }
+
+      .title-logo .logo-text {
+        font-family: "Orbitron", monospace;
+        font-size: 1.8rem;
+        font-weight: 900;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #ff00ea, #58ebfe);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 60px rgba(255, 0, 234, 0.15);
+      }
+
+      .title-logo .logo-tag {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.45rem;
+        color: rgba(255, 255, 255, 0.15);
+        letter-spacing: 2px;
+        padding: 2px 8px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 2px;
+        margin-left: 4px;
+      }
+
+      .title-description {
+        font-family: "Rajdhani", sans-serif;
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.3);
+        line-height: 1.6;
+        margin-bottom: 16px;
+        max-width: 380px;
+        letter-spacing: 0.5px;
+        border-left: 2px solid rgba(255, 0, 234, 0.2);
+        padding-left: 14px;
+      }
+
+      .title-description .highlight-text {
+        color: #ff00ea;
+        font-weight: 600;
+        text-shadow: 0 0 20px rgba(255, 0, 234, 0.3);
+      }
+
+      .title-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: nowrap;
+        align-items: center;
+      }
+
+      .title-btn {
+        padding: 0 24px;
+        width: 280px;
+        height: 105px;
+        border: none;
+        border-radius: 4px;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-shrink: 1; /* allows buttons to shrink if needed */
+        min-width: 140px; /* prevents them from getting too small */
+      }
+
+      .title-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.15),
+          transparent
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+      }
+
+      .title-btn:hover::before {
+        transform: translateX(100%);
+      }
+
+      .title-btn.explore {
+        background: linear-gradient(135deg, #ff00ea, #58ebfe);
+        color: white;
+        width: 350px;
+        height: 95px;
+        box-shadow:
+          0 4px 30px rgba(255, 0, 234, 0.3),
+          0 0 60px rgba(255, 0, 234, 0.1);
+      }
+
+      .title-btn.explore:hover {
+        transform: translateY(-3px) scale(1.04);
+        box-shadow:
+          0 8px 50px rgba(255, 0, 234, 0.4),
+          0 0 80px rgba(255, 0, 234, 0.2);
+      }
+
+      .title-btn.join {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.5);
+        width: 200px; /* narrower */
+        height: 95px; /* same height */
+      }
+
+      .title-btn.join:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 0 30px rgba(255, 0, 234, 0.1);
+      }
+
+      .title-continue {
+        position: absolute;
+        bottom: 50px;
+        right: 50px;
+        z-index: 10;
+        animation: uiFadeIn 1.2s ease 0.6s both;
+      }
+
+      .title-btn.continue {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.15);
+        font-size: 0.65rem;
+        padding: 8px 18px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+      }
+
+      .title-btn.continue:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(255, 0, 234, 0.05);
+      }
+
+      .title-btn.continue .continue-key {
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.55rem;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0 6px;
+        border-radius: 2px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .title-system-info {
+        position: absolute;
+        bottom: 18px;
+        right: 50px;
+        z-index: 5;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.45rem;
+        color: rgba(255, 255, 255, 0.04);
+        letter-spacing: 2px;
+        text-align: right;
+        line-height: 1.8;
+        animation: uiFadeIn 1.2s ease 1s both;
+      }
+
+      .title-system-info .info-line {
+        display: block;
+      }
+
+      .title-system-info .info-line .info-accent {
+        color: rgba(255, 0, 234, 0.06);
+      }
+
+      .keyboard-hint {
+        position: fixed;
+        bottom: 76px;
+        right: 24px;
+        z-index: 9998;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.55rem;
+        color: rgba(255, 255, 255, 0.2);
+        background: rgba(10, 5, 20, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 8px 14px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        opacity: 0.3;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        letter-spacing: 0.5px;
+      }
+
+      .keyboard-hint:hover {
+        opacity: 0.7;
+      }
+
+      .keyboard-hint kbd {
+        display: inline-block;
+        padding: 0 6px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 2px;
+        font-family: "Share Tech Mono", monospace;
+        font-size: 0.5rem;
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* ============================================================
+         RESPONSIVE
+         ============================================================ */
+      @media (max-width: 768px) {
+        .title-ui {
+          bottom: 30px;
+          left: 30px;
+          max-width: 85%;
+        }
+        .title-logo .logo-icon {
+          font-size: 1.6rem;
+        }
+        .title-logo .logo-text {
+          font-size: 1.3rem;
+        }
+        .title-logo .logo-tag {
+          font-size: 0.4rem;
+        }
+        .title-description {
+          font-size: 0.8rem;
+          max-width: 100%;
+        }
+        .title-buttons {
+          gap: 8px;
+        }
+        .title-btn {
+          padding: 8px 18px;
+          font-size: 0.7rem;
+        }
+        .title-continue {
+          bottom: 30px;
+          right: 30px;
+        }
+        .title-btn.continue {
+          font-size: 0.55rem;
+          padding: 6px 14px;
+        }
+        .title-system-info {
+          display: none;
+        }
+        .keyboard-hint {
+          display: none;
+        }
+        .bg-glitch-text .big-text {
+          font-size: clamp(2rem, 12vw, 8rem);
+          transform: scaleY(1.4);
+        }
+        @keyframes textGlitch {
+          0% {
+            transform: translate(0, 0) scaleY(1.4);
+          }
+          10% {
+            transform: translate(-2px, 1px) scaleY(1.4);
+          }
+          20% {
+            transform: translate(2px, -1px) scaleY(1.4);
+          }
+          30% {
+            transform: translate(-1px, 2px) scaleY(1.4);
+          }
+          40% {
+            transform: translate(1px, -2px) scaleY(1.4);
+          }
+          50% {
+            transform: translate(-3px, 0px) scaleY(1.4);
+          }
+          60% {
+            transform: translate(0px, 0px) scaleY(1.4);
+          }
+          70% {
+            transform: translate(1px, 1px) scaleY(1.4);
+          }
+          80% {
+            transform: translate(-1px, -1px) scaleY(1.4);
+          }
+          90% {
+            transform: translate(2px, 0px) scaleY(1.4);
+          }
+          100% {
+            transform: translate(0, 0) scaleY(1.4);
+          }
+        }
+      }
+
+      @media (max-width: 480px) {
+        .title-ui {
+          bottom: 20px;
+          left: 20px;
+          max-width: 90%;
+        }
+        .title-logo .logo-icon {
+          font-size: 1.2rem;
+        }
+        .title-logo .logo-text {
+          font-size: 1rem;
+          letter-spacing: 1px;
+        }
+        .title-logo .logo-tag {
+          display: none;
+        }
+        .title-description {
+          font-size: 0.7rem;
+          margin-bottom: 12px;
+          padding-left: 10px;
+        }
+        .title-buttons {
+          gap: 6px;
+        }
+        .title-btn {
+          padding: 6px 14px;
+          font-size: 0.6rem;
+          letter-spacing: 1px;
+        }
+        .title-continue {
+          bottom: 20px;
+          right: 20px;
+        }
+        .title-btn.continue {
+          font-size: 0.5rem;
+          padding: 4px 10px;
+        }
+        .bg-glitch-text {
+          padding: 10px 5px;
+        }
+        .bg-glitch-text .big-text {
+          font-size: clamp(1.5rem, 8vw, 4.5rem);
+          transform: scaleY(1.2);
+        }
+        @keyframes textGlitch {
+          0% {
+            transform: translate(0, 0) scaleY(1.2);
+          }
+          10% {
+            transform: translate(-2px, 1px) scaleY(1.2);
+          }
+          20% {
+            transform: translate(2px, -1px) scaleY(1.2);
+          }
+          30% {
+            transform: translate(-1px, 2px) scaleY(1.2);
+          }
+          40% {
+            transform: translate(1px, -2px) scaleY(1.2);
+          }
+          50% {
+            transform: translate(-3px, 0px) scaleY(1.2);
+          }
+          60% {
+            transform: translate(0px, 0px) scaleY(1.2);
+          }
+          70% {
+            transform: translate(1px, 1px) scaleY(1.2);
+          }
+          80% {
+            transform: translate(-1px, -1px) scaleY(1.2);
+          }
+          90% {
+            transform: translate(2px, 0px) scaleY(1.2);
+          }
+          100% {
+            transform: translate(0, 0) scaleY(1.2);
+          }
+        }
+      }
+
+      /* ============================================================
+         LIGHT THEME
+         ============================================================ */
+      [data-theme="light"] .title-screen {
+        background: #f5f0e8;
+      }
+      [data-theme="light"] .title-description {
+        color: rgba(0, 0, 0, 0.3);
+        border-left-color: rgba(255, 0, 234, 0.3);
+      }
+      [data-theme="light"] .title-btn.join {
+        border-color: rgba(0, 0, 0, 0.06);
+        color: rgba(0, 0, 0, 0.4);
+      }
+      [data-theme="light"] .title-btn.join:hover {
+        background: rgba(0, 0, 0, 0.04);
+        border-color: rgba(0, 0, 0, 0.1);
+        color: rgba(0, 0, 0, 0.7);
+      }
+      [data-theme="light"] .title-btn.continue {
+        border-color: rgba(0, 0, 0, 0.06);
+        color: rgba(0, 0, 0, 0.15);
+      }
+      [data-theme="light"] .title-btn.continue:hover {
+        border-color: rgba(0, 0, 0, 0.12);
+        color: rgba(0, 0, 0, 0.3);
+      }
+      [data-theme="light"] .title-system-info {
+        color: rgba(0, 0, 0, 0.04);
+      }
+      [data-theme="light"] .scanlines {
+        background: repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 0, 0, 0.01) 2px,
+          rgba(0, 0, 0, 0.01) 3px
+        );
+      }
+      [data-theme="light"] .vignette {
+        background: radial-gradient(
+          ellipse at center,
+          transparent 50%,
+          rgba(0, 0, 0, 0.05) 100%
+        );
+      }
+      [data-theme="light"] .title-logo .logo-text {
+        background: linear-gradient(135deg, #ff00ea, #58ebfe);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      [data-theme="light"] .page-transition-overlay {
+        background: #f5f0e8;
+      }
+      [data-theme="light"] .keyboard-hint {
+        background: rgba(255, 255, 255, 0.7);
+        border-color: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.3);
+      }
+      [data-theme="light"] .keyboard-hint kbd {
+        border-color: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ====== PAGE TRANSITION OVERLAY ====== -->
+    <div class="page-transition-overlay" id="pageTransition">
+      <div class="transition-content">
+        <span class="transition-icon"><i class="fas fa-rotate"></i></span>
+        <div class="transition-text">✦ TRANSITIONING ✦</div>
+        <div class="transition-subtext">Loading the next level...</div>
+      </div>
+    </div>
+
+    <!-- ====== GLITCH OVERLAY ====== -->
+    <div class="glitch-overlay" id="glitchOverlay"></div>
+
+    <!-- ====== TITLE SCREEN ====== -->
+    <div class="title-screen" id="titleScreen">
+      <!-- ====== BACKGROUND TEXT ====== -->
+      <!-- ====== BACKGROUND VIDEO ====== -->
+      <div class="bg-video">
+        <video id="bgVideo" autoplay muted loop playsinline>
+          <source src="YOUR_VIDEO_FILE_PATH.mp4" type="video/mp4" />
+          <!-- Add more source types if needed: webm, etc. -->
+        </video>
+      </div>
+
+      <!-- Particles -->
+      <canvas id="particleCanvas"></canvas>
+
+      <!-- CRT Effects -->
+      <div class="scanlines"></div>
+      <div class="crt-flicker"></div>
+      <div class="vignette"></div>
+
+      <!-- ====== UI — Bottom Left ====== -->
+      <div class="title-ui">
+        <div class="title-logo">
+          <span class="logo-icon">✧</span>
+          <span class="logo-text" id="logoText">ART MECCA</span>
+          <span class="logo-tag">✦ v2.0</span>
+        </div>
+        <p class="title-description" id="panelDesc">
+          A <span class="highlight-text">cyber den & studio</span> for artists
+          to connect, create, and showcase their work in the neon underground.
+        </p>
+        <div class="title-buttons">
+          <button class="title-btn explore" id="exploreBtn">
+            <i class="fas fa-arrow-right"></i> Explore
+          </button>
+          <button class="title-btn join" id="joinBtn">
+            <i class="fas fa-user-plus"></i> Join
+          </button>
+        </div>
+      </div>
+
+      <!-- ====== Continue — Bottom Right ====== -->
+      <div class="title-continue">
+        <button class="title-btn continue" id="continueBtn">
+          <i class="fas fa-play"></i> Continue Game
+          <span class="continue-key">↵</span>
+        </button>
+      </div>
+
+      <!-- ====== System Info ====== -->
+      <div class="title-system-info">
+        <span class="info-line"
+          >✦ ART MECCA <span class="info-accent">v2.0</span></span
+        >
+        <span class="info-line"
+          >✦ SYSTEM: <span class="info-accent">NOMINAL</span></span
+        >
+        <span class="info-line"
+          >✦ CREW: <span class="info-accent">∞</span></span
+        >
+      </div>
+
+      <!-- ====== Keyboard Hint ====== -->
+      <div class="keyboard-hint">
+        <kbd>E</kbd> explore &nbsp;|&nbsp; <kbd>J</kbd> join &nbsp;|&nbsp;
+        <kbd>↵</kbd> continue &nbsp;|&nbsp; <kbd>G</kbd> glitch
+      </div>
+    </div>
+
+    <!-- ====== SCRIPTS ====== -->
+    <script>
+      // ============================================================
+      // PARTICLES
+      // ============================================================
+      (function initParticles() {
+        const canvas = document.getElementById("particleCanvas");
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouseX = -1000;
+        let mouseY = -1000;
+        const particleCount = 100;
+        let animationId = null;
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        document.addEventListener("mousemove", (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        class Particle {
+          constructor() {
+            this.reset();
+          }
+          reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 3 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.3;
+            this.opacity = Math.random() * 0.2 + 0.02;
+            const colors = [
+              "#ff00ea",
+              "#58ebfe",
+              "#c400ad",
+              "#ff66f0",
+              "#00d4ff",
+              "#ffffff",
+            ];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.pulse = Math.random() * Math.PI * 2;
+          }
+          update() {
+            this.pulse += 0.02;
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 200) {
+              const force = ((200 - dist) / 200) * 0.015;
+              this.speedX += (dx / dist) * force;
+              this.speedY += (dy / dist) * force;
+            }
+
+            this.speedX *= 0.999;
+            this.speedY *= 0.999;
+
+            const maxSpeed = 1.0;
+            const speed = Math.sqrt(
+              this.speedX * this.speedX + this.speedY * this.speedY,
+            );
+            if (speed > maxSpeed) {
+              this.speedX = (this.speedX / speed) * maxSpeed;
+              this.speedY = (this.speedY / speed) * maxSpeed;
+            }
+
+            if (
+              this.x < -10 ||
+              this.x > canvas.width + 10 ||
+              this.y < -10 ||
+              this.y > canvas.height + 10
+            ) {
+              this.reset();
+            }
+          }
+          draw() {
+            const pulseSize = this.size + Math.sin(this.pulse) * 0.3;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, pulseSize, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity + Math.sin(this.pulse) * 0.03;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = 1;
+          }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+
+        function drawConnections() {
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+
+              if (dist < 150) {
+                const opacity = (1 - dist / 150) * 0.04;
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                const color = i % 2 === 0 ? "#ff00ea" : "#58ebfe";
+                ctx.strokeStyle = color;
+                ctx.globalAlpha = opacity;
+                ctx.lineWidth = 0.3;
+                ctx.shadowColor = color;
+                ctx.shadowBlur = 4;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+              }
+            }
+          }
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          particles.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+
+          drawConnections();
+
+          animationId = requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener("beforeunload", () => {
+          if (animationId) cancelAnimationFrame(animationId);
+        });
+      })();
+
+      // ============================================================
+      // PAGE TRANSITIONS
+      // ============================================================
+      (function initTransitions() {
+        const transitionOverlay = document.getElementById("pageTransition");
+        const glitchOverlay = document.getElementById("glitchOverlay");
+        const exploreBtn = document.getElementById("exploreBtn");
+        const joinBtn = document.getElementById("joinBtn");
+        const continueBtn = document.getElementById("continueBtn");
+
+        function navigateWithTransition(url, isGlitch = true) {
+          if (isGlitch) {
+            glitchOverlay.classList.add("active");
+            setTimeout(() => {
+              glitchOverlay.classList.remove("active");
+            }, 600);
+          }
+
+          setTimeout(
+            () => {
+              transitionOverlay.classList.add("active");
+              setTimeout(() => {
+                window.location.href = url;
+              }, 800);
+            },
+            isGlitch ? 300 : 0,
+          );
+        }
+
+        if (exploreBtn) {
+          exploreBtn.addEventListener("click", () => {
+            navigateWithTransition("/index.html", true);
+          });
+        }
+
+        if (joinBtn) {
+          joinBtn.addEventListener("click", () => {
+            navigateWithTransition("/pages/auth/login.html", true);
+          });
+        }
+
+        if (continueBtn) {
+          continueBtn.addEventListener("click", () => {
+            navigateWithTransition("/index.html", false);
+          });
+        }
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            navigateWithTransition("/index.html", false);
+          }
+          if (e.key === "e" || e.key === "E") {
+            e.preventDefault();
+            navigateWithTransition("/index.html", true);
+          }
+          if (e.key === "j" || e.key === "J") {
+            e.preventDefault();
+            navigateWithTransition("/pages/auth/login.html", true);
+          }
+        });
+      })();
+
+      // ============================================================
+      // THEME SYNC
+      // ============================================================
+      (function syncTheme() {
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      })();
+
+      // ============================================================
+      // COLOR CYCLING — WITH ICE WHITE ADDED
+      // ============================================================
+      const colorPalettes = [
+        { c1: "#b3001b", c2: "#ff00ea" },
+        { c1: "#e06c00", c2: "#f5c105" },
+        { c1: "#00f0a0", c2: "#006b25" },
+        { c1: "#00ffd9", c2: "#0006b3" },
+        { c1: "#5900b3", c2: "#7a00b3" },
+        { c1: "#e000b0", c2: "#ff00ea" },
+        { c1: "#dde7ee", c2: "#ff00ea" }, // Ice white added after purple
+      ];
+
+      let currentPalette = 0;
+      const cycleDuration = 12000;
+
+      function applyColors(palette) {
+        const { c1, c2 } = palette;
+
+        // Update the main text color
+        const bigText = document.getElementById("bigText");
+        if (bigText) {
+          bigText.style.color = c1;
+          bigText.style.textShadow = `0 0 10px ${c1}80, 0 0 20px ${c1}50, 0 0 40px ${c1}30, 0 0 80px ${c1}15, 0 0 120px ${c1}08`;
+        }
+
+        // Update the highlight (the dash)
+        const highlight = document.querySelector(".highlight");
+        if (highlight) {
+          highlight.style.color = c2;
+          highlight.style.textShadow = `0 0 20px ${c2}80, 0 0 40px ${c2}50, 0 0 80px ${c2}30`;
+        }
+
+        // Update logo text
+        const logoText = document.getElementById("logoText");
+        if (logoText) {
+          logoText.style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
+          logoText.style.webkitBackgroundClip = "text";
+          logoText.style.webkitTextFillColor = "transparent";
+          logoText.style.backgroundClip = "text";
+        }
+
+        // Update description highlight
+        const highlightText = document.querySelector(".highlight-text");
+        if (highlightText) {
+          highlightText.style.color = c2;
+          highlightText.style.textShadow = `0 0 20px ${c2}30`;
+        }
+
+        // Update buttons
+        const exploreBtn = document.getElementById("exploreBtn");
+        if (exploreBtn) {
+          exploreBtn.style.background = `linear-gradient(135deg, ${c1}, ${c2})`;
+        }
+
+        const joinBtn = document.getElementById("joinBtn");
+        if (joinBtn) {
+          joinBtn.style.borderColor = `${c2}44`;
+        }
+      }
+
+      function cycleColors() {
+        const palette = colorPalettes[currentPalette];
+        applyColors(palette);
+        currentPalette = (currentPalette + 1) % colorPalettes.length;
+      }
+
+      setTimeout(() => {
+        cycleColors();
+      }, 200);
+      setInterval(cycleColors, cycleDuration);
+
+      // ============================================================
+      // CHARACTER GLITCH
+      // ============================================================
+      function triggerCharacterGlitch() {
+        const bigText = document.getElementById("bigText");
+        if (!bigText) return;
+
+        const original = bigText.textContent;
+        const glitched = original
+          .split("")
+          .map((char) => {
+            if (char === " " || char === "—") return char;
+            if (Math.random() > 0.6) {
+              const chars = "!@#$%^&*()_+-=[]{}|;:,.<>?/\\'\"";
+              return chars[Math.floor(Math.random() * chars.length)];
+            }
+            return char;
+          })
+          .join("");
+
+        bigText.textContent = glitched;
+        setTimeout(
+          () => {
+            bigText.textContent = original;
+          },
+          200 + Math.random() * 300,
+        );
+      }
+
+      setInterval(() => {
+        if (Math.random() < 0.35) {
+          triggerCharacterGlitch();
+        }
+      }, 4000);
+
+      document.getElementById("titleScreen").addEventListener("click", (e) => {
+        if (
+          !e.target.closest(".title-btn") &&
+          !e.target.closest(".title-ui") &&
+          !e.target.closest(".title-continue")
+        ) {
+          triggerCharacterGlitch();
+          const glitchOverlay = document.getElementById("glitchOverlay");
+          glitchOverlay.classList.add("active");
+          setTimeout(() => {
+            glitchOverlay.classList.remove("active");
+          }, 300);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "g" || e.key === "G") {
+          triggerCharacterGlitch();
+          const glitchOverlay = document.getElementById("glitchOverlay");
+          glitchOverlay.classList.add("active");
+          setTimeout(() => {
+            glitchOverlay.classList.remove("active");
+          }, 500);
+        }
+      });
+    </script>
+  </body>
+</html>
