@@ -188,7 +188,7 @@
 
       <div class="path-hint">
         📁 Loading from:
-        <code id="scriptPath">/js/tutorials/tutorial-data.js</code>
+        <code id="scriptPath">//js/tutorials/tutorial-data.js</code>
       </div>
 
       <!-- Stats -->
@@ -227,17 +227,17 @@
     </div>
 
     <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebase/js/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebase/js/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebase/js/9.22.0/firebase-firestore-compat.js"></script>
 
     <!-- Your Firebase Config -->
     <script src="/config/firebase-config.js"></script>
 
     <!-- ============================================================
-    TUTORIAL DATA - CORRECT PATH: /js/tutorials/tutorial-data.js
+    TUTORIAL DATA - CORRECT PATH: //js/tutorials/tutorial-data.js
     ============================================================ -->
-    <script src="js/tutorials/tutorial-data.js"></script>
+    <script src="/js/tutorials/tutorial-data.js"></script>
 
     <!-- ============================================================
     MAIN SCRIPT
@@ -472,7 +472,7 @@
 
       async function init() {
         addLog(
-          "⏳ Loading tutorial data from /js/tutorials/tutorial-data.js...",
+          "⏳ Loading tutorial data from //js/tutorials/tutorial-data.js...",
           "info",
         );
         updateStatus("Loading tutorial data...", "info");
@@ -483,11 +483,11 @@
 
           if (typeof window.tutorialData === "undefined") {
             addLog(
-              "❌ Tutorial data not found at /js/tutorials/tutorial-data.js!",
+              "❌ Tutorial data not found at //js/tutorials/tutorial-data.js!",
               "error",
             );
             addLog(
-              "💡 Make sure the file exists at: /js/tutorials/tutorial-data.js",
+              "💡 Make sure the file exists at: //js/tutorials/tutorial-data.js",
               "warning",
             );
             updateStatus("❌ Tutorial data not found!", "error");
