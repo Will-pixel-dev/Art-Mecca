@@ -60,30 +60,36 @@ class NSFWGallery {
     });
 
     document.getElementById("ageDenyBtn")?.addEventListener("click", () => {
-      window.location.href = "/pages/community/gallery.html";
+      window.location.href = "pages/community/gallery.html";
     });
 
     // Submit verification
-    document.getElementById("submitAgeVerification")?.addEventListener("click", () => {
-      this.submitAgeVerification();
-    });
+    document
+      .getElementById("submitAgeVerification")
+      ?.addEventListener("click", () => {
+        this.submitAgeVerification();
+      });
 
     // Cancel verification
-    document.getElementById("cancelVerification")?.addEventListener("click", () => {
-      this.hideVerificationForm();
-    });
+    document
+      .getElementById("cancelVerification")
+      ?.addEventListener("click", () => {
+        this.hideVerificationForm();
+      });
 
     // Verify existing age
-    document.getElementById("verifyExistingAge")?.addEventListener("click", () => {
-      // Check if user is logged in
-      const user = firebase.auth().currentUser;
-      if (!user) {
-        alert("Please login first to verify your age.");
-        window.location.href = "/pages/auth/login.html";
-        return;
-      }
-      this.showVerificationForm();
-    });
+    document
+      .getElementById("verifyExistingAge")
+      ?.addEventListener("click", () => {
+        // Check if user is logged in
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          alert("Please login first to verify your age.");
+          window.location.href = "pages/auth/login.html";
+          return;
+        }
+        this.showVerificationForm();
+      });
 
     // Unblur toggle
     document.getElementById("unblurToggle")?.addEventListener("change", (e) => {
@@ -114,7 +120,7 @@ class NSFWGallery {
       if (doc.exists) {
         this.userData = doc.data();
         // Check if isAdult field exists
-        if (this.userData.hasOwnProperty('isAdult')) {
+        if (this.userData.hasOwnProperty("isAdult")) {
           this.isAdult = this.userData.isAdult;
         } else {
           this.isAdult = undefined;
@@ -189,14 +195,16 @@ class NSFWGallery {
     }
 
     if (calculatedAge < 18) {
-      errorElement.textContent = "You must be 18 or older to view this content.";
+      errorElement.textContent =
+        "You must be 18 or older to view this content.";
       errorElement.style.display = "block";
       return;
     }
 
     // Validate ID format (simple validation)
     if (idNumber.length < 6) {
-      errorElement.textContent = "Please enter a valid ID/Passport number (minimum 6 characters).";
+      errorElement.textContent =
+        "Please enter a valid ID/Passport number (minimum 6 characters).";
       errorElement.style.display = "block";
       return;
     }
@@ -205,22 +213,29 @@ class NSFWGallery {
     if (!this.currentUser) {
       errorElement.textContent = "Please login first.";
       errorElement.style.display = "block";
-      window.location.href = "/pages/auth/login.html";
+      window.location.href = "pages/auth/login.html";
       return;
     }
 
     try {
       // Store verification in Firestore
-      await firebase.firestore().collection("users").doc(this.currentUser.uid).set({
-        isAdult: true,
-        ageVerified: true,
-        ageVerifiedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        dateOfBirth: dob,
-        fullName: fullName,
-        idNumber: idNumber, // In production, you should hash this
-        verificationMethod: "id_verification",
-        idNumberLastFour: idNumber.slice(-4) // Store only last 4 digits for reference
-      }, { merge: true });
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.currentUser.uid)
+        .set(
+          {
+            isAdult: true,
+            ageVerified: true,
+            ageVerifiedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            dateOfBirth: dob,
+            fullName: fullName,
+            idNumber: idNumber, // In production, you should hash this
+            verificationMethod: "id_verification",
+            idNumberLastFour: idNumber.slice(-4), // Store only last 4 digits for reference
+          },
+          { merge: true },
+        );
 
       // Store in session
       sessionStorage.setItem("nsfw_age_verified", "true");
@@ -237,7 +252,6 @@ class NSFWGallery {
         this.showGallery();
         this.loadNSFWArtworks();
       }, 1500);
-
     } catch (error) {
       console.error("Error saving verification:", error);
       errorElement.style.color = "#ef4444";
@@ -251,7 +265,7 @@ class NSFWGallery {
     if (ageGate) {
       // Make sure we show the original age gate, not the access denied version
       // Reset the HTML if it was replaced
-      if (!ageGate.querySelector('.age-gate-card')) {
+      if (!ageGate.querySelector(".age-gate-card")) {
         // Rebuild the age gate if it was replaced
         ageGate.innerHTML = this.getAgeGateHTML();
       }
@@ -339,26 +353,32 @@ class NSFWGallery {
     });
 
     document.getElementById("ageDenyBtn")?.addEventListener("click", () => {
-      window.location.href = "/pages/community/gallery.html";
+      window.location.href = "pages/community/gallery.html";
     });
 
-    document.getElementById("submitAgeVerification")?.addEventListener("click", () => {
-      this.submitAgeVerification();
-    });
+    document
+      .getElementById("submitAgeVerification")
+      ?.addEventListener("click", () => {
+        this.submitAgeVerification();
+      });
 
-    document.getElementById("cancelVerification")?.addEventListener("click", () => {
-      this.hideVerificationForm();
-    });
+    document
+      .getElementById("cancelVerification")
+      ?.addEventListener("click", () => {
+        this.hideVerificationForm();
+      });
 
-    document.getElementById("verifyExistingAge")?.addEventListener("click", () => {
-      const user = firebase.auth().currentUser;
-      if (!user) {
-        alert("Please login first to verify your age.");
-        window.location.href = "/pages/auth/login.html";
-        return;
-      }
-      this.showVerificationForm();
-    });
+    document
+      .getElementById("verifyExistingAge")
+      ?.addEventListener("click", () => {
+        const user = firebase.auth().currentUser;
+        if (!user) {
+          alert("Please login first to verify your age.");
+          window.location.href = "pages/auth/login.html";
+          return;
+        }
+        this.showVerificationForm();
+      });
   }
 
   showAccessDenied() {
@@ -370,7 +390,7 @@ class NSFWGallery {
           <h2>Access Denied</h2>
           <p>You must be 18 years or older to view this gallery.</p>
           <div class="age-buttons">
-            <button class="age-btn no" onclick="window.location.href='/pages/community/gallery.html'">
+            <button class="age-btn no" onclick="window.location.href='pages/community/gallery.html'">
               Return to Main Gallery
             </button>
           </div>
@@ -396,87 +416,91 @@ class NSFWGallery {
   }
   // Add this method to the NSFWGallery class:
 
-/**
- * Trigger age verification using the service
- */
-async triggerAgeVerification() {
+  /**
+   * Trigger age verification using the service
+   */
+  async triggerAgeVerification() {
     if (!this.currentUser) {
-        alert('Please login first to verify your age.');
-        window.location.href = '/pages/auth/login.html';
-        return;
+      alert("Please login first to verify your age.");
+      window.location.href = "pages/auth/login.html";
+      return;
     }
 
     // Check if already verified
-    const isVerified = sessionStorage.getItem('nsfw_age_verified') === 'true';
+    const isVerified = sessionStorage.getItem("nsfw_age_verified") === "true";
     if (isVerified) {
-        this.showGallery();
-        this.loadNSFWArtworks();
-        return;
+      this.showGallery();
+      this.loadNSFWArtworks();
+      return;
     }
 
     // Use the age verification service
     if (window.ageVerification) {
-        await window.ageVerification.startVerification(window.location.href);
+      await window.ageVerification.startVerification(window.location.href);
     } else {
-        // Fallback: Show the DOB form
-        this.showVerificationForm();
+      // Fallback: Show the DOB form
+      this.showVerificationForm();
     }
-}
+  }
 
-// Update the init method to handle age verification
-async init() {
+  // Update the init method to handle age verification
+  async init() {
     // ... existing code ...
 
     // Update age verify button to use the service
-    document.getElementById("ageVerifyBtn")?.addEventListener("click", async () => {
+    document
+      .getElementById("ageVerifyBtn")
+      ?.addEventListener("click", async () => {
         await this.triggerAgeVerification();
-    });
+      });
 
     // Verify existing age button
-    document.getElementById("verifyExistingAge")?.addEventListener("click", async () => {
+    document
+      .getElementById("verifyExistingAge")
+      ?.addEventListener("click", async () => {
         const user = firebase.auth().currentUser;
         if (!user) {
-            alert("Please login first to verify your age.");
-            window.location.href = "/pages/auth/login.html";
-            return;
+          alert("Please login first to verify your age.");
+          window.location.href = "pages/auth/login.html";
+          return;
         }
         await this.triggerAgeVerification();
-    });
-}
-// In nsfw-gallery.js - handle callback from URL parameters
+      });
+  }
+  // In nsfw-gallery.js - handle callback from URL parameters
 
-async checkVerificationCallback() {
+  async checkVerificationCallback() {
     const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get('verification');
-    const userId = urlParams.get('userId');
+    const status = urlParams.get("verification");
+    const userId = urlParams.get("userId");
 
-    if (status === 'success' && userId) {
-        // Update user in Firestore directly (client-side)
-        try {
-            await firebase.firestore()
-                .collection('users')
-                .doc(userId)
-                .update({
-                    isAdult: true,
-                    ageVerified: true,
-                    ageVerifiedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+    if (status === "success" && userId) {
+      // Update user in Firestore directly (client-side)
+      try {
+        await firebase.firestore().collection("users").doc(userId).update({
+          isAdult: true,
+          ageVerified: true,
+          ageVerifiedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
 
-            sessionStorage.setItem('nsfw_age_verified', 'true');
-            this.showToast('✅ Age verified successfully!');
+        sessionStorage.setItem("nsfw_age_verified", "true");
+        this.showToast("✅ Age verified successfully!");
 
-            // Remove URL parameters
-            window.history.replaceState({}, document.title, window.location.pathname);
+        // Remove URL parameters
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname,
+        );
 
-            // Reload gallery
-            this.showGallery();
-            this.loadNSFWArtworks();
-
-        } catch (error) {
-            console.error('Error updating verification:', error);
-        }
+        // Reload gallery
+        this.showGallery();
+        this.loadNSFWArtworks();
+      } catch (error) {
+        console.error("Error updating verification:", error);
+      }
     }
-}
+  }
 
   async loadNSFWArtworks() {
     const grid = document.getElementById("nsfwGalleryGrid");
@@ -646,7 +670,7 @@ async checkVerificationCallback() {
         }
 
         // If already unblurred, go to detail page
-        window.location.href = `/pages/community/artwork-detail.html?id=${id}`;
+        window.location.href = `pages/community/artwork-detail.html?id=${id}`;
       });
     });
 
@@ -728,4 +752,3 @@ async checkVerificationCallback() {
 document.addEventListener("DOMContentLoaded", () => {
   window.nsfwGallery = new NSFWGallery();
 });
-

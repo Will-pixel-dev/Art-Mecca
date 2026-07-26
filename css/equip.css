@@ -1,6 +1,6 @@
 /* ================================================================
    EQUIP PAGE — CYBERPUNK STREET ART ARMORY
-   For Art Mecca /pages/Equip/Equip.html
+   For Art Mecca pages/Equip/Equip.html
    ================================================================ */
 
 /* ============================================================
@@ -244,7 +244,8 @@ body {
 }
 
 @keyframes badgePulse {
-  0%, 100% {
+  0%,
+  100% {
     border-color: rgba(88, 235, 254, 0.15);
     box-shadow: 0 0 0px rgba(88, 235, 254, 0);
   }
@@ -283,7 +284,11 @@ body {
 }
 
 @keyframes glitchFlicker {
-  0%, 85%, 89%, 95%, 100% {
+  0%,
+  85%,
+  89%,
+  95%,
+  100% {
     opacity: 1;
     transform: translateX(0) scale(1);
   }
@@ -310,7 +315,7 @@ body {
 }
 
 .glitch-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -347,7 +352,9 @@ body {
   color: var(--neon-magenta);
   opacity: 0.08;
   pointer-events: none;
-  text-shadow: 2px 0 var(--neon-cyan), -2px 0 var(--neon-magenta);
+  text-shadow:
+    2px 0 var(--neon-cyan),
+    -2px 0 var(--neon-magenta);
   animation: glitchText 2s ease-in-out infinite;
 }
 
@@ -479,9 +486,21 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(255, 0, 234, 0.15), transparent 60%),
-    radial-gradient(ellipse at 80% 70%, rgba(173, 3, 252, 0.12), transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(88, 235, 254, 0.08), transparent 40%),
+    radial-gradient(
+      ellipse at 20% 30%,
+      rgba(255, 0, 234, 0.15),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 80% 70%,
+      rgba(173, 3, 252, 0.12),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(88, 235, 254, 0.08),
+      transparent 40%
+    ),
     radial-gradient(ellipse at 60% 40%, #1a0a2a, #0a0508 80%);
   z-index: 0;
   display: block;
@@ -509,7 +528,8 @@ body {
 }
 
 @keyframes orbPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0.5;
   }
@@ -530,7 +550,8 @@ body {
 }
 
 @keyframes gridPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
   }
   50% {
@@ -580,7 +601,8 @@ body {
 }
 
 @keyframes scanLineHero {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(-100%);
   }
   50% {
@@ -590,7 +612,7 @@ body {
 
 /* LAYER 3: CONTENT */
 .equip-hero-layer-3 {
-  position: absolute;  /* ← Change from absolute to relative */
+  position: absolute; /* ← Change from absolute to relative */
   z-index: 3;
   left: 0;
   width: 100%;
@@ -605,7 +627,6 @@ body {
 }
 
 /* LAYER 3: DEBUG */
-
 
 .equip-hero-content {
   padding: 60px 70px;
@@ -718,7 +739,7 @@ body {
 }
 
 .resource-card::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: var(--gradient-neon);
@@ -753,8 +774,12 @@ body {
 }
 
 @keyframes cardScan {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
 }
 
 .resource-card .resource-icon {
@@ -774,7 +799,9 @@ body {
 
 .resource-card:hover .resource-icon {
   transform: scale(1.1) rotate(-8deg);
-  box-shadow: var(--glow-purple), 0 0 60px rgba(255, 0, 234, 0.2);
+  box-shadow:
+    var(--glow-purple),
+    0 0 60px rgba(255, 0, 234, 0.2);
 }
 
 .resource-card h3 {
@@ -810,7 +837,7 @@ body {
 }
 
 .resource-card .btn-resource::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -841,7 +868,7 @@ body {
 
 /* Resource card corner brackets */
 .resource-card::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 12px;
   right: 12px;
@@ -889,14 +916,18 @@ body {
 }
 
 .equip-advice::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
   height: 60%;
-  background: radial-gradient(ellipse, rgba(255, 0, 234, 0.03), transparent 70%);
+  background: radial-gradient(
+    ellipse,
+    rgba(255, 0, 234, 0.03),
+    transparent 70%
+  );
   pointer-events: none;
 }
 
@@ -1103,7 +1134,9 @@ body {
 
 .btn-interview:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: var(--glow-purple), 0 0 60px rgba(255, 0, 234, 0.2);
+  box-shadow:
+    var(--glow-purple),
+    0 0 60px rgba(255, 0, 234, 0.2);
 }
 
 .btn-interview i {
@@ -1362,7 +1395,9 @@ body {
 
 .btn-primary-cta:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: var(--glow-purple), 0 0 60px rgba(255, 0, 234, 0.2);
+  box-shadow:
+    var(--glow-purple),
+    0 0 60px rgba(255, 0, 234, 0.2);
 }
 
 .btn-primary-cta i {
@@ -1723,9 +1758,21 @@ body {
 
 [data-theme="light"] .equip-hero-layer-1 .hero-bg-fallback {
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(255, 0, 234, 0.08), transparent 60%),
-    radial-gradient(ellipse at 80% 70%, rgba(173, 3, 252, 0.06), transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(88, 235, 254, 0.04), transparent 40%),
+    radial-gradient(
+      ellipse at 20% 30%,
+      rgba(255, 0, 234, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 80% 70%,
+      rgba(173, 3, 252, 0.06),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(88, 235, 254, 0.04),
+      transparent 40%
+    ),
     radial-gradient(ellipse at 60% 40%, #e8dce8, #f5f0e8 80%);
 }
 

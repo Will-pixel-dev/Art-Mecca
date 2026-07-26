@@ -7,10 +7,10 @@ class AvatarManager {
     this.userId = null;
     this.userData = null;
     this.avatarUrl = null;
-    this.cacheKey = 'avatar_data';
+    this.cacheKey = "avatar_data";
     this.isOwnProfile = false;
-    this.avatarContainer = options.containerSelector || '.nav-avatar-container';
-    this.avatarSize = options.size || 'sm';
+    this.avatarContainer = options.containerSelector || ".nav-avatar-container";
+    this.avatarSize = options.size || "sm";
     this.isModerator = false;
     this.avatarContainers = [];
     this.dropdownOpen = false;
@@ -20,8 +20,11 @@ class AvatarManager {
   }
 
   initAuth() {
-    if (typeof firebase === 'undefined' || typeof firebase.auth === 'undefined') {
-      console.warn('Firebase auth not available, retrying...');
+    if (
+      typeof firebase === "undefined" ||
+      typeof firebase.auth === "undefined"
+    ) {
+      console.warn("Firebase auth not available, retrying...");
       setTimeout(() => this.initAuth(), 500);
       return;
     }
@@ -44,15 +47,18 @@ class AvatarManager {
   async checkModeratorStatus() {
     if (!this.userId) return false;
     try {
-      const doc = await db.collection('users').doc(this.userId).get();
+      const doc = await db.collection("users").doc(this.userId).get();
       if (doc.exists) {
         const data = doc.data();
-        this.isModerator = data.role === 'admin' || data.role === 'moderator' || data.isModerator === true;
+        this.isModerator =
+          data.role === "admin" ||
+          data.role === "moderator" ||
+          data.isModerator === true;
         return this.isModerator;
       }
       return false;
     } catch (error) {
-      console.error('Error checking moderator status:', error);
+      console.error("Error checking moderator status:", error);
       return false;
     }
   }
@@ -63,31 +69,36 @@ class AvatarManager {
     const cached = this.getCachedData();
     if (cached && cached.userId === this.userId) {
       this.userData = cached.data;
-      this.avatarUrl = cached.data.profilePicture || cached.data.avatarUrl || null;
+      this.avatarUrl =
+        cached.data.profilePicture || cached.data.avatarUrl || null;
       return;
     }
 
     try {
-      const doc = await db.collection('users').doc(this.userId).get();
+      const doc = await db.collection("users").doc(this.userId).get();
       if (doc.exists) {
         this.userData = doc.data();
-        this.avatarUrl = this.userData.profilePicture || this.userData.avatarUrl || null;
+        this.avatarUrl =
+          this.userData.profilePicture || this.userData.avatarUrl || null;
         this.cacheData(this.userId, this.userData);
-        console.log('✅ User data loaded:', this.userData.fullname || this.userData.username);
+        console.log(
+          "✅ User data loaded:",
+          this.userData.fullname || this.userData.username,
+        );
       }
     } catch (error) {
-      console.error('Error loading user data:', error);
+      console.error("Error loading user data:", error);
     }
   }
 
   getDisplayName() {
-    if (!this.userData) return 'User';
-    return this.userData.fullname || this.userData.username || 'User';
+    if (!this.userData) return "User";
+    return this.userData.fullname || this.userData.username || "User";
   }
 
   getInitials() {
     const name = this.getDisplayName();
-    const parts = name.split(' ');
+    const parts = name.split(" ");
     if (parts.length >= 2) {
       return (parts[0][0] + parts[1][0]).toUpperCase();
     }
@@ -104,16 +115,24 @@ class AvatarManager {
 
   renderAllAvatars() {
     const containers = document.querySelectorAll(this.avatarContainer);
-    const specificContainers = document.querySelectorAll('[data-avatar-container]');
-    const navContainers = document.querySelectorAll('.nav-avatar-container');
+    const specificContainers = document.querySelectorAll(
+      "[data-avatar-container]",
+    );
+    const navContainers = document.querySelectorAll(".nav-avatar-container");
 
-    this.avatarContainers = [...new Set([...containers, ...specificContainers, ...navContainers])];
+    this.avatarContainers = [
+      ...new Set([...containers, ...specificContainers, ...navContainers]),
+    ];
 
-    console.log('📦 Rendering avatars in', this.avatarContainers.length, 'containers');
+    console.log(
+      "📦 Rendering avatars in",
+      this.avatarContainers.length,
+      "containers",
+    );
 
-    this.avatarContainers.forEach(container => {
+    this.avatarContainers.forEach((container) => {
       if (container && container.offsetParent !== null) {
-        container.innerHTML = '';
+        container.innerHTML = "";
         this.renderAvatar(container);
       }
     });
@@ -121,7 +140,7 @@ class AvatarManager {
 
   renderAvatar(container) {
     if (!container) return;
-    container.innerHTML = '';
+    container.innerHTML = "";
 
     if (this.userId && this.userData) {
       this.buildAvatarElement(container);
@@ -136,7 +155,7 @@ class AvatarManager {
     const displayName = this.getDisplayName();
     const size = container.dataset.size || this.avatarSize;
 
-    const wrapper = document.createElement('div');
+    const wrapper = document.createElement("div");
     wrapper.className = `avatar-wrapper avatar-${size}`;
     wrapper.title = displayName;
     wrapper.dataset.userId = this.userId;
@@ -156,19 +175,21 @@ class AvatarManager {
     `;
 
     if (avatarUrl) {
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.src = avatarUrl;
       img.alt = displayName;
-      img.loading = 'lazy';
-      img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; display: block;';
+      img.loading = "lazy";
+      img.style.cssText =
+        "width: 100%; height: 100%; object-fit: cover; display: block;";
       img.onerror = () => {
         wrapper.innerHTML = `<span class="avatar-initials" style="color: white; font-weight: 700; font-size: 0.85rem; text-shadow: 0 1px 4px rgba(0,0,0,0.3);">${initials}</span>`;
       };
       wrapper.appendChild(img);
     } else {
-      const initialsSpan = document.createElement('span');
-      initialsSpan.className = 'avatar-initials';
-      initialsSpan.style.cssText = 'color: white; font-weight: 700; font-size: 0.85rem; text-shadow: 0 1px 4px rgba(0,0,0,0.3); user-select: none; pointer-events: none;';
+      const initialsSpan = document.createElement("span");
+      initialsSpan.className = "avatar-initials";
+      initialsSpan.style.cssText =
+        "color: white; font-weight: 700; font-size: 0.85rem; text-shadow: 0 1px 4px rgba(0,0,0,0.3); user-select: none; pointer-events: none;";
       initialsSpan.textContent = initials;
       wrapper.appendChild(initialsSpan);
     }
@@ -179,7 +200,7 @@ class AvatarManager {
   }
 
   buildLoggedOutElement(container) {
-    const wrapper = document.createElement('div');
+    const wrapper = document.createElement("div");
     wrapper.className = `avatar-wrapper avatar-${this.avatarSize}`;
     wrapper.style.cssText = `
       width: 36px;
@@ -193,12 +214,14 @@ class AvatarManager {
       align-items: center;
       justify-content: center;
     `;
-    wrapper.title = 'Login';
+    wrapper.title = "Login";
 
-    const link = document.createElement('a');
-    link.href = '/pages/auth/login.html';
-    link.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none;color:white;';
-    link.innerHTML = '<i class="fas fa-user" style="font-size:0.7rem;opacity:0.6;"></i>';
+    const link = document.createElement("a");
+    link.href = "pages/auth/login.html";
+    link.style.cssText =
+      "display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none;color:white;";
+    link.innerHTML =
+      '<i class="fas fa-user" style="font-size:0.7rem;opacity:0.6;"></i>';
 
     wrapper.appendChild(link);
     container.appendChild(wrapper);
@@ -206,7 +229,7 @@ class AvatarManager {
 
   renderLoggedOutState() {
     const containers = document.querySelectorAll(this.avatarContainer);
-    containers.forEach(container => {
+    containers.forEach((container) => {
       this.buildLoggedOutElement(container);
     });
   }
@@ -217,11 +240,15 @@ class AvatarManager {
 
   setupAvatarClickHandlers() {
     const containers = document.querySelectorAll(this.avatarContainer);
-    console.log('🔧 Setting up click handlers for', containers.length, 'avatar containers');
+    console.log(
+      "🔧 Setting up click handlers for",
+      containers.length,
+      "avatar containers",
+    );
 
-    containers.forEach(container => {
-      let wrapper = container.querySelector('.avatar-wrapper');
-      if (!wrapper && container.classList.contains('avatar-wrapper')) {
+    containers.forEach((container) => {
+      let wrapper = container.querySelector(".avatar-wrapper");
+      if (!wrapper && container.classList.contains("avatar-wrapper")) {
         wrapper = container;
       }
 
@@ -230,39 +257,39 @@ class AvatarManager {
         wrapper.parentNode.replaceChild(newWrapper, wrapper);
         container._avatarWrapper = newWrapper;
 
-        newWrapper.addEventListener('click', (e) => {
+        newWrapper.addEventListener("click", (e) => {
           e.stopPropagation();
           e.preventDefault();
-          console.log('👤 Avatar clicked!');
+          console.log("👤 Avatar clicked!");
           this.toggleDropdown(container);
         });
       }
     });
 
-    document.addEventListener('click', (e) => {
+    document.addEventListener("click", (e) => {
       const isAvatarClick = e.target.closest(this.avatarContainer);
       if (!isAvatarClick) {
-        const dropdown = document.getElementById('avatarDropdown');
+        const dropdown = document.getElementById("avatarDropdown");
         if (dropdown) {
-          dropdown.style.display = 'none';
-          dropdown.classList.remove('active');
+          dropdown.style.display = "none";
+          dropdown.classList.remove("active");
           this.dropdownOpen = false;
         }
       }
     });
   }
-toggleDropdown(container) {
-    console.log('🔄 toggleDropdown called');
+  toggleDropdown(container) {
+    console.log("🔄 toggleDropdown called");
 
-    const existingDropdown = document.getElementById('avatarDropdown');
+    const existingDropdown = document.getElementById("avatarDropdown");
     if (existingDropdown) {
-        existingDropdown.remove();
-        this.dropdown = null;
+      existingDropdown.remove();
+      this.dropdown = null;
     }
 
-    const dropdown = document.createElement('div');
-    dropdown.id = 'avatarDropdown';
-    dropdown.className = 'avatar-dropdown active';
+    const dropdown = document.createElement("div");
+    dropdown.id = "avatarDropdown";
+    dropdown.className = "avatar-dropdown active";
     dropdown.style.cssText = `
         display: block !important;
         position: fixed;
@@ -278,113 +305,114 @@ toggleDropdown(container) {
         animation: dropdownSlideDown 0.25s ease !important;
     `;
 
-    const wrapper = container._avatarWrapper || container.querySelector('.avatar-wrapper');
+    const wrapper =
+      container._avatarWrapper || container.querySelector(".avatar-wrapper");
     if (wrapper) {
-        const rect = wrapper.getBoundingClientRect();
-        const dropdownWidth = 220;
-        let left = rect.right - dropdownWidth;
-        if (left < 10) left = 10;
-        dropdown.style.top = `${rect.bottom + 8}px`;
-        dropdown.style.left = `${left}px`;
+      const rect = wrapper.getBoundingClientRect();
+      const dropdownWidth = 220;
+      let left = rect.right - dropdownWidth;
+      if (left < 10) left = 10;
+      dropdown.style.top = `${rect.bottom + 8}px`;
+      dropdown.style.left = `${left}px`;
     }
 
     // Username
-    const username = document.createElement('div');
-    username.className = 'dropdown-username';
-    username.textContent = `@${this.userData?.username || this.userData?.fullname || 'user'}`;
+    const username = document.createElement("div");
+    username.className = "dropdown-username";
+    username.textContent = `@${this.userData?.username || this.userData?.fullname || "user"}`;
     dropdown.appendChild(username);
 
-    const divider1 = document.createElement('div');
-    divider1.className = 'dropdown-divider';
+    const divider1 = document.createElement("div");
+    divider1.className = "dropdown-divider";
     dropdown.appendChild(divider1);
 
     // Change Avatar
     const changeAvatarItem = this.createDropdownItem(
-        'fa-camera',
-        'Change Avatar',
-        () => {
-            this.closeDropdown();
-            this.showAvatarUploadModal();
-        }
+      "fa-camera",
+      "Change Avatar",
+      () => {
+        this.closeDropdown();
+        this.showAvatarUploadModal();
+      },
     );
     dropdown.appendChild(changeAvatarItem);
 
     // My Profile
     const profileItem = this.createDropdownLink(
-        'fa-user',
-        'My Profile',
-        `/pages/community/profiles.html?user=${this.userId}`
+      "fa-user",
+      "My Profile",
+      `pages/community/profiles.html?user=${this.userId}`,
     );
     dropdown.appendChild(profileItem);
 
     // My Uploads
     const uploadsItem = this.createDropdownLink(
-        'fa-cloud-upload-alt',
-        'My Uploads',
-        '/pages/community/my-uploads.html'
+      "fa-cloud-upload-alt",
+      "My Uploads",
+      "pages/community/my-uploads.html",
     );
     dropdown.appendChild(uploadsItem);
 
     // Account Settings
     const settingsItem = this.createDropdownLink(
-        'fa-cog',
-        'Account Settings',
-        '/pages/account/settings.html'
+      "fa-cog",
+      "Account Settings",
+      "pages/account/settings.html",
     );
     dropdown.appendChild(settingsItem);
 
     // Moderation dashboard for mods
     if (this.isModerator) {
-        const modItem = this.createDropdownLink(
-            'fa-shield-alt',
-            'Moderation Dashboard',
-            '/pages/admin/moderation.html',
-            true // isModerator
-        );
-        dropdown.appendChild(modItem);
+      const modItem = this.createDropdownLink(
+        "fa-shield-alt",
+        "Moderation Dashboard",
+        "pages/admin/moderation.html",
+        true, // isModerator
+      );
+      dropdown.appendChild(modItem);
     }
 
-    const divider2 = document.createElement('div');
-    divider2.className = 'dropdown-divider';
+    const divider2 = document.createElement("div");
+    divider2.className = "dropdown-divider";
     dropdown.appendChild(divider2);
 
     // Logout
-    const logoutItem = document.createElement('button');
-    logoutItem.className = 'dropdown-item logout';
+    const logoutItem = document.createElement("button");
+    logoutItem.className = "dropdown-item logout";
     logoutItem.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout`;
-    logoutItem.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.handleLogout();
+    logoutItem.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.handleLogout();
     });
     dropdown.appendChild(logoutItem);
 
     document.body.appendChild(dropdown);
     this.dropdown = dropdown;
     this.dropdownOpen = true;
-}
+  }
 
-createDropdownItem(icon, label, onClick) {
-    const item = document.createElement('button');
-    item.className = 'dropdown-item';
+  createDropdownItem(icon, label, onClick) {
+    const item = document.createElement("button");
+    item.className = "dropdown-item";
     item.innerHTML = `<i class="fas ${icon}"></i> ${label}`;
-    item.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (onClick) onClick();
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (onClick) onClick();
     });
     return item;
-}
+  }
 
-createDropdownLink(icon, label, href, isModerator = false) {
-    const item = document.createElement('a');
-    item.className = 'dropdown-item';
+  createDropdownLink(icon, label, href, isModerator = false) {
+    const item = document.createElement("a");
+    item.className = "dropdown-item";
     item.href = href;
     item.innerHTML = `<i class="fas ${icon}"></i> ${label}`;
     if (isModerator) {
-        item.style.borderLeftColor = '#ff00ea';
-        item.style.background = 'rgba(255, 0, 234, 0.05)';
+      item.style.borderLeftColor = "#ff00ea";
+      item.style.background = "rgba(255, 0, 234, 0.05)";
     }
     return item;
-}
+  }
 
   // ============================================
   // AVATAR UPLOAD MODAL
@@ -392,13 +420,13 @@ createDropdownLink(icon, label, href, isModerator = false) {
 
   showAvatarUploadModal() {
     // Remove any existing modal
-    const existingModal = document.getElementById('avatarUploadModal');
+    const existingModal = document.getElementById("avatarUploadModal");
     if (existingModal) {
       existingModal.remove();
     }
 
-    const modal = document.createElement('div');
-    modal.id = 'avatarUploadModal';
+    const modal = document.createElement("div");
+    modal.id = "avatarUploadModal";
     modal.style.cssText = `
       position: fixed;
       top: 0;
@@ -416,7 +444,7 @@ createDropdownLink(icon, label, href, isModerator = false) {
     `;
 
     // Add fade-in animation
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       @keyframes fadeIn {
         from { opacity: 0; transform: scale(0.95); }
@@ -462,8 +490,8 @@ createDropdownLink(icon, label, href, isModerator = false) {
             align-items: center;
             justify-content: center;
           ">
-            <img id="avatarPreview" src="${this.getAvatarUrl() || ''}" alt="Avatar Preview" style="width:100%;height:100%;object-fit:cover;display:${this.getAvatarUrl() ? 'block' : 'none'};">
-            <span id="avatarInitialsPreview" style="color:white;font-weight:700;font-size:2rem;display:${this.getAvatarUrl() ? 'none' : 'block'};">
+            <img id="avatarPreview" src="${this.getAvatarUrl() || ""}" alt="Avatar Preview" style="width:100%;height:100%;object-fit:cover;display:${this.getAvatarUrl() ? "block" : "none"};">
+            <span id="avatarInitialsPreview" style="color:white;font-weight:700;font-size:2rem;display:${this.getAvatarUrl() ? "none" : "block"};">
               ${this.getInitials()}
             </span>
           </div>
@@ -529,14 +557,14 @@ createDropdownLink(icon, label, href, isModerator = false) {
 
     // === Modal Event Handlers ===
 
-    const closeBtn = modal.querySelector('.modal-close-btn');
-    const cancelBtn = modal.querySelector('#cancelUploadBtn');
-    const uploadBtn = modal.querySelector('#uploadAvatarBtn');
-    const fileInput = modal.querySelector('#avatarFileInput');
-    const dropZone = modal.querySelector('#dropZone');
-    const avatarPreview = modal.querySelector('#avatarPreview');
-    const initialsPreview = modal.querySelector('#avatarInitialsPreview');
-    const loadingMsg = modal.querySelector('#uploadLoading');
+    const closeBtn = modal.querySelector(".modal-close-btn");
+    const cancelBtn = modal.querySelector("#cancelUploadBtn");
+    const uploadBtn = modal.querySelector("#uploadAvatarBtn");
+    const fileInput = modal.querySelector("#avatarFileInput");
+    const dropZone = modal.querySelector("#dropZone");
+    const avatarPreview = modal.querySelector("#avatarPreview");
+    const initialsPreview = modal.querySelector("#avatarInitialsPreview");
+    const loadingMsg = modal.querySelector("#uploadLoading");
 
     // Close modal
     const closeModal = () => {
@@ -544,34 +572,34 @@ createDropdownLink(icon, label, href, isModerator = false) {
       style.remove();
     };
 
-    closeBtn.addEventListener('click', closeModal);
-    cancelBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
+    closeBtn.addEventListener("click", closeModal);
+    cancelBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
       if (e.target === modal) closeModal();
     });
 
     // Open file picker
-    dropZone.addEventListener('click', () => fileInput.click());
-    dropZone.addEventListener('dragover', (e) => {
+    dropZone.addEventListener("click", () => fileInput.click());
+    dropZone.addEventListener("dragover", (e) => {
       e.preventDefault();
-      dropZone.style.borderColor = 'rgba(254, 103, 234, 0.5)';
-      dropZone.style.background = 'rgba(254, 103, 234, 0.05)';
+      dropZone.style.borderColor = "rgba(254, 103, 234, 0.5)";
+      dropZone.style.background = "rgba(254, 103, 234, 0.05)";
     });
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.style.borderColor = 'rgba(255,255,255,0.1)';
-      dropZone.style.background = 'transparent';
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.style.borderColor = "rgba(255,255,255,0.1)";
+      dropZone.style.background = "transparent";
     });
-    dropZone.addEventListener('drop', (e) => {
+    dropZone.addEventListener("drop", (e) => {
       e.preventDefault();
-      dropZone.style.borderColor = 'rgba(255,255,255,0.1)';
-      dropZone.style.background = 'transparent';
+      dropZone.style.borderColor = "rgba(255,255,255,0.1)";
+      dropZone.style.background = "transparent";
       if (e.dataTransfer.files.length) {
         fileInput.files = e.dataTransfer.files;
         handleFileSelect(e.dataTransfer.files[0]);
       }
     });
 
-    fileInput.addEventListener('change', (e) => {
+    fileInput.addEventListener("change", (e) => {
       if (e.target.files.length) {
         handleFileSelect(e.target.files[0]);
       }
@@ -580,12 +608,12 @@ createDropdownLink(icon, label, href, isModerator = false) {
     let selectedFile = null;
 
     function handleFileSelect(file) {
-      if (!file.type.startsWith('image/')) {
-        alert('Please select an image file.');
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file.");
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        alert('File must be less than 5MB.');
+        alert("File must be less than 5MB.");
         return;
       }
 
@@ -593,25 +621,25 @@ createDropdownLink(icon, label, href, isModerator = false) {
       const reader = new FileReader();
       reader.onload = (e) => {
         avatarPreview.src = e.target.result;
-        avatarPreview.style.display = 'block';
-        initialsPreview.style.display = 'none';
-        dropZone.style.borderColor = 'rgba(79, 243, 166, 0.3)';
-        uploadBtn.style.opacity = '1';
-        uploadBtn.style.cursor = 'pointer';
+        avatarPreview.style.display = "block";
+        initialsPreview.style.display = "none";
+        dropZone.style.borderColor = "rgba(79, 243, 166, 0.3)";
+        uploadBtn.style.opacity = "1";
+        uploadBtn.style.cursor = "pointer";
       };
       reader.readAsDataURL(file);
     }
 
     // Upload
-    uploadBtn.addEventListener('click', async () => {
+    uploadBtn.addEventListener("click", async () => {
       if (!selectedFile) {
-        alert('Please select an image first.');
+        alert("Please select an image first.");
         return;
       }
 
-      loadingMsg.style.display = 'block';
+      loadingMsg.style.display = "block";
       uploadBtn.disabled = true;
-      uploadBtn.style.opacity = '0.5';
+      uploadBtn.style.opacity = "0.5";
 
       try {
         const result = await this.uploadProfilePicture(selectedFile);
@@ -624,24 +652,24 @@ createDropdownLink(icon, label, href, isModerator = false) {
           }, 500);
         }
       } catch (error) {
-        console.error('Upload error:', error);
-        loadingMsg.textContent = '❌ Error uploading. Please try again.';
-        loadingMsg.style.color = 'rgba(239, 68, 68, 0.8)';
+        console.error("Upload error:", error);
+        loadingMsg.textContent = "❌ Error uploading. Please try again.";
+        loadingMsg.style.color = "rgba(239, 68, 68, 0.8)";
       } finally {
-        loadingMsg.style.display = 'none';
+        loadingMsg.style.display = "none";
         uploadBtn.disabled = false;
-        uploadBtn.style.opacity = '1';
+        uploadBtn.style.opacity = "1";
       }
     });
 
     // Escape key to close
     const escHandler = (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         closeModal();
-        document.removeEventListener('keydown', escHandler);
+        document.removeEventListener("keydown", escHandler);
       }
     };
-    document.addEventListener('keydown', escHandler);
+    document.addEventListener("keydown", escHandler);
   }
 
   // ============================================
@@ -650,17 +678,17 @@ createDropdownLink(icon, label, href, isModerator = false) {
 
   async uploadProfilePicture(file) {
     if (!this.userId) {
-      console.error('No user ID found');
+      console.error("No user ID found");
       return null;
     }
 
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file');
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file");
       return null;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('File must be less than 5MB');
+      alert("File must be less than 5MB");
       return null;
     }
 
@@ -673,8 +701,8 @@ createDropdownLink(icon, label, href, isModerator = false) {
       const downloadURL = await snapshot.ref.getDownloadURL();
 
       // Update Firestore
-      await db.collection('users').doc(this.userId).update({
-        profilePicture: downloadURL
+      await db.collection("users").doc(this.userId).update({
+        profilePicture: downloadURL,
       });
 
       // Update auth profile too
@@ -686,12 +714,11 @@ createDropdownLink(icon, label, href, isModerator = false) {
       // Update local state
       await this.updateAvatar(downloadURL);
 
-      this.showToast('✅ Profile picture updated successfully!');
+      this.showToast("✅ Profile picture updated successfully!");
       return downloadURL;
-
     } catch (error) {
-      console.error('Error uploading avatar:', error);
-      this.showToast('Error uploading profile picture', 'error');
+      console.error("Error uploading avatar:", error);
+      this.showToast("Error uploading profile picture", "error");
       return null;
     }
   }
@@ -712,13 +739,16 @@ createDropdownLink(icon, label, href, isModerator = false) {
 
   cacheData(userId, data) {
     try {
-      localStorage.setItem(this.cacheKey, JSON.stringify({
-        userId: userId,
-        data: data,
-        timestamp: Date.now()
-      }));
+      localStorage.setItem(
+        this.cacheKey,
+        JSON.stringify({
+          userId: userId,
+          data: data,
+          timestamp: Date.now(),
+        }),
+      );
     } catch (error) {
-      console.warn('Could not cache avatar data:', error);
+      console.warn("Could not cache avatar data:", error);
     }
   }
 
@@ -746,9 +776,9 @@ createDropdownLink(icon, label, href, isModerator = false) {
     try {
       await firebase.auth().signOut();
       this.clearCache();
-      window.location.href = '/index.html';
+      window.location.href = "/index.html";
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   }
 
@@ -756,11 +786,11 @@ createDropdownLink(icon, label, href, isModerator = false) {
   // TOAST
   // ============================================
 
-  showToast(message, type = 'success') {
-    let toast = document.getElementById('customToast');
+  showToast(message, type = "success") {
+    let toast = document.getElementById("customToast");
     if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'customToast';
+      toast = document.createElement("div");
+      toast.id = "customToast";
       toast.style.cssText = `
         position: fixed;
         bottom: 30px;
@@ -785,42 +815,42 @@ createDropdownLink(icon, label, href, isModerator = false) {
     }
 
     toast.textContent = message;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
+    toast.style.opacity = "1";
+    toast.style.transform = "translateX(-50%) translateY(0)";
 
-    if (type === 'error') {
-      toast.style.borderColor = 'rgba(239,68,68,0.3)';
-      toast.style.boxShadow = '0 8px 32px rgba(239,68,68,0.2)';
+    if (type === "error") {
+      toast.style.borderColor = "rgba(239,68,68,0.3)";
+      toast.style.boxShadow = "0 8px 32px rgba(239,68,68,0.2)";
     } else {
-      toast.style.borderColor = 'rgba(16,185,129,0.3)';
-      toast.style.boxShadow = '0 8px 32px rgba(16,185,129,0.2)';
+      toast.style.borderColor = "rgba(16,185,129,0.3)";
+      toast.style.boxShadow = "0 8px 32px rgba(16,185,129,0.2)";
     }
 
     setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateX(-50%) translateY(20px)';
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(-50%) translateY(20px)";
     }, 3000);
   }
 }
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
-    if (typeof firebase !== 'undefined' && typeof db !== 'undefined') {
+    if (typeof firebase !== "undefined" && typeof db !== "undefined") {
       if (!window.avatarManager) {
-        console.log('🔄 Initializing AvatarManager...');
+        console.log("🔄 Initializing AvatarManager...");
         window.avatarManager = new AvatarManager({
-          containerSelector: '.nav-avatar-container',
-          size: 'md'
+          containerSelector: ".nav-avatar-container",
+          size: "md",
         });
       }
     } else {
-      console.warn('Firebase not ready, avatar manager will retry...');
+      console.warn("Firebase not ready, avatar manager will retry...");
       setTimeout(() => {
-        if (typeof firebase !== 'undefined' && typeof db !== 'undefined') {
+        if (typeof firebase !== "undefined" && typeof db !== "undefined") {
           window.avatarManager = new AvatarManager({
-            containerSelector: '.nav-avatar-container',
-            size: 'md'
+            containerSelector: ".nav-avatar-container",
+            size: "md",
           });
         }
       }, 2000);
@@ -828,6 +858,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 500);
 });
 
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = AvatarManager;
 }

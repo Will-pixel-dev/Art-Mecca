@@ -3,15 +3,15 @@
 // ============================================================
 
 function initCookieBanner() {
-    // Check if user already accepted
-    if (localStorage.getItem('cookiesAccepted') === 'true') {
-        return;
-    }
+  // Check if user already accepted
+  if (localStorage.getItem("cookiesAccepted") === "true") {
+    return;
+  }
 
-    // Create banner element
-    const banner = document.createElement('div');
-    banner.id = 'cookieBanner';
-    banner.style.cssText = `
+  // Create banner element
+  const banner = document.createElement("div");
+  banner.id = "cookieBanner";
+  banner.style.cssText = `
         position: fixed;
         bottom: 0;
         left: 0;
@@ -30,8 +30,8 @@ function initCookieBanner() {
         backdrop-filter: blur(8px);
     `;
 
-    // Build banner HTML
-    banner.innerHTML = `
+  // Build banner HTML
+  banner.innerHTML = `
         <p style="
             font-size: 0.85rem;
             color: var(--text-muted, #6a5a7a);
@@ -42,7 +42,7 @@ function initCookieBanner() {
         ">
             <i class="fas fa-cookie" style="color: var(--primary, #6b4ecc); margin-right: 8px;"></i>
             We use cookies to enhance your experience. By continuing, you agree to our
-            <a href="/pages/admin/privacy.html" style="
+            <a href="pages/admin/privacy.html" style="
                 color: var(--primary, #6b4ecc);
                 text-decoration: none;
                 border-bottom: 1px solid transparent;
@@ -83,28 +83,28 @@ function initCookieBanner() {
         </div>
     `;
 
-    // Add to page
-    document.body.appendChild(banner);
+  // Add to page
+  document.body.appendChild(banner);
 
-    // Handle scroll to avoid hiding content
-    document.body.style.paddingBottom = '80px';
+  // Handle scroll to avoid hiding content
+  document.body.style.paddingBottom = "80px";
 
-    // Make functions globally accessible
-    window.acceptCookies = function() {
-        localStorage.setItem('cookiesAccepted', 'true');
-        banner.style.display = 'none';
-        document.body.style.paddingBottom = '0';
-    };
+  // Make functions globally accessible
+  window.acceptCookies = function () {
+    localStorage.setItem("cookiesAccepted", "true");
+    banner.style.display = "none";
+    document.body.style.paddingBottom = "0";
+  };
 
-    window.dismissCookies = function() {
-        banner.style.display = 'none';
-        document.body.style.paddingBottom = '0';
-    };
+  window.dismissCookies = function () {
+    banner.style.display = "none";
+    document.body.style.paddingBottom = "0";
+  };
 }
 
 // Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCookieBanner);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initCookieBanner);
 } else {
-    initCookieBanner();
+  initCookieBanner();
 }

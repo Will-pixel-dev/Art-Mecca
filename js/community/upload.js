@@ -19,8 +19,11 @@ class UploadManager {
       this.currentUser = user;
 
       if (!user) {
-        sessionStorage.setItem('redirectAfterLogin', '/pages/community/upload.html');
-        window.location.href = '/pages/auth/login.html';
+        sessionStorage.setItem(
+          "redirectAfterLogin",
+          "pages/community/upload.html",
+        );
+        window.location.href = "pages/auth/login.html";
         return;
       }
 
@@ -40,8 +43,9 @@ class UploadManager {
 
   async loadUserData() {
     try {
-      const doc = await firebase.firestore()
-        .collection('users')
+      const doc = await firebase
+        .firestore()
+        .collection("users")
         .doc(this.currentUser.uid)
         .get();
 
@@ -49,50 +53,55 @@ class UploadManager {
         this.userData = doc.data();
       }
     } catch (error) {
-      console.error('Error loading user data:', error);
+      console.error("Error loading user data:", error);
     }
   }
 
-    // ============================================
+  // ============================================
   // LOAD CHALLENGES - FROM LOCAL CHALLENGES.JS
   // ============================================
 
   async loadChallenges() {
     try {
       // Wait a moment for challenges.js to initialize
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Try to get challenges from the global ChallengesSystem instance
       let challenges = [];
 
       // Check if challenges are available from the ChallengesSystem
       if (window.challengesSystem) {
-        console.log('📋 Loading challenges from ChallengesSystem...');
+        console.log("📋 Loading challenges from ChallengesSystem...");
         challenges = window.challengesSystem.challenges || [];
-        console.log(`✅ Found ${challenges.length} challenges from ChallengesSystem`);
+        console.log(
+          `✅ Found ${challenges.length} challenges from ChallengesSystem`,
+        );
       }
       // Fallback: check if challenges are stored in window
       else if (window.allChallenges) {
-        console.log('📋 Loading challenges from window.allChallenges...');
+        console.log("📋 Loading challenges from window.allChallenges...");
         challenges = window.allChallenges;
-        console.log(`✅ Found ${challenges.length} challenges from window.allChallenges`);
+        console.log(
+          `✅ Found ${challenges.length} challenges from window.allChallenges`,
+        );
       }
       // Last resort: try to get from Firestore
       else {
-        console.log('📋 Loading challenges from Firestore...');
-        const snapshot = await firebase.firestore()
-          .collection('challenges')
-          .where('status', '==', 'active')
+        console.log("📋 Loading challenges from Firestore...");
+        const snapshot = await firebase
+          .firestore()
+          .collection("challenges")
+          .where("status", "==", "active")
           .get();
 
         if (!snapshot.empty) {
-          snapshot.forEach(doc => {
+          snapshot.forEach((doc) => {
             const data = doc.data();
             challenges.push({
               id: doc.id,
               ...data,
               startDate: data.startDate?.toDate?.() || new Date(data.startDate),
-              endDate: data.endDate?.toDate?.() || new Date(data.endDate)
+              endDate: data.endDate?.toDate?.() || new Date(data.endDate),
             });
           });
         }
@@ -100,19 +109,20 @@ class UploadManager {
       }
 
       // Filter to only active challenges
-      this.activeChallenges = challenges.filter(c => c.status === 'active');
-      console.log(`📊 ${this.activeChallenges.length} active challenges loaded`);
+      this.activeChallenges = challenges.filter((c) => c.status === "active");
+      console.log(
+        `📊 ${this.activeChallenges.length} active challenges loaded`,
+      );
 
       // Populate the select dropdown
       this.populateChallengeSelect();
 
       // Populate the modal challenge list
       this.populateChallengeModal();
-
     } catch (error) {
-      console.error('Error loading challenges:', error);
+      console.error("Error loading challenges:", error);
       // Show empty state
-      const select = document.getElementById('selected-challenge');
+      const select = document.getElementById("selected-challenge");
       if (select) {
         select.innerHTML = '<option value="">No challenges available</option>';
       }
@@ -124,13 +134,14 @@ class UploadManager {
   // ============================================
 
   populateChallengeSelect() {
-    const select = document.getElementById('selected-challenge');
+    const select = document.getElementById("selected-challenge");
     if (!select) return;
 
     select.innerHTML = '<option value="">Select a challenge</option>';
 
     if (this.activeChallenges.length === 0) {
-      select.innerHTML += '<option value="" disabled>No active challenges</option>';
+      select.innerHTML +=
+        '<option value="" disabled>No active challenges</option>';
       return;
     }
 
@@ -139,11 +150,11 @@ class UploadManager {
       daily: [],
       weekly: [],
       monthly: [],
-      yearly: []
+      yearly: [],
     };
 
-    this.activeChallenges.forEach(challenge => {
-      const type = challenge.type || 'daily';
+    this.activeChallenges.forEach((challenge) => {
+      const type = challenge.type || "daily";
       if (grouped[type]) {
         grouped[type].push(challenge);
       } else {
@@ -153,27 +164,28 @@ class UploadManager {
 
     // Add grouped options with optgroups
     const typeLabels = {
-      daily: '⚡ Daily Challenges',
-      weekly: '📅 Weekly Challenges',
-      monthly: '🌟 Monthly Challenges',
-      yearly: '🏆 Yearly Challenges'
+      daily: "⚡ Daily Challenges",
+      weekly: "📅 Weekly Challenges",
+      monthly: "🌟 Monthly Challenges",
+      yearly: "🏆 Yearly Challenges",
     };
 
-    Object.keys(grouped).forEach(type => {
+    Object.keys(grouped).forEach((type) => {
       const challenges = grouped[type];
       if (challenges.length === 0) return;
 
-      const optgroup = document.createElement('optgroup');
-      optgroup.label = typeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1);
+      const optgroup = document.createElement("optgroup");
+      optgroup.label =
+        typeLabels[type] || type.charAt(0).toUpperCase() + type.slice(1);
 
-      challenges.forEach(challenge => {
-        const option = document.createElement('option');
+      challenges.forEach((challenge) => {
+        const option = document.createElement("option");
         option.value = challenge.id;
-        const intuitLabel = challenge.isIntuit ? ' ⚡Intuit' : '';
-        const title = challenge.title || 'Untitled';
+        const intuitLabel = challenge.isIntuit ? " ⚡Intuit" : "";
+        const title = challenge.title || "Untitled";
         option.textContent = `${title}${intuitLabel}`;
         option.dataset.type = type;
-        option.dataset.prize = challenge.prize || '';
+        option.dataset.prize = challenge.prize || "";
         optgroup.appendChild(option);
       });
 
@@ -186,7 +198,7 @@ class UploadManager {
   // ============================================
 
   populateChallengeModal() {
-    const modalList = document.getElementById('challenge-modal-list');
+    const modalList = document.getElementById("challenge-modal-list");
     if (!modalList) return;
 
     if (this.activeChallenges.length === 0) {
@@ -205,11 +217,11 @@ class UploadManager {
       daily: [],
       weekly: [],
       monthly: [],
-      yearly: []
+      yearly: [],
     };
 
-    this.activeChallenges.forEach(challenge => {
-      const type = challenge.type || 'daily';
+    this.activeChallenges.forEach((challenge) => {
+      const type = challenge.type || "daily";
       if (grouped[type]) {
         grouped[type].push(challenge);
       } else {
@@ -218,27 +230,27 @@ class UploadManager {
     });
 
     const typeColors = {
-      daily: '#ff38e4',
-      weekly: '#4cd6eb',
-      monthly: '#8c35e9',
-      yearly: '#f59e0b'
+      daily: "#ff38e4",
+      weekly: "#4cd6eb",
+      monthly: "#8c35e9",
+      yearly: "#f59e0b",
     };
 
     const typeIcons = {
-      daily: '⚡',
-      weekly: '📅',
-      monthly: '🌟',
-      yearly: '🏆'
+      daily: "⚡",
+      weekly: "📅",
+      monthly: "🌟",
+      yearly: "🏆",
     };
 
-    let html = '';
+    let html = "";
 
-    Object.keys(grouped).forEach(type => {
+    Object.keys(grouped).forEach((type) => {
       const challenges = grouped[type];
       if (challenges.length === 0) return;
 
-      const color = typeColors[type] || '#8a19e1';
-      const icon = typeIcons[type] || '📌';
+      const color = typeColors[type] || "#8a19e1";
+      const icon = typeIcons[type] || "📌";
       const label = type.charAt(0).toUpperCase() + type.slice(1);
 
       html += `
@@ -250,9 +262,12 @@ class UploadManager {
           <div style="display: flex; flex-direction: column; gap: 0.4rem;">
       `;
 
-      challenges.forEach(challenge => {
-        const isIntuit = challenge.isIntuit ? ' ⚡Intuit' : '';
-        const prize = challenge.prize ? challenge.prize.substring(0, 40) + (challenge.prize.length > 40 ? '...' : '') : '';
+      challenges.forEach((challenge) => {
+        const isIntuit = challenge.isIntuit ? " ⚡Intuit" : "";
+        const prize = challenge.prize
+          ? challenge.prize.substring(0, 40) +
+            (challenge.prize.length > 40 ? "..." : "")
+          : "";
 
         html += `
           <div class="challenge-modal-item"
@@ -263,13 +278,13 @@ class UploadManager {
                data-challenge-id="${challenge.id}"
                onclick="window.uploadManager.selectChallenge('${challenge.id}')">
             <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 0;">
-              <span style="font-size: 1.1rem;">${challenge.icon || '🎨'}</span>
+              <span style="font-size: 1.1rem;">${challenge.icon || "🎨"}</span>
               <div style="min-width: 0;">
                 <div style="font-size: 0.85rem; font-weight: 500; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   ${challenge.title}${isIntuit}
                 </div>
                 <div style="font-size: 0.65rem; color: var(--text-muted);">
-                  ${prize || 'No prize listed'}
+                  ${prize || "No prize listed"}
                 </div>
               </div>
             </div>
@@ -292,14 +307,14 @@ class UploadManager {
     modalList.innerHTML = html;
 
     // Add hover effects
-    modalList.querySelectorAll('.challenge-modal-item').forEach(item => {
-      item.addEventListener('mouseenter', () => {
-        item.style.background = 'rgba(138, 25, 225, 0.1)';
-        item.style.transform = 'translateX(4px)';
+    modalList.querySelectorAll(".challenge-modal-item").forEach((item) => {
+      item.addEventListener("mouseenter", () => {
+        item.style.background = "rgba(138, 25, 225, 0.1)";
+        item.style.transform = "translateX(4px)";
       });
-      item.addEventListener('mouseleave', () => {
-        item.style.background = 'rgba(138, 25, 225, 0.04)';
-        item.style.transform = 'translateX(0)';
+      item.addEventListener("mouseleave", () => {
+        item.style.background = "rgba(138, 25, 225, 0.04)";
+        item.style.transform = "translateX(0)";
       });
     });
   }
@@ -310,11 +325,11 @@ class UploadManager {
 
   selectChallenge(challengeId) {
     // Find the challenge
-    const challenge = this.activeChallenges.find(c => c.id === challengeId);
+    const challenge = this.activeChallenges.find((c) => c.id === challengeId);
     if (!challenge) return;
 
     // Update the select dropdown
-    const select = document.getElementById('selected-challenge');
+    const select = document.getElementById("selected-challenge");
     if (select) {
       select.value = challengeId;
     }
@@ -323,14 +338,14 @@ class UploadManager {
     this.closeChallengeModal();
 
     // Check the checkbox
-    const checkbox = document.getElementById('submit-to-challenge');
+    const checkbox = document.getElementById("submit-to-challenge");
     if (checkbox) {
       checkbox.checked = true;
-      document.getElementById('challenge-select').style.display = 'block';
+      document.getElementById("challenge-select").style.display = "block";
     }
 
     // Show success toast
-    this.showMessage(`✅ Selected: "${challenge.title}"`, 'success');
+    this.showMessage(`✅ Selected: "${challenge.title}"`, "success");
   }
 
   // ============================================
@@ -338,11 +353,11 @@ class UploadManager {
   // ============================================
 
   openChallengeModal() {
-    const modal = document.getElementById('challenge-modal');
+    const modal = document.getElementById("challenge-modal");
     if (!modal) return;
 
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    modal.style.display = "block";
+    document.body.style.overflow = "hidden";
 
     // Refresh the list
     this.populateChallengeModal();
@@ -353,11 +368,11 @@ class UploadManager {
   // ============================================
 
   closeChallengeModal() {
-    const modal = document.getElementById('challenge-modal');
+    const modal = document.getElementById("challenge-modal");
     if (!modal) return;
 
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
+    modal.style.display = "none";
+    document.body.style.overflow = "";
   }
 
   // ============================================
@@ -365,28 +380,30 @@ class UploadManager {
   // ============================================
 
   setupThemeToggle() {
-    const toggleBtn = document.getElementById('themeToggle');
+    const toggleBtn = document.getElementById("themeToggle");
     if (!toggleBtn) return;
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem("theme") || "dark";
     this.applyTheme(savedTheme);
 
-    toggleBtn.addEventListener('click', () => {
-      const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    toggleBtn.addEventListener("click", () => {
+      const currentTheme = document.body.classList.contains("light-mode")
+        ? "light"
+        : "dark";
+      const newTheme = currentTheme === "light" ? "dark" : "light";
       this.applyTheme(newTheme);
-      localStorage.setItem('theme', newTheme);
+      localStorage.setItem("theme", newTheme);
     });
   }
 
   applyTheme(theme) {
     const body = document.body;
-    if (theme === 'light') {
-      body.classList.remove('dark-mode');
-      body.classList.add('light-mode');
+    if (theme === "light") {
+      body.classList.remove("dark-mode");
+      body.classList.add("light-mode");
     } else {
-      body.classList.remove('light-mode');
-      body.classList.add('dark-mode');
+      body.classList.remove("light-mode");
+      body.classList.add("dark-mode");
     }
   }
 
@@ -395,54 +412,66 @@ class UploadManager {
   // ============================================
 
   setupEventListeners() {
-    document.getElementById('browse-btn')?.addEventListener('click', () => {
-      document.getElementById('artwork-file').click();
+    document.getElementById("browse-btn")?.addEventListener("click", () => {
+      document.getElementById("artwork-file").click();
     });
 
-    document.getElementById('artwork-file')?.addEventListener('change', (e) => {
+    document.getElementById("artwork-file")?.addEventListener("change", (e) => {
       if (e.target.files.length > 0) {
         this.handleFilesSelect(e.target.files);
       }
     });
 
-    document.getElementById('upload-form')?.addEventListener('submit', (e) => {
+    document.getElementById("upload-form")?.addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleSubmit();
     });
 
-    document.getElementById('cancel-btn')?.addEventListener('click', () => {
-      if (confirm('Are you sure you want to cancel? Your changes will be lost.')) {
-        window.location.href = '/pages/community/gallery.html';
+    document.getElementById("cancel-btn")?.addEventListener("click", () => {
+      if (
+        confirm("Are you sure you want to cancel? Your changes will be lost.")
+      ) {
+        window.location.href = "pages/community/gallery.html";
       }
     });
 
-    document.getElementById('remove-preview')?.addEventListener('click', () => {
+    document.getElementById("remove-preview")?.addEventListener("click", () => {
       this.removePreview();
     });
 
-    document.getElementById('submit-to-challenge')?.addEventListener('change', (e) => {
-      document.getElementById('challenge-select').style.display =
-        e.target.checked ? 'block' : 'none';
-    });
+    document
+      .getElementById("submit-to-challenge")
+      ?.addEventListener("change", (e) => {
+        document.getElementById("challenge-select").style.display = e.target
+          .checked
+          ? "block"
+          : "none";
+      });
 
     // Modal controls
-    document.getElementById('open-challenge-modal')?.addEventListener('click', () => {
-      this.openChallengeModal();
-    });
+    document
+      .getElementById("open-challenge-modal")
+      ?.addEventListener("click", () => {
+        this.openChallengeModal();
+      });
 
-    document.getElementById('close-challenge-modal')?.addEventListener('click', () => {
-      this.closeChallengeModal();
-    });
-
-    document.getElementById('challenge-modal')?.addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) {
+    document
+      .getElementById("close-challenge-modal")
+      ?.addEventListener("click", () => {
         this.closeChallengeModal();
-      }
-    });
+      });
+
+    document
+      .getElementById("challenge-modal")
+      ?.addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) {
+          this.closeChallengeModal();
+        }
+      });
 
     // Escape key to close modal
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
         this.closeChallengeModal();
       }
     });
@@ -451,178 +480,199 @@ class UploadManager {
     this.setupRealTimePreview();
   }
 
-// ============================================
-// NSFW TOGGLE - With Warning Notice
-// ============================================
+  // ============================================
+  // NSFW TOGGLE - With Warning Notice
+  // ============================================
 
-setupNSFWToggle() {
-  const nsfwToggle = document.getElementById('is-nsfw');
-  const nsfwCategoryGroup = document.getElementById('nsfw-category-group');
-  const nsfwWarning = document.getElementById('nsfw-warning-notice');
+  setupNSFWToggle() {
+    const nsfwToggle = document.getElementById("is-nsfw");
+    const nsfwCategoryGroup = document.getElementById("nsfw-category-group");
+    const nsfwWarning = document.getElementById("nsfw-warning-notice");
 
-  if (!nsfwToggle) return;
+    if (!nsfwToggle) return;
 
-  const isAdult = this.userData?.isAdult || false;
-  const isAdmin = this.userData?.role === 'admin' || this.userData?.isAdmin === true;
+    const isAdult = this.userData?.isAdult || false;
+    const isAdmin =
+      this.userData?.role === "admin" || this.userData?.isAdmin === true;
 
-  if (!isAdult && !isAdmin) {
-    const container = document.querySelector('.nsfw-toggle-container');
-    if (container) {
-      container.innerHTML = `
+    if (!isAdult && !isAdmin) {
+      const container = document.querySelector(".nsfw-toggle-container");
+      if (container) {
+        container.innerHTML = `
         <div style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 1rem; text-align: center;">
           <p style="color: #ef4444; font-weight: 500; margin: 0;">
             <i class="fas fa-lock"></i> You must verify you are 18+ to upload mature content.
           </p>
-          <button onclick="window.location.href='/pages/community/profiles.html?user=${this.currentUser.uid}'"
+          <button onclick="window.location.href='pages/community/profiles.html?user=${this.currentUser.uid}'"
                   style="margin-top: 0.5rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #fe67ea, #63dbee);
                          color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
             Verify Age in Profile
           </button>
         </div>
       `;
-    }
-    return;
-  }
-
-  nsfwToggle.addEventListener('change', (e) => {
-    this.isNSFW = e.target.checked;
-
-    // Show/hide category group
-    if (nsfwCategoryGroup) {
-      nsfwCategoryGroup.style.display = e.target.checked ? 'block' : 'none';
-    }
-
-    // Show/hide warning notice
-    if (nsfwWarning) {
-      nsfwWarning.style.display = e.target.checked ? 'block' : 'none';
-    }
-
-    this.updatePreview();
-  });
-
-  // Check initial state
-  if (nsfwToggle.checked) {
-    if (nsfwCategoryGroup) nsfwCategoryGroup.style.display = 'block';
-    if (nsfwWarning) nsfwWarning.style.display = 'block';
-  }
-}
-
-// ============================================
-// SUBMIT - With NSFW Auto-Route
-// ============================================
-
-async handleSubmit() {
-  if (this.uploading) return;
-  const submitBtn = document.getElementById('submit-btn');
-  const originalText = submitBtn.innerHTML;
-
-  try {
-    if (this.selectedFiles.length === 0) {
-      throw new Error('Please select at least one artwork file');
-    }
-
-    const title = document.getElementById('artwork-title').value.trim();
-    if (!title) {
-      throw new Error('Please enter a title for your artwork');
-    }
-
-    const isNSFW = document.getElementById('is-nsfw')?.checked || false;
-    const nsfwCategory = document.getElementById('nsfw-category')?.value || 'mature';
-
-    if (isNSFW && !nsfwCategory) {
-      throw new Error('Please select an NSFW category');
-    }
-
-    const submitToChallenge = document.getElementById('submit-to-challenge')?.checked || false;
-    const challengeId = submitToChallenge ? document.getElementById('selected-challenge')?.value : null;
-
-    if (submitToChallenge && !challengeId) {
-      throw new Error('Please select a challenge to submit to');
-    }
-
-    const artworkData = {
-      files: this.selectedFiles,
-      title: title,
-      description: document.getElementById('artwork-description').value.trim(),
-      category: document.getElementById('artwork-category').value || 'other',
-      software: document.getElementById('artwork-software').value || '',
-      tags: this.tags,
-      challengeId: challengeId,
-      isNSFW: isNSFW,
-      nsfwCategory: isNSFW ? nsfwCategory : null
-    };
-
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-    submitBtn.classList.add('uploading');
-    this.uploading = true;
-
-    const result = await this.uploadArtwork(artworkData);
-
-    const successMessage = isNSFW
-      ? 'Artwork uploaded to NSFW Gallery! 🔞'
-      : 'Artwork uploaded successfully! 🎉';
-
-    this.showMessage(successMessage, 'success');
-
-    // Route to appropriate gallery
-    setTimeout(() => {
-      if (isNSFW) {
-        window.location.href = '/pages/community/nsfw-gallery.html?uploaded=' + result.artworkId;
-      } else {
-        window.location.href = '/pages/community/gallery.html?uploaded=' + result.artworkId;
       }
-    }, 2000);
+      return;
+    }
 
-  } catch (error) {
-    console.error('Upload error:', error);
-    this.showMessage(error.message, 'error');
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalText;
-    submitBtn.classList.remove('uploading');
-    this.uploading = false;
+    nsfwToggle.addEventListener("change", (e) => {
+      this.isNSFW = e.target.checked;
+
+      // Show/hide category group
+      if (nsfwCategoryGroup) {
+        nsfwCategoryGroup.style.display = e.target.checked ? "block" : "none";
+      }
+
+      // Show/hide warning notice
+      if (nsfwWarning) {
+        nsfwWarning.style.display = e.target.checked ? "block" : "none";
+      }
+
+      this.updatePreview();
+    });
+
+    // Check initial state
+    if (nsfwToggle.checked) {
+      if (nsfwCategoryGroup) nsfwCategoryGroup.style.display = "block";
+      if (nsfwWarning) nsfwWarning.style.display = "block";
+    }
   }
-}
 
-// ============================================
-// UPDATE NSFW PREVIEW
-// ============================================
+  // ============================================
+  // SUBMIT - With NSFW Auto-Route
+  // ============================================
 
-updateNSFWPreview() {
-  const badge = document.getElementById('preview-nsfw-badge');
-  if (!badge) return;
-  badge.style.display = this.isNSFW ? 'inline-block' : 'none';
-}
+  async handleSubmit() {
+    if (this.uploading) return;
+    const submitBtn = document.getElementById("submit-btn");
+    const originalText = submitBtn.innerHTML;
+
+    try {
+      if (this.selectedFiles.length === 0) {
+        throw new Error("Please select at least one artwork file");
+      }
+
+      const title = document.getElementById("artwork-title").value.trim();
+      if (!title) {
+        throw new Error("Please enter a title for your artwork");
+      }
+
+      const isNSFW = document.getElementById("is-nsfw")?.checked || false;
+      const nsfwCategory =
+        document.getElementById("nsfw-category")?.value || "mature";
+
+      if (isNSFW && !nsfwCategory) {
+        throw new Error("Please select an NSFW category");
+      }
+
+      const submitToChallenge =
+        document.getElementById("submit-to-challenge")?.checked || false;
+      const challengeId = submitToChallenge
+        ? document.getElementById("selected-challenge")?.value
+        : null;
+
+      if (submitToChallenge && !challengeId) {
+        throw new Error("Please select a challenge to submit to");
+      }
+
+      const artworkData = {
+        files: this.selectedFiles,
+        title: title,
+        description: document
+          .getElementById("artwork-description")
+          .value.trim(),
+        category: document.getElementById("artwork-category").value || "other",
+        software: document.getElementById("artwork-software").value || "",
+        tags: this.tags,
+        challengeId: challengeId,
+        isNSFW: isNSFW,
+        nsfwCategory: isNSFW ? nsfwCategory : null,
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+      submitBtn.classList.add("uploading");
+      this.uploading = true;
+
+      const result = await this.uploadArtwork(artworkData);
+
+      const successMessage = isNSFW
+        ? "Artwork uploaded to NSFW Gallery! 🔞"
+        : "Artwork uploaded successfully! 🎉";
+
+      this.showMessage(successMessage, "success");
+
+      // Route to appropriate gallery
+      setTimeout(() => {
+        if (isNSFW) {
+          window.location.href =
+            "pages/community/nsfw-gallery.html?uploaded=" + result.artworkId;
+        } else {
+          window.location.href =
+            "pages/community/gallery.html?uploaded=" + result.artworkId;
+        }
+      }, 2000);
+    } catch (error) {
+      console.error("Upload error:", error);
+      this.showMessage(error.message, "error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+      submitBtn.classList.remove("uploading");
+      this.uploading = false;
+    }
+  }
+
+  // ============================================
+  // UPDATE NSFW PREVIEW
+  // ============================================
+
+  updateNSFWPreview() {
+    const badge = document.getElementById("preview-nsfw-badge");
+    if (!badge) return;
+    badge.style.display = this.isNSFW ? "inline-block" : "none";
+  }
 
   // ============================================
   // DRAG AND DROP - Multi-file supported
   // ============================================
 
   setupDragAndDrop() {
-    const uploadArea = document.getElementById('upload-area');
+    const uploadArea = document.getElementById("upload-area");
     if (!uploadArea) return;
 
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-      uploadArea.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      }, false);
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+      uploadArea.addEventListener(
+        eventName,
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        },
+        false,
+      );
     });
 
-    ['dragenter', 'dragover'].forEach(eventName => {
-      uploadArea.addEventListener(eventName, () => {
-        uploadArea.classList.add('dragover');
-      }, false);
+    ["dragenter", "dragover"].forEach((eventName) => {
+      uploadArea.addEventListener(
+        eventName,
+        () => {
+          uploadArea.classList.add("dragover");
+        },
+        false,
+      );
     });
 
-    ['dragleave', 'drop'].forEach(eventName => {
-      uploadArea.addEventListener(eventName, () => {
-        uploadArea.classList.remove('dragover');
-      }, false);
+    ["dragleave", "drop"].forEach((eventName) => {
+      uploadArea.addEventListener(
+        eventName,
+        () => {
+          uploadArea.classList.remove("dragover");
+        },
+        false,
+      );
     });
 
-    uploadArea.addEventListener('drop', (e) => {
+    uploadArea.addEventListener("drop", (e) => {
       const files = e.dataTransfer.files;
       if (files.length > 0) {
         this.handleFilesSelect(files);
@@ -646,7 +696,15 @@ updateNSFWPreview() {
       }
 
       // Check file type (images + videos)
-      const validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'video/mp4', 'video/webm', 'video/quicktime'];
+      const validTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/webp",
+        "image/gif",
+        "video/mp4",
+        "video/webm",
+        "video/quicktime",
+      ];
       if (!validTypes.includes(file.type)) {
         errors.push(`"${file.name}" has unsupported format`);
         continue;
@@ -656,7 +714,7 @@ updateNSFWPreview() {
     }
 
     if (errors.length > 0) {
-      this.showMessage(errors.join('\n'), 'error');
+      this.showMessage(errors.join("\n"), "error");
     }
 
     if (validFiles.length === 0) {
@@ -668,7 +726,7 @@ updateNSFWPreview() {
     this.clearFilePreviews();
 
     // Add new files
-    validFiles.forEach(file => {
+    validFiles.forEach((file) => {
       this.selectedFiles.push(file);
     });
 
@@ -687,51 +745,53 @@ updateNSFWPreview() {
   showFilePreview(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const previewImg = document.getElementById('preview-img');
-      const container = document.getElementById('preview-container');
+      const previewImg = document.getElementById("preview-img");
+      const container = document.getElementById("preview-container");
 
-      if (file.type.startsWith('video/')) {
-        previewImg.style.display = 'none';
+      if (file.type.startsWith("video/")) {
+        previewImg.style.display = "none";
         // We'll use a video element for video preview
-        const videoEl = document.createElement('video');
+        const videoEl = document.createElement("video");
         videoEl.src = e.target.result;
         videoEl.controls = true;
         videoEl.muted = true;
-        videoEl.style.width = '100%';
-        videoEl.style.maxHeight = '400px';
-        videoEl.style.objectFit = 'contain';
+        videoEl.style.width = "100%";
+        videoEl.style.maxHeight = "400px";
+        videoEl.style.objectFit = "contain";
 
         // Remove old video if exists
-        const oldVideo = container.querySelector('video');
+        const oldVideo = container.querySelector("video");
         if (oldVideo) oldVideo.remove();
         container.appendChild(videoEl);
       } else {
         // Remove old video if exists
-        const oldVideo = container.querySelector('video');
+        const oldVideo = container.querySelector("video");
         if (oldVideo) oldVideo.remove();
         previewImg.src = e.target.result;
-        previewImg.style.display = 'block';
+        previewImg.style.display = "block";
       }
 
-      document.getElementById('file-name').textContent = file.name;
-      document.getElementById('file-size').textContent = this.formatFileSize(file.size);
-      document.getElementById('upload-preview').style.display = 'block';
-      document.getElementById('upload-area').style.display = 'none';
+      document.getElementById("file-name").textContent = file.name;
+      document.getElementById("file-size").textContent = this.formatFileSize(
+        file.size,
+      );
+      document.getElementById("upload-preview").style.display = "block";
+      document.getElementById("upload-area").style.display = "none";
     };
     reader.readAsDataURL(file);
   }
 
   showMultipleFilesPreview(files) {
-    const container = document.getElementById('multiple-files-preview');
-    const fileList = document.getElementById('file-list');
-    const fileCount = document.getElementById('file-count');
+    const container = document.getElementById("multiple-files-preview");
+    const fileList = document.getElementById("file-list");
+    const fileCount = document.getElementById("file-count");
 
-    container.style.display = 'block';
+    container.style.display = "block";
     fileCount.textContent = files.length;
 
-    fileList.innerHTML = '';
+    fileList.innerHTML = "";
     files.forEach((file, index) => {
-      const pill = document.createElement('span');
+      const pill = document.createElement("span");
       pill.style.cssText = `
         display: inline-flex;
         align-items: center;
@@ -743,32 +803,33 @@ updateNSFWPreview() {
         font-size: 0.7rem;
         color: var(--text-secondary);
       `;
-      const icon = file.type.startsWith('video/') ? '🎬' : '🖼️';
-      pill.innerHTML = `${icon} ${file.name.substring(0, 20)}${file.name.length > 20 ? '...' : ''}`;
+      const icon = file.type.startsWith("video/") ? "🎬" : "🖼️";
+      pill.innerHTML = `${icon} ${file.name.substring(0, 20)}${file.name.length > 20 ? "..." : ""}`;
       fileList.appendChild(pill);
     });
   }
 
   clearFilePreviews() {
-    const container = document.getElementById('preview-container');
-    const oldVideo = container.querySelector('video');
+    const container = document.getElementById("preview-container");
+    const oldVideo = container.querySelector("video");
     if (oldVideo) oldVideo.remove();
-    document.getElementById('preview-img').style.display = 'none';
-    document.getElementById('multiple-files-preview').style.display = 'none';
-    document.getElementById('file-list').innerHTML = '';
+    document.getElementById("preview-img").style.display = "none";
+    document.getElementById("multiple-files-preview").style.display = "none";
+    document.getElementById("file-list").innerHTML = "";
   }
 
   removePreview() {
     this.selectedFiles = [];
     this.clearFilePreviews();
-    document.getElementById('artwork-file').value = '';
-    document.getElementById('upload-preview').style.display = 'none';
-    document.getElementById('upload-area').style.display = 'block';
-    document.getElementById('artwork-preview').style.display = 'none';
-    document.getElementById('artwork-preview-video').style.display = 'none';
-    document.getElementById('artwork-preview-placeholder').style.display = 'flex';
-    document.getElementById('multiple-files-preview').style.display = 'none';
-    document.getElementById('file-list').innerHTML = '';
+    document.getElementById("artwork-file").value = "";
+    document.getElementById("upload-preview").style.display = "none";
+    document.getElementById("upload-area").style.display = "block";
+    document.getElementById("artwork-preview").style.display = "none";
+    document.getElementById("artwork-preview-video").style.display = "none";
+    document.getElementById("artwork-preview-placeholder").style.display =
+      "flex";
+    document.getElementById("multiple-files-preview").style.display = "none";
+    document.getElementById("file-list").innerHTML = "";
     this.updatePreview();
   }
 
@@ -777,22 +838,22 @@ updateNSFWPreview() {
   // ============================================
 
   setupTagsInput() {
-    const tagsInput = document.getElementById('tags-input');
+    const tagsInput = document.getElementById("tags-input");
     if (!tagsInput) return;
 
-    tagsInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+    tagsInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
         e.preventDefault();
         const tag = tagsInput.value.trim();
         if (tag) {
           this.addTag(tag);
-          tagsInput.value = '';
+          tagsInput.value = "";
         }
       }
     });
 
-    document.querySelectorAll('.tag-suggestion').forEach(button => {
-      button.addEventListener('click', () => {
+    document.querySelectorAll(".tag-suggestion").forEach((button) => {
+      button.addEventListener("click", () => {
         this.addTag(button.dataset.tag);
       });
     });
@@ -801,11 +862,11 @@ updateNSFWPreview() {
   addTag(tagText) {
     if (!tagText) return;
     if (this.tags.length >= 10) {
-      this.showMessage('Maximum 10 tags allowed', 'error');
+      this.showMessage("Maximum 10 tags allowed", "error");
       return;
     }
     if (this.tags.includes(tagText.toLowerCase())) {
-      this.showMessage('Tag already added', 'error');
+      this.showMessage("Tag already added", "error");
       return;
     }
 
@@ -821,13 +882,13 @@ updateNSFWPreview() {
   }
 
   updateTagsDisplay() {
-    const tagsDisplay = document.getElementById('tags-display');
+    const tagsDisplay = document.getElementById("tags-display");
     if (!tagsDisplay) return;
 
-    tagsDisplay.innerHTML = '';
+    tagsDisplay.innerHTML = "";
     this.tags.forEach((tag, index) => {
-      const tagElement = document.createElement('div');
-      tagElement.className = 'tag';
+      const tagElement = document.createElement("div");
+      tagElement.className = "tag";
       tagElement.innerHTML = `
         ${tag}
         <button type="button" class="tag-remove" data-index="${index}">
@@ -837,9 +898,9 @@ updateNSFWPreview() {
       tagsDisplay.appendChild(tagElement);
     });
 
-    tagsDisplay.querySelectorAll('.tag-remove').forEach(button => {
-      button.addEventListener('click', (e) => {
-        const index = parseInt(e.target.closest('.tag-remove').dataset.index);
+    tagsDisplay.querySelectorAll(".tag-remove").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const index = parseInt(e.target.closest(".tag-remove").dataset.index);
         this.removeTag(index);
       });
     });
@@ -850,28 +911,28 @@ updateNSFWPreview() {
   // ============================================
 
   setupRealTimePreview() {
-    const titleInput = document.getElementById('artwork-title');
-    const descriptionInput = document.getElementById('artwork-description');
+    const titleInput = document.getElementById("artwork-title");
+    const descriptionInput = document.getElementById("artwork-description");
 
-    titleInput?.addEventListener('input', () => {
-      document.getElementById('preview-title').textContent =
-        titleInput.value || 'Artwork Title';
+    titleInput?.addEventListener("input", () => {
+      document.getElementById("preview-title").textContent =
+        titleInput.value || "Artwork Title";
     });
 
-    descriptionInput?.addEventListener('input', () => {
-      document.getElementById('preview-description').textContent =
-        descriptionInput.value || 'Artwork description will appear here...';
+    descriptionInput?.addEventListener("input", () => {
+      document.getElementById("preview-description").textContent =
+        descriptionInput.value || "Artwork description will appear here...";
     });
   }
 
   updatePreviewTags() {
-    const previewTags = document.getElementById('preview-tags');
+    const previewTags = document.getElementById("preview-tags");
     if (!previewTags) return;
 
-    previewTags.innerHTML = '';
-    this.tags.forEach(tag => {
-      const tagElement = document.createElement('span');
-      tagElement.className = 'tag';
+    previewTags.innerHTML = "";
+    this.tags.forEach((tag) => {
+      const tagElement = document.createElement("span");
+      tagElement.className = "tag";
       tagElement.textContent = tag;
       previewTags.appendChild(tagElement);
     });
@@ -880,31 +941,34 @@ updateNSFWPreview() {
   updateArtworkPreview(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const previewImg = document.getElementById('artwork-preview');
-      const previewVideo = document.getElementById('artwork-preview-video');
+      const previewImg = document.getElementById("artwork-preview");
+      const previewVideo = document.getElementById("artwork-preview-video");
 
-      if (file.type.startsWith('video/')) {
-        previewImg.style.display = 'none';
+      if (file.type.startsWith("video/")) {
+        previewImg.style.display = "none";
         previewVideo.src = e.target.result;
-        previewVideo.style.display = 'block';
+        previewVideo.style.display = "block";
       } else {
-        previewVideo.style.display = 'none';
-        previewVideo.src = '';
+        previewVideo.style.display = "none";
+        previewVideo.src = "";
         previewImg.src = e.target.result;
-        previewImg.style.display = 'block';
+        previewImg.style.display = "block";
       }
-      document.getElementById('artwork-preview-placeholder').style.display = 'none';
+      document.getElementById("artwork-preview-placeholder").style.display =
+        "none";
     };
     reader.readAsDataURL(file);
   }
 
   updateUserPreview() {
     if (this.currentUser) {
-      const username = this.currentUser.displayName ||
-                       this.currentUser.email?.split('@')[0] || 'User';
+      const username =
+        this.currentUser.displayName ||
+        this.currentUser.email?.split("@")[0] ||
+        "User";
       const avatar = username.charAt(0).toUpperCase();
-      document.getElementById('preview-username').textContent = username;
-      document.getElementById('preview-avatar').textContent = avatar;
+      document.getElementById("preview-username").textContent = username;
+      document.getElementById("preview-avatar").textContent = avatar;
     }
   }
 
@@ -915,9 +979,9 @@ updateNSFWPreview() {
   }
 
   updateNSFWPreview() {
-    const badge = document.getElementById('preview-nsfw-badge');
+    const badge = document.getElementById("preview-nsfw-badge");
     if (!badge) return;
-    badge.style.display = this.isNSFW ? 'inline-block' : 'none';
+    badge.style.display = this.isNSFW ? "inline-block" : "none";
   }
 
   // ============================================
@@ -926,65 +990,71 @@ updateNSFWPreview() {
 
   async handleSubmit() {
     if (this.uploading) return;
-    const submitBtn = document.getElementById('submit-btn');
+    const submitBtn = document.getElementById("submit-btn");
     const originalText = submitBtn.innerHTML;
 
     try {
       if (this.selectedFiles.length === 0) {
-        throw new Error('Please select at least one artwork file');
+        throw new Error("Please select at least one artwork file");
       }
 
-      const title = document.getElementById('artwork-title').value.trim();
+      const title = document.getElementById("artwork-title").value.trim();
       if (!title) {
-        throw new Error('Please enter a title for your artwork');
+        throw new Error("Please enter a title for your artwork");
       }
 
-      const isNSFW = document.getElementById('is-nsfw')?.checked || false;
-      const nsfwCategory = document.getElementById('nsfw-category')?.value || 'mature';
+      const isNSFW = document.getElementById("is-nsfw")?.checked || false;
+      const nsfwCategory =
+        document.getElementById("nsfw-category")?.value || "mature";
 
       if (isNSFW && !nsfwCategory) {
-        throw new Error('Please select an NSFW category');
+        throw new Error("Please select an NSFW category");
       }
 
-      const submitToChallenge = document.getElementById('submit-to-challenge')?.checked || false;
-      const challengeId = submitToChallenge ? document.getElementById('selected-challenge')?.value : null;
+      const submitToChallenge =
+        document.getElementById("submit-to-challenge")?.checked || false;
+      const challengeId = submitToChallenge
+        ? document.getElementById("selected-challenge")?.value
+        : null;
 
       if (submitToChallenge && !challengeId) {
-        throw new Error('Please select a challenge to submit to');
+        throw new Error("Please select a challenge to submit to");
       }
 
       const artworkData = {
         files: this.selectedFiles,
         title: title,
-        description: document.getElementById('artwork-description').value.trim(),
-        category: document.getElementById('artwork-category').value || 'other',
-        software: document.getElementById('artwork-software').value || '',
+        description: document
+          .getElementById("artwork-description")
+          .value.trim(),
+        category: document.getElementById("artwork-category").value || "other",
+        software: document.getElementById("artwork-software").value || "",
         tags: this.tags,
         challengeId: challengeId,
         isNSFW: isNSFW,
-        nsfwCategory: isNSFW ? nsfwCategory : null
+        nsfwCategory: isNSFW ? nsfwCategory : null,
       };
 
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-      submitBtn.classList.add('uploading');
+      submitBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+      submitBtn.classList.add("uploading");
       this.uploading = true;
 
       const result = await this.uploadArtwork(artworkData);
 
-      this.showMessage('Artwork uploaded successfully! 🎉', 'success');
+      this.showMessage("Artwork uploaded successfully! 🎉", "success");
 
       setTimeout(() => {
-        window.location.href = `/pages/community/gallery.html?uploaded=${result.artworkId}`;
+        window.location.href = `pages/community/gallery.html?uploaded=${result.artworkId}`;
       }, 2000);
-
     } catch (error) {
-      console.error('Upload error:', error);
-      this.showMessage(error.message, 'error');
+      console.error("Upload error:", error);
+      this.showMessage(error.message, "error");
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
-      submitBtn.classList.remove('uploading');
+      submitBtn.classList.remove("uploading");
       this.uploading = false;
     }
   }
@@ -992,128 +1062,141 @@ updateNSFWPreview() {
   // ============================================
   // UPLOAD TO FIREBASE - With voting support
   // ============================================
-async uploadArtwork(artworkData) {
-  if (!this.currentUser) {
-    throw new Error('Please login to upload artwork');
-  }
+  async uploadArtwork(artworkData) {
+    if (!this.currentUser) {
+      throw new Error("Please login to upload artwork");
+    }
 
-  try {
-    const uploadedUrls = [];
-    const fileTypes = [];
+    try {
+      const uploadedUrls = [];
+      const fileTypes = [];
 
-    // Upload all files
-    for (const file of artworkData.files) {
-      let fileToUpload = file;
-      if (file.type.startsWith('image/') && file.size > 300 * 1024) {
-        fileToUpload = await this.compressImage(file, 1400, 0.9);
+      // Upload all files
+      for (const file of artworkData.files) {
+        let fileToUpload = file;
+        if (file.type.startsWith("image/") && file.size > 300 * 1024) {
+          fileToUpload = await this.compressImage(file, 1400, 0.9);
+        }
+
+        const storageRef = firebase.storage().ref();
+        const filePath = `artworks/${this.currentUser.uid}/${Date.now()}_${file.name}`;
+        const uploadTask = storageRef.child(filePath).put(fileToUpload);
+        const snapshot = await uploadTask;
+        const downloadURL = await snapshot.ref.getDownloadURL();
+        uploadedUrls.push(downloadURL);
+        fileTypes.push(file.type);
       }
 
-      const storageRef = firebase.storage().ref();
-      const filePath = `artworks/${this.currentUser.uid}/${Date.now()}_${file.name}`;
-      const uploadTask = storageRef.child(filePath).put(fileToUpload);
-      const snapshot = await uploadTask;
-      const downloadURL = await snapshot.ref.getDownloadURL();
-      uploadedUrls.push(downloadURL);
-      fileTypes.push(file.type);
-    }
+      const primaryImage = uploadedUrls[0];
+      const isVideo = fileTypes[0]?.startsWith("video/") || false;
 
-    const primaryImage = uploadedUrls[0];
-    const isVideo = fileTypes[0]?.startsWith('video/') || false;
+      // Create artwork document
+      const artwork = {
+        title: artworkData.title,
+        description: artworkData.description || "",
+        imageUrl: primaryImage,
+        imageUrls: uploadedUrls,
+        fileTypes: fileTypes,
+        isVideo: isVideo,
+        category: artworkData.category || "other",
+        software: artworkData.software || "",
+        tags: artworkData.tags || [],
+        artistId: this.currentUser.uid,
+        artistName:
+          this.currentUser.displayName ||
+          this.currentUser.email?.split("@")[0] ||
+          "Artist",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        likes: 0,
+        cheers: 0,
+        comments: [],
+        status: "published",
+        isNSFW: artworkData.isNSFW || false,
+        nsfwCategory: artworkData.nsfwCategory || null,
+        nsfwReported: false,
+        nsfwWarnings: 0,
+        votes: 0,
+        voteCount: 0,
+        hasMultiple: uploadedUrls.length > 1,
+      };
 
-    // Create artwork document
-    const artwork = {
-      title: artworkData.title,
-      description: artworkData.description || '',
-      imageUrl: primaryImage,
-      imageUrls: uploadedUrls,
-      fileTypes: fileTypes,
-      isVideo: isVideo,
-      category: artworkData.category || 'other',
-      software: artworkData.software || '',
-      tags: artworkData.tags || [],
-      artistId: this.currentUser.uid,
-      artistName: this.currentUser.displayName || this.currentUser.email?.split('@')[0] || 'Artist',
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      likes: 0,
-      cheers: 0,
-      comments: [],
-      status: 'published',
-      isNSFW: artworkData.isNSFW || false,
-      nsfwCategory: artworkData.nsfwCategory || null,
-      nsfwReported: false,
-      nsfwWarnings: 0,
-      votes: 0,
-      voteCount: 0,
-      hasMultiple: uploadedUrls.length > 1
-    };
-
-    // Add challenge if submitted
-    if (artworkData.challengeId) {
-      artwork.challengeId = artworkData.challengeId;
-      artwork.challengeSubmitted = firebase.firestore.FieldValue.serverTimestamp();
-      artwork.challengeStatus = 'pending';
-    }
-
-    // Save artwork
-    const docRef = await firebase.firestore()
-      .collection('artworks')
-      .add(artwork);
-
-    // Track challenge submission
-    if (artworkData.challengeId) {
-      try {
-        await firebase.firestore()
-          .collection('challengeSubmissions')
-          .add({
-            challengeId: artworkData.challengeId,
-            artworkId: docRef.id,
-            userId: this.currentUser.uid,
-            userName: this.currentUser.displayName || this.currentUser.email?.split('@')[0] || 'Anonymous',
-            userAvatar: this.currentUser.photoURL || null,
-            submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'pending',
-            votes: 0,
-            voteCount: 0,
-            title: artworkData.title,
-            description: artworkData.description || ''
-          });
-
-        await firebase.firestore()
-          .collection('challenges')
-          .doc(artworkData.challengeId)
-          .update({
-            submissions: firebase.firestore.FieldValue.increment(1)
-          });
-
-        // Award points for challenge submission
-        await this.awardPoints(20, `Submitted to challenge: ${artworkData.challengeId}`);
-      } catch (error) {
-        console.error('Error tracking challenge submission:', error);
+      // Add challenge if submitted
+      if (artworkData.challengeId) {
+        artwork.challengeId = artworkData.challengeId;
+        artwork.challengeSubmitted =
+          firebase.firestore.FieldValue.serverTimestamp();
+        artwork.challengeStatus = "pending";
       }
+
+      // Save artwork
+      const docRef = await firebase
+        .firestore()
+        .collection("artworks")
+        .add(artwork);
+
+      // Track challenge submission
+      if (artworkData.challengeId) {
+        try {
+          await firebase
+            .firestore()
+            .collection("challengeSubmissions")
+            .add({
+              challengeId: artworkData.challengeId,
+              artworkId: docRef.id,
+              userId: this.currentUser.uid,
+              userName:
+                this.currentUser.displayName ||
+                this.currentUser.email?.split("@")[0] ||
+                "Anonymous",
+              userAvatar: this.currentUser.photoURL || null,
+              submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              status: "pending",
+              votes: 0,
+              voteCount: 0,
+              title: artworkData.title,
+              description: artworkData.description || "",
+            });
+
+          await firebase
+            .firestore()
+            .collection("challenges")
+            .doc(artworkData.challengeId)
+            .update({
+              submissions: firebase.firestore.FieldValue.increment(1),
+            });
+
+          // Award points for challenge submission
+          await this.awardPoints(
+            20,
+            `Submitted to challenge: ${artworkData.challengeId}`,
+          );
+        } catch (error) {
+          console.error("Error tracking challenge submission:", error);
+        }
+      }
+
+      // Award upload points
+      await this.awardPoints(10, "Uploaded artwork");
+
+      // Add to user's artworks array
+      await firebase
+        .firestore()
+        .collection("users")
+        .doc(this.currentUser.uid)
+        .update({
+          artworks: firebase.firestore.FieldValue.arrayUnion(docRef.id),
+        });
+
+      return {
+        success: true,
+        artworkId: docRef.id,
+        artwork: artwork,
+      };
+    } catch (error) {
+      console.error("Upload error:", error);
+      throw new Error(error.message || "Failed to upload artwork");
     }
-
-    // Award upload points
-    await this.awardPoints(10, 'Uploaded artwork');
-
-    // Add to user's artworks array
-    await firebase.firestore()
-      .collection('users')
-      .doc(this.currentUser.uid)
-      .update({
-        artworks: firebase.firestore.FieldValue.arrayUnion(docRef.id)
-      });
-
-    return {
-      success: true,
-      artworkId: docRef.id,
-      artwork: artwork
-    };
-
-  } catch (error) {
-    console.error('Upload error:', error);
-    throw new Error(error.message || 'Failed to upload artwork');
   }
-}
 
   // ============================================
   // IMAGE COMPRESSION
@@ -1140,30 +1223,34 @@ async uploadArtwork(artworkData) {
             height = height * ratio;
           }
 
-          const canvas = document.createElement('canvas');
+          const canvas = document.createElement("canvas");
           canvas.width = width;
           canvas.height = height;
-          const ctx = canvas.getContext('2d');
+          const ctx = canvas.getContext("2d");
 
           ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
+          ctx.imageSmoothingQuality = "high";
           ctx.drawImage(img, 0, 0, width, height);
 
-          canvas.toBlob((blob) => {
-            if (blob) {
-              const compressedFile = new File([blob], file.name, {
-                type: 'image/jpeg',
-                lastModified: Date.now()
-              });
-              resolve(compressedFile);
-            } else {
-              reject(new Error('Image compression failed'));
-            }
-          }, 'image/jpeg', quality);
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const compressedFile = new File([blob], file.name, {
+                  type: "image/jpeg",
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              } else {
+                reject(new Error("Image compression failed"));
+              }
+            },
+            "image/jpeg",
+            quality,
+          );
         };
-        img.onerror = () => reject(new Error('Failed to load image'));
+        img.onerror = () => reject(new Error("Failed to load image"));
       };
-      reader.onerror = () => reject(new Error('Failed to read file'));
+      reader.onerror = () => reject(new Error("Failed to read file"));
     });
   }
 
@@ -1175,20 +1262,25 @@ async uploadArtwork(artworkData) {
     if (!this.currentUser) return;
 
     try {
-      const userRef = firebase.firestore().collection('users').doc(this.currentUser.uid);
-      await userRef.set({
-        points: firebase.firestore.FieldValue.increment(amount)
-      }, { merge: true });
+      const userRef = firebase
+        .firestore()
+        .collection("users")
+        .doc(this.currentUser.uid);
+      await userRef.set(
+        {
+          points: firebase.firestore.FieldValue.increment(amount),
+        },
+        { merge: true },
+      );
 
-      await firebase.firestore().collection('pointsTransactions').add({
+      await firebase.firestore().collection("pointsTransactions").add({
         userId: this.currentUser.uid,
         amount: amount,
         reason: reason,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
-
     } catch (error) {
-      console.error('Error awarding points:', error);
+      console.error("Error awarding points:", error);
     }
   }
 
@@ -1197,30 +1289,30 @@ async uploadArtwork(artworkData) {
   // ============================================
 
   formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   }
 
-  showMessage(message, type = 'success') {
-    const toast = document.getElementById('toastNotification');
-    const toastMessage = document.getElementById('toastMessage');
+  showMessage(message, type = "success") {
+    const toast = document.getElementById("toastNotification");
+    const toastMessage = document.getElementById("toastMessage");
 
     if (toast && toastMessage) {
       toastMessage.textContent = message;
-      toast.className = 'toast-notification show';
-      if (type === 'error') {
-        toast.classList.add('error');
+      toast.className = "toast-notification show";
+      if (type === "error") {
+        toast.classList.add("error");
       } else {
-        toast.classList.remove('error');
+        toast.classList.remove("error");
       }
 
       // Auto-hide after 5 seconds
       clearTimeout(this.toastTimeout);
       this.toastTimeout = setTimeout(() => {
-        toast.classList.remove('show');
+        toast.classList.remove("show");
       }, 5000);
     } else {
       alert(message);
@@ -1229,6 +1321,6 @@ async uploadArtwork(artworkData) {
 }
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   window.uploadManager = new UploadManager();
 });

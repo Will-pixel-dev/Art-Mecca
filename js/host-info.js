@@ -5,7 +5,8 @@
 class HostInfo {
   constructor() {
     this.hostUserId = "hsCEKJBO4nMUOhHyZ8rz8zPR9Fg2";
-    this.hostAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2FhsCEKJBO4nMUOhHyZ8rz8zPR9Fg2%2F1781980217521_TrulytheRandomTVhead!.jpg?alt=media&token=b00189f1-f148-4286-a192-4004666b42fb";
+    this.hostAvatarUrl =
+      "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2FhsCEKJBO4nMUOhHyZ8rz8zPR9Fg2%2F1781980217521_TrulytheRandomTVhead!.jpg?alt=media&token=b00189f1-f148-4286-a192-4004666b42fb";
 
     this.characters = [
       {
@@ -13,28 +14,31 @@ class HostInfo {
         name: "Keres Dame",
         icon: "⚔️",
         color: "#ff6b00",
-        avatarUrl: "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2FBMMWyg3a07MjXB1bHmoGtiXcIWB3%2Fprofile-picture.jpg?alt=media&token=94c768d4-c50e-4de7-9315-cbc77486e736"
+        avatarUrl:
+          "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2FBMMWyg3a07MjXB1bHmoGtiXcIWB3%2Fprofile-picture.jpg?alt=media&token=94c768d4-c50e-4de7-9315-cbc77486e736",
       },
       {
         id: "Ar3QB139ZZbGQn0MF7TisgqKXxl1",
         name: "Ai",
         icon: "🤖",
         color: "#58ebfe",
-        avatarUrl: "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2FAr3QB139ZZbGQn0MF7TisgqKXxl1%2Fprofile-picture.jpg?alt=media&token=190df5fe-1118-483d-b8c8-00ea31fe6b2c"
+        avatarUrl:
+          "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2FAr3QB139ZZbGQn0MF7TisgqKXxl1%2Fprofile-picture.jpg?alt=media&token=190df5fe-1118-483d-b8c8-00ea31fe6b2c",
       },
       {
         id: "2SSSuHhdGSMdr1grzQ7S2Rp2p4C3",
         name: "Aliscir",
         icon: "🎭",
         color: "#ff00ea",
-        avatarUrl: "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2F2SSSuHhdGSMdr1grzQ7S2Rp2p4C3%2Fprofile-picture.jpg?alt=media&token=602259a3-bf4d-429f-80c0-7d3072c0d438"
+        avatarUrl:
+          "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2F2SSSuHhdGSMdr1grzQ7S2Rp2p4C3%2Fprofile-picture.jpg?alt=media&token=602259a3-bf4d-429f-80c0-7d3072c0d438",
       },
       {
         id: "coming-soon",
         name: "Coming Soon",
         icon: "✦",
-        color: "#4ff3a6"
-      }
+        color: "#4ff3a6",
+      },
     ];
 
     // Store avatars directly
@@ -56,31 +60,43 @@ class HostInfo {
     if (!data) return null;
 
     // 1. Check profilePicture first (highest priority)
-    if (data.profilePicture && typeof data.profilePicture === 'string' && data.profilePicture.startsWith('http')) {
+    if (
+      data.profilePicture &&
+      typeof data.profilePicture === "string" &&
+      data.profilePicture.startsWith("http")
+    ) {
       return data.profilePicture;
     }
 
     // 2. Check avatarUrl
-    if (data.avatarUrl && typeof data.avatarUrl === 'string' && data.avatarUrl.startsWith('http')) {
+    if (
+      data.avatarUrl &&
+      typeof data.avatarUrl === "string" &&
+      data.avatarUrl.startsWith("http")
+    ) {
       return data.avatarUrl;
     }
 
     // 3. Check photoURL
-    if (data.photoURL && typeof data.photoURL === 'string' && data.photoURL.startsWith('http')) {
+    if (
+      data.photoURL &&
+      typeof data.photoURL === "string" &&
+      data.photoURL.startsWith("http")
+    ) {
       return data.photoURL;
     }
 
     // 4. Check avatar (if it's a string URL)
-    if (typeof data.avatar === 'string' && data.avatar.startsWith('http')) {
+    if (typeof data.avatar === "string" && data.avatar.startsWith("http")) {
       return data.avatar;
     }
 
     // 5. If avatar is an object with a url property
-    if (data.avatar && typeof data.avatar === 'object') {
-      if (data.avatar.url && data.avatar.url.startsWith('http')) {
+    if (data.avatar && typeof data.avatar === "object") {
+      if (data.avatar.url && data.avatar.url.startsWith("http")) {
         return data.avatar.url;
       }
-      if (data.avatar.imageUrl && data.avatar.imageUrl.startsWith('http')) {
+      if (data.avatar.imageUrl && data.avatar.imageUrl.startsWith("http")) {
         return data.avatar.imageUrl;
       }
     }
@@ -130,10 +146,10 @@ class HostInfo {
         const avatarUrl = this.getAvatarUrl(data);
 
         if (avatarUrl) {
-          console.log('✅ Host avatar URL found:', avatarUrl);
+          console.log("✅ Host avatar URL found:", avatarUrl);
           avatarContainer.innerHTML = `
             <img src="${avatarUrl}" alt="Host Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"
-                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\\'host-avatar-emoji\\' style=\\'font-size:2.5rem;font-weight:700;color:white;\\'>${this.getInitials(data.fullname || '🎨')}</span><div class=\\'host-avatar-ring\\'></div>'">
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\\'host-avatar-emoji\\' style=\\'font-size:2.5rem;font-weight:700;color:white;\\'>${this.getInitials(data.fullname || "🎨")}</span><div class=\\'host-avatar-ring\\'></div>'">
             <div class="host-avatar-ring"></div>
           `;
         } else {
@@ -142,13 +158,13 @@ class HostInfo {
           if (fallbackUrl) {
             avatarContainer.innerHTML = `
               <img src="${fallbackUrl}" alt="Host Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"
-                   onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\\'host-avatar-emoji\\' style=\\'font-size:2.5rem;font-weight:700;color:white;\\'>${this.getInitials(data.fullname || '🎨')}</span><div class=\\'host-avatar-ring\\'></div>'">
+                   onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\\'host-avatar-emoji\\' style=\\'font-size:2.5rem;font-weight:700;color:white;\\'>${this.getInitials(data.fullname || "🎨")}</span><div class=\\'host-avatar-ring\\'></div>'">
               <div class="host-avatar-ring"></div>
             `;
           } else {
             // Use initials
             avatarContainer.innerHTML = `
-              <span class="host-avatar-emoji" style="font-size:2.5rem;font-weight:700;color:white;">${this.getInitials(data.fullname || '🎨')}</span>
+              <span class="host-avatar-emoji" style="font-size:2.5rem;font-weight:700;color:white;">${this.getInitials(data.fullname || "🎨")}</span>
               <div class="host-avatar-ring"></div>
             `;
           }
@@ -162,7 +178,6 @@ class HostInfo {
       }
 
       // Update bio
-
 
       console.log("✅ Host data loaded");
     } catch (error) {
@@ -213,9 +228,12 @@ class HostInfo {
 
       // Gradient
       const gradients = {
-        "BMMWyg3a07MjXB1bHmoGtiXcIWB3": "linear-gradient(135deg, #ff6b00, #ff00ea)",
-        "Ar3QB139ZZbGQn0MF7TisgqKXxl1": "linear-gradient(135deg, #58ebfe, #00d4ff)",
-        "2SSSuHhdGSMdr1grzQ7S2Rp2p4C3": "linear-gradient(135deg, #ff00ea, #ad03fc)"
+        BMMWyg3a07MjXB1bHmoGtiXcIWB3:
+          "linear-gradient(135deg, #ff6b00, #ff00ea)",
+        Ar3QB139ZZbGQn0MF7TisgqKXxl1:
+          "linear-gradient(135deg, #58ebfe, #00d4ff)",
+        "2SSSuHhdGSMdr1grzQ7S2Rp2p4C3":
+          "linear-gradient(135deg, #ff00ea, #ad03fc)",
       };
       const gradient = isComingSoon
         ? "linear-gradient(135deg, #4ff3a6, #10b981)"
@@ -246,7 +264,7 @@ class HostInfo {
         item.style.cursor = "pointer";
         item.addEventListener("click", (e) => {
           e.stopPropagation();
-          window.location.href = `/pages/community/profiles.html?user=${char.id}`;
+          window.location.href = `pages/community/profiles.html?user=${char.id}`;
         });
       }
 
@@ -255,8 +273,8 @@ class HostInfo {
   }
 
   getInitials(name) {
-    if (!name) return '🎨';
-    const parts = name.split(' ');
+    if (!name) return "🎨";
+    const parts = name.split(" ");
     if (parts.length >= 2) {
       return (parts[0][0] + parts[1][0]).toUpperCase();
     }
@@ -268,7 +286,7 @@ class HostInfo {
     if (hostAvatar) {
       hostAvatar.style.cursor = "pointer";
       hostAvatar.addEventListener("click", () => {
-        window.location.href = `/pages/community/profiles.html?user=${this.hostUserId}`;
+        window.location.href = `pages/community/profiles.html?user=${this.hostUserId}`;
       });
       hostAvatar.setAttribute("title", "Click to view host profile");
     }
@@ -277,7 +295,7 @@ class HostInfo {
     if (profileBtn) {
       profileBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        window.location.href = `/pages/community/profiles.html?user=${this.hostUserId}`;
+        window.location.href = `pages/community/profiles.html?user=${this.hostUserId}`;
       });
     }
   }

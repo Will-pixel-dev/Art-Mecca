@@ -10,7 +10,7 @@ class PageRedirect {
 
   async init() {
     // Wait for Firebase
-    if (typeof firebase === 'undefined') {
+    if (typeof firebase === "undefined") {
       setTimeout(() => this.init(), 500);
       return;
     }
@@ -19,19 +19,19 @@ class PageRedirect {
       const currentPath = window.location.pathname;
 
       // If user is logged in and on landing page → redirect to home
-      if (user && (currentPath === '/' || currentPath === '/index.html')) {
-        window.location.href = '/home.html';
+      if (user && (currentPath === "/" || currentPath === "/index.html")) {
+        window.location.href = "/home.html";
         return;
       }
 
       // If user is NOT logged in and on home page → redirect to landing
-      if (!user && (currentPath === '/home.html')) {
-        window.location.href = '/';
+      if (!user && currentPath === "/home.html") {
+        window.location.href = "/";
         return;
       }
 
       // If user is on home page but not logged in → show login prompt
-      if (!user && currentPath === '/home.html') {
+      if (!user && currentPath === "/home.html") {
         // Optionally show a login overlay
         this.showLoginPrompt();
       }
@@ -40,8 +40,8 @@ class PageRedirect {
 
   showLoginPrompt() {
     // Show a nice overlay asking to login
-    const overlay = document.createElement('div');
-    overlay.id = 'loginPrompt';
+    const overlay = document.createElement("div");
+    overlay.id = "loginPrompt";
     overlay.innerHTML = `
       <div style="
         position: fixed;
@@ -70,7 +70,7 @@ class PageRedirect {
             This page requires you to be logged in.
           </p>
           <div style="display: flex; gap: 12px; justify-content: center;">
-            <a href="/pages/auth/login.html" class="btn btn-primary">Log In</a>
+            <a href="pages/auth/login.html" class="btn btn-primary">Log In</a>
             <a href="/" class="btn btn-secondary">Go to Home</a>
           </div>
         </div>
@@ -81,10 +81,10 @@ class PageRedirect {
 }
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // Only run on index.html or home.html
   const path = window.location.pathname;
-  if (path === '/' || path === '/index.html' || path === '/home.html') {
+  if (path === "/" || path === "/index.html" || path === "/home.html") {
     window.pageRedirect = new PageRedirect();
   }
 });

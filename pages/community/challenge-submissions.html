@@ -1,4 +1,4 @@
-<!-- /pages/community/challenge-submissions.html -->
+<!-- pages/community/challenge-submissions.html -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -264,11 +264,11 @@
 
     <!-- Scripts -->
     <script src="/config/firebase-config.js"></script>
-    <script src="/js/auth/auth-manager.js"></script>
-    <script src="/js/auth/auth-check.js"></script>
-    <script src="/js/navbar-active.js"></script>
-    <script src="/js/community/challenge-voting.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="js/auth/auth-manager.js"></script>
+    <script src="js/auth/auth-check.js"></script>
+    <script src="js/navbar-active.js"></script>
+    <script src="js/community/challenge-voting.js"></script>
+    <script src="js/main.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", async () => {
@@ -316,7 +316,7 @@
                         <i class="fas fa-image"></i>
                         <p>No submissions yet for this challenge.</p>
                         <p style="font-size: 0.85rem;">Be the first to submit your artwork!</p>
-                        <a href="/pages/community/upload.html?challenge=${challengeId}" class="btn-primary" style="display: inline-block; padding: 0.7rem 2rem; margin-top: 1rem; border-radius: 50px; text-decoration: none; background: linear-gradient(135deg, #8a19e1, #b06af0); color: white;">
+                        <a href="pages/community/upload.html?challenge=${challengeId}" class="btn-primary" style="display: inline-block; padding: 0.7rem 2rem; margin-top: 1rem; border-radius: 50px; text-decoration: none; background: linear-gradient(135deg, #8a19e1, #b06af0); color: white;">
                             <i class="fas fa-upload"></i> Submit Artwork
                         </a>
                     </div>
@@ -348,7 +348,7 @@
                             <button class="vote-btn vote-down" data-id="${sub.id}" data-type="down">
                                 <i class="fas fa-chevron-down"></i>
                             </button>
-                            <a href="/pages/community/artwork-detail.html?id=${sub.artworkId}" style="margin-left: auto; color: var(--text-muted); font-size: 0.8rem;">
+                            <a href="pages/community/artwork-detail.html?id=${sub.artworkId}" style="margin-left: auto; color: var(--text-muted); font-size: 0.8rem;">
                                 <i class="fas fa-external-link-alt"></i> View
                             </a>
                         </div>

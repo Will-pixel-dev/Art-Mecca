@@ -36,16 +36,16 @@ class ProfileSections {
   async init() {
     // Get user ID from URL
     const urlParams = new URLSearchParams(window.location.search);
-    this.userId = urlParams.get('user');
+    this.userId = urlParams.get("user");
 
     if (!this.userId) {
-      console.error('No user ID in URL');
+      console.error("No user ID in URL");
       return;
     }
 
     // Wait for Firebase auth
-    if (typeof firebase === 'undefined' || typeof db === 'undefined') {
-      console.log('Waiting for Firebase...');
+    if (typeof firebase === "undefined" || typeof db === "undefined") {
+      console.log("Waiting for Firebase...");
       setTimeout(() => this.init(), 500);
       return;
     }
@@ -53,10 +53,11 @@ class ProfileSections {
     // Wait for auth and profile hero to load
     firebase.auth().onAuthStateChanged(async (user) => {
       this.currentUser = user;
-      this.isOwnProfile = this.currentUser && this.currentUser.uid === this.userId;
+      this.isOwnProfile =
+        this.currentUser && this.currentUser.uid === this.userId;
 
-      console.log('ProfileSections initialized for:', this.userId);
-      console.log('Is own profile:', this.isOwnProfile);
+      console.log("ProfileSections initialized for:", this.userId);
+      console.log("Is own profile:", this.isOwnProfile);
 
       // Wait for user data to be loaded by profile-enhanced
       await this.waitForUserData();
@@ -71,18 +72,18 @@ class ProfileSections {
       this.setupPrivacyToggles();
 
       // Load challenges and badges
-    await this.loadJoinedChallenges();
-    await this.loadBadges();
+      await this.loadJoinedChallenges();
+      await this.loadBadges();
 
       // Show sections wrapper
-      const wrapper = document.getElementById('profileSectionsWrapper');
+      const wrapper = document.getElementById("profileSectionsWrapper");
       if (wrapper) {
-        wrapper.style.display = 'block';
-        wrapper.style.opacity = '1';
+        wrapper.style.display = "block";
+        wrapper.style.opacity = "1";
       }
 
       this.initialized = true;
-      console.log('ProfileSections fully initialized');
+      console.log("ProfileSections fully initialized");
     });
   }
 
@@ -122,12 +123,10 @@ class ProfileSections {
         this.loadCommissionData(),
         this.loadBlogPosts(true),
         this.loadBlogCollections(),
-
-
       ]);
-      console.log('All profile data loaded');
+      console.log("All profile data loaded");
     } catch (error) {
-      console.error('Error loading profile data:', error);
+      console.error("Error loading profile data:", error);
     }
   }
 
@@ -140,52 +139,54 @@ class ProfileSections {
     const aboutData = this.userData?.about || {};
 
     const fields = {
-      'aboutBirthday': aboutData.birthday || '',
-      'aboutStarSign': aboutData.starSign || '',
-      'aboutMbti': aboutData.mbti || '',
-      'aboutBook': aboutData.book || '',
-      'aboutMovie': aboutData.movie || '',
-      'aboutShow': aboutData.show || '',
-      'aboutColour': aboutData.colour || '',
-      'aboutFood': aboutData.food || '',
-      'aboutHobby': aboutData.hobby || '',
-      'aboutSong': aboutData.song || '',
-      'aboutQuote': aboutData.quote || '',
-      'aboutDislikes': aboutData.dislikes || '',
+      aboutBirthday: aboutData.birthday || "",
+      aboutStarSign: aboutData.starSign || "",
+      aboutMbti: aboutData.mbti || "",
+      aboutBook: aboutData.book || "",
+      aboutMovie: aboutData.movie || "",
+      aboutShow: aboutData.show || "",
+      aboutColour: aboutData.colour || "",
+      aboutFood: aboutData.food || "",
+      aboutHobby: aboutData.hobby || "",
+      aboutSong: aboutData.song || "",
+      aboutQuote: aboutData.quote || "",
+      aboutDislikes: aboutData.dislikes || "",
     };
 
-    Object.keys(fields).forEach(id => {
+    Object.keys(fields).forEach((id) => {
       const el = document.getElementById(id);
-      if (el) el.value = fields[id] || '';
+      if (el) el.value = fields[id] || "";
     });
 
     // Calculate age and add listener to update in real-time
-    const ageEl = document.getElementById('aboutAge');
-    const birthdayInput = document.getElementById('aboutBirthday');
+    const ageEl = document.getElementById("aboutAge");
+    const birthdayInput = document.getElementById("aboutBirthday");
     if (aboutData.birthday) {
       const age = this.calculateAge(aboutData.birthday);
-      if (ageEl) ageEl.textContent = age !== null ? `${age} years` : '—';
+      if (ageEl) ageEl.textContent = age !== null ? `${age} years` : "—";
     } else {
-      if (ageEl) ageEl.textContent = '—';
+      if (ageEl) ageEl.textContent = "—";
     }
     if (birthdayInput) {
-      birthdayInput.addEventListener('change', () => {
+      birthdayInput.addEventListener("change", () => {
         if (birthdayInput.value) {
           const age = this.calculateAge(birthdayInput.value);
-          if (ageEl) ageEl.textContent = age !== null ? `${age} years` : '—';
+          if (ageEl) ageEl.textContent = age !== null ? `${age} years` : "—";
         } else {
-          if (ageEl) ageEl.textContent = '—';
+          if (ageEl) ageEl.textContent = "—";
         }
       });
     }
 
     // Disable inputs if not own profile
     if (!this.isOwnProfile) {
-      document.querySelectorAll('#tab-about input, #tab-about textarea').forEach(el => {
-        if (el) el.disabled = true;
-      });
-      const saveBtn = document.getElementById('saveAboutBtn');
-      if (saveBtn) saveBtn.style.display = 'none';
+      document
+        .querySelectorAll("#tab-about input, #tab-about textarea")
+        .forEach((el) => {
+          if (el) el.disabled = true;
+        });
+      const saveBtn = document.getElementById("saveAboutBtn");
+      if (saveBtn) saveBtn.style.display = "none";
     }
   }
 
@@ -208,36 +209,36 @@ class ProfileSections {
 
   async saveAboutData() {
     const aboutData = {
-      birthday: document.getElementById('aboutBirthday')?.value || null,
-      starSign: document.getElementById('aboutStarSign')?.value?.trim() || '',
-      mbti: document.getElementById('aboutMbti')?.value?.trim() || '',
-      book: document.getElementById('aboutBook')?.value?.trim() || '',
-      movie: document.getElementById('aboutMovie')?.value?.trim() || '',
-      show: document.getElementById('aboutShow')?.value?.trim() || '',
-      colour: document.getElementById('aboutColour')?.value?.trim() || '',
-      food: document.getElementById('aboutFood')?.value?.trim() || '',
-      hobby: document.getElementById('aboutHobby')?.value?.trim() || '',
-      song: document.getElementById('aboutSong')?.value?.trim() || '',
-      quote: document.getElementById('aboutQuote')?.value?.trim() || '',
-      dislikes: document.getElementById('aboutDislikes')?.value?.trim() || '',
+      birthday: document.getElementById("aboutBirthday")?.value || null,
+      starSign: document.getElementById("aboutStarSign")?.value?.trim() || "",
+      mbti: document.getElementById("aboutMbti")?.value?.trim() || "",
+      book: document.getElementById("aboutBook")?.value?.trim() || "",
+      movie: document.getElementById("aboutMovie")?.value?.trim() || "",
+      show: document.getElementById("aboutShow")?.value?.trim() || "",
+      colour: document.getElementById("aboutColour")?.value?.trim() || "",
+      food: document.getElementById("aboutFood")?.value?.trim() || "",
+      hobby: document.getElementById("aboutHobby")?.value?.trim() || "",
+      song: document.getElementById("aboutSong")?.value?.trim() || "",
+      quote: document.getElementById("aboutQuote")?.value?.trim() || "",
+      dislikes: document.getElementById("aboutDislikes")?.value?.trim() || "",
     };
 
     try {
-      await db.collection('users').doc(this.userId).update({
-        about: aboutData
+      await db.collection("users").doc(this.userId).update({
+        about: aboutData,
       });
 
       if (this.userData) this.userData.about = aboutData;
-      this.showToast('About info saved successfully! ✅');
+      this.showToast("About info saved successfully! ✅");
 
       if (aboutData.birthday) {
         const age = this.calculateAge(aboutData.birthday);
-        const ageEl = document.getElementById('aboutAge');
-        if (ageEl) ageEl.textContent = age !== null ? `${age} years` : '—';
+        const ageEl = document.getElementById("aboutAge");
+        if (ageEl) ageEl.textContent = age !== null ? `${age} years` : "—";
       }
     } catch (error) {
-      console.error('Error saving about data:', error);
-      this.showToast('Error saving about info', 'error');
+      console.error("Error saving about data:", error);
+      this.showToast("Error saving about info", "error");
     }
   }
 
@@ -249,25 +250,26 @@ class ProfileSections {
     if (!this.userId) return;
 
     try {
-      const snapshot = await db.collection('users')
+      const snapshot = await db
+        .collection("users")
         .doc(this.userId)
-        .collection('collections')
-        .orderBy('createdAt', 'desc')
+        .collection("collections")
+        .orderBy("createdAt", "desc")
         .get();
 
-      this.collections = snapshot.docs.map(doc => ({
+      this.collections = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
 
       this.renderCollections();
     } catch (error) {
-      console.error('Error loading collections:', error);
+      console.error("Error loading collections:", error);
     }
   }
 
   renderCollections() {
-    const grid = document.getElementById('collectionsGrid');
+    const grid = document.getElementById("collectionsGrid");
     if (!grid) return;
 
     if (this.collections.length === 0) {
@@ -281,35 +283,43 @@ class ProfileSections {
       return;
     }
 
-    grid.innerHTML = this.collections.map(col => `
+    grid.innerHTML = this.collections
+      .map(
+        (col) => `
       <div class="collection-card" data-id="${col.id}">
         <div class="collection-thumbnail">
-          ${col.thumbnail ? `<img src="${col.thumbnail}" alt="${col.name}">` : '📁'}
+          ${col.thumbnail ? `<img src="${col.thumbnail}" alt="${col.name}">` : "📁"}
         </div>
         <div class="collection-name">${this.escapeHtml(col.name)}</div>
         <div class="collection-count">${col.artworkIds?.length || 0} artworks</div>
-        ${this.isOwnProfile ? `
+        ${
+          this.isOwnProfile
+            ? `
           <div class="collection-actions">
             <button class="collection-delete-btn" data-id="${col.id}" title="Delete Collection">
               <i class="fas fa-trash"></i>
             </button>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
 
     // Collection click
-    grid.querySelectorAll('.collection-card').forEach(card => {
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.collection-actions')) return;
+    grid.querySelectorAll(".collection-card").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        if (e.target.closest(".collection-actions")) return;
         const id = card.dataset.id;
         this.viewCollection(id);
       });
     });
 
     // Delete collection
-    grid.querySelectorAll('.collection-delete-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    grid.querySelectorAll(".collection-delete-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
         this.deleteCollection(id);
@@ -318,26 +328,27 @@ class ProfileSections {
   }
 
   async deleteCollection(collectionId) {
-    if (!confirm('Delete this collection?')) return;
+    if (!confirm("Delete this collection?")) return;
 
     try {
-      await db.collection('users')
+      await db
+        .collection("users")
         .doc(this.userId)
-        .collection('collections')
+        .collection("collections")
         .doc(collectionId)
         .delete();
 
-      this.collections = this.collections.filter(c => c.id !== collectionId);
+      this.collections = this.collections.filter((c) => c.id !== collectionId);
       this.renderCollections();
-      this.showToast('Collection deleted');
+      this.showToast("Collection deleted");
     } catch (error) {
-      console.error('Error deleting collection:', error);
-      this.showToast('Error deleting collection', 'error');
+      console.error("Error deleting collection:", error);
+      this.showToast("Error deleting collection", "error");
     }
   }
 
   viewCollection(collectionId) {
-    window.location.href = `/pages/community/collection.html?id=${collectionId}&user=${this.userId}`;
+    window.location.href = `pages/community/collection.html?id=${collectionId}&user=${this.userId}`;
   }
 
   // ============================================
@@ -349,21 +360,22 @@ class ProfileSections {
       this.uploads = [];
       this.uploadsPage = 1;
       this.hasMoreUploads = true;
-      const grid = document.getElementById('uploadsMasonry');
-      if (grid) grid.innerHTML = '';
+      const grid = document.getElementById("uploadsMasonry");
+      if (grid) grid.innerHTML = "";
     }
 
     if (!this.hasMoreUploads || this.loadingMore) return;
 
     this.loadingMore = true;
-    const loadingEl = document.getElementById('uploadsLoading');
-    if (loadingEl) loadingEl.style.display = 'block';
+    const loadingEl = document.getElementById("uploadsLoading");
+    if (loadingEl) loadingEl.style.display = "block";
 
     try {
-      let query = db.collection('artworks')
-        .where('artistId', '==', this.userId)
-        .where('status', '==', 'published')
-        .orderBy('createdAt', 'desc')
+      let query = db
+        .collection("artworks")
+        .where("artistId", "==", this.userId)
+        .where("status", "==", "published")
+        .orderBy("createdAt", "desc")
         .limit(this.uploadsLimit);
 
       if (this.uploads.length > 0) {
@@ -378,9 +390,9 @@ class ProfileSections {
       if (snapshot.empty) {
         this.hasMoreUploads = false;
       } else {
-        const newArtworks = snapshot.docs.map(doc => ({
+        const newArtworks = snapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
         this.uploads = [...this.uploads, ...newArtworks];
         this.uploadsPage++;
@@ -388,15 +400,15 @@ class ProfileSections {
 
       this.renderUploads();
     } catch (error) {
-      console.error('Error loading uploads:', error);
+      console.error("Error loading uploads:", error);
     } finally {
       this.loadingMore = false;
-      if (loadingEl) loadingEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = "none";
     }
   }
 
   renderUploads() {
-    const grid = document.getElementById('uploadsMasonry');
+    const grid = document.getElementById("uploadsMasonry");
     if (!grid) return;
 
     if (this.uploads.length === 0) {
@@ -404,20 +416,22 @@ class ProfileSections {
         <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: rgba(255,255,255,0.3);">
           <i class="fas fa-upload" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
           <p>No artworks uploaded yet</p>
-          ${this.isOwnProfile ? `<button onclick="window.location.href='/pages/community/upload.html'" style="margin-top: 1rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #fe67ea, #63dbee); border: none; border-radius: 30px; color: white; font-weight: 600; cursor: pointer;">Upload Your First Artwork</button>` : ''}
+          ${this.isOwnProfile ? `<button onclick="window.location.href='pages/community/upload.html'" style="margin-top: 1rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #fe67ea, #63dbee); border: none; border-radius: 30px; color: white; font-weight: 600; cursor: pointer;">Upload Your First Artwork</button>` : ""}
         </div>
       `;
       return;
     }
 
-    const html = this.uploads.map(art => this.createMasonryItem(art)).join('');
+    const html = this.uploads
+      .map((art) => this.createMasonryItem(art))
+      .join("");
     grid.innerHTML = html;
   }
 
   createMasonryItem(art) {
-    const isNSFW = art.isNSFW ? '🔞 ' : '';
+    const isNSFW = art.isNSFW ? "🔞 " : "";
     return `
-      <div class="masonry-item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
+      <div class="masonry-item" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
         <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy">
         <div class="item-overlay">
           <div class="item-title">${isNSFW}${this.escapeHtml(art.title)}</div>
@@ -436,20 +450,21 @@ class ProfileSections {
       this.likedArtworks = [];
       this.likedPage = 1;
       this.hasMoreLiked = true;
-      const grid = document.getElementById('likedMasonry');
-      if (grid) grid.innerHTML = '';
+      const grid = document.getElementById("likedMasonry");
+      if (grid) grid.innerHTML = "";
     }
 
     if (!this.hasMoreLiked || this.loadingMore) return;
 
     this.loadingMore = true;
-    const loadingEl = document.getElementById('likedLoading');
-    if (loadingEl) loadingEl.style.display = 'block';
+    const loadingEl = document.getElementById("likedLoading");
+    if (loadingEl) loadingEl.style.display = "block";
 
     try {
-      let likesQuery = db.collection('likes')
-        .where('userId', '==', this.userId)
-        .orderBy('createdAt', 'desc')
+      let likesQuery = db
+        .collection("likes")
+        .where("userId", "==", this.userId)
+        .orderBy("createdAt", "desc")
         .limit(this.likedLimit);
 
       if (this.likedArtworks.length > 0) {
@@ -464,30 +479,33 @@ class ProfileSections {
       if (likesSnapshot.empty) {
         this.hasMoreLiked = false;
       } else {
-        const likeData = likesSnapshot.docs.map(doc => ({
+        const likeData = likesSnapshot.docs.map((doc) => ({
           likeId: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
 
         const artworkPromises = likeData.map(async (like) => {
           if (!like.artworkId) return null;
           try {
-            const artDoc = await db.collection('artworks').doc(like.artworkId).get();
+            const artDoc = await db
+              .collection("artworks")
+              .doc(like.artworkId)
+              .get();
             if (artDoc.exists) {
               return {
                 id: artDoc.id,
                 ...artDoc.data(),
-                likedAt: like.createdAt
+                likedAt: like.createdAt,
               };
             }
           } catch (e) {
-            console.warn('Artwork not found:', like.artworkId);
+            console.warn("Artwork not found:", like.artworkId);
           }
           return null;
         });
 
         const artworks = await Promise.all(artworkPromises);
-        const validArtworks = artworks.filter(a => a !== null);
+        const validArtworks = artworks.filter((a) => a !== null);
 
         this.likedArtworks = [...this.likedArtworks, ...validArtworks];
         this.likedPage++;
@@ -495,15 +513,15 @@ class ProfileSections {
 
       this.renderLikedArtworks();
     } catch (error) {
-      console.error('Error loading liked artworks:', error);
+      console.error("Error loading liked artworks:", error);
     } finally {
       this.loadingMore = false;
-      if (loadingEl) loadingEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = "none";
     }
   }
 
   renderLikedArtworks() {
-    const grid = document.getElementById('likedMasonry');
+    const grid = document.getElementById("likedMasonry");
     if (!grid) return;
 
     if (this.likedArtworks.length === 0) {
@@ -516,7 +534,9 @@ class ProfileSections {
       return;
     }
 
-    grid.innerHTML = this.likedArtworks.map(art => this.createMasonryItem(art)).join('');
+    grid.innerHTML = this.likedArtworks
+      .map((art) => this.createMasonryItem(art))
+      .join("");
   }
 
   // ============================================
@@ -528,21 +548,22 @@ class ProfileSections {
       this.savedArtworks = [];
       this.savedPage = 1;
       this.hasMoreSaved = true;
-      const grid = document.getElementById('savedMasonry');
-      if (grid) grid.innerHTML = '';
+      const grid = document.getElementById("savedMasonry");
+      if (grid) grid.innerHTML = "";
     }
 
     if (!this.hasMoreSaved || this.loadingMore) return;
 
     this.loadingMore = true;
-    const loadingEl = document.getElementById('savedLoading');
-    if (loadingEl) loadingEl.style.display = 'block';
+    const loadingEl = document.getElementById("savedLoading");
+    if (loadingEl) loadingEl.style.display = "block";
 
     try {
-      let savesQuery = db.collection('users')
+      let savesQuery = db
+        .collection("users")
         .doc(this.userId)
-        .collection('savedArtworks')
-        .orderBy('savedAt', 'desc')
+        .collection("savedArtworks")
+        .orderBy("savedAt", "desc")
         .limit(this.savedLimit);
 
       if (this.savedArtworks.length > 0) {
@@ -557,30 +578,33 @@ class ProfileSections {
       if (savesSnapshot.empty) {
         this.hasMoreSaved = false;
       } else {
-        const saveData = savesSnapshot.docs.map(doc => ({
+        const saveData = savesSnapshot.docs.map((doc) => ({
           saveId: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
 
         const artworkPromises = saveData.map(async (save) => {
           if (!save.artworkId) return null;
           try {
-            const artDoc = await db.collection('artworks').doc(save.artworkId).get();
+            const artDoc = await db
+              .collection("artworks")
+              .doc(save.artworkId)
+              .get();
             if (artDoc.exists) {
               return {
                 id: artDoc.id,
                 ...artDoc.data(),
-                savedAt: save.savedAt
+                savedAt: save.savedAt,
               };
             }
           } catch (e) {
-            console.warn('Artwork not found:', save.artworkId);
+            console.warn("Artwork not found:", save.artworkId);
           }
           return null;
         });
 
         const artworks = await Promise.all(artworkPromises);
-        const validArtworks = artworks.filter(a => a !== null);
+        const validArtworks = artworks.filter((a) => a !== null);
 
         this.savedArtworks = [...this.savedArtworks, ...validArtworks];
         this.savedPage++;
@@ -588,15 +612,15 @@ class ProfileSections {
 
       this.renderSavedArtworks();
     } catch (error) {
-      console.error('Error loading saved artworks:', error);
+      console.error("Error loading saved artworks:", error);
     } finally {
       this.loadingMore = false;
-      if (loadingEl) loadingEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = "none";
     }
   }
 
   renderSavedArtworks() {
-    const grid = document.getElementById('savedMasonry');
+    const grid = document.getElementById("savedMasonry");
     if (!grid) return;
 
     if (this.savedArtworks.length === 0) {
@@ -609,7 +633,9 @@ class ProfileSections {
       return;
     }
 
-    grid.innerHTML = this.savedArtworks.map(art => this.createMasonryItem(art)).join('');
+    grid.innerHTML = this.savedArtworks
+      .map((art) => this.createMasonryItem(art))
+      .join("");
   }
 
   // ============================================
@@ -621,25 +647,27 @@ class ProfileSections {
       this.savedTutorials = [];
       this.tutorialsPage = 1;
       this.hasMoreTutorials = true;
-      const grid = document.getElementById('savedTutorialsGrid');
-      if (grid) grid.innerHTML = '';
+      const grid = document.getElementById("savedTutorialsGrid");
+      if (grid) grid.innerHTML = "";
     }
 
     if (!this.hasMoreTutorials || this.loadingMore) return;
 
     this.loadingMore = true;
-    const loadingEl = document.getElementById('tutorialsLoading');
-    if (loadingEl) loadingEl.style.display = 'block';
+    const loadingEl = document.getElementById("tutorialsLoading");
+    if (loadingEl) loadingEl.style.display = "block";
 
     try {
-      let query = db.collection('users')
+      let query = db
+        .collection("users")
         .doc(this.userId)
-        .collection('savedTutorials')
-        .orderBy('savedAt', 'desc')
+        .collection("savedTutorials")
+        .orderBy("savedAt", "desc")
         .limit(this.tutorialsLimit);
 
       if (this.savedTutorials.length > 0) {
-        const lastTutorial = this.savedTutorials[this.savedTutorials.length - 1];
+        const lastTutorial =
+          this.savedTutorials[this.savedTutorials.length - 1];
         if (lastTutorial.savedAt) {
           query = query.startAfter(lastTutorial.savedAt);
         }
@@ -650,9 +678,9 @@ class ProfileSections {
       if (snapshot.empty) {
         this.hasMoreTutorials = false;
       } else {
-        const tutorials = snapshot.docs.map(doc => ({
+        const tutorials = snapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
         this.savedTutorials = [...this.savedTutorials, ...tutorials];
         this.tutorialsPage++;
@@ -660,15 +688,15 @@ class ProfileSections {
 
       this.renderSavedTutorials();
     } catch (error) {
-      console.error('Error loading saved tutorials:', error);
+      console.error("Error loading saved tutorials:", error);
     } finally {
       this.loadingMore = false;
-      if (loadingEl) loadingEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = "none";
     }
   }
 
   renderSavedTutorials() {
-    const grid = document.getElementById('savedTutorialsGrid');
+    const grid = document.getElementById("savedTutorialsGrid");
     if (!grid) return;
 
     if (this.savedTutorials.length === 0) {
@@ -681,23 +709,31 @@ class ProfileSections {
       return;
     }
 
-    grid.innerHTML = this.savedTutorials.map(tut => `
-      <div class="tutorial-item" onclick="window.location.href='${tut.url || '#'}'">
-        <div class="tutorial-icon">${tut.icon || '📚'}</div>
+    grid.innerHTML = this.savedTutorials
+      .map(
+        (tut) => `
+      <div class="tutorial-item" onclick="window.location.href='${tut.url || "#"}'">
+        <div class="tutorial-icon">${tut.icon || "📚"}</div>
         <div class="tutorial-info">
           <h4>${this.escapeHtml(tut.title)}</h4>
-          <p>${this.escapeHtml(tut.source || 'Art Mecca')}</p>
+          <p>${this.escapeHtml(tut.source || "Art Mecca")}</p>
         </div>
-        ${this.isOwnProfile ? `
+        ${
+          this.isOwnProfile
+            ? `
           <button class="tutorial-remove" data-id="${tut.id}" title="Remove">
             <i class="fas fa-times"></i>
           </button>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
 
-    grid.querySelectorAll('.tutorial-remove').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    grid.querySelectorAll(".tutorial-remove").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
         this.removeSavedTutorial(id);
@@ -707,30 +743,33 @@ class ProfileSections {
 
   async removeSavedTutorial(tutorialId) {
     try {
-      await db.collection('users')
+      await db
+        .collection("users")
         .doc(this.userId)
-        .collection('savedTutorials')
+        .collection("savedTutorials")
         .doc(tutorialId)
         .delete();
 
-      this.savedTutorials = this.savedTutorials.filter(t => t.id !== tutorialId);
+      this.savedTutorials = this.savedTutorials.filter(
+        (t) => t.id !== tutorialId,
+      );
       this.renderSavedTutorials();
-      this.showToast('Tutorial removed');
+      this.showToast("Tutorial removed");
     } catch (error) {
-      console.error('Error removing tutorial:', error);
-      this.showToast('Error removing tutorial', 'error');
+      console.error("Error removing tutorial:", error);
+      this.showToast("Error removing tutorial", "error");
     }
   }
   // ============================================
-// LOAD JOINED CHALLENGES - FIXED
-// ============================================
+  // LOAD JOINED CHALLENGES - FIXED
+  // ============================================
 
-// ============================================
-// LOAD JOINED CHALLENGES - WITH REAL DATA
-// ============================================
+  // ============================================
+  // LOAD JOINED CHALLENGES - WITH REAL DATA
+  // ============================================
 
-async loadJoinedChallenges() {
-    const container = document.getElementById('joinedChallengesContainer');
+  async loadJoinedChallenges() {
+    const container = document.getElementById("joinedChallengesContainer");
     if (!container) return;
 
     // Show loading state
@@ -742,156 +781,178 @@ async loadJoinedChallenges() {
     `;
 
     try {
-        // Get all user challenges from Firestore
-        const snapshot = await db.collection('userChallenges')
-            .where('userId', '==', this.userId)
-            .orderBy('joinedAt', 'desc')
-            .get();
+      // Get all user challenges from Firestore
+      const snapshot = await db
+        .collection("userChallenges")
+        .where("userId", "==", this.userId)
+        .orderBy("joinedAt", "desc")
+        .get();
 
-        if (snapshot.empty) {
-            container.innerHTML = `
+      if (snapshot.empty) {
+        container.innerHTML = `
                 <div class="empty-challenges">
                     <i class="fas fa-trophy" style="opacity: 0.3;"></i>
                     <p>No challenges joined yet</p>
-                    ${this.isOwnProfile ? `<a href="/pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ''}
+                    ${this.isOwnProfile ? `<a href="pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
                 </div>
             `;
-            return;
+        return;
+      }
+
+      const joinedChallenges = [];
+      const challengeIds = [];
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const challengeId = data.challengeId;
+        if (challengeId) {
+          challengeIds.push(challengeId);
+          joinedChallenges.push({
+            id: doc.id,
+            challengeId: challengeId,
+            challengeType: data.challengeType || "daily",
+            joinedAt: data.joinedAt?.toDate?.() || new Date(data.joinedAt),
+            status: data.status || "active",
+          });
         }
+      });
 
-        const joinedChallenges = [];
-        const challengeIds = [];
-
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const challengeId = data.challengeId;
-            if (challengeId) {
-                challengeIds.push(challengeId);
-                joinedChallenges.push({
-                    id: doc.id,
-                    challengeId: challengeId,
-                    challengeType: data.challengeType || 'daily',
-                    joinedAt: data.joinedAt?.toDate?.() || new Date(data.joinedAt),
-                    status: data.status || 'active'
-                });
-            }
-        });
-
-        // Get challenge details from Firestore
-        const challengeDetails = {};
-        if (challengeIds.length > 0) {
-            for (const challengeId of challengeIds) {
-                try {
-                    const doc = await db.collection('challenges').doc(challengeId).get();
-                    if (doc.exists) {
-                        const data = doc.data();
-                        challengeDetails[challengeId] = {
-                            title: data.title || challengeId,
-                            type: data.type || 'daily',
-                            icon: data.icon || '🎯',
-                            color: data.color || '#8a19e1',
-                            isIntuit: data.isIntuit || false,
-                            status: data.status || 'active',
-                            endDate: data.endDate?.toDate?.() || new Date(data.endDate),
-                            startDate: data.startDate?.toDate?.() || new Date(data.startDate),
-                            prize: data.prize || 'Points + Badge',
-                            prizeValue: data.prizeValue || 0,
-                            badge: data.badge || '',
-                            participants: data.participants || 0,
-                            submissions: data.submissions || 0
-                        };
-                    } else {
-                        // Fallback only if challenge truly doesn't exist in Firestore
-                        challengeDetails[challengeId] = {
-                            title: challengeId,
-                            type: challengeId.split('-')[0] || 'daily',
-                            icon: '🎯',
-                            color: '#8a19e1',
-                            isIntuit: false,
-                            status: 'active',
-                            endDate: new Date(Date.now() + 86400000), // 1 day from now
-                            startDate: new Date(),
-                            prize: 'Points + Badge',
-                            prizeValue: 0,
-                            badge: '',
-                            participants: 0,
-                            submissions: 0
-                        };
-                    }
-                } catch (e) {
-                    console.warn('Error fetching challenge:', challengeId, e);
-                }
-            }
-        }
-
-        // Render challenges
-        if (joinedChallenges.length === 0) {
-            container.innerHTML = `
-                <div class="empty-challenges">
-                    <i class="fas fa-trophy" style="opacity: 0.3;"></i>
-                    <p>No challenges joined yet</p>
-                    ${this.isOwnProfile ? `<a href="/pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ''}
-                </div>
-            `;
-            return;
-        }
-
-        container.innerHTML = joinedChallenges.map(jc => {
-            const details = challengeDetails[jc.challengeId];
-
-            // If no details found, skip this challenge
-            if (!details) {
-                console.warn('No details found for challenge:', jc.challengeId);
-                return '';
-            }
-
-            const statusClass = jc.status === 'active' ? 'active' : 'completed';
-            const statusLabel = jc.status === 'active' ? '🟢 Active' : '✅ Completed';
-            const intuitBadge = details.isIntuit ? ' ⚡' : '';
-            const dateStr = jc.joinedAt ? new Date(jc.joinedAt).toLocaleDateString() : '';
-
-            // Calculate time remaining - REAL data from Firestore
-            const now = new Date();
-            const endDate = details.endDate instanceof Date ? details.endDate : new Date(details.endDate);
-            const timeRemaining = endDate - now;
-
-            let timeLeftText = '';
-            let timeLeftClass = '';
-
-            if (jc.status === 'active') {
-                if (timeRemaining > 0) {
-                    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-
-                    if (days > 0) {
-                        timeLeftText = `${days}d ${hours}h left`;
-                    } else if (hours > 0) {
-                        timeLeftText = `${hours}h ${minutes}m left`;
-                    } else {
-                        timeLeftText = `${minutes}m left`;
-                    }
-
-                    timeLeftClass = days < 2 ? 'time-warning' : 'time-normal';
-                } else {
-                    // Challenge has ended but status hasn't updated yet
-                    timeLeftText = '⏰ Ended';
-                    timeLeftClass = 'time-expired';
-                }
+      // Get challenge details from Firestore
+      const challengeDetails = {};
+      if (challengeIds.length > 0) {
+        for (const challengeId of challengeIds) {
+          try {
+            const doc = await db
+              .collection("challenges")
+              .doc(challengeId)
+              .get();
+            if (doc.exists) {
+              const data = doc.data();
+              challengeDetails[challengeId] = {
+                title: data.title || challengeId,
+                type: data.type || "daily",
+                icon: data.icon || "🎯",
+                color: data.color || "#8a19e1",
+                isIntuit: data.isIntuit || false,
+                status: data.status || "active",
+                endDate: data.endDate?.toDate?.() || new Date(data.endDate),
+                startDate:
+                  data.startDate?.toDate?.() || new Date(data.startDate),
+                prize: data.prize || "Points + Badge",
+                prizeValue: data.prizeValue || 0,
+                badge: data.badge || "",
+                participants: data.participants || 0,
+                submissions: data.submissions || 0,
+              };
             } else {
-                timeLeftText = '✅ Completed';
-                timeLeftClass = 'time-completed';
+              // Fallback only if challenge truly doesn't exist in Firestore
+              challengeDetails[challengeId] = {
+                title: challengeId,
+                type: challengeId.split("-")[0] || "daily",
+                icon: "🎯",
+                color: "#8a19e1",
+                isIntuit: false,
+                status: "active",
+                endDate: new Date(Date.now() + 86400000), // 1 day from now
+                startDate: new Date(),
+                prize: "Points + Badge",
+                prizeValue: 0,
+                badge: "",
+                participants: 0,
+                submissions: 0,
+              };
             }
+          } catch (e) {
+            console.warn("Error fetching challenge:", challengeId, e);
+          }
+        }
+      }
 
-            // Build click handler - goes to challenges page with highlight
-            const challengeUrl = `/pages/community/challenges.html?highlight=${encodeURIComponent(jc.challengeId)}`;
+      // Render challenges
+      if (joinedChallenges.length === 0) {
+        container.innerHTML = `
+                <div class="empty-challenges">
+                    <i class="fas fa-trophy" style="opacity: 0.3;"></i>
+                    <p>No challenges joined yet</p>
+                    ${this.isOwnProfile ? `<a href="pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
+                </div>
+            `;
+        return;
+      }
 
-            // Get the right icon based on type
-            const typeIcon = details.icon || (details.type === 'daily' ? '🌅' :
-                           details.type === 'weekly' ? '📅' :
-                           details.type === 'monthly' ? '🌟' : '🏆');
+      container.innerHTML = joinedChallenges
+        .map((jc) => {
+          const details = challengeDetails[jc.challengeId];
 
-            return `
+          // If no details found, skip this challenge
+          if (!details) {
+            console.warn("No details found for challenge:", jc.challengeId);
+            return "";
+          }
+
+          const statusClass = jc.status === "active" ? "active" : "completed";
+          const statusLabel =
+            jc.status === "active" ? "🟢 Active" : "✅ Completed";
+          const intuitBadge = details.isIntuit ? " ⚡" : "";
+          const dateStr = jc.joinedAt
+            ? new Date(jc.joinedAt).toLocaleDateString()
+            : "";
+
+          // Calculate time remaining - REAL data from Firestore
+          const now = new Date();
+          const endDate =
+            details.endDate instanceof Date
+              ? details.endDate
+              : new Date(details.endDate);
+          const timeRemaining = endDate - now;
+
+          let timeLeftText = "";
+          let timeLeftClass = "";
+
+          if (jc.status === "active") {
+            if (timeRemaining > 0) {
+              const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+              const hours = Math.floor(
+                (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+              );
+              const minutes = Math.floor(
+                (timeRemaining % (1000 * 60 * 60)) / (1000 * 60),
+              );
+
+              if (days > 0) {
+                timeLeftText = `${days}d ${hours}h left`;
+              } else if (hours > 0) {
+                timeLeftText = `${hours}h ${minutes}m left`;
+              } else {
+                timeLeftText = `${minutes}m left`;
+              }
+
+              timeLeftClass = days < 2 ? "time-warning" : "time-normal";
+            } else {
+              // Challenge has ended but status hasn't updated yet
+              timeLeftText = "⏰ Ended";
+              timeLeftClass = "time-expired";
+            }
+          } else {
+            timeLeftText = "✅ Completed";
+            timeLeftClass = "time-completed";
+          }
+
+          // Build click handler - goes to challenges page with highlight
+          const challengeUrl = `pages/community/challenges.html?highlight=${encodeURIComponent(jc.challengeId)}`;
+
+          // Get the right icon based on type
+          const typeIcon =
+            details.icon ||
+            (details.type === "daily"
+              ? "🌅"
+              : details.type === "weekly"
+                ? "📅"
+                : details.type === "monthly"
+                  ? "🌟"
+                  : "🏆");
+
+          return `
                 <div class="challenge-card-mini"
                      style="border-left: 3px solid ${details.color}; cursor: pointer;"
                      onclick="window.location.href='${challengeUrl}'"
@@ -902,8 +963,8 @@ async loadJoinedChallenges() {
                         <div class="challenge-type">${details.type.charAt(0).toUpperCase() + details.type.slice(1)} • Joined: ${dateStr}</div>
                         <div class="challenge-meta">
                             <span class="challenge-prize">🏆 ${this.escapeHtml(details.prize)}</span>
-                            ${details.prizeValue > 0 ? `<span class="challenge-points">⭐ ${details.prizeValue} pts</span>` : ''}
-                            ${details.badge ? `<span class="challenge-badge">🏅 ${details.badge.replace(/_/g, ' ')}</span>` : ''}
+                            ${details.prizeValue > 0 ? `<span class="challenge-points">⭐ ${details.prizeValue} pts</span>` : ""}
+                            ${details.badge ? `<span class="challenge-badge">🏅 ${details.badge.replace(/_/g, " ")}</span>` : ""}
                         </div>
                     </div>
                     <div class="challenge-status-group">
@@ -916,11 +977,12 @@ async loadJoinedChallenges() {
                     </div>
                 </div>
             `;
-        }).filter(html => html !== '').join('');
-
+        })
+        .filter((html) => html !== "")
+        .join("");
     } catch (error) {
-        console.error('Error loading joined challenges:', error);
-        container.innerHTML = `
+      console.error("Error loading joined challenges:", error);
+      container.innerHTML = `
             <div class="empty-challenges">
                 <i class="fas fa-exclamation-circle" style="color: #ef4444;"></i>
                 <p>Error loading challenges</p>
@@ -928,15 +990,15 @@ async loadJoinedChallenges() {
             </div>
         `;
     }
-}
+  }
 
-// ============================================
-// LOAD BADGES
-// ============================================
+  // ============================================
+  // LOAD BADGES
+  // ============================================
 
-async loadBadges() {
-    const container = document.getElementById('badgesContainer');
-    const countEl = document.getElementById('badgeCount');
+  async loadBadges() {
+    const container = document.getElementById("badgesContainer");
+    const countEl = document.getElementById("badgeCount");
     if (!container) return;
 
     // Show loading state
@@ -948,107 +1010,117 @@ async loadBadges() {
     `;
 
     try {
-        const badges = [];
-        const seenBadges = new Set();
+      const badges = [];
+      const seenBadges = new Set();
 
-        // 1. Get badges from user document
-        if (this.userData?.badges) {
-            const userBadges = Array.isArray(this.userData.badges) ? this.userData.badges : [];
-            userBadges.forEach(b => {
-                const key = b.name || b.id || 'badge';
-                if (!seenBadges.has(key)) {
-                    seenBadges.add(key);
-                    badges.push({
-                        id: b.id || `badge-${Date.now()}`,
-                        name: b.name || 'Badge',
-                        icon: b.icon || '🏅',
-                        type: b.type || 'user',
-                        earnedAt: b.earnedAt || new Date()
-                    });
-                }
+      // 1. Get badges from user document
+      if (this.userData?.badges) {
+        const userBadges = Array.isArray(this.userData.badges)
+          ? this.userData.badges
+          : [];
+        userBadges.forEach((b) => {
+          const key = b.name || b.id || "badge";
+          if (!seenBadges.has(key)) {
+            seenBadges.add(key);
+            badges.push({
+              id: b.id || `badge-${Date.now()}`,
+              name: b.name || "Badge",
+              icon: b.icon || "🏅",
+              type: b.type || "user",
+              earnedAt: b.earnedAt || new Date(),
             });
-        }
-
-        // 2. Get challenge winner badges
-        const winsSnapshot = await db.collection('challengeWinners')
-            .where('winnerUserId', '==', this.userId)
-            .orderBy('createdAt', 'desc')
-            .limit(20)
-            .get();
-
-        winsSnapshot.forEach(doc => {
-            const data = doc.data();
-            const badgeName = data.challengeTitle || 'Challenge Winner';
-            const key = `winner-${data.challengeId}`;
-            if (!seenBadges.has(key)) {
-                seenBadges.add(key);
-                badges.push({
-                    id: key,
-                    name: `🏆 ${badgeName}`,
-                    icon: '🏆',
-                    type: 'winner',
-                    earnedAt: data.createdAt?.toDate?.() || new Date(),
-                    challengeId: data.challengeId
-                });
-            }
+          }
         });
+      }
 
-        // 3. Check for completed challenges (submissions that won)
-        const completedSnapshot = await db.collection('challengeSubmissions')
-            .where('userId', '==', this.userId)
-            .where('status', 'in', ['winner', 'runner-up'])
-            .get();
+      // 2. Get challenge winner badges
+      const winsSnapshot = await db
+        .collection("challengeWinners")
+        .where("winnerUserId", "==", this.userId)
+        .orderBy("createdAt", "desc")
+        .limit(20)
+        .get();
 
-        completedSnapshot.forEach(doc => {
-            const data = doc.data();
-            const badgeName = data.status === 'winner' ? '🏆 Winner' : '🥈 Runner-up';
-            const key = `submission-${data.challengeId}`;
-            if (!seenBadges.has(key)) {
-                seenBadges.add(key);
-                badges.push({
-                    id: key,
-                    name: `${badgeName} - ${data.title || 'Challenge'}`,
-                    icon: data.status === 'winner' ? '🏆' : '🥈',
-                    type: data.status,
-                    earnedAt: data.submittedAt?.toDate?.() || new Date()
-                });
-            }
-        });
-
-        // Update badge count
-        if (countEl) {
-            countEl.textContent = `${badges.length} badge${badges.length !== 1 ? 's' : ''}`;
+      winsSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const badgeName = data.challengeTitle || "Challenge Winner";
+        const key = `winner-${data.challengeId}`;
+        if (!seenBadges.has(key)) {
+          seenBadges.add(key);
+          badges.push({
+            id: key,
+            name: `🏆 ${badgeName}`,
+            icon: "🏆",
+            type: "winner",
+            earnedAt: data.createdAt?.toDate?.() || new Date(),
+            challengeId: data.challengeId,
+          });
         }
+      });
 
-        if (badges.length === 0) {
-            container.innerHTML = `
+      // 3. Check for completed challenges (submissions that won)
+      const completedSnapshot = await db
+        .collection("challengeSubmissions")
+        .where("userId", "==", this.userId)
+        .where("status", "in", ["winner", "runner-up"])
+        .get();
+
+      completedSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const badgeName =
+          data.status === "winner" ? "🏆 Winner" : "🥈 Runner-up";
+        const key = `submission-${data.challengeId}`;
+        if (!seenBadges.has(key)) {
+          seenBadges.add(key);
+          badges.push({
+            id: key,
+            name: `${badgeName} - ${data.title || "Challenge"}`,
+            icon: data.status === "winner" ? "🏆" : "🥈",
+            type: data.status,
+            earnedAt: data.submittedAt?.toDate?.() || new Date(),
+          });
+        }
+      });
+
+      // Update badge count
+      if (countEl) {
+        countEl.textContent = `${badges.length} badge${badges.length !== 1 ? "s" : ""}`;
+      }
+
+      if (badges.length === 0) {
+        container.innerHTML = `
                 <div class="empty-badges">
                     <i class="fas fa-award" style="opacity: 0.3;"></i>
                     <p>No badges earned yet</p>
                     <span style="font-size: 0.8rem; color: var(--text-muted);">Complete challenges to earn badges!</span>
                 </div>
             `;
-            return;
-        }
+        return;
+      }
 
-        // Sort by date (newest first)
-        badges.sort((a, b) => {
-            const dateA = a.earnedAt instanceof Date ? a.earnedAt : new Date(a.earnedAt);
-            const dateB = b.earnedAt instanceof Date ? b.earnedAt : new Date(b.earnedAt);
-            return dateB - dateA;
-        });
+      // Sort by date (newest first)
+      badges.sort((a, b) => {
+        const dateA =
+          a.earnedAt instanceof Date ? a.earnedAt : new Date(a.earnedAt);
+        const dateB =
+          b.earnedAt instanceof Date ? b.earnedAt : new Date(b.earnedAt);
+        return dateB - dateA;
+      });
 
-        container.innerHTML = badges.map(b => `
+      container.innerHTML = badges
+        .map(
+          (b) => `
             <div class="badge-item" title="${this.escapeHtml(b.name)}">
                 <div class="badge-icon-display">${b.icon}</div>
                 <div class="badge-name-display">${this.escapeHtml(b.name)}</div>
-                ${b.earnedAt ? `<div class="badge-date">${this.formatDate(b.earnedAt)}</div>` : ''}
+                ${b.earnedAt ? `<div class="badge-date">${this.formatDate(b.earnedAt)}</div>` : ""}
             </div>
-        `).join('');
-
+        `,
+        )
+        .join("");
     } catch (error) {
-        console.error('Error loading badges:', error);
-        container.innerHTML = `
+      console.error("Error loading badges:", error);
+      container.innerHTML = `
             <div class="empty-badges">
                 <i class="fas fa-exclamation-circle" style="color: #ef4444;"></i>
                 <p>Error loading badges</p>
@@ -1056,23 +1128,27 @@ async loadBadges() {
             </div>
         `;
     }
-}
+  }
 
-// ============================================
-// FORMAT DATE HELPER
-// ============================================
+  // ============================================
+  // FORMAT DATE HELPER
+  // ============================================
 
-formatDate(date) {
-    if (!date) return '';
+  formatDate(date) {
+    if (!date) return "";
     try {
-        const d = date instanceof Date ? date : new Date(date);
-        if (isNaN(d.getTime())) return '';
-        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const d = date instanceof Date ? date : new Date(date);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
     } catch (e) {
-        return '';
+      return "";
     }
-}
-    // ============================================
+  }
+  // ============================================
   // BLOG POSTS
   // ============================================
 
@@ -1081,21 +1157,22 @@ formatDate(date) {
       this.blogPosts = [];
       this.blogPage = 1;
       this.hasMoreBlog = true;
-      const grid = document.getElementById('savedBlogPostsGrid');
-      if (grid) grid.innerHTML = '';
+      const grid = document.getElementById("savedBlogPostsGrid");
+      if (grid) grid.innerHTML = "";
     }
 
     if (!this.hasMoreBlog || this.loadingMore) return;
 
     this.loadingMore = true;
-    const loadingEl = document.getElementById('blogLoading');
-    if (loadingEl) loadingEl.style.display = 'block';
+    const loadingEl = document.getElementById("blogLoading");
+    if (loadingEl) loadingEl.style.display = "block";
 
     try {
-      let query = db.collection('users')
+      let query = db
+        .collection("users")
         .doc(this.userId)
-        .collection('savedBlogPosts')
-        .orderBy('savedAt', 'desc')
+        .collection("savedBlogPosts")
+        .orderBy("savedAt", "desc")
         .limit(this.tutorialsLimit);
 
       if (this.blogPosts && this.blogPosts.length > 0) {
@@ -1110,9 +1187,9 @@ formatDate(date) {
       if (snapshot.empty) {
         this.hasMoreBlog = false;
       } else {
-        const posts = snapshot.docs.map(doc => ({
+        const posts = snapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
         if (!this.blogPosts) this.blogPosts = [];
         this.blogPosts = [...this.blogPosts, ...posts];
@@ -1121,15 +1198,15 @@ formatDate(date) {
 
       this.renderBlogPosts();
     } catch (error) {
-      console.error('Error loading blog posts:', error);
+      console.error("Error loading blog posts:", error);
     } finally {
       this.loadingMore = false;
-      if (loadingEl) loadingEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = "none";
     }
   }
 
   renderBlogPosts() {
-    const grid = document.getElementById('savedBlogPostsGrid');
+    const grid = document.getElementById("savedBlogPostsGrid");
     if (!grid) return;
 
     if (!this.blogPosts || this.blogPosts.length === 0) {
@@ -1143,29 +1220,37 @@ formatDate(date) {
       return;
     }
 
-    grid.innerHTML = this.blogPosts.map(post => `
+    grid.innerHTML = this.blogPosts
+      .map(
+        (post) => `
       <div class="blog-post-item">
-        <div class="blog-post-icon">${post.icon || '📝'}</div>
+        <div class="blog-post-icon">${post.icon || "📝"}</div>
         <div class="blog-post-info">
           <h4>${this.escapeHtml(post.title)}</h4>
-          <p>${this.escapeHtml(post.source || 'Art Mecca')} • ${post.collection ? this.escapeHtml(post.collection) : 'Read Later'}</p>
+          <p>${this.escapeHtml(post.source || "Art Mecca")} • ${post.collection ? this.escapeHtml(post.collection) : "Read Later"}</p>
         </div>
         <div class="blog-post-actions">
           <button class="blog-post-collection-btn" data-id="${post.id}" title="Move to collection">
             <i class="fas fa-folder"></i>
           </button>
-          ${this.isOwnProfile ? `
+          ${
+            this.isOwnProfile
+              ? `
             <button class="blog-post-remove" data-id="${post.id}" title="Remove">
               <i class="fas fa-times"></i>
             </button>
-          ` : ''}
+          `
+              : ""
+          }
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
 
     // Remove blog post
-    grid.querySelectorAll('.blog-post-remove').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    grid.querySelectorAll(".blog-post-remove").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
         this.removeBlogPost(id);
@@ -1173,8 +1258,8 @@ formatDate(date) {
     });
 
     // Move to collection
-    grid.querySelectorAll('.blog-post-collection-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    grid.querySelectorAll(".blog-post-collection-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
         this.moveBlogPostToCollection(id);
@@ -1184,42 +1269,47 @@ formatDate(date) {
 
   async removeBlogPost(postId) {
     try {
-      await db.collection('users')
+      await db
+        .collection("users")
         .doc(this.userId)
-        .collection('savedBlogPosts')
+        .collection("savedBlogPosts")
         .doc(postId)
         .delete();
 
-      this.blogPosts = this.blogPosts.filter(p => p.id !== postId);
+      this.blogPosts = this.blogPosts.filter((p) => p.id !== postId);
       this.renderBlogPosts();
-      this.showToast('Blog post removed');
+      this.showToast("Blog post removed");
     } catch (error) {
-      console.error('Error removing blog post:', error);
-      this.showToast('Error removing blog post', 'error');
+      console.error("Error removing blog post:", error);
+      this.showToast("Error removing blog post", "error");
     }
   }
 
   async moveBlogPostToCollection(postId) {
     // Find the post
-    const post = this.blogPosts.find(p => p.id === postId);
+    const post = this.blogPosts.find((p) => p.id === postId);
     if (!post) return;
 
     // Get existing collections
     const collections = this.blogCollections || [];
 
     // Create a simple selection modal
-    const collectionNames = collections.map(c => c.name);
-    const currentCollection = post.collection || 'Read Later';
+    const collectionNames = collections.map((c) => c.name);
+    const currentCollection = post.collection || "Read Later";
 
     // Use a prompt-like selection
     const selectHTML = `
       <div class="collection-select-modal">
         <h4>Move "${post.title}" to:</h4>
         <select id="collectionSelect">
-          <option value="Read Later" ${currentCollection === 'Read Later' ? 'selected' : ''}>Read Later</option>
-          ${collectionNames.filter(name => name !== 'Read Later').map(name =>
-            `<option value="${name}" ${currentCollection === name ? 'selected' : ''}>${name}</option>`
-          ).join('')}
+          <option value="Read Later" ${currentCollection === "Read Later" ? "selected" : ""}>Read Later</option>
+          ${collectionNames
+            .filter((name) => name !== "Read Later")
+            .map(
+              (name) =>
+                `<option value="${name}" ${currentCollection === name ? "selected" : ""}>${name}</option>`,
+            )
+            .join("")}
           <option value="__new__">+ Create New Collection</option>
         </select>
         <div id="newCollectionInput" style="display: none; margin-top: 0.5rem;">
@@ -1229,8 +1319,8 @@ formatDate(date) {
     `;
 
     // Create modal overlay
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay active';
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay active";
     modal.innerHTML = `
       <div class="modal-container" style="max-width: 400px;">
         <div class="modal-header">
@@ -1249,51 +1339,60 @@ formatDate(date) {
     document.body.appendChild(modal);
 
     // Handle select change
-    const select = modal.querySelector('#collectionSelect');
-    const newInput = modal.querySelector('#newCollectionInput');
-    select.addEventListener('change', () => {
-      newInput.style.display = select.value === '__new__' ? 'block' : 'none';
+    const select = modal.querySelector("#collectionSelect");
+    const newInput = modal.querySelector("#newCollectionInput");
+    select.addEventListener("change", () => {
+      newInput.style.display = select.value === "__new__" ? "block" : "none";
     });
 
     // Close handlers
-    modal.querySelector('#closeMoveModal').addEventListener('click', () => modal.remove());
-    modal.querySelector('#cancelMoveBtn').addEventListener('click', () => modal.remove());
-    modal.addEventListener('click', (e) => {
+    modal
+      .querySelector("#closeMoveModal")
+      .addEventListener("click", () => modal.remove());
+    modal
+      .querySelector("#cancelMoveBtn")
+      .addEventListener("click", () => modal.remove());
+    modal.addEventListener("click", (e) => {
       if (e.target === modal) modal.remove();
     });
 
     // Confirm move
-    modal.querySelector('#confirmMoveBtn').addEventListener('click', async () => {
-      let collectionName = select.value;
-      if (collectionName === '__new__') {
-        collectionName = modal.querySelector('#newCollectionName').value.trim();
-        if (!collectionName) {
-          this.showToast('Please enter a collection name', 'error');
-          return;
+    modal
+      .querySelector("#confirmMoveBtn")
+      .addEventListener("click", async () => {
+        let collectionName = select.value;
+        if (collectionName === "__new__") {
+          collectionName = modal
+            .querySelector("#newCollectionName")
+            .value.trim();
+          if (!collectionName) {
+            this.showToast("Please enter a collection name", "error");
+            return;
+          }
+          // Create new blog collection
+          await this.createBlogCollection(collectionName);
         }
-        // Create new blog collection
-        await this.createBlogCollection(collectionName);
-      }
 
-      try {
-        await db.collection('users')
-          .doc(this.userId)
-          .collection('savedBlogPosts')
-          .doc(postId)
-          .update({
-            collection: collectionName
-          });
+        try {
+          await db
+            .collection("users")
+            .doc(this.userId)
+            .collection("savedBlogPosts")
+            .doc(postId)
+            .update({
+              collection: collectionName,
+            });
 
-        post.collection = collectionName;
-        this.renderBlogPosts();
-        this.renderBlogCollections();
-        modal.remove();
-        this.showToast(`Moved to "${collectionName}"`);
-      } catch (error) {
-        console.error('Error moving blog post:', error);
-        this.showToast('Error moving blog post', 'error');
-      }
-    });
+          post.collection = collectionName;
+          this.renderBlogPosts();
+          this.renderBlogCollections();
+          modal.remove();
+          this.showToast(`Moved to "${collectionName}"`);
+        } catch (error) {
+          console.error("Error moving blog post:", error);
+          this.showToast("Error moving blog post", "error");
+        }
+      });
   }
 
   // ============================================
@@ -1305,47 +1404,52 @@ formatDate(date) {
 
     try {
       // Get blog collections from Firestore
-      const snapshot = await db.collection('users')
+      const snapshot = await db
+        .collection("users")
         .doc(this.userId)
-        .collection('blogCollections')
-        .orderBy('createdAt', 'desc')
+        .collection("blogCollections")
+        .orderBy("createdAt", "desc")
         .get();
 
-      this.blogCollections = snapshot.docs.map(doc => ({
+      this.blogCollections = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
 
       // Ensure "Read Later" exists
-      const hasReadLater = this.blogCollections.some(c => c.name === 'Read Later');
+      const hasReadLater = this.blogCollections.some(
+        (c) => c.name === "Read Later",
+      );
       if (!hasReadLater) {
-        await this.createBlogCollection('Read Later', true);
+        await this.createBlogCollection("Read Later", true);
         // Reload
-        const newSnapshot = await db.collection('users')
+        const newSnapshot = await db
+          .collection("users")
           .doc(this.userId)
-          .collection('blogCollections')
-          .orderBy('createdAt', 'desc')
+          .collection("blogCollections")
+          .orderBy("createdAt", "desc")
           .get();
-        this.blogCollections = newSnapshot.docs.map(doc => ({
+        this.blogCollections = newSnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
       }
 
       this.renderBlogCollections();
     } catch (error) {
-      console.error('Error loading blog collections:', error);
+      console.error("Error loading blog collections:", error);
     }
   }
 
   async createBlogCollection(name, silent = false) {
     try {
-      const docRef = await db.collection('users')
+      const docRef = await db
+        .collection("users")
         .doc(this.userId)
-        .collection('blogCollections')
+        .collection("blogCollections")
         .add({
           name: name,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
       if (!silent) {
@@ -1354,13 +1458,13 @@ formatDate(date) {
       }
       return docRef;
     } catch (error) {
-      console.error('Error creating blog collection:', error);
-      if (!silent) this.showToast('Error creating collection', 'error');
+      console.error("Error creating blog collection:", error);
+      if (!silent) this.showToast("Error creating collection", "error");
     }
   }
 
   renderBlogCollections() {
-    const grid = document.getElementById('blogCollectionsGrid');
+    const grid = document.getElementById("blogCollectionsGrid");
     if (!grid) return;
 
     if (!this.blogCollections || this.blogCollections.length === 0) {
@@ -1373,24 +1477,32 @@ formatDate(date) {
       return;
     }
 
-    grid.innerHTML = this.blogCollections.map(col => `
+    grid.innerHTML = this.blogCollections
+      .map(
+        (col) => `
       <div class="blog-collection-card" data-id="${col.id}">
-        <div class="blog-collection-icon">${col.name === 'Read Later' ? '📚' : '📁'}</div>
+        <div class="blog-collection-icon">${col.name === "Read Later" ? "📚" : "📁"}</div>
         <div class="blog-collection-name">${this.escapeHtml(col.name)}</div>
-        <div class="blog-collection-count">${this.blogPosts?.filter(p => p.collection === col.name).length || 0} posts</div>
-        ${this.isOwnProfile && col.name !== 'Read Later' ? `
+        <div class="blog-collection-count">${this.blogPosts?.filter((p) => p.collection === col.name).length || 0} posts</div>
+        ${
+          this.isOwnProfile && col.name !== "Read Later"
+            ? `
           <div class="blog-collection-actions">
             <button class="blog-collection-delete" data-id="${col.id}" title="Delete Collection">
               <i class="fas fa-trash"></i>
             </button>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
 
     // Delete collection
-    grid.querySelectorAll('.blog-collection-delete').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    grid.querySelectorAll(".blog-collection-delete").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
         this.deleteBlogCollection(id);
@@ -1398,9 +1510,9 @@ formatDate(date) {
     });
 
     // Click to filter posts by collection
-    grid.querySelectorAll('.blog-collection-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const name = card.querySelector('.blog-collection-name')?.textContent;
+    grid.querySelectorAll(".blog-collection-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const name = card.querySelector(".blog-collection-name")?.textContent;
         if (name) {
           this.filterBlogPostsByCollection(name);
         }
@@ -1409,46 +1521,55 @@ formatDate(date) {
   }
 
   async deleteBlogCollection(collectionId) {
-    const collection = this.blogCollections.find(c => c.id === collectionId);
-    if (!collection || collection.name === 'Read Later') {
-      this.showToast('Cannot delete Read Later collection', 'error');
+    const collection = this.blogCollections.find((c) => c.id === collectionId);
+    if (!collection || collection.name === "Read Later") {
+      this.showToast("Cannot delete Read Later collection", "error");
       return;
     }
 
-    if (!confirm(`Delete collection "${collection.name}"? Posts will be moved to "Read Later".`)) return;
+    if (
+      !confirm(
+        `Delete collection "${collection.name}"? Posts will be moved to "Read Later".`,
+      )
+    )
+      return;
 
     try {
       // Move all posts in this collection to "Read Later"
-      const postsToMove = this.blogPosts?.filter(p => p.collection === collection.name) || [];
+      const postsToMove =
+        this.blogPosts?.filter((p) => p.collection === collection.name) || [];
       for (const post of postsToMove) {
-        await db.collection('users')
+        await db
+          .collection("users")
           .doc(this.userId)
-          .collection('savedBlogPosts')
+          .collection("savedBlogPosts")
           .doc(post.id)
-          .update({ collection: 'Read Later' });
+          .update({ collection: "Read Later" });
       }
 
       // Delete the collection
-      await db.collection('users')
+      await db
+        .collection("users")
         .doc(this.userId)
-        .collection('blogCollections')
+        .collection("blogCollections")
         .doc(collectionId)
         .delete();
 
       await this.loadBlogCollections();
       await this.loadBlogPosts(true);
-      this.showToast('Collection deleted, posts moved to Read Later');
+      this.showToast("Collection deleted, posts moved to Read Later");
     } catch (error) {
-      console.error('Error deleting blog collection:', error);
-      this.showToast('Error deleting collection', 'error');
+      console.error("Error deleting blog collection:", error);
+      this.showToast("Error deleting collection", "error");
     }
   }
 
   filterBlogPostsByCollection(collectionName) {
-    const grid = document.getElementById('savedBlogPostsGrid');
+    const grid = document.getElementById("savedBlogPostsGrid");
     if (!grid) return;
 
-    const filtered = this.blogPosts?.filter(p => p.collection === collectionName) || [];
+    const filtered =
+      this.blogPosts?.filter((p) => p.collection === collectionName) || [];
     if (filtered.length === 0) {
       grid.innerHTML = `
         <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: rgba(255,255,255,0.3);">
@@ -1458,37 +1579,45 @@ formatDate(date) {
       return;
     }
 
-    grid.innerHTML = filtered.map(post => `
+    grid.innerHTML = filtered
+      .map(
+        (post) => `
       <div class="blog-post-item">
-        <div class="blog-post-icon">${post.icon || '📝'}</div>
+        <div class="blog-post-icon">${post.icon || "📝"}</div>
         <div class="blog-post-info">
           <h4>${this.escapeHtml(post.title)}</h4>
-          <p>${this.escapeHtml(post.source || 'Art Mecca')}</p>
+          <p>${this.escapeHtml(post.source || "Art Mecca")}</p>
         </div>
         <div class="blog-post-actions">
           <button class="blog-post-collection-btn" data-id="${post.id}" title="Move to collection">
             <i class="fas fa-folder"></i>
           </button>
-          ${this.isOwnProfile ? `
+          ${
+            this.isOwnProfile
+              ? `
             <button class="blog-post-remove" data-id="${post.id}" title="Remove">
               <i class="fas fa-times"></i>
             </button>
-          ` : ''}
+          `
+              : ""
+          }
         </div>
       </div>
-    `).join('');
+    `,
+      )
+      .join("");
 
     // Re-attach event listeners
-    grid.querySelectorAll('.blog-post-remove').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    grid.querySelectorAll(".blog-post-remove").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
         this.removeBlogPost(id);
       });
     });
 
-    grid.querySelectorAll('.blog-post-collection-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    grid.querySelectorAll(".blog-post-collection-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
         this.moveBlogPostToCollection(id);
@@ -1504,61 +1633,70 @@ formatDate(date) {
     const commission = this.userData?.commission || {};
 
     const fields = {
-      'commissionContact': commission.contact || '',
-      'commissionWebsite': commission.website || '',
-      'commissionShop': commission.shop || '',
-      'commissionExperience': commission.experience || '',
-      'commissionExpertise': commission.expertise || '',
-      'commissionProjects': commission.projects || '',
-      'commissionRates': commission.rates || '',
+      commissionContact: commission.contact || "",
+      commissionWebsite: commission.website || "",
+      commissionShop: commission.shop || "",
+      commissionExperience: commission.experience || "",
+      commissionExpertise: commission.expertise || "",
+      commissionProjects: commission.projects || "",
+      commissionRates: commission.rates || "",
     };
 
-    Object.keys(fields).forEach(id => {
+    Object.keys(fields).forEach((id) => {
       const el = document.getElementById(id);
-      if (el) el.value = fields[id] || '';
+      if (el) el.value = fields[id] || "";
     });
 
     // CV
     if (commission.cvUrl) {
       this.cvUrl = commission.cvUrl;
-      this.showCVPreview(commission.cvName || 'CV.pdf');
+      this.showCVPreview(commission.cvName || "CV.pdf");
     }
 
     // Disable if not own profile
     if (!this.isOwnProfile) {
-      document.querySelectorAll('#tab-commission input, #tab-commission textarea').forEach(el => {
-        if (el) el.disabled = true;
-      });
-      const fileInput = document.querySelector('.cv-upload-area input[type="file"]');
+      document
+        .querySelectorAll("#tab-commission input, #tab-commission textarea")
+        .forEach((el) => {
+          if (el) el.disabled = true;
+        });
+      const fileInput = document.querySelector(
+        '.cv-upload-area input[type="file"]',
+      );
       if (fileInput) fileInput.disabled = true;
-      const saveBtn = document.getElementById('saveCommissionBtn');
-      if (saveBtn) saveBtn.style.display = 'none';
+      const saveBtn = document.getElementById("saveCommissionBtn");
+      if (saveBtn) saveBtn.style.display = "none";
     }
   }
 
   async saveCommissionData() {
     const commissionData = {
-      contact: document.getElementById('commissionContact')?.value?.trim() || '',
-      website: document.getElementById('commissionWebsite')?.value?.trim() || '',
-      shop: document.getElementById('commissionShop')?.value?.trim() || '',
-      experience: document.getElementById('commissionExperience')?.value?.trim() || '',
-      expertise: document.getElementById('commissionExpertise')?.value?.trim() || '',
-      projects: document.getElementById('commissionProjects')?.value?.trim() || '',
-      rates: document.getElementById('commissionRates')?.value?.trim() || '',
+      contact:
+        document.getElementById("commissionContact")?.value?.trim() || "",
+      website:
+        document.getElementById("commissionWebsite")?.value?.trim() || "",
+      shop: document.getElementById("commissionShop")?.value?.trim() || "",
+      experience:
+        document.getElementById("commissionExperience")?.value?.trim() || "",
+      expertise:
+        document.getElementById("commissionExpertise")?.value?.trim() || "",
+      projects:
+        document.getElementById("commissionProjects")?.value?.trim() || "",
+      rates: document.getElementById("commissionRates")?.value?.trim() || "",
       cvUrl: this.cvUrl || null,
       cvName: this.cvFile?.name || null,
     };
 
     try {
-      await db.collection('users').doc(this.userId).update({
-        commission: commissionData
+      await db.collection("users").doc(this.userId).update({
+        commission: commissionData,
       });
 
       if (this.userData) this.userData.commission = commissionData;
-      this.showToast('Commission info saved successfully! ✅');
+      this.showToast("Commission info saved successfully! ✅");
     } catch (error) {
-      console.error('Error saving commission data:', error);
-      this.showToast('Error saving commission info', 'error');
+      console.error("Error saving commission data:", error);
+      this.showToast("Error saving commission info", "error");
     }
   }
 
@@ -1567,12 +1705,12 @@ formatDate(date) {
   // ============================================
 
   setupCVUpload() {
-    const fileInput = document.getElementById('cvFileInput');
-    const dropZone = document.querySelector('.cv-drop-zone');
+    const fileInput = document.getElementById("cvFileInput");
+    const dropZone = document.querySelector(".cv-drop-zone");
 
     if (!fileInput) return;
 
-    fileInput.addEventListener('change', (e) => {
+    fileInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (file) {
         this.handleCVFile(file);
@@ -1580,21 +1718,21 @@ formatDate(date) {
     });
 
     if (dropZone) {
-      dropZone.addEventListener('dragover', (e) => {
+      dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
-        dropZone.style.borderColor = '#fe67ea';
-        dropZone.style.background = 'rgba(254, 103, 234, 0.05)';
+        dropZone.style.borderColor = "#fe67ea";
+        dropZone.style.background = "rgba(254, 103, 234, 0.05)";
       });
 
-      dropZone.addEventListener('dragleave', () => {
-        dropZone.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-        dropZone.style.background = 'rgba(255, 255, 255, 0.02)';
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.style.borderColor = "rgba(255, 255, 255, 0.1)";
+        dropZone.style.background = "rgba(255, 255, 255, 0.02)";
       });
 
-      dropZone.addEventListener('drop', (e) => {
+      dropZone.addEventListener("drop", (e) => {
         e.preventDefault();
-        dropZone.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-        dropZone.style.background = 'rgba(255, 255, 255, 0.02)';
+        dropZone.style.borderColor = "rgba(255, 255, 255, 0.1)";
+        dropZone.style.background = "rgba(255, 255, 255, 0.02)";
         const files = e.dataTransfer.files;
         if (files.length > 0) {
           this.handleCVFile(files[0]);
@@ -1602,33 +1740,38 @@ formatDate(date) {
       });
     }
 
-    document.getElementById('cvRemoveBtn')?.addEventListener('click', () => {
+    document.getElementById("cvRemoveBtn")?.addEventListener("click", () => {
       this.removeCV();
     });
 
-    document.getElementById('cvDownloadBtn')?.addEventListener('click', () => {
+    document.getElementById("cvDownloadBtn")?.addEventListener("click", () => {
       this.downloadCV();
     });
   }
 
   async handleCVFile(file) {
-    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const validTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
     if (!validTypes.includes(file.type)) {
-      this.showToast('Please upload a PDF, DOC, or DOCX file', 'error');
+      this.showToast("Please upload a PDF, DOC, or DOCX file", "error");
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      this.showToast('File must be less than 5MB', 'error');
+      this.showToast("File must be less than 5MB", "error");
       return;
     }
 
     this.cvFile = file;
 
-    const loading = document.getElementById('uploadLoading');
+    const loading = document.getElementById("uploadLoading");
     if (loading) {
-      loading.style.display = 'block';
-      loading.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading CV...';
+      loading.style.display = "block";
+      loading.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Uploading CV...';
     }
 
     try {
@@ -1642,30 +1785,31 @@ formatDate(date) {
       this.cvUrl = downloadURL;
       this.showCVPreview(file.name);
 
-      await db.collection('users').doc(this.userId).update({
-        'commission.cvUrl': downloadURL,
-        'commission.cvName': file.name
+      await db.collection("users").doc(this.userId).update({
+        "commission.cvUrl": downloadURL,
+        "commission.cvName": file.name,
       });
 
-      this.showToast('CV uploaded successfully! ✅');
+      this.showToast("CV uploaded successfully! ✅");
     } catch (error) {
-      console.error('Error uploading CV:', error);
-      this.showToast('Error uploading CV', 'error');
+      console.error("Error uploading CV:", error);
+      this.showToast("Error uploading CV", "error");
     } finally {
       if (loading) {
-        loading.style.display = 'none';
-        loading.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+        loading.style.display = "none";
+        loading.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Uploading...';
       }
     }
   }
 
   showCVPreview(name) {
-    const dropZone = document.querySelector('.cv-drop-zone');
-    const preview = document.getElementById('cvPreview');
-    const fileName = document.getElementById('cvFileName');
+    const dropZone = document.querySelector(".cv-drop-zone");
+    const preview = document.getElementById("cvPreview");
+    const fileName = document.getElementById("cvFileName");
 
-    if (dropZone) dropZone.style.display = 'none';
-    if (preview) preview.style.display = 'flex';
+    if (dropZone) dropZone.style.display = "none";
+    if (preview) preview.style.display = "flex";
     if (fileName) fileName.textContent = name;
   }
 
@@ -1673,24 +1817,27 @@ formatDate(date) {
     this.cvFile = null;
     this.cvUrl = null;
 
-    const dropZone = document.querySelector('.cv-drop-zone');
-    const preview = document.getElementById('cvPreview');
+    const dropZone = document.querySelector(".cv-drop-zone");
+    const preview = document.getElementById("cvPreview");
 
-    if (dropZone) dropZone.style.display = 'block';
-    if (preview) preview.style.display = 'none';
-    document.getElementById('cvFileInput').value = '';
+    if (dropZone) dropZone.style.display = "block";
+    if (preview) preview.style.display = "none";
+    document.getElementById("cvFileInput").value = "";
 
-    db.collection('users').doc(this.userId).update({
-      'commission.cvUrl': firebase.firestore.FieldValue.delete(),
-      'commission.cvName': firebase.firestore.FieldValue.delete()
-    }).catch(console.error);
+    db.collection("users")
+      .doc(this.userId)
+      .update({
+        "commission.cvUrl": firebase.firestore.FieldValue.delete(),
+        "commission.cvName": firebase.firestore.FieldValue.delete(),
+      })
+      .catch(console.error);
 
-    this.showToast('CV removed');
+    this.showToast("CV removed");
   }
 
   downloadCV() {
     if (this.cvUrl) {
-      window.open(this.cvUrl, '_blank');
+      window.open(this.cvUrl, "_blank");
     }
   }
 
@@ -1701,44 +1848,47 @@ formatDate(date) {
   setupPrivacyToggles() {
     const privacy = this.userData?.privacy || {};
 
-    const likedToggle = document.getElementById('likedPrivacyToggle');
+    const likedToggle = document.getElementById("likedPrivacyToggle");
     if (likedToggle) {
       likedToggle.checked = privacy.likedPublic !== false;
-      likedToggle.addEventListener('change', () => {
-        this.savePrivacySetting('likedPublic', likedToggle.checked);
+      likedToggle.addEventListener("change", () => {
+        this.savePrivacySetting("likedPublic", likedToggle.checked);
       });
     }
 
-    const savedToggle = document.getElementById('savedPrivacyToggle');
+    const savedToggle = document.getElementById("savedPrivacyToggle");
     if (savedToggle) {
       savedToggle.checked = privacy.savedPublic !== false;
-      savedToggle.addEventListener('change', () => {
-        this.savePrivacySetting('savedPublic', savedToggle.checked);
+      savedToggle.addEventListener("change", () => {
+        this.savePrivacySetting("savedPublic", savedToggle.checked);
       });
     }
 
-    const tutorialsToggle = document.getElementById('tutorialsPrivacyToggle');
+    const tutorialsToggle = document.getElementById("tutorialsPrivacyToggle");
     if (tutorialsToggle) {
       tutorialsToggle.checked = privacy.tutorialsPublic !== false;
-      tutorialsToggle.addEventListener('change', () => {
-        this.savePrivacySetting('tutorialsPublic', tutorialsToggle.checked);
+      tutorialsToggle.addEventListener("change", () => {
+        this.savePrivacySetting("tutorialsPublic", tutorialsToggle.checked);
       });
     }
   }
 
   async savePrivacySetting(key, value) {
     try {
-      await db.collection('users').doc(this.userId).update({
-        [`privacy.${key}`]: value
-      });
+      await db
+        .collection("users")
+        .doc(this.userId)
+        .update({
+          [`privacy.${key}`]: value,
+        });
 
       if (!this.userData.privacy) this.userData.privacy = {};
       this.userData.privacy[key] = value;
 
-      this.showToast('Privacy setting updated');
+      this.showToast("Privacy setting updated");
     } catch (error) {
-      console.error('Error saving privacy setting:', error);
-      this.showToast('Error saving privacy setting', 'error');
+      console.error("Error saving privacy setting:", error);
+      this.showToast("Error saving privacy setting", "error");
     }
   }
 
@@ -1747,72 +1897,70 @@ formatDate(date) {
   // ============================================
 
   setupTabNavigation() {
-    const tabs = document.querySelectorAll('.profile-tab');
-    const contents = document.querySelectorAll('.profile-tab-content');
-
+    const tabs = document.querySelectorAll(".profile-tab");
+    const contents = document.querySelectorAll(".profile-tab-content");
 
     // Add portfolio tab if it doesn't exist
     this.addPortfolioTab();
 
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
         const target = tab.dataset.tab;
 
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
 
-        contents.forEach(c => c.classList.remove('active'));
+        contents.forEach((c) => c.classList.remove("active"));
         const targetContent = document.getElementById(`tab-${target}`);
         if (targetContent) {
-          targetContent.classList.add('active');
+          targetContent.classList.add("active");
         }
 
         // Trigger load for lazy-loaded sections
-        if (target === 'uploads') {
+        if (target === "uploads") {
           this.loadUploads(true);
-        } else if (target === 'liked') {
+        } else if (target === "liked") {
           this.loadLikedArtworks(true);
-        } else if (target === 'saved') {
+        } else if (target === "saved") {
           this.loadSavedArtworks(true);
-        } else if (target === 'tutorials') {
+        } else if (target === "tutorials") {
           this.loadSavedTutorials(true);
-        }else if (target === 'challenges') {
-                this.loadJoinedChallenges();
-            } else if (target === 'badges') {
-                this.loadBadges();
-            }
-             // Handle portfolio tab specially
-            if (target === 'portfolio') {
-                this.activatePortfolioMode();
-            } else if (target === 'profile') {
-                this.deactivatePortfolioMode();
-            }
+        } else if (target === "challenges") {
+          this.loadJoinedChallenges();
+        } else if (target === "badges") {
+          this.loadBadges();
+        }
+        // Handle portfolio tab specially
+        if (target === "portfolio") {
+          this.activatePortfolioMode();
+        } else if (target === "profile") {
+          this.deactivatePortfolioMode();
+        }
 
-            // Trigger load for lazy-loaded sections
-            if (target === 'uploads') {
-                this.loadUploads(true);
-            } else if (target === 'liked') {
-                this.loadLikedArtworks(true);
-            } else if (target === 'saved') {
-                this.loadSavedArtworks(true);
-            } else if (target === 'tutorials') {
-                this.loadSavedTutorials(true);
-            } else if (target === 'challenges') {
-                this.loadJoinedChallenges();
-            } else if (target === 'badges') {
-                this.loadBadges();
-            }
+        // Trigger load for lazy-loaded sections
+        if (target === "uploads") {
+          this.loadUploads(true);
+        } else if (target === "liked") {
+          this.loadLikedArtworks(true);
+        } else if (target === "saved") {
+          this.loadSavedArtworks(true);
+        } else if (target === "tutorials") {
+          this.loadSavedTutorials(true);
+        } else if (target === "challenges") {
+          this.loadJoinedChallenges();
+        } else if (target === "badges") {
+          this.loadBadges();
+        }
       });
     });
   }
 
   // ============================================
-// PORTFOLIO TAB
-// ============================================
+  // PORTFOLIO TAB
+  // ============================================
 
-addPortfolioTab() {
-    const tabsContainer = document.getElementById('profileTabs');
+  addPortfolioTab() {
+    const tabsContainer = document.getElementById("profileTabs");
     if (!tabsContainer) return;
 
     // Check if portfolio tab already exists
@@ -1825,37 +1973,37 @@ addPortfolioTab() {
     // Insert portfolio tab before About tab
     const aboutTab = tabsContainer.querySelector('[data-tab="about"]');
 
-    const portfolioTab = document.createElement('button');
-    portfolioTab.className = 'profile-tab';
-    portfolioTab.dataset.tab = 'portfolio';
+    const portfolioTab = document.createElement("button");
+    portfolioTab.className = "profile-tab";
+    portfolioTab.dataset.tab = "portfolio";
     portfolioTab.innerHTML = '<i class="fas fa-folder-open"></i> Portfolio';
 
     if (aboutTab) {
-        tabsContainer.insertBefore(portfolioTab, aboutTab);
+      tabsContainer.insertBefore(portfolioTab, aboutTab);
     } else {
-        tabsContainer.appendChild(portfolioTab);
+      tabsContainer.appendChild(portfolioTab);
     }
 
     // Add portfolio content
     this.addPortfolioContent();
-}
+  }
 
-// ============================================
-// PORTFOLIO CONTENT
-// ============================================
+  // ============================================
+  // PORTFOLIO CONTENT
+  // ============================================
 
-addPortfolioContent() {
-    const wrapper = document.querySelector('.profile-sections-wrapper');
+  addPortfolioContent() {
+    const wrapper = document.querySelector(".profile-sections-wrapper");
     if (!wrapper) return;
 
     // Check if portfolio content already exists
-    if (document.getElementById('tab-portfolio')) return;
+    if (document.getElementById("tab-portfolio")) return;
 
     // Create portfolio tab content
-    const portfolioContent = document.createElement('div');
-    portfolioContent.className = 'profile-tab-content';
-    portfolioContent.id = 'tab-portfolio';
-    portfolioContent.style.display = 'none';
+    const portfolioContent = document.createElement("div");
+    portfolioContent.className = "profile-tab-content";
+    portfolioContent.id = "tab-portfolio";
+    portfolioContent.style.display = "none";
 
     portfolioContent.innerHTML = `
         <div class="portfolio-mode-container">
@@ -1981,62 +2129,65 @@ addPortfolioContent() {
 
     // Add event listeners for the portfolio buttons
     setTimeout(() => {
-        const shareBtn = portfolioContent.querySelector('.btn-share-portfolio');
-        const copyBtn = portfolioContent.querySelector('.btn-copy-link');
-        const switchBtn = portfolioContent.querySelector('.btn-switch-to-profile');
+      const shareBtn = portfolioContent.querySelector(".btn-share-portfolio");
+      const copyBtn = portfolioContent.querySelector(".btn-copy-link");
+      const switchBtn = portfolioContent.querySelector(
+        ".btn-switch-to-profile",
+      );
 
-        if (shareBtn) {
-            shareBtn.addEventListener('click', () => this.sharePortfolio());
-        }
-        if (copyBtn) {
-            copyBtn.addEventListener('click', () => this.copyPortfolioLink());
-        }
-        if (switchBtn) {
-            switchBtn.addEventListener('click', () => this.switchToProfileMode());
-        }
+      if (shareBtn) {
+        shareBtn.addEventListener("click", () => this.sharePortfolio());
+      }
+      if (copyBtn) {
+        copyBtn.addEventListener("click", () => this.copyPortfolioLink());
+      }
+      if (switchBtn) {
+        switchBtn.addEventListener("click", () => this.switchToProfileMode());
+      }
 
-        // Render portfolio content
-        this.renderPortfolioContent();
+      // Render portfolio content
+      this.renderPortfolioContent();
     }, 100);
-}
+  }
 
-// ============================================
-// RENDER PORTFOLIO CONTENT
-// ============================================
+  // ============================================
+  // RENDER PORTFOLIO CONTENT
+  // ============================================
 
-async renderPortfolioContent() {
-    const area = document.getElementById('portfolioContentArea');
+  async renderPortfolioContent() {
+    const area = document.getElementById("portfolioContentArea");
     if (!area) return;
 
     try {
-        // Get user's artworks
-        const snapshot = await db.collection('artworks')
-            .where('artistId', '==', this.userId)
-            .where('status', '==', 'published')
-            .orderBy('createdAt', 'desc')
-            .limit(20)
-            .get();
+      // Get user's artworks
+      const snapshot = await db
+        .collection("artworks")
+        .where("artistId", "==", this.userId)
+        .where("status", "==", "published")
+        .orderBy("createdAt", "desc")
+        .limit(20)
+        .get();
 
-        const artworks = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
+      const artworks = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-        const user = this.userData || {};
-        const badge = user.badge || {};
-        const commission = user.commission || {};
+      const user = this.userData || {};
+      const badge = user.badge || {};
+      const commission = user.commission || {};
 
-        const typeLabels = {
-            digital: '🎨 Digital Artist',
-            traditional: '🖌️ Traditional Artist',
-            mixed: '🎭 Mixed Media Artist',
-            '3d': '🧊 3D Artist',
-            photography: '📷 Photographer',
-            animation: '🎬 Animator'
-        };
+      const typeLabels = {
+        digital: "🎨 Digital Artist",
+        traditional: "🖌️ Traditional Artist",
+        mixed: "🎭 Mixed Media Artist",
+        "3d": "🧊 3D Artist",
+        photography: "📷 Photographer",
+        animation: "🎬 Animator",
+      };
 
-        // Build portfolio HTML
-        let html = `
+      // Build portfolio HTML
+      let html = `
             <div class="portfolio-content">
                 <!-- Artist Info -->
                 <div class="portfolio-artist-info glass-panel" style="
@@ -2055,9 +2206,11 @@ async renderPortfolioContent() {
                             font-weight: 700;
                             color: var(--text-primary);
                             margin-bottom: 0.25rem;
-                        ">${this.escapeHtml(user.fullname || 'Artist')}</h3>
-                        <p style="color: var(--text-muted); font-size: 0.85rem;">@${this.escapeHtml(user.username || 'artist')}</p>
-                        ${badge.artistType ? `
+                        ">${this.escapeHtml(user.fullname || "Artist")}</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">@${this.escapeHtml(user.username || "artist")}</p>
+                        ${
+                          badge.artistType
+                            ? `
                             <span style="
                                 display: inline-block;
                                 padding: 2px 12px;
@@ -2068,15 +2221,21 @@ async renderPortfolioContent() {
                                 font-weight: 600;
                                 margin-top: 4px;
                             ">${typeLabels[badge.artistType] || badge.artistType}</span>
-                        ` : ''}
-                        ${user.bio ? `
+                        `
+                            : ""
+                        }
+                        ${
+                          user.bio
+                            ? `
                             <p style="
                                 color: var(--text-secondary);
                                 font-size: 0.9rem;
                                 line-height: 1.6;
                                 margin-top: 0.75rem;
                             ">${this.escapeHtml(user.bio)}</p>
-                        ` : ''}
+                        `
+                            : ""
+                        }
                     </div>
                     <div style="
                         display: flex;
@@ -2092,7 +2251,9 @@ async renderPortfolioContent() {
                             ">${artworks.length}</div>
                             <div style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Artworks</div>
                         </div>
-                        ${commission.rates ? `
+                        ${
+                          commission.rates
+                            ? `
                             <div>
                                 <div style="
                                     font-family: var(--font-display);
@@ -2102,8 +2263,12 @@ async renderPortfolioContent() {
                                 ">${this.escapeHtml(commission.rates)}</div>
                                 <div style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Rates</div>
                             </div>
-                        ` : ''}
-                        ${commission.contact ? `
+                        `
+                            : ""
+                        }
+                        ${
+                          commission.contact
+                            ? `
                             <div>
                                 <div style="
                                     font-family: var(--font-display);
@@ -2113,7 +2278,9 @@ async renderPortfolioContent() {
                                 ">${this.escapeHtml(commission.contact)}</div>
                                 <div style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Contact</div>
                             </div>
-                        ` : ''}
+                        `
+                            : ""
+                        }
                     </div>
                 </div>
 
@@ -2134,8 +2301,8 @@ async renderPortfolioContent() {
                     ">
         `;
 
-        if (artworks.length === 0) {
-            html += `
+      if (artworks.length === 0) {
+        html += `
                 <div style="
                     grid-column: 1 / -1;
                     text-align: center;
@@ -2146,10 +2313,10 @@ async renderPortfolioContent() {
                     <p>No artworks uploaded yet</p>
                 </div>
             `;
-        } else {
-            artworks.forEach(art => {
-                const isNSFW = art.isNSFW ? '🔞 ' : '';
-                html += `
+      } else {
+        artworks.forEach((art) => {
+          const isNSFW = art.isNSFW ? "🔞 " : "";
+          html += `
                     <div class="portfolio-artwork-item" style="
                         border-radius: 8px;
                         overflow: hidden;
@@ -2157,7 +2324,7 @@ async renderPortfolioContent() {
                         border: 1px solid var(--border-color);
                         transition: all 0.3s ease;
                         cursor: pointer;
-                    " onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
+                    " onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
                         <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy" style="
                             width: 100%;
                             aspect-ratio: 1/1;
@@ -2186,20 +2353,19 @@ async renderPortfolioContent() {
                         </div>
                     </div>
                 `;
-            });
-        }
+        });
+      }
 
-        html += `
+      html += `
                     </div>
                 </div>
             </div>
         `;
 
-        area.innerHTML = html;
-
+      area.innerHTML = html;
     } catch (error) {
-        console.error('Error rendering portfolio:', error);
-        area.innerHTML = `
+      console.error("Error rendering portfolio:", error);
+      area.innerHTML = `
             <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
                 <i class="fas fa-exclamation-triangle" style="font-size: 2rem; display: block; margin-bottom: 1rem; color: #ef4444;"></i>
                 <p>Error loading portfolio</p>
@@ -2215,146 +2381,171 @@ async renderPortfolioContent() {
             </div>
         `;
     }
-}
+  }
 
-// ============================================
-// PORTFOLIO MODE HELPERS
-// ============================================
+  // ============================================
+  // PORTFOLIO MODE HELPERS
+  // ============================================
 
-activatePortfolioMode() {
+  activatePortfolioMode() {
     // Hide non-portfolio tabs
-    const tabs = document.querySelectorAll('.profile-tab');
-    const tabsToHide = ['liked', 'saved', 'tutorials', 'challenges', 'badges', 'blog', 'commission'];
-    tabs.forEach(tab => {
-        const tabId = tab.dataset.tab;
-        if (tabsToHide.includes(tabId)) {
-            tab.style.display = 'none';
-        } else if (tabId === 'about' || tabId === 'uploads') {
-            tab.style.display = 'flex';
-        }
+    const tabs = document.querySelectorAll(".profile-tab");
+    const tabsToHide = [
+      "liked",
+      "saved",
+      "tutorials",
+      "challenges",
+      "badges",
+      "blog",
+      "commission",
+    ];
+    tabs.forEach((tab) => {
+      const tabId = tab.dataset.tab;
+      if (tabsToHide.includes(tabId)) {
+        tab.style.display = "none";
+      } else if (tabId === "about" || tabId === "uploads") {
+        tab.style.display = "flex";
+      }
     });
 
     // Hide social sidebar
-    const sidebar = document.querySelector('.hero-right-sidebar');
+    const sidebar = document.querySelector(".hero-right-sidebar");
     if (sidebar) {
-        const iconsToHide = ['message', 'block', 'cv', 'edit', 'notifications', 'settings'];
-        const icons = sidebar.querySelectorAll('.sidebar-icon');
-        icons.forEach(icon => {
-            const action = icon.dataset.action;
-            if (iconsToHide.includes(action)) {
-                icon.style.display = 'none';
-            }
-        });
+      const iconsToHide = [
+        "message",
+        "block",
+        "cv",
+        "edit",
+        "notifications",
+        "settings",
+      ];
+      const icons = sidebar.querySelectorAll(".sidebar-icon");
+      icons.forEach((icon) => {
+        const action = icon.dataset.action;
+        if (iconsToHide.includes(action)) {
+          icon.style.display = "none";
+        }
+      });
     }
 
     // Hide Shadow button
-    const shadowBtn = document.querySelector('.hero-shadow-btn');
-    if (shadowBtn) shadowBtn.style.display = 'none';
+    const shadowBtn = document.querySelector(".hero-shadow-btn");
+    if (shadowBtn) shadowBtn.style.display = "none";
 
     // Hide layer controls
-    const layerControls = document.querySelector('.layer-controls-container');
-    if (layerControls) layerControls.style.display = 'none';
+    const layerControls = document.querySelector(".layer-controls-container");
+    if (layerControls) layerControls.style.display = "none";
 
     // Show portfolio badge in hero
-    const badgesContainer = document.querySelector('.hero-badges');
+    const badgesContainer = document.querySelector(".hero-badges");
     if (badgesContainer) {
-        let portfolioBadge = badgesContainer.querySelector('.hero-badge.portfolio');
-        if (!portfolioBadge) {
-            portfolioBadge = document.createElement('span');
-            portfolioBadge.className = 'hero-badge portfolio';
-            portfolioBadge.innerHTML = '<i class="fas fa-folder-open"></i> Portfolio';
-            portfolioBadge.style.cssText = `
+      let portfolioBadge = badgesContainer.querySelector(
+        ".hero-badge.portfolio",
+      );
+      if (!portfolioBadge) {
+        portfolioBadge = document.createElement("span");
+        portfolioBadge.className = "hero-badge portfolio";
+        portfolioBadge.innerHTML =
+          '<i class="fas fa-folder-open"></i> Portfolio';
+        portfolioBadge.style.cssText = `
                 background: rgba(99, 219, 238, 0.2);
                 border-color: #63dbee;
                 color: #63dbee;
             `;
-            badgesContainer.appendChild(portfolioBadge);
-        }
+        badgesContainer.appendChild(portfolioBadge);
+      }
     }
-}
+  }
 
-deactivatePortfolioMode() {
+  deactivatePortfolioMode() {
     // Show all tabs again
-    const tabs = document.querySelectorAll('.profile-tab');
-    tabs.forEach(tab => {
-        tab.style.display = 'flex';
+    const tabs = document.querySelectorAll(".profile-tab");
+    tabs.forEach((tab) => {
+      tab.style.display = "flex";
     });
 
     // Show social sidebar icons again
-    const sidebar = document.querySelector('.hero-right-sidebar');
+    const sidebar = document.querySelector(".hero-right-sidebar");
     if (sidebar) {
-        const icons = sidebar.querySelectorAll('.sidebar-icon');
-        icons.forEach(icon => {
-            icon.style.display = 'flex';
-        });
+      const icons = sidebar.querySelectorAll(".sidebar-icon");
+      icons.forEach((icon) => {
+        icon.style.display = "flex";
+      });
     }
 
     // Show Shadow button
-    const shadowBtn = document.querySelector('.hero-shadow-btn');
-    if (shadowBtn) shadowBtn.style.display = 'flex';
+    const shadowBtn = document.querySelector(".hero-shadow-btn");
+    if (shadowBtn) shadowBtn.style.display = "flex";
 
     // Show layer controls
-    const layerControls = document.querySelector('.layer-controls-container');
-    if (layerControls) layerControls.style.display = 'flex';
+    const layerControls = document.querySelector(".layer-controls-container");
+    if (layerControls) layerControls.style.display = "flex";
 
     // Remove portfolio badge
-    const badgesContainer = document.querySelector('.hero-badges');
+    const badgesContainer = document.querySelector(".hero-badges");
     if (badgesContainer) {
-        const portfolioBadge = badgesContainer.querySelector('.hero-badge.portfolio');
-        if (portfolioBadge) portfolioBadge.remove();
+      const portfolioBadge = badgesContainer.querySelector(
+        ".hero-badge.portfolio",
+      );
+      if (portfolioBadge) portfolioBadge.remove();
     }
 
     // Switch back to about tab
     const aboutTab = document.querySelector('[data-tab="about"]');
     if (aboutTab) aboutTab.click();
-}
+  }
 
-switchToProfileMode() {
+  switchToProfileMode() {
     const profileTab = document.querySelector('[data-tab="profile"]');
     if (profileTab) {
-        profileTab.click();
+      profileTab.click();
     } else {
-        // Fallback: reload page without mode
-        const url = new URL(window.location.href);
-        url.searchParams.delete('mode');
-        window.location.href = url.toString();
+      // Fallback: reload page without mode
+      const url = new URL(window.location.href);
+      url.searchParams.delete("mode");
+      window.location.href = url.toString();
     }
-}
+  }
 
-sharePortfolio() {
+  sharePortfolio() {
     const url = window.location.href;
     if (navigator.share) {
-        navigator.share({
-            title: `${this.userData?.fullname || 'Artist'}'s Portfolio`,
-            text: `Check out ${this.userData?.fullname || 'Artist'}'s art portfolio on Art Mecca!`,
-            url: url
-        }).catch(() => {});
+      navigator
+        .share({
+          title: `${this.userData?.fullname || "Artist"}'s Portfolio`,
+          text: `Check out ${this.userData?.fullname || "Artist"}'s art portfolio on Art Mecca!`,
+          url: url,
+        })
+        .catch(() => {});
     } else {
-        this.copyPortfolioLink();
+      this.copyPortfolioLink();
     }
-}
+  }
 
-copyPortfolioLink() {
+  copyPortfolioLink() {
     const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-        this.showToast('📋 Portfolio link copied to clipboard!');
-    }).catch(() => {
-        const input = document.createElement('input');
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        this.showToast("📋 Portfolio link copied to clipboard!");
+      })
+      .catch(() => {
+        const input = document.createElement("input");
         input.value = url;
         document.body.appendChild(input);
         input.select();
-        document.execCommand('copy');
+        document.execCommand("copy");
         document.body.removeChild(input);
-        this.showToast('📋 Portfolio link copied to clipboard!');
-    });
-}
+        this.showToast("📋 Portfolio link copied to clipboard!");
+      });
+  }
 
-showToast(message, type = 'success') {
-    let toast = document.getElementById('customToast');
+  showToast(message, type = "success") {
+    let toast = document.getElementById("customToast");
     if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'customToast';
-        toast.style.cssText = `
+      toast = document.createElement("div");
+      toast.id = "customToast";
+      toast.style.cssText = `
             position: fixed;
             bottom: 30px;
             left: 50%;
@@ -2374,26 +2565,26 @@ showToast(message, type = 'success') {
             pointer-events: none;
             max-width: 90%;
         `;
-        document.body.appendChild(toast);
+      document.body.appendChild(toast);
     }
 
     toast.textContent = message;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
+    toast.style.opacity = "1";
+    toast.style.transform = "translateX(-50%) translateY(0)";
 
-    if (type === 'error') {
-        toast.style.borderColor = 'rgba(239,68,68,0.3)';
-        toast.style.boxShadow = '0 8px 32px rgba(239,68,68,0.2)';
+    if (type === "error") {
+      toast.style.borderColor = "rgba(239,68,68,0.3)";
+      toast.style.boxShadow = "0 8px 32px rgba(239,68,68,0.2)";
     } else {
-        toast.style.borderColor = 'rgba(16,185,129,0.3)';
-        toast.style.boxShadow = '0 8px 32px rgba(16,185,129,0.2)';
+      toast.style.borderColor = "rgba(16,185,129,0.3)";
+      toast.style.boxShadow = "0 8px 32px rgba(16,185,129,0.2)";
     }
 
     setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(-50%) translateY(20px)';
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(-50%) translateY(20px)";
     }, 3000);
-}
+  }
 
   // ============================================
   // ENDLESS SCROLL
@@ -2401,21 +2592,24 @@ showToast(message, type = 'success') {
 
   setupEndlessScroll() {
     const triggers = [
-      { id: 'uploadsScrollTrigger', load: () => this.loadUploads(false) },
-      { id: 'likedScrollTrigger', load: () => this.loadLikedArtworks(false) },
-      { id: 'savedScrollTrigger', load: () => this.loadSavedArtworks(false) },
+      { id: "uploadsScrollTrigger", load: () => this.loadUploads(false) },
+      { id: "likedScrollTrigger", load: () => this.loadLikedArtworks(false) },
+      { id: "savedScrollTrigger", load: () => this.loadSavedArtworks(false) },
     ];
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const trigger = triggers.find(t => t.id === entry.target.id);
-          if (trigger) {
-            trigger.load();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const trigger = triggers.find((t) => t.id === entry.target.id);
+            if (trigger) {
+              trigger.load();
+            }
           }
-        }
-      });
-    }, { threshold: 0.1 });
+        });
+      },
+      { threshold: 0.1 },
+    );
 
     triggers.forEach(({ id }) => {
       const el = document.getElementById(id);
@@ -2428,89 +2622,113 @@ showToast(message, type = 'success') {
   // ============================================
 
   setupEventListeners() {
-    document.getElementById('saveAboutBtn')?.addEventListener('click', () => {
+    document.getElementById("saveAboutBtn")?.addEventListener("click", () => {
       this.saveAboutData();
     });
 
-    document.getElementById('saveCommissionBtn')?.addEventListener('click', () => {
-      this.saveCommissionData();
-    });
+    document
+      .getElementById("saveCommissionBtn")
+      ?.addEventListener("click", () => {
+        this.saveCommissionData();
+      });
 
     this.setupCVUpload();
 
-    document.getElementById('floatingUploadBtn')?.addEventListener('click', () => {
-      this.openUploadModal();
-    });
+    document
+      .getElementById("floatingUploadBtn")
+      ?.addEventListener("click", () => {
+        this.openUploadModal();
+      });
 
-    document.getElementById('newCollectionBtn')?.addEventListener('click', () => {
-      this.openCollectionModal();
-    });
+    document
+      .getElementById("newCollectionBtn")
+      ?.addEventListener("click", () => {
+        this.openCollectionModal();
+      });
 
-    document.getElementById('viewAllUploadsBtn')?.addEventListener('click', () => {
-      window.location.href = `/pages/community/gallery.html?user=${this.userId}`;
-    });
+    document
+      .getElementById("viewAllUploadsBtn")
+      ?.addEventListener("click", () => {
+        window.location.href = `pages/community/gallery.html?user=${this.userId}`;
+      });
 
-    document.getElementById('closeCollectionModal')?.addEventListener('click', () => {
-      this.closeCollectionModal();
-    });
-    document.getElementById('cancelCollectionBtn')?.addEventListener('click', () => {
-      this.closeCollectionModal();
-    });
-    document.getElementById('saveCollectionBtn')?.addEventListener('click', () => {
-      this.saveCollection();
-    });
-        // Blog Collection
-    document.getElementById('newBlogCollectionBtn')?.addEventListener('click', async () => {
-      const name = prompt('Enter collection name:');
-      if (name && name.trim()) {
-        await this.createBlogCollection(name.trim());
-      }
-    });
+    document
+      .getElementById("closeCollectionModal")
+      ?.addEventListener("click", () => {
+        this.closeCollectionModal();
+      });
+    document
+      .getElementById("cancelCollectionBtn")
+      ?.addEventListener("click", () => {
+        this.closeCollectionModal();
+      });
+    document
+      .getElementById("saveCollectionBtn")
+      ?.addEventListener("click", () => {
+        this.saveCollection();
+      });
+    // Blog Collection
+    document
+      .getElementById("newBlogCollectionBtn")
+      ?.addEventListener("click", async () => {
+        const name = prompt("Enter collection name:");
+        if (name && name.trim()) {
+          await this.createBlogCollection(name.trim());
+        }
+      });
 
     // Upload Modal
-    document.getElementById('floatingUploadBtn')?.addEventListener('click', () => {
-      this.openUploadModal();
-    });
+    document
+      .getElementById("floatingUploadBtn")
+      ?.addEventListener("click", () => {
+        this.openUploadModal();
+      });
 
-    document.getElementById('closeUploadModal')?.addEventListener('click', () => {
-      this.closeUploadModal();
-    });
-    document.getElementById('cancelUploadBtn')?.addEventListener('click', () => {
-      this.closeUploadModal();
-    });
-    document.getElementById('submitUploadBtn')?.addEventListener('click', () => {
-      this.submitUploadModal();
-    });
+    document
+      .getElementById("closeUploadModal")
+      ?.addEventListener("click", () => {
+        this.closeUploadModal();
+      });
+    document
+      .getElementById("cancelUploadBtn")
+      ?.addEventListener("click", () => {
+        this.closeUploadModal();
+      });
+    document
+      .getElementById("submitUploadBtn")
+      ?.addEventListener("click", () => {
+        this.submitUploadModal();
+      });
 
     // Upload Modal - File handling
     this.setupUploadModal();
 
     // Blog Privacy Toggle
-    const blogToggle = document.getElementById('blogPrivacyToggle');
+    const blogToggle = document.getElementById("blogPrivacyToggle");
     if (blogToggle) {
       blogToggle.checked = this.userData?.privacy?.blogPublic !== false;
-      blogToggle.addEventListener('change', () => {
-        this.savePrivacySetting('blogPublic', blogToggle.checked);
+      blogToggle.addEventListener("change", () => {
+        this.savePrivacySetting("blogPublic", blogToggle.checked);
       });
     }
   }
 
-    // ============================================
+  // ============================================
   // UPLOAD MODAL
   // ============================================
 
   setupUploadModal() {
-    const fileInput = document.getElementById('uploadModalFile');
-    const dropZone = document.getElementById('uploadDropZone');
-    const preview = document.getElementById('uploadModalPreview');
-    const previewImg = document.getElementById('uploadModalPreviewImg');
-    const removeBtn = document.getElementById('removeUploadPreview');
-    const nsfwToggle = document.getElementById('uploadModalNSFW');
+    const fileInput = document.getElementById("uploadModalFile");
+    const dropZone = document.getElementById("uploadDropZone");
+    const preview = document.getElementById("uploadModalPreview");
+    const previewImg = document.getElementById("uploadModalPreviewImg");
+    const removeBtn = document.getElementById("removeUploadPreview");
+    const nsfwToggle = document.getElementById("uploadModalNSFW");
 
     if (!fileInput) return;
 
     // File input change
-    fileInput.addEventListener('change', (e) => {
+    fileInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (file) {
         this.handleUploadFile(file);
@@ -2519,18 +2737,18 @@ showToast(message, type = 'success') {
 
     // Drag and drop
     if (dropZone) {
-      dropZone.addEventListener('dragover', (e) => {
+      dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
-        dropZone.classList.add('dragover');
+        dropZone.classList.add("dragover");
       });
 
-      dropZone.addEventListener('dragleave', () => {
-        dropZone.classList.remove('dragover');
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
       });
 
-      dropZone.addEventListener('drop', (e) => {
+      dropZone.addEventListener("drop", (e) => {
         e.preventDefault();
-        dropZone.classList.remove('dragover');
+        dropZone.classList.remove("dragover");
         const files = e.dataTransfer.files;
         if (files.length > 0) {
           this.handleUploadFile(files[0]);
@@ -2540,38 +2758,40 @@ showToast(message, type = 'success') {
 
     // Remove preview
     if (removeBtn) {
-      removeBtn.addEventListener('click', () => {
+      removeBtn.addEventListener("click", () => {
         this.uploadModalFile = null;
-        preview.style.display = 'none';
-        dropZone.querySelector('.upload-placeholder').style.display = 'block';
-        fileInput.value = '';
-        document.getElementById('uploadModalPreviewImg').src = '';
+        preview.style.display = "none";
+        dropZone.querySelector(".upload-placeholder").style.display = "block";
+        fileInput.value = "";
+        document.getElementById("uploadModalPreviewImg").src = "";
       });
     }
 
     // NSFW toggle
     if (nsfwToggle) {
-      nsfwToggle.addEventListener('change', () => {
-        const categoryGroup = document.getElementById('uploadModalNSFWCategory');
+      nsfwToggle.addEventListener("change", () => {
+        const categoryGroup = document.getElementById(
+          "uploadModalNSFWCategory",
+        );
         if (categoryGroup) {
-          categoryGroup.style.display = nsfwToggle.checked ? 'block' : 'none';
+          categoryGroup.style.display = nsfwToggle.checked ? "block" : "none";
         }
       });
     }
 
     // Tags input
-    const tagsInput = document.getElementById('uploadModalTags');
+    const tagsInput = document.getElementById("uploadModalTags");
     if (tagsInput) {
       this.uploadModalTags = [];
-      tagsInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
+      tagsInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
           e.preventDefault();
           const tag = tagsInput.value.trim();
           if (tag && this.uploadModalTags.length < 10) {
             if (!this.uploadModalTags.includes(tag)) {
               this.uploadModalTags.push(tag);
               this.renderUploadModalTags();
-              tagsInput.value = '';
+              tagsInput.value = "";
             }
           }
         }
@@ -2580,20 +2800,24 @@ showToast(message, type = 'success') {
   }
 
   renderUploadModalTags() {
-    const display = document.getElementById('uploadModalTagsDisplay');
+    const display = document.getElementById("uploadModalTagsDisplay");
     if (!display) return;
 
-    display.innerHTML = this.uploadModalTags.map((tag, index) => `
+    display.innerHTML = this.uploadModalTags
+      .map(
+        (tag, index) => `
       <span class="tag">
         ${tag}
         <button type="button" class="tag-remove" data-index="${index}">
           <i class="fas fa-times"></i>
         </button>
       </span>
-    `).join('');
+    `,
+      )
+      .join("");
 
-    display.querySelectorAll('.tag-remove').forEach(btn => {
-      btn.addEventListener('click', () => {
+    display.querySelectorAll(".tag-remove").forEach((btn) => {
+      btn.addEventListener("click", () => {
         const index = parseInt(btn.dataset.index);
         this.uploadModalTags.splice(index, 1);
         this.renderUploadModalTags();
@@ -2602,13 +2826,13 @@ showToast(message, type = 'success') {
   }
 
   handleUploadFile(file) {
-    if (!file.type.startsWith('image/')) {
-      this.showToast('Please upload an image file', 'error');
+    if (!file.type.startsWith("image/")) {
+      this.showToast("Please upload an image file", "error");
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      this.showToast('File must be less than 10MB', 'error');
+      this.showToast("File must be less than 10MB", "error");
       return;
     }
 
@@ -2616,13 +2840,13 @@ showToast(message, type = 'success') {
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      const preview = document.getElementById('uploadModalPreview');
-      const previewImg = document.getElementById('uploadModalPreviewImg');
-      const placeholder = document.querySelector('.upload-placeholder');
+      const preview = document.getElementById("uploadModalPreview");
+      const previewImg = document.getElementById("uploadModalPreviewImg");
+      const placeholder = document.querySelector(".upload-placeholder");
 
       previewImg.src = e.target.result;
-      preview.style.display = 'block';
-      if (placeholder) placeholder.style.display = 'none';
+      preview.style.display = "block";
+      if (placeholder) placeholder.style.display = "none";
     };
     reader.readAsDataURL(file);
   }
@@ -2631,44 +2855,50 @@ showToast(message, type = 'success') {
     // Reset form
     this.uploadModalFile = null;
     this.uploadModalTags = [];
-    document.getElementById('uploadModalTitle').value = '';
-    document.getElementById('uploadModalDescription').value = '';
-    document.getElementById('uploadModalSoftware').value = '';
-    document.getElementById('uploadModalTags').value = '';
-    document.getElementById('uploadModalNSFW').checked = false;
-    document.getElementById('uploadModalNSFWCategory').style.display = 'none';
-    document.getElementById('uploadModalTagsDisplay').innerHTML = '';
-    document.getElementById('uploadModalPreview').style.display = 'none';
-    document.querySelector('.upload-placeholder').style.display = 'block';
-    document.getElementById('uploadModalFile').value = '';
+    document.getElementById("uploadModalTitle").value = "";
+    document.getElementById("uploadModalDescription").value = "";
+    document.getElementById("uploadModalSoftware").value = "";
+    document.getElementById("uploadModalTags").value = "";
+    document.getElementById("uploadModalNSFW").checked = false;
+    document.getElementById("uploadModalNSFWCategory").style.display = "none";
+    document.getElementById("uploadModalTagsDisplay").innerHTML = "";
+    document.getElementById("uploadModalPreview").style.display = "none";
+    document.querySelector(".upload-placeholder").style.display = "block";
+    document.getElementById("uploadModalFile").value = "";
 
-    document.getElementById('uploadModal').classList.add('active');
+    document.getElementById("uploadModal").classList.add("active");
   }
 
   closeUploadModal() {
-    document.getElementById('uploadModal').classList.remove('active');
+    document.getElementById("uploadModal").classList.remove("active");
   }
 
   async submitUploadModal() {
-    const title = document.getElementById('uploadModalTitle').value.trim();
+    const title = document.getElementById("uploadModalTitle").value.trim();
     if (!title) {
-      this.showToast('Please enter a title', 'error');
+      this.showToast("Please enter a title", "error");
       return;
     }
 
     if (!this.uploadModalFile) {
-      this.showToast('Please select an artwork file', 'error');
+      this.showToast("Please select an artwork file", "error");
       return;
     }
 
-    const description = document.getElementById('uploadModalDescription').value.trim();
-    const category = document.getElementById('uploadModalCategory').value;
-    const software = document.getElementById('uploadModalSoftware').value.trim();
+    const description = document
+      .getElementById("uploadModalDescription")
+      .value.trim();
+    const category = document.getElementById("uploadModalCategory").value;
+    const software = document
+      .getElementById("uploadModalSoftware")
+      .value.trim();
     const tags = this.uploadModalTags || [];
-    const isNSFW = document.getElementById('uploadModalNSFW').checked;
-    const nsfwCategory = document.getElementById('uploadModalNSFWCategorySelect').value;
+    const isNSFW = document.getElementById("uploadModalNSFW").checked;
+    const nsfwCategory = document.getElementById(
+      "uploadModalNSFWCategorySelect",
+    ).value;
 
-    const submitBtn = document.getElementById('submitUploadBtn');
+    const submitBtn = document.getElementById("submitUploadBtn");
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
@@ -2685,22 +2915,22 @@ showToast(message, type = 'success') {
           tags: tags,
           challenge: null,
           isNSFW: isNSFW,
-          nsfwCategory: isNSFW ? nsfwCategory : null
+          nsfwCategory: isNSFW ? nsfwCategory : null,
         });
 
         this.closeUploadModal();
-        this.showToast('Artwork uploaded successfully! 🎉');
+        this.showToast("Artwork uploaded successfully! 🎉");
 
         // Refresh uploads
         setTimeout(() => {
           this.loadUploads(true);
         }, 500);
       } else {
-        throw new Error('Artwork manager not available');
+        throw new Error("Artwork manager not available");
       }
     } catch (error) {
-      console.error('Upload error:', error);
-      this.showToast(error.message || 'Error uploading artwork', 'error');
+      console.error("Upload error:", error);
+      this.showToast(error.message || "Error uploading artwork", "error");
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
@@ -2712,76 +2942,86 @@ showToast(message, type = 'success') {
   // ============================================
 
   async openCollectionModal() {
-    const modal = document.getElementById('collectionModal');
+    const modal = document.getElementById("collectionModal");
     if (!modal) return;
 
-    const selectArea = document.getElementById('collectionArtworkSelect');
+    const selectArea = document.getElementById("collectionArtworkSelect");
     if (selectArea) {
       try {
-        const snapshot = await db.collection('artworks')
-          .where('artistId', '==', this.userId)
-          .where('status', '==', 'published')
-          .orderBy('createdAt', 'desc')
+        const snapshot = await db
+          .collection("artworks")
+          .where("artistId", "==", this.userId)
+          .where("status", "==", "published")
+          .orderBy("createdAt", "desc")
           .limit(20)
           .get();
 
-        const artworks = snapshot.docs.map(doc => ({
+        const artworks = snapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
 
-        selectArea.innerHTML = artworks.map(art => `
+        selectArea.innerHTML = artworks
+          .map(
+            (art) => `
           <label class="artwork-checkbox">
             <input type="checkbox" value="${art.id}">
             <img src="${art.imageUrl}" alt="${art.title}">
             <span>${this.escapeHtml(art.title)}</span>
           </label>
-        `).join('');
+        `,
+          )
+          .join("");
       } catch (error) {
-        console.error('Error loading artworks for collection:', error);
-        selectArea.innerHTML = '<p style="color: rgba(255,255,255,0.3);">No artworks found</p>';
+        console.error("Error loading artworks for collection:", error);
+        selectArea.innerHTML =
+          '<p style="color: rgba(255,255,255,0.3);">No artworks found</p>';
       }
     }
 
-    document.getElementById('collectionName').value = '';
-    document.getElementById('collectionDescription').value = '';
-    modal.classList.add('active');
+    document.getElementById("collectionName").value = "";
+    document.getElementById("collectionDescription").value = "";
+    modal.classList.add("active");
   }
 
   closeCollectionModal() {
-    document.getElementById('collectionModal')?.classList.remove('active');
+    document.getElementById("collectionModal")?.classList.remove("active");
   }
 
   async saveCollection() {
-    const name = document.getElementById('collectionName')?.value?.trim() || '';
-    const description = document.getElementById('collectionDescription')?.value?.trim() || '';
+    const name = document.getElementById("collectionName")?.value?.trim() || "";
+    const description =
+      document.getElementById("collectionDescription")?.value?.trim() || "";
 
     if (!name) {
-      this.showToast('Please enter a collection name', 'error');
+      this.showToast("Please enter a collection name", "error");
       return;
     }
 
-    const selectedCheckboxes = document.querySelectorAll('#collectionArtworkSelect input[type="checkbox"]:checked');
-    const artworkIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+    const selectedCheckboxes = document.querySelectorAll(
+      '#collectionArtworkSelect input[type="checkbox"]:checked',
+    );
+    const artworkIds = Array.from(selectedCheckboxes).map((cb) => cb.value);
 
     try {
-      await db.collection('users')
+      await db
+        .collection("users")
         .doc(this.userId)
-        .collection('collections')
+        .collection("collections")
         .add({
           name: name,
           description: description,
           artworkIds: artworkIds,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
       this.closeCollectionModal();
       await this.loadCollections();
-      this.showToast('Collection created! ✅');
+      this.showToast("Collection created! ✅");
     } catch (error) {
-      console.error('Error creating collection:', error);
-      this.showToast('Error creating collection', 'error');
+      console.error("Error creating collection:", error);
+      this.showToast("Error creating collection", "error");
     }
   }
 
@@ -2790,17 +3030,17 @@ showToast(message, type = 'success') {
   // ============================================
 
   escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
+    if (!text) return "";
+    const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
   }
 
-  showToast(message, type = 'success') {
-    let toast = document.getElementById('customToast');
+  showToast(message, type = "success") {
+    let toast = document.getElementById("customToast");
     if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'customToast';
+      toast = document.createElement("div");
+      toast.id = "customToast";
       toast.style.cssText = `
         position: fixed;
         bottom: 30px;
@@ -2825,32 +3065,32 @@ showToast(message, type = 'success') {
     }
 
     toast.textContent = message;
-    toast.style.opacity = '1';
-    toast.style.transform = 'translateX(-50%) translateY(0)';
+    toast.style.opacity = "1";
+    toast.style.transform = "translateX(-50%) translateY(0)";
 
-    if (type === 'error') {
-      toast.style.borderColor = 'rgba(239,68,68,0.3)';
-      toast.style.boxShadow = '0 8px 32px rgba(239,68,68,0.2)';
+    if (type === "error") {
+      toast.style.borderColor = "rgba(239,68,68,0.3)";
+      toast.style.boxShadow = "0 8px 32px rgba(239,68,68,0.2)";
     } else {
-      toast.style.borderColor = 'rgba(16,185,129,0.3)';
-      toast.style.boxShadow = '0 8px 32px rgba(16,185,129,0.2)';
+      toast.style.borderColor = "rgba(16,185,129,0.3)";
+      toast.style.boxShadow = "0 8px 32px rgba(16,185,129,0.2)";
     }
 
     setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateX(-50%) translateY(20px)';
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(-50%) translateY(20px)";
     }, 3000);
   }
 }
 
 // Initialize after DOM is ready and profileHero is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded, waiting for ProfileSections...');
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM loaded, waiting for ProfileSections...");
 
   // Wait for profileHero to be ready
   const checkHero = () => {
     if (window.profileHero && window.profileHero.userData) {
-      console.log('ProfileHero ready, initializing ProfileSections...');
+      console.log("ProfileHero ready, initializing ProfileSections...");
       window.profileSections = new ProfileSections();
     } else {
       setTimeout(checkHero, 200);
@@ -2863,7 +3103,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fallback: initialize anyway after 3 seconds
   setTimeout(() => {
     if (!window.profileSections) {
-      console.log('Fallback: initializing ProfileSections...');
+      console.log("Fallback: initializing ProfileSections...");
       window.profileSections = new ProfileSections();
     }
   }, 3000);

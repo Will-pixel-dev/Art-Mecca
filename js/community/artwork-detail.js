@@ -60,95 +60,107 @@ class ArtworkDetail {
     });
   }
 
- // ============================================
-// INIT COMMENT SYSTEM
-// ============================================
+  // ============================================
+  // INIT COMMENT SYSTEM
+  // ============================================
 
-initCommentSystem() {
-  // Check if CommentSystem is available
-  if (typeof CommentSystem === 'undefined') {
-    console.warn('⚠️ CommentSystem not loaded yet, retrying...');
-    setTimeout(() => this.initCommentSystem(), 500);
-    return;
-  }
+  initCommentSystem() {
+    // Check if CommentSystem is available
+    if (typeof CommentSystem === "undefined") {
+      console.warn("⚠️ CommentSystem not loaded yet, retrying...");
+      setTimeout(() => this.initCommentSystem(), 500);
+      return;
+    }
 
-  // Check if comment elements exist
-  const commentsList = document.getElementById('commentsList');
-  if (!commentsList) {
-    console.warn('Comments list not found');
-    return;
-  }
+    // Check if comment elements exist
+    const commentsList = document.getElementById("commentsList");
+    if (!commentsList) {
+      console.warn("Comments list not found");
+      return;
+    }
 
-  // Check if already initialized
-  if (window.commentSystem && window.commentSystem.artworkId === this.artworkId) {
-    return;
-  }
+    // Check if already initialized
+    if (
+      window.commentSystem &&
+      window.commentSystem.artworkId === this.artworkId
+    ) {
+      return;
+    }
 
-  const isOwner = this.currentUser && this.artwork &&
-                  this.currentUser.uid === this.artwork.artistId;
+    const isOwner =
+      this.currentUser &&
+      this.artwork &&
+      this.currentUser.uid === this.artwork.artistId;
 
-  // Get the artwork owner ID
-  const artworkArtistId = this.artwork?.artistId || null;
+    // Get the artwork owner ID
+    const artworkArtistId = this.artwork?.artistId || null;
 
-  // Create comment system instance with artwork owner ID
-  window.commentSystem = new CommentSystem(
-    this.artworkId,
-    this.currentUser,
-    isOwner,
-    artworkArtistId  // ← PASS THE ARTWORK OWNER ID
-  );
+    // Create comment system instance with artwork owner ID
+    window.commentSystem = new CommentSystem(
+      this.artworkId,
+      this.currentUser,
+      isOwner,
+      artworkArtistId, // ← PASS THE ARTWORK OWNER ID
+    );
 
-  // In artwork-detail.js, add this to the init method or after rendering
+    // In artwork-detail.js, add this to the init method or after rendering
 
-// Check for comment parameter in URL
-const urlParams = new URLSearchParams(window.location.search);
-const commentId = urlParams.get('comment');
+    // Check for comment parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const commentId = urlParams.get("comment");
 
-if (commentId) {
-    // Wait for comments to load then scroll to the comment
-    setTimeout(() => {
-        const commentElement = document.querySelector(`.comment-item[data-id="${commentId}"]`);
+    if (commentId) {
+      // Wait for comments to load then scroll to the comment
+      setTimeout(() => {
+        const commentElement = document.querySelector(
+          `.comment-item[data-id="${commentId}"]`,
+        );
         if (commentElement) {
-            commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            commentElement.classList.add('highlight');
-            setTimeout(() => {
-                commentElement.classList.remove('highlight');
-            }, 3000);
+          commentElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+          commentElement.classList.add("highlight");
+          setTimeout(() => {
+            commentElement.classList.remove("highlight");
+          }, 3000);
         }
-    }, 1500);
-}
+      }, 1500);
+    }
 
-  console.log('✅ Comment System initialized');
-}
+    console.log("✅ Comment System initialized");
+  }
 
   // ============================================
   // THEME TOGGLE
   // ============================================
   setupThemeToggle() {
-    const toggleBtn = document.getElementById('themeToggle');
+    const toggleBtn = document.getElementById("themeToggle");
     if (!toggleBtn) return;
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem("theme") || "dark";
     this.applyTheme(savedTheme);
 
-    toggleBtn.addEventListener('click', () => {
-      const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    toggleBtn.addEventListener("click", () => {
+      const currentTheme = document.body.classList.contains("light-mode")
+        ? "light"
+        : "dark";
+      const newTheme = currentTheme === "light" ? "dark" : "light";
       this.applyTheme(newTheme);
-      localStorage.setItem('theme', newTheme);
+      localStorage.setItem("theme", newTheme);
     });
   }
 
   applyTheme(theme) {
     const body = document.body;
-    const toggleBtn = document.getElementById('themeToggle');
+    const toggleBtn = document.getElementById("themeToggle");
 
-    if (theme === 'light') {
-      body.classList.remove('dark-mode');
-      body.classList.add('light-mode');
+    if (theme === "light") {
+      body.classList.remove("dark-mode");
+      body.classList.add("light-mode");
     } else {
-      body.classList.remove('light-mode');
-      body.classList.add('dark-mode');
+      body.classList.remove("light-mode");
+      body.classList.add("dark-mode");
     }
   }
 
@@ -204,23 +216,32 @@ if (commentId) {
       try {
         if (this.userCache[this.artwork.artistId]) {
           const cachedUser = this.userCache[this.artwork.artistId];
-          displayName = cachedUser.username || cachedUser.fullname || this.artwork.artistName || "Anonymous Artist";
+          displayName =
+            cachedUser.username ||
+            cachedUser.fullname ||
+            this.artwork.artistName ||
+            "Anonymous Artist";
           avatarInitial = displayName.charAt(0).toUpperCase();
         } else {
-          const userDoc = await firebase.firestore()
-            .collection('users')
+          const userDoc = await firebase
+            .firestore()
+            .collection("users")
             .doc(this.artwork.artistId)
             .get();
 
           if (userDoc.exists) {
             const userData = userDoc.data();
             this.userCache[this.artwork.artistId] = userData;
-            displayName = userData.username || userData.fullname || this.artwork.artistName || 'Anonymous Artist';
+            displayName =
+              userData.username ||
+              userData.fullname ||
+              this.artwork.artistName ||
+              "Anonymous Artist";
             avatarInitial = displayName.charAt(0).toUpperCase();
           }
         }
       } catch (error) {
-        console.error('Error fetching artist name:', error);
+        console.error("Error fetching artist name:", error);
       }
     }
 
@@ -236,16 +257,19 @@ if (commentId) {
 
     // Set description
     if (artworkDescriptionEl) {
-      artworkDescriptionEl.textContent = this.artwork.description || "No description provided.";
+      artworkDescriptionEl.textContent =
+        this.artwork.description || "No description provided.";
     }
 
     // Set post time
-    if (postTimeEl) postTimeEl.textContent = this.formatTimeAgo(this.artwork.createdAt);
+    if (postTimeEl)
+      postTimeEl.textContent = this.formatTimeAgo(this.artwork.createdAt);
 
     // Set counts
     if (likeCountEl) likeCountEl.textContent = this.artwork.likes || 0;
     if (cheersCountEl) cheersCountEl.textContent = this.artwork.cheers || 0;
-    if (commentCountEl) commentCountEl.textContent = this.artwork.comments?.length || 0;
+    if (commentCountEl)
+      commentCountEl.textContent = this.artwork.comments?.length || 0;
 
     // Check if NSFW and add badge
     if (this.artwork.isNSFW) {
@@ -308,7 +332,7 @@ if (commentId) {
 
         if (this.artwork.tags && art.tags) {
           const matchCount = art.tags.filter((tag) =>
-            this.artwork.tags.includes(tag)
+            this.artwork.tags.includes(tag),
           ).length;
           score += matchCount * 10;
         }
@@ -330,7 +354,6 @@ if (commentId) {
 
       await this.fetchArtistUsernames(this.relatedArtworks);
       this.renderRelatedArtworks();
-
     } catch (error) {
       console.error("Error loading related artworks:", error);
     } finally {
@@ -340,23 +363,25 @@ if (commentId) {
   }
 
   async fetchArtistUsernames(artworks) {
-    const artistIds = [...new Set(artworks.map(art => art.artistId).filter(id => id))];
-    const uncachedIds = artistIds.filter(id => !this.userCache[id]);
+    const artistIds = [
+      ...new Set(artworks.map((art) => art.artistId).filter((id) => id)),
+    ];
+    const uncachedIds = artistIds.filter((id) => !this.userCache[id]);
 
     if (uncachedIds.length > 0) {
       try {
         const userDocs = await Promise.all(
-          uncachedIds.map(id =>
-            firebase.firestore().collection('users').doc(id).get()
-          )
+          uncachedIds.map((id) =>
+            firebase.firestore().collection("users").doc(id).get(),
+          ),
         );
-        userDocs.forEach(doc => {
+        userDocs.forEach((doc) => {
           if (doc.exists) {
             this.userCache[doc.id] = doc.data();
           }
         });
       } catch (error) {
-        console.error('Error fetching usernames:', error);
+        console.error("Error fetching usernames:", error);
       }
     }
   }
@@ -364,9 +389,11 @@ if (commentId) {
   getUserDisplayName(artistId, fallbackName) {
     if (artistId && this.userCache[artistId]) {
       const userData = this.userCache[artistId];
-      return userData.username || userData.fullname || fallbackName || 'Anonymous';
+      return (
+        userData.username || userData.fullname || fallbackName || "Anonymous"
+      );
     }
-    return fallbackName || 'Anonymous';
+    return fallbackName || "Anonymous";
   }
 
   renderRelatedArtworks() {
@@ -402,27 +429,33 @@ if (commentId) {
       "traditional-art": "🖌️ Traditional",
     };
 
-    container.innerHTML = this.relatedArtworks.map((art) => {
-      const category = categoryNames[art.category] || art.category || "Artwork";
-      const randomHeight = getRandomHeight();
-      const displayName = this.getUserDisplayName(art.artistId, art.artistName);
+    container.innerHTML = this.relatedArtworks
+      .map((art) => {
+        const category =
+          categoryNames[art.category] || art.category || "Artwork";
+        const randomHeight = getRandomHeight();
+        const displayName = this.getUserDisplayName(
+          art.artistId,
+          art.artistName,
+        );
 
-      return `
-        <div class="related-card" data-id="${art.id}" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
+        return `
+        <div class="related-card" data-id="${art.id}" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
           <div class="related-image-wrapper" style="height: ${randomHeight}px;">
-            <img src="${art.imageUrl}" alt="${art.title || 'Artwork'}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="${art.imageUrl}" alt="${art.title || "Artwork"}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
             <span class="related-category">${category}</span>
             <div class="related-overlay">
               <i class="fas fa-expand"></i>
             </div>
           </div>
           <div class="related-info">
-            <div class="related-title">${this.escapeHtml(art.title || 'Untitled')}</div>
+            <div class="related-title">${this.escapeHtml(art.title || "Untitled")}</div>
             <div class="related-artist">${this.escapeHtml(displayName)}</div>
           </div>
         </div>
       `;
-    }).join('');
+      })
+      .join("");
   }
 
   // ============================================
@@ -438,8 +471,9 @@ if (commentId) {
       let userData = this.userCache[this.artwork.artistId];
 
       if (!userData) {
-        const doc = await firebase.firestore()
-          .collection('users')
+        const doc = await firebase
+          .firestore()
+          .collection("users")
           .doc(this.artwork.artistId)
           .get();
 
@@ -450,16 +484,17 @@ if (commentId) {
       }
 
       if (userData) {
-        const isVerified = userData.isAdult === true && userData.ageVerified === true;
+        const isVerified =
+          userData.isAdult === true && userData.ageVerified === true;
 
         if (isVerified) {
-          const badge = document.createElement('span');
-          badge.className = 'verification-badge';
+          const badge = document.createElement("span");
+          badge.className = "verification-badge";
           badge.innerHTML = '<i class="fas fa-shield-alt"></i> Age Verified';
 
-          const artistDetails = artistInfo.querySelector('.artist-details');
+          const artistDetails = artistInfo.querySelector(".artist-details");
           if (artistDetails) {
-            const nameElement = artistDetails.querySelector('h4');
+            const nameElement = artistDetails.querySelector("h4");
             if (nameElement) {
               nameElement.appendChild(badge);
             }
@@ -467,7 +502,7 @@ if (commentId) {
         }
       }
     } catch (error) {
-      console.error('Error adding verification badge:', error);
+      console.error("Error adding verification badge:", error);
     }
   }
 
@@ -487,7 +522,7 @@ if (commentId) {
       const user = firebase.auth().currentUser;
       if (!user) {
         alert("Please login to report content");
-        window.location.href = "/pages/auth/login.html";
+        window.location.href = "pages/auth/login.html";
         return;
       }
 
@@ -496,8 +531,8 @@ if (commentId) {
   }
 
   showReportModal() {
-    const overlay = document.createElement('div');
-    overlay.className = 'report-modal-overlay';
+    const overlay = document.createElement("div");
+    overlay.className = "report-modal-overlay";
     overlay.style.cssText = `
       position: fixed;
       top: 0;
@@ -513,8 +548,8 @@ if (commentId) {
       animation: fadeIn 0.3s ease;
     `;
 
-    const modal = document.createElement('div');
-    modal.className = 'report-modal';
+    const modal = document.createElement("div");
+    modal.className = "report-modal";
     modal.style.cssText = `
       background: rgba(26, 26, 46, 0.95);
       backdrop-filter: blur(20px);
@@ -544,7 +579,16 @@ if (commentId) {
       </p>
 
       <div style="display: flex; flex-direction: column; gap: 10px;">
-        ${['Untagged mature content (NSFW)', 'Inappropriate content', 'Harassment or bullying', 'Copyright infringement', 'Spam or misleading', 'Other'].map(reason => `
+        ${[
+          "Untagged mature content (NSFW)",
+          "Inappropriate content",
+          "Harassment or bullying",
+          "Copyright infringement",
+          "Spam or misleading",
+          "Other",
+        ]
+          .map(
+            (reason) => `
           <button class="report-reason-btn" data-reason="${reason}" style="
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
@@ -559,7 +603,9 @@ if (commentId) {
           ">
             ${reason}
           </button>
-        `).join('')}
+        `,
+          )
+          .join("")}
       </div>
 
       <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
@@ -572,7 +618,7 @@ if (commentId) {
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       @keyframes fadeIn {
         from { opacity: 0; transform: scale(0.95); }
@@ -591,14 +637,18 @@ if (commentId) {
       style.remove();
     };
 
-    modal.querySelector('.close-report-modal').addEventListener('click', closeModal);
-    document.getElementById('cancelReportBtn').addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e) => {
+    modal
+      .querySelector(".close-report-modal")
+      .addEventListener("click", closeModal);
+    document
+      .getElementById("cancelReportBtn")
+      .addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeModal();
     });
 
-    modal.querySelectorAll('.report-reason-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
+    modal.querySelectorAll(".report-reason-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
         const reason = btn.dataset.reason;
         closeModal();
         await this.submitReport(reason);
@@ -613,14 +663,16 @@ if (commentId) {
     }
 
     try {
-      const artworkRef = firebase.firestore()
-        .collection('artworks')
+      const artworkRef = firebase
+        .firestore()
+        .collection("artworks")
         .doc(this.artworkId);
 
-      const reportDoc = await firebase.firestore()
-        .collection('reports')
-        .where('artworkId', '==', this.artworkId)
-        .where('userId', '==', this.currentUser.uid)
+      const reportDoc = await firebase
+        .firestore()
+        .collection("reports")
+        .where("artworkId", "==", this.artworkId)
+        .where("userId", "==", this.currentUser.uid)
         .get();
 
       if (!reportDoc.empty) {
@@ -628,23 +680,24 @@ if (commentId) {
         return;
       }
 
-      await firebase.firestore().collection('reports').add({
+      await firebase.firestore().collection("reports").add({
         artworkId: this.artworkId,
         userId: this.currentUser.uid,
         reason: reason,
         reportedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        status: 'pending'
+        status: "pending",
       });
 
       await artworkRef.update({
         reportCount: firebase.firestore.FieldValue.increment(1),
-        nsfwReported: true
+        nsfwReported: true,
       });
 
-      this.showToast("✅ Content reported successfully. Our moderation team will review it.");
-
+      this.showToast(
+        "✅ Content reported successfully. Our moderation team will review it.",
+      );
     } catch (error) {
-      console.error('Report error:', error);
+      console.error("Report error:", error);
       this.showToast("❌ Error reporting content. Please try again.");
     }
   }
@@ -679,7 +732,7 @@ if (commentId) {
       artistInfo.parentNode?.replaceChild(newArtistInfo, artistInfo);
 
       newArtistInfo.addEventListener("click", () => {
-        window.location.href = `/pages/community/profiles.html?user=${this.artwork.artistId}`;
+        window.location.href = `pages/community/profiles.html?user=${this.artwork.artistId}`;
       });
     }
   }
@@ -724,7 +777,7 @@ if (commentId) {
   async toggleSave() {
     if (!this.currentUser) {
       alert("Please login to save artworks");
-      window.location.href = "/pages/auth/login.html";
+      window.location.href = "pages/auth/login.html";
       return;
     }
 
@@ -1073,7 +1126,7 @@ if (commentId) {
 
     document.querySelectorAll(".tag").forEach((tag) => {
       tag.addEventListener("click", () => {
-        window.location.href = `/pages/community/gallery.html?tag=${tag.dataset.tag}`;
+        window.location.href = `pages/community/gallery.html?tag=${tag.dataset.tag}`;
       });
     });
   }

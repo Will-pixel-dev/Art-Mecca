@@ -58,7 +58,7 @@ class UserProfile {
       // Check NSFW age gate BEFORE rendering profile
       const canView = await this.checkNSFWAgeGate();
       if (!canView) {
-        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById("loadingState").style.display = "none";
         return;
       }
 
@@ -90,7 +90,10 @@ class UserProfile {
 
     // Get viewer's age from Firestore
     try {
-      const viewerDoc = await db.collection('users').doc(this.currentUser.uid).get();
+      const viewerDoc = await db
+        .collection("users")
+        .doc(this.currentUser.uid)
+        .get();
       if (viewerDoc.exists) {
         const viewerData = viewerDoc.data();
         const viewerAge = parseInt(viewerData.age) || 0;
@@ -105,7 +108,7 @@ class UserProfile {
         return true;
       }
     } catch (error) {
-      console.error('Error checking viewer age:', error);
+      console.error("Error checking viewer age:", error);
     }
 
     // Default: show age gate if age can't be verified
@@ -114,10 +117,10 @@ class UserProfile {
   }
 
   showNSFWAgeGate() {
-    const profileContent = document.getElementById('profileContent');
-    const loadingState = document.getElementById('loadingState');
+    const profileContent = document.getElementById("profileContent");
+    const loadingState = document.getElementById("loadingState");
 
-    if (loadingState) loadingState.style.display = 'none';
+    if (loadingState) loadingState.style.display = "none";
 
     if (profileContent) {
       profileContent.innerHTML = `
@@ -147,7 +150,7 @@ class UserProfile {
               You must be <strong style="color: #ff0040;">18 or older</strong> to view this profile.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-              <a href="/pages/community/gallery.html" style="
+              <a href="pages/community/gallery.html" style="
                 padding: 0.6rem 1.5rem;
                 background: rgba(255, 255, 255, 0.02);
                 color: #f5eaff;
@@ -171,7 +174,7 @@ class UserProfile {
           </div>
         </div>
       `;
-      profileContent.style.display = 'block';
+      profileContent.style.display = "block";
     }
   }
 
@@ -295,7 +298,7 @@ class UserProfile {
           "linear-gradient(135deg, #fe67ea, #63dbee)";
         sidebarAvatar.style.cursor = "pointer";
         sidebarAvatar.onclick = () => {
-          window.location.href = `/pages/community/profiles.html?user=${user.uid}`;
+          window.location.href = `pages/community/profiles.html?user=${user.uid}`;
         };
       }
       if (logoutBtn) logoutBtn.style.display = "flex";
@@ -366,33 +369,31 @@ class UserProfile {
       likedBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "/pages/auth/login.html";
+          window.location.href = "pages/auth/login.html";
           return;
         }
         const likedSection = document.getElementById("likedArtworksSection");
         if (likedSection) {
           likedSection.scrollIntoView({ behavior: "smooth" });
         } else {
-          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       });
     }
-
-
 
     const savedTutsBtn = document.getElementById("sidebarSavedTuts");
     if (savedTutsBtn) {
       savedTutsBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "/pages/auth/login.html";
+          window.location.href = "pages/auth/login.html";
           return;
         }
         const savedSection = document.getElementById("savedTutorialsSection");
         if (savedSection) {
           savedSection.scrollIntoView({ behavior: "smooth" });
         } else {
-          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       });
     }
@@ -402,7 +403,7 @@ class UserProfile {
       completedBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "/pages/auth/login.html";
+          window.location.href = "pages/auth/login.html";
           return;
         }
         const completedSection = document.getElementById(
@@ -411,7 +412,7 @@ class UserProfile {
         if (completedSection) {
           completedSection.scrollIntoView({ behavior: "smooth" });
         } else {
-          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       });
     }
@@ -421,10 +422,10 @@ class UserProfile {
       uploadsBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "/pages/auth/login.html";
+          window.location.href = "pages/auth/login.html";
           return;
         }
-        window.location.href = "/pages/community/my-uploads.html";
+        window.location.href = "pages/community/my-uploads.html";
       });
     }
 
@@ -433,10 +434,10 @@ class UserProfile {
       notifBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "/pages/auth/login.html";
+          window.location.href = "pages/auth/login.html";
           return;
         }
-        window.location.href = "/pages/community/notifications.html";
+        window.location.href = "pages/community/notifications.html";
       });
     }
 
@@ -445,10 +446,10 @@ class UserProfile {
       savesBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "/pages/auth/login.html";
+          window.location.href = "pages/auth/login.html";
           return;
         }
-        window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
+        window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
       });
     }
 
@@ -554,19 +555,19 @@ class UserProfile {
   }
 
   renderNSFWCreatorBadge() {
-    const badgesContainer = document.getElementById('heroBadges');
+    const badgesContainer = document.getElementById("heroBadges");
     if (!badgesContainer) return;
 
     // Check if user is NSFW Creator
     if (this.userData?.isNSFWCreator === true) {
       // Check if badge already exists
-      let existing = badgesContainer.querySelector('.nsfw-creator-badge');
+      let existing = badgesContainer.querySelector(".nsfw-creator-badge");
       if (!existing) {
-        const badge = document.createElement('span');
-        badge.className = 'badge nsfw-creator-badge';
+        const badge = document.createElement("span");
+        badge.className = "badge nsfw-creator-badge";
         badge.innerHTML = '<i class="fas fa-shield-alt"></i> 🔞 NSFW Creator';
         // Insert before the artist badge
-        const artistBadge = badgesContainer.querySelector('.badge.artist');
+        const artistBadge = badgesContainer.querySelector(".badge.artist");
         if (artistBadge) {
           badgesContainer.insertBefore(badge, artistBadge);
         } else {
@@ -575,7 +576,7 @@ class UserProfile {
       }
     } else {
       // Remove badge if it exists
-      const existing = badgesContainer.querySelector('.nsfw-creator-badge');
+      const existing = badgesContainer.querySelector(".nsfw-creator-badge");
       if (existing) existing.remove();
     }
   }
@@ -720,7 +721,7 @@ class UserProfile {
     }
 
     // Artist type change - update specialties/mediums
-    document.getElementById('artistType')?.addEventListener('change', (e) => {
+    document.getElementById("artistType")?.addEventListener("change", (e) => {
       this.populateSpecialties(e.target.value);
     });
   }
@@ -763,53 +764,154 @@ class UserProfile {
 
   populateSpecialties(type) {
     const specialtyMap = {
-      '': [],
-      digital: ['character-design', 'portrait', 'anatomy', 'landscape', 'digital-painting', 'concept-art', 'illustration', 'manga', 'storyboarding', 'photo-manipulation'],
-      traditional: ['oil-painting', 'watercolor', 'acrylic', 'charcoal', 'ink', 'pastel', 'mixed-media', 'collage', 'printmaking', 'sketching'],
-      '3d': ['3d-modeling', 'sculpting', 'texturing', 'rigging', 'animation-3d', 'game-art'],
-      photography: ['portrait-photography', 'landscape-photography', 'macro', 'street', 'fine-art', 'wildlife'],
-      animation: ['2d-animation', 'stop-motion', 'motion-graphics', 'character-animation', 'experimental'],
-      mixed: ['mixed-media', 'collage', 'assemblage', 'installation', 'digital-collage']
+      "": [],
+      digital: [
+        "character-design",
+        "portrait",
+        "anatomy",
+        "landscape",
+        "digital-painting",
+        "concept-art",
+        "illustration",
+        "manga",
+        "storyboarding",
+        "photo-manipulation",
+      ],
+      traditional: [
+        "oil-painting",
+        "watercolor",
+        "acrylic",
+        "charcoal",
+        "ink",
+        "pastel",
+        "mixed-media",
+        "collage",
+        "printmaking",
+        "sketching",
+      ],
+      "3d": [
+        "3d-modeling",
+        "sculpting",
+        "texturing",
+        "rigging",
+        "animation-3d",
+        "game-art",
+      ],
+      photography: [
+        "portrait-photography",
+        "landscape-photography",
+        "macro",
+        "street",
+        "fine-art",
+        "wildlife",
+      ],
+      animation: [
+        "2d-animation",
+        "stop-motion",
+        "motion-graphics",
+        "character-animation",
+        "experimental",
+      ],
+      mixed: [
+        "mixed-media",
+        "collage",
+        "assemblage",
+        "installation",
+        "digital-collage",
+      ],
     };
 
     const mediumMap = {
-      '': [],
-      traditional: ['watercolor', 'acrylic', 'oil-paint', 'ink', 'graphite', 'charcoal-medium', 'pastel-medium', 'gouache', 'colored-pencil', 'marker'],
-      digital: ['photoshop', 'procreate', 'clip-studio', 'krita', 'ibis-paint', 'affinity', 'corel-painter', 'blender', 'zbrush', 'maya'],
-      '3d': ['blender', 'zbrush', 'maya', '3ds-max', 'cinema4d', 'unity', 'unreal-engine'],
-      photography: ['digital-photography', 'film-photography', 'medium-format', 'large-format', 'polaroid', 'lomography'],
-      animation: ['toon-boom', 'tv-paint', 'after-effects', 'animate', 'moho', 'spine']
+      "": [],
+      traditional: [
+        "watercolor",
+        "acrylic",
+        "oil-paint",
+        "ink",
+        "graphite",
+        "charcoal-medium",
+        "pastel-medium",
+        "gouache",
+        "colored-pencil",
+        "marker",
+      ],
+      digital: [
+        "photoshop",
+        "procreate",
+        "clip-studio",
+        "krita",
+        "ibis-paint",
+        "affinity",
+        "corel-painter",
+        "blender",
+        "zbrush",
+        "maya",
+      ],
+      "3d": [
+        "blender",
+        "zbrush",
+        "maya",
+        "3ds-max",
+        "cinema4d",
+        "unity",
+        "unreal-engine",
+      ],
+      photography: [
+        "digital-photography",
+        "film-photography",
+        "medium-format",
+        "large-format",
+        "polaroid",
+        "lomography",
+      ],
+      animation: [
+        "toon-boom",
+        "tv-paint",
+        "after-effects",
+        "animate",
+        "moho",
+        "spine",
+      ],
     };
 
     // Specialties Grid
     const specs = specialtyMap[type] || [];
-    const specGrid = document.getElementById('specialtiesGrid');
-    specGrid.innerHTML = '';
+    const specGrid = document.getElementById("specialtiesGrid");
+    specGrid.innerHTML = "";
 
     if (specs.length === 0) {
-      specGrid.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem;">Select an artist type above to see specialties</p>';
+      specGrid.innerHTML =
+        '<p style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem;">Select an artist type above to see specialties</p>';
     } else {
       const mid = Math.ceil(specs.length / 2);
       const col1 = specs.slice(0, mid);
       const col2 = specs.slice(mid);
 
-      const col1Div = document.createElement('div');
-      col1Div.className = 'group';
-      col1Div.innerHTML = col1.map(s => `
+      const col1Div = document.createElement("div");
+      col1Div.className = "group";
+      col1Div.innerHTML = col1
+        .map(
+          (s) => `
         <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
           <input type="checkbox" value="${s}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
-          ${s.replace(/-/g, ' ')}
+          ${s.replace(/-/g, " ")}
         </label>
-      `).join('');
+      `,
+        )
+        .join("");
 
-      const col2Div = document.createElement('div');
-      col2Div.className = 'group';
-      col2Div.innerHTML = col2.map(s => `
+      const col2Div = document.createElement("div");
+      col2Div.className = "group";
+      col2Div.innerHTML = col2
+        .map(
+          (s) => `
         <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
           <input type="checkbox" value="${s}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
-          ${s.replace(/-/g, ' ')}
+          ${s.replace(/-/g, " ")}
         </label>
-      `).join('');
+      `,
+        )
+        .join("");
 
       specGrid.appendChild(col1Div);
       specGrid.appendChild(col2Div);
@@ -817,33 +919,42 @@ class UserProfile {
 
     // Mediums Grid
     const meds = mediumMap[type] || [];
-    const medGrid = document.getElementById('mediumGrid');
-    medGrid.innerHTML = '';
+    const medGrid = document.getElementById("mediumGrid");
+    medGrid.innerHTML = "";
 
     if (meds.length === 0) {
-      medGrid.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem;">Select an artist type above to see mediums</p>';
+      medGrid.innerHTML =
+        '<p style="color:var(--text-muted);font-size:0.8rem;padding:0.5rem;">Select an artist type above to see mediums</p>';
     } else {
       const mid2 = Math.ceil(meds.length / 2);
       const col1 = meds.slice(0, mid2);
       const col2 = meds.slice(mid2);
 
-      const col1Div = document.createElement('div');
-      col1Div.className = 'group';
-      col1Div.innerHTML = col1.map(m => `
+      const col1Div = document.createElement("div");
+      col1Div.className = "group";
+      col1Div.innerHTML = col1
+        .map(
+          (m) => `
         <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
           <input type="checkbox" value="${m}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
-          ${m.replace(/-/g, ' ')}
+          ${m.replace(/-/g, " ")}
         </label>
-      `).join('');
+      `,
+        )
+        .join("");
 
-      const col2Div = document.createElement('div');
-      col2Div.className = 'group';
-      col2Div.innerHTML = col2.map(m => `
+      const col2Div = document.createElement("div");
+      col2Div.className = "group";
+      col2Div.innerHTML = col2
+        .map(
+          (m) => `
         <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;color:var(--text-secondary);cursor:pointer;padding:2px 0;">
           <input type="checkbox" value="${m}" style="accent-color:var(--neon-red);width:14px;height:14px;" />
-          ${m.replace(/-/g, ' ')}
+          ${m.replace(/-/g, " ")}
         </label>
-      `).join('');
+      `,
+        )
+        .join("");
 
       medGrid.appendChild(col1Div);
       medGrid.appendChild(col2Div);
@@ -1105,8 +1216,8 @@ class UserProfile {
     this.renderBio(this.userData.bio || "No bio yet.");
 
     // Badges
-    const badgesContainer = document.getElementById('heroBadges');
-    badgesContainer.innerHTML = '';
+    const badgesContainer = document.getElementById("heroBadges");
+    badgesContainer.innerHTML = "";
 
     // NSFW Creator Badge
     if (this.userData?.isNSFWCreator === true) {
@@ -1117,7 +1228,7 @@ class UserProfile {
     if (this.userData?.isAdult && this.userData?.ageVerified) {
       badgesContainer.innerHTML += `<span class="badge verified"><i class="fas fa-check-circle"></i> Age Verified</span>`;
     }
-    if (this.userData?.role && this.userData?.role !== 'user') {
+    if (this.userData?.role && this.userData?.role !== "user") {
       badgesContainer.innerHTML += `<span class="badge moderator">${this.userData.role.charAt(0).toUpperCase() + this.userData.role.slice(1)}</span>`;
     }
     badgesContainer.innerHTML += `<span class="badge artist"><i class="fas fa-palette"></i> Artist</span>`;
@@ -1542,7 +1653,7 @@ class UserProfile {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             const id = btn.dataset.id;
-            window.location.href = `/pages/community/edit-artwork.html?id=${id}`;
+            window.location.href = `pages/community/edit-artwork.html?id=${id}`;
           });
         });
       }
@@ -1551,7 +1662,7 @@ class UserProfile {
         card.addEventListener("click", (e) => {
           if (!e.target.closest(".edit-artwork-btn")) {
             const id = card.dataset.id;
-            window.location.href = `/pages/community/artwork-detail.html?id=${id}`;
+            window.location.href = `pages/community/artwork-detail.html?id=${id}`;
           }
         });
       });
@@ -1937,7 +2048,7 @@ class UserProfile {
         container.innerHTML = artworks
           .map(
             (art) => `
-          <div class="saved-item-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
+          <div class="saved-item-card" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
             <img src="${art.imageUrl}" alt="${art.title}" style="width: 100%; height: 120px; object-fit: cover;" loading="lazy" onerror="this.src='https://placehold.co/200x120/fe67ea/white?text=Artwork'">
             <div class="saved-item-info">
               <div class="saved-item-title">${this.escapeHtml(art.title)}</div>
@@ -1982,7 +2093,7 @@ class UserProfile {
       container.innerHTML = artworks
         .map(
           (art) => `
-        <div class="saved-item-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.artworkId}'">
+        <div class="saved-item-card" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.artworkId}'">
           <img src="${art.thumbnail}" alt="${art.title}" style="width: 100%; height: 120px; object-fit: cover;" onerror="this.src='https://placehold.co/200x120/fe67ea/white?text=Artwork'">
           <div class="saved-item-info">
             <div class="saved-item-title">${this.escapeHtml(art.title)}</div>
@@ -2035,7 +2146,7 @@ class UserProfile {
           filename = idMappings[tut.tutorialId] || tut.tutorialId;
 
           return `
-          <div class="tutorial-card-small" onclick="window.location.href='/pages/tutorials/${tut.category}/${filename}.html'">
+          <div class="tutorial-card-small" onclick="window.location.href='pages/tutorials/${tut.category}/${filename}.html'">
             <div class="tutorial-thumb" loading="lazy" onerror="this.textContent='📖'">📖</div>
             <div class="tutorial-info-small">
               <div class="tutorial-title-small">${this.escapeHtml(tut.title)}</div>
@@ -2089,7 +2200,7 @@ class UserProfile {
           filename = idMappings[tut.tutorialId] || tut.tutorialId;
 
           return `
-          <div class="tutorial-card-small" onclick="window.location.href='/pages/tutorials/${tut.category}/${filename}.html'">
+          <div class="tutorial-card-small" onclick="window.location.href='pages/tutorials/${tut.category}/${filename}.html'">
             <div class="tutorial-thumb" loading="lazy" onerror="this.textContent='🏆'">🏆</div>
             <div class="tutorial-info-small">
               <div class="tutorial-title-small">${this.escapeHtml(tut.title)}</div>
@@ -2163,7 +2274,7 @@ class UserProfile {
     }
 
     // Artist type change - update specialties/mediums
-    document.getElementById('artistType')?.addEventListener('change', (e) => {
+    document.getElementById("artistType")?.addEventListener("change", (e) => {
       this.populateSpecialties(e.target.value);
     });
   }

@@ -19,43 +19,42 @@ class MessagesSystem {
     this.toastTimeout = null;
     this.isStartingConversation = false;
     this.conversationLookup = {};
-    this.accentColor = localStorage.getItem('messagesAccentColor') || '#ff00ea';
+    this.accentColor = localStorage.getItem("messagesAccentColor") || "#ff00ea";
     this.isGlitching = false;
     this.particles = [];
     this.particleAnimationId = null;
 
-
     // DOM refs
-    this.conversationList = document.getElementById('conversationList');
-    this.threadMessages = document.getElementById('threadMessages');
-    this.threadHeader = document.getElementById('threadHeader');
-    this.threadUserName = document.getElementById('threadUserName');
-    this.threadUserStatus = document.getElementById('threadUserStatus');
-    this.statusDot = document.getElementById('statusDot');
-    this.threadAvatar = document.getElementById('threadAvatar');
-    this.messageInput = document.getElementById('messageInput');
-    this.sendBtn = document.getElementById('sendMessageBtn');
-    this.msgCharCount = document.getElementById('msgCharCount');
-    this.threadBackBtn = document.getElementById('threadBackBtn');
-    this.threadProfileBtn = document.getElementById('threadProfileBtn');
-    this.typingIndicator = document.getElementById('typingIndicator');
-    this.typingText = document.getElementById('typingText');
-    this.emojiPicker = document.getElementById('emojiPicker');
-    this.emojiToggleBtn = document.getElementById('emojiToggleBtn');
-    this.paletteToggle = document.getElementById('paletteToggle');
-    this.paletteGrid = document.getElementById('paletteGrid');
-    this.fabNewChat = document.getElementById('fabNewChat');
-    this.profilePreviewModal = document.getElementById('profilePreviewModal');
-    this.previewName = document.getElementById('previewName');
-    this.previewUsername = document.getElementById('previewUsername');
-    this.previewAvatar = document.getElementById('previewAvatar');
-    this.previewBio = document.getElementById('previewBio');
-    this.previewArtworks = document.getElementById('previewArtworks');
-    this.previewFollowers = document.getElementById('previewFollowers');
-    this.previewViewProfile = document.getElementById('previewViewProfile');
-    this.messagesContainer = document.getElementById('messagesContainer');
-    this.particleCanvas = document.getElementById('particleCanvas');
-    this.keyboardHint = document.querySelector('.keyboard-hint');
+    this.conversationList = document.getElementById("conversationList");
+    this.threadMessages = document.getElementById("threadMessages");
+    this.threadHeader = document.getElementById("threadHeader");
+    this.threadUserName = document.getElementById("threadUserName");
+    this.threadUserStatus = document.getElementById("threadUserStatus");
+    this.statusDot = document.getElementById("statusDot");
+    this.threadAvatar = document.getElementById("threadAvatar");
+    this.messageInput = document.getElementById("messageInput");
+    this.sendBtn = document.getElementById("sendMessageBtn");
+    this.msgCharCount = document.getElementById("msgCharCount");
+    this.threadBackBtn = document.getElementById("threadBackBtn");
+    this.threadProfileBtn = document.getElementById("threadProfileBtn");
+    this.typingIndicator = document.getElementById("typingIndicator");
+    this.typingText = document.getElementById("typingText");
+    this.emojiPicker = document.getElementById("emojiPicker");
+    this.emojiToggleBtn = document.getElementById("emojiToggleBtn");
+    this.paletteToggle = document.getElementById("paletteToggle");
+    this.paletteGrid = document.getElementById("paletteGrid");
+    this.fabNewChat = document.getElementById("fabNewChat");
+    this.profilePreviewModal = document.getElementById("profilePreviewModal");
+    this.previewName = document.getElementById("previewName");
+    this.previewUsername = document.getElementById("previewUsername");
+    this.previewAvatar = document.getElementById("previewAvatar");
+    this.previewBio = document.getElementById("previewBio");
+    this.previewArtworks = document.getElementById("previewArtworks");
+    this.previewFollowers = document.getElementById("previewFollowers");
+    this.previewViewProfile = document.getElementById("previewViewProfile");
+    this.messagesContainer = document.getElementById("messagesContainer");
+    this.particleCanvas = document.getElementById("particleCanvas");
+    this.keyboardHint = document.querySelector(".keyboard-hint");
 
     this.init();
   }
@@ -63,7 +62,7 @@ class MessagesSystem {
   async init() {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) {
-        window.location.href = '/pages/auth/login.html';
+        window.location.href = "pages/auth/login.html";
         return;
       }
 
@@ -83,7 +82,7 @@ class MessagesSystem {
         this.loadConversations();
       }
 
-      window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         this.isMobile = window.innerWidth <= 768;
         this.updateMobileView();
         // Resize particles
@@ -94,7 +93,7 @@ class MessagesSystem {
       });
 
       const urlParams = new URLSearchParams(window.location.search);
-      const userId = urlParams.get('user');
+      const userId = urlParams.get("user");
       if (userId && userId !== this.currentUser.uid) {
         const checkAndStart = () => {
           if (this.hasLoadedConversations) {
@@ -105,8 +104,8 @@ class MessagesSystem {
         };
         setTimeout(() => {
           const url = new URL(window.location);
-          url.searchParams.delete('user');
-          window.history.replaceState({}, '', url);
+          url.searchParams.delete("user");
+          window.history.replaceState({}, "", url);
         }, 100);
         checkAndStart();
       }
@@ -115,15 +114,16 @@ class MessagesSystem {
 
   async loadUserData() {
     try {
-      const doc = await firebase.firestore()
-        .collection('users')
+      const doc = await firebase
+        .firestore()
+        .collection("users")
         .doc(this.currentUser.uid)
         .get();
       if (doc.exists) {
         this.userCache[this.currentUser.uid] = doc.data();
       }
     } catch (error) {
-      console.error('Error loading user data:', error);
+      console.error("Error loading user data:", error);
     }
   }
 
@@ -135,7 +135,7 @@ class MessagesSystem {
     const canvas = this.particleCanvas;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     const particleCount = 60;
 
     // Set canvas size
@@ -143,7 +143,7 @@ class MessagesSystem {
     canvas.height = window.innerHeight;
 
     // Create particles
-    const colors = ['#ff00ea', '#c400ad', '#ff66f0', '#58ebfe', '#ffffff'];
+    const colors = ["#ff00ea", "#c400ad", "#ff66f0", "#58ebfe", "#ffffff"];
     this.particles = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -154,7 +154,7 @@ class MessagesSystem {
         speedX: (Math.random() - 0.5) * 0.2,
         speedY: (Math.random() - 0.5) * 0.2,
         opacity: Math.random() * 0.2 + 0.02,
-        color: colors[Math.floor(Math.random() * colors.length)]
+        color: colors[Math.floor(Math.random() * colors.length)],
       });
     }
 
@@ -174,7 +174,7 @@ class MessagesSystem {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
-      this.particles.forEach(p => {
+      this.particles.forEach((p) => {
         p.x += p.speedX;
         p.y += p.speedY;
 
@@ -203,10 +203,10 @@ class MessagesSystem {
             ctx.beginPath();
             ctx.moveTo(this.particles[i].x, this.particles[i].y);
             ctx.lineTo(this.particles[j].x, this.particles[j].y);
-            ctx.strokeStyle = this.accentColor || '#ff00ea';
+            ctx.strokeStyle = this.accentColor || "#ff00ea";
             ctx.globalAlpha = opacity;
             ctx.lineWidth = 0.3;
-            ctx.shadowColor = this.accentColor || '#ff00ea';
+            ctx.shadowColor = this.accentColor || "#ff00ea";
             ctx.shadowBlur = 2;
             ctx.stroke();
             ctx.shadowBlur = 0;
@@ -233,8 +233,8 @@ class MessagesSystem {
       color,
       this.lightenColor(color, 30),
       this.darkenColor(color, 30),
-      '#58ebfe',
-      '#ffffff'
+      "#58ebfe",
+      "#ffffff",
     ];
 
     this.particles.forEach((p, index) => {
@@ -246,21 +246,21 @@ class MessagesSystem {
   }
 
   lightenColor(color, percent) {
-    const num = parseInt(color.replace('#', ''), 16);
+    const num = parseInt(color.replace("#", ""), 16);
     const amt = Math.round(2.55 * percent);
     const R = Math.min(255, (num >> 16) + amt);
-    const G = Math.min(255, ((num >> 8) & 0x00FF) + amt);
-    const B = Math.min(255, (num & 0x0000FF) + amt);
-    return `#${(1 << 24 | R << 16 | G << 8 | B).toString(16).slice(1)}`;
+    const G = Math.min(255, ((num >> 8) & 0x00ff) + amt);
+    const B = Math.min(255, (num & 0x0000ff) + amt);
+    return `#${((1 << 24) | (R << 16) | (G << 8) | B).toString(16).slice(1)}`;
   }
 
   darkenColor(color, percent) {
-    const num = parseInt(color.replace('#', ''), 16);
+    const num = parseInt(color.replace("#", ""), 16);
     const amt = Math.round(2.55 * percent);
     const R = Math.max(0, (num >> 16) - amt);
-    const G = Math.max(0, ((num >> 8) & 0x00FF) - amt);
-    const B = Math.max(0, (num & 0x0000FF) - amt);
-    return `#${(1 << 24 | R << 16 | G << 8 | B).toString(16).slice(1)}`;
+    const G = Math.max(0, ((num >> 8) & 0x00ff) - amt);
+    const B = Math.max(0, (num & 0x0000ff) - amt);
+    return `#${((1 << 24) | (R << 16) | (G << 8) | B).toString(16).slice(1)}`;
   }
 
   // ============================================================
@@ -270,11 +270,11 @@ class MessagesSystem {
   applyAccentColor(color) {
     this.accentColor = color;
     const root = document.documentElement;
-    root.style.setProperty('--accent', color);
-    root.style.setProperty('--accent-dim', `${color}15`);
-    root.style.setProperty('--accent-glow', `0 0 40px ${color}30`);
-    root.style.setProperty('--accent-glow-strong', `0 0 60px ${color}40`);
-    root.style.setProperty('--accent-glow-soft', `0 0 80px ${color}10`);
+    root.style.setProperty("--accent", color);
+    root.style.setProperty("--accent-dim", `${color}15`);
+    root.style.setProperty("--accent-glow", `0 0 40px ${color}30`);
+    root.style.setProperty("--accent-glow-strong", `0 0 60px ${color}40`);
+    root.style.setProperty("--accent-glow-soft", `0 0 80px ${color}10`);
 
     // Update messages container
     if (this.messagesContainer) {
@@ -286,41 +286,45 @@ class MessagesSystem {
     if (this.keyboardHint) {
       this.keyboardHint.style.borderColor = `${color}20`;
       this.keyboardHint.style.color = color;
-      this.keyboardHint.querySelectorAll('kbd').forEach(kbd => {
+      this.keyboardHint.querySelectorAll("kbd").forEach((kbd) => {
         kbd.style.borderColor = `${color}20`;
         kbd.style.color = color;
       });
     }
 
     // Update hero heading
-    const heroHeading = document.querySelector('.messages-hero h1');
+    const heroHeading = document.querySelector(".messages-hero h1");
     if (heroHeading) {
       heroHeading.style.background = `linear-gradient(135deg, ${color}, #c400ad)`;
-      heroHeading.style.webkitBackgroundClip = 'text';
-      heroHeading.style.backgroundClip = 'text';
+      heroHeading.style.webkitBackgroundClip = "text";
+      heroHeading.style.backgroundClip = "text";
     }
 
     // Update gradient text
-    document.querySelectorAll('.gradient-text').forEach(el => {
+    document.querySelectorAll(".gradient-text").forEach((el) => {
       el.style.background = `linear-gradient(135deg, ${color}, #c400ad)`;
-      el.style.webkitBackgroundClip = 'text';
-      el.style.backgroundClip = 'text';
+      el.style.webkitBackgroundClip = "text";
+      el.style.backgroundClip = "text";
     });
 
     // Update buttons
-    document.querySelectorAll('.btn-send, .fab-new-chat, .preview-view-profile, .conversation-empty .empty-action-btn').forEach(el => {
-      el.style.background = `linear-gradient(135deg, ${color}, #c400ad)`;
-      el.style.boxShadow = `0 0 30px ${color}20`;
-    });
+    document
+      .querySelectorAll(
+        ".btn-send, .fab-new-chat, .preview-view-profile, .conversation-empty .empty-action-btn",
+      )
+      .forEach((el) => {
+        el.style.background = `linear-gradient(135deg, ${color}, #c400ad)`;
+        el.style.boxShadow = `0 0 30px ${color}20`;
+      });
 
     // Update hero icon
-    const heroIcon = document.querySelector('.messages-hero-icon');
+    const heroIcon = document.querySelector(".messages-hero-icon");
     if (heroIcon) {
       heroIcon.style.color = color;
     }
 
     // Update graffiti tag
-    const graffitiTag = document.querySelector('.hero-graffiti-tag');
+    const graffitiTag = document.querySelector(".hero-graffiti-tag");
     if (graffitiTag) {
       graffitiTag.style.color = color;
     }
@@ -329,15 +333,15 @@ class MessagesSystem {
     this.updateParticleColors(color);
 
     // Update palette swatch active state
-    document.querySelectorAll('.palette-swatch').forEach(el => {
-      el.classList.toggle('active', el.dataset.color === color);
+    document.querySelectorAll(".palette-swatch").forEach((el) => {
+      el.classList.toggle("active", el.dataset.color === color);
     });
 
     // Update scrollbar styles
-    const styleId = 'accent-scrollbar-style';
+    const styleId = "accent-scrollbar-style";
     let styleEl = document.getElementById(styleId);
     if (!styleEl) {
-      styleEl = document.createElement('style');
+      styleEl = document.createElement("style");
       styleEl.id = styleId;
       document.head.appendChild(styleEl);
     }
@@ -366,32 +370,32 @@ class MessagesSystem {
       .messages-container { border-color: ${color}40 !important; box-shadow: 0 8px 32px rgba(0,0,0,0.645), 0 0 40px ${color}15 !important; }
     `;
 
-    localStorage.setItem('messagesAccentColor', color);
+    localStorage.setItem("messagesAccentColor", color);
   }
 
   setupPalettePicker() {
     if (!this.paletteToggle || !this.paletteGrid) return;
 
-    this.paletteToggle.addEventListener('click', () => {
-      this.paletteGrid.classList.toggle('active');
+    this.paletteToggle.addEventListener("click", () => {
+      this.paletteGrid.classList.toggle("active");
     });
 
-    document.querySelectorAll('.palette-swatch').forEach(el => {
-      el.addEventListener('click', () => {
+    document.querySelectorAll(".palette-swatch").forEach((el) => {
+      el.addEventListener("click", () => {
         const color = el.dataset.color;
         this.applyAccentColor(color);
-        this.paletteGrid.classList.remove('active');
-        this.showToast(`🎨 Accent color changed!`, 'info');
+        this.paletteGrid.classList.remove("active");
+        this.showToast(`🎨 Accent color changed!`, "info");
       });
     });
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.palette-picker')) {
-        this.paletteGrid.classList.remove('active');
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".palette-picker")) {
+        this.paletteGrid.classList.remove("active");
       }
     });
 
-    const savedColor = localStorage.getItem('messagesAccentColor');
+    const savedColor = localStorage.getItem("messagesAccentColor");
     if (savedColor) {
       this.applyAccentColor(savedColor);
     }
@@ -404,20 +408,20 @@ class MessagesSystem {
   updateNotificationBadge() {
     let totalUnread = 0;
     if (this.conversations && this.conversations.length > 0) {
-      this.conversations.forEach(conv => {
+      this.conversations.forEach((conv) => {
         const unread = conv.unreadCount?.[this.currentUser?.uid] || 0;
         totalUnread += unread;
       });
     }
     this.unreadTotal = totalUnread;
 
-    const badge = document.getElementById('notificationBadge');
+    const badge = document.getElementById("notificationBadge");
     if (badge) {
       if (totalUnread > 0) {
-        badge.textContent = totalUnread > 9 ? '9+' : totalUnread;
-        badge.style.display = 'flex';
+        badge.textContent = totalUnread > 9 ? "9+" : totalUnread;
+        badge.style.display = "flex";
       } else {
-        badge.style.display = 'none';
+        badge.style.display = "none";
       }
     }
   }
@@ -437,7 +441,7 @@ class MessagesSystem {
 
   loadConversations() {
     if (this.isLoadingConversations) {
-      console.log('⏳ Conversations already loading, skipping...');
+      console.log("⏳ Conversations already loading, skipping...");
       return;
     }
 
@@ -455,15 +459,17 @@ class MessagesSystem {
       </div>
     `;
 
-    this.unsubscribeConversations = firebase.firestore()
-      .collection('conversations')
-      .where('participants', 'array-contains', this.currentUser.uid)
-      .onSnapshot(async (snapshot) => {
-        this.isLoadingConversations = false;
-        this.hasLoadedConversations = true;
+    this.unsubscribeConversations = firebase
+      .firestore()
+      .collection("conversations")
+      .where("participants", "array-contains", this.currentUser.uid)
+      .onSnapshot(
+        async (snapshot) => {
+          this.isLoadingConversations = false;
+          this.hasLoadedConversations = true;
 
-        if (snapshot.empty) {
-          this.conversationList.innerHTML = `
+          if (snapshot.empty) {
+            this.conversationList.innerHTML = `
             <div class="conversation-empty">
               <i class="fas fa-comment-slash"></i>
               <p>No conversations yet</p>
@@ -473,123 +479,145 @@ class MessagesSystem {
               </button>
             </div>
           `;
-          const findBtn = document.getElementById('findArtistsBtn');
-          if (findBtn) {
-            findBtn.addEventListener('click', () => {
-              window.location.href = '/pages/community/search-users.html';
-            });
+            const findBtn = document.getElementById("findArtistsBtn");
+            if (findBtn) {
+              findBtn.addEventListener("click", () => {
+                window.location.href = "pages/community/search-users.html";
+              });
+            }
+            this.conversations = [];
+            this.conversationLookup = {};
+            this.updateNotificationBadge();
+            return;
           }
-          this.conversations = [];
-          this.conversationLookup = {};
-          this.updateNotificationBadge();
-          return;
-        }
 
-        const newConversations = [];
-        const newLookup = {};
+          const newConversations = [];
+          const newLookup = {};
 
-        for (const doc of snapshot.docs) {
-          const data = doc.data();
-          const conv = { id: doc.id, ...data };
+          for (const doc of snapshot.docs) {
+            const data = doc.data();
+            const conv = { id: doc.id, ...data };
 
-          const otherUserId = conv.participants.find(id => id !== this.currentUser.uid);
-          if (otherUserId) {
-            let userData = this.userCache[otherUserId];
-            if (!userData) {
-              try {
-                const userDoc = await firebase.firestore()
-                  .collection('users')
-                  .doc(otherUserId)
-                  .get();
-                if (userDoc.exists) {
-                  userData = userDoc.data();
-                  this.userCache[otherUserId] = userData;
+            const otherUserId = conv.participants.find(
+              (id) => id !== this.currentUser.uid,
+            );
+            if (otherUserId) {
+              let userData = this.userCache[otherUserId];
+              if (!userData) {
+                try {
+                  const userDoc = await firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(otherUserId)
+                    .get();
+                  if (userDoc.exists) {
+                    userData = userDoc.data();
+                    this.userCache[otherUserId] = userData;
+                  }
+                } catch (e) {
+                  console.warn("Error loading user data:", e);
                 }
-              } catch (e) {
-                console.warn('Error loading user data:', e);
+              }
+              conv.otherUser = {
+                uid: otherUserId,
+                ...userData,
+              };
+            }
+
+            newConversations.push(conv);
+            const key = this.getConversationKey(
+              this.currentUser.uid,
+              otherUserId,
+            );
+            newLookup[key] = conv.id;
+          }
+
+          // Deduplicate
+          const uniqueConversations = [];
+          const seenPairs = new Set();
+
+          newConversations.sort((a, b) => {
+            const dateA = a.lastMessageAt?.toDate?.() || new Date(0);
+            const dateB = b.lastMessageAt?.toDate?.() || new Date(0);
+            return dateB - dateA;
+          });
+
+          for (const conv of newConversations) {
+            const otherUserId = conv.participants.find(
+              (id) => id !== this.currentUser.uid,
+            );
+            if (otherUserId) {
+              const key = this.getConversationKey(
+                this.currentUser.uid,
+                otherUserId,
+              );
+              if (!seenPairs.has(key)) {
+                seenPairs.add(key);
+                uniqueConversations.push(conv);
+                newLookup[key] = conv.id;
+              } else {
+                console.log(`🗑️ Removing duplicate conversation: ${conv.id}`);
+                try {
+                  await firebase
+                    .firestore()
+                    .collection("conversations")
+                    .doc(conv.id)
+                    .delete();
+                } catch (err) {
+                  console.warn("Could not delete duplicate conversation:", err);
+                }
               }
             }
-            conv.otherUser = {
-              uid: otherUserId,
-              ...userData
-            };
           }
 
-          newConversations.push(conv);
-          const key = this.getConversationKey(this.currentUser.uid, otherUserId);
-          newLookup[key] = conv.id;
-        }
+          uniqueConversations.sort((a, b) => {
+            const dateA = a.lastMessageAt?.toDate?.() || new Date(0);
+            const dateB = b.lastMessageAt?.toDate?.() || new Date(0);
+            return dateB - dateA;
+          });
 
-        // Deduplicate
-        const uniqueConversations = [];
-        const seenPairs = new Set();
+          const currentIds = this.conversations
+            .map((c) => c.id)
+            .sort()
+            .join(",");
+          const newIds = uniqueConversations
+            .map((c) => c.id)
+            .sort()
+            .join(",");
 
-        newConversations.sort((a, b) => {
-          const dateA = a.lastMessageAt?.toDate?.() || new Date(0);
-          const dateB = b.lastMessageAt?.toDate?.() || new Date(0);
-          return dateB - dateA;
-        });
+          if (currentIds !== newIds || this.conversations.length === 0) {
+            this.conversations = uniqueConversations;
+            this.conversationLookup = newLookup;
+            this.updateNotificationBadge();
+            this.renderConversations();
 
-        for (const conv of newConversations) {
-          const otherUserId = conv.participants.find(id => id !== this.currentUser.uid);
-          if (otherUserId) {
-            const key = this.getConversationKey(this.currentUser.uid, otherUserId);
-            if (!seenPairs.has(key)) {
-              seenPairs.add(key);
-              uniqueConversations.push(conv);
-              newLookup[key] = conv.id;
-            } else {
-              console.log(`🗑️ Removing duplicate conversation: ${conv.id}`);
-              try {
-                await firebase.firestore()
-                  .collection('conversations')
-                  .doc(conv.id)
-                  .delete();
-              } catch (err) {
-                console.warn('Could not delete duplicate conversation:', err);
+            if (this.currentConversationId) {
+              const selected = this.conversations.find(
+                (c) => c.id === this.currentConversationId,
+              );
+              if (selected) {
+                this.selectConversation(selected.id);
+              } else {
+                this.currentConversationId = null;
+                this.showPlaceholder();
               }
             }
           }
-        }
-
-        uniqueConversations.sort((a, b) => {
-          const dateA = a.lastMessageAt?.toDate?.() || new Date(0);
-          const dateB = b.lastMessageAt?.toDate?.() || new Date(0);
-          return dateB - dateA;
-        });
-
-        const currentIds = this.conversations.map(c => c.id).sort().join(',');
-        const newIds = uniqueConversations.map(c => c.id).sort().join(',');
-
-        if (currentIds !== newIds || this.conversations.length === 0) {
-          this.conversations = uniqueConversations;
-          this.conversationLookup = newLookup;
-          this.updateNotificationBadge();
-          this.renderConversations();
-
-          if (this.currentConversationId) {
-            const selected = this.conversations.find(c => c.id === this.currentConversationId);
-            if (selected) {
-              this.selectConversation(selected.id);
-            } else {
-              this.currentConversationId = null;
-              this.showPlaceholder();
-            }
-          }
-        }
-      }, (error) => {
-        this.isLoadingConversations = false;
-        console.error('Error loading conversations:', error);
-        this.conversationList.innerHTML = `
+        },
+        (error) => {
+          this.isLoadingConversations = false;
+          console.error("Error loading conversations:", error);
+          this.conversationList.innerHTML = `
           <div class="conversation-empty">
             <i class="fas fa-exclamation-triangle"></i>
             <p>Error loading conversations</p>
             <p style="font-size: 0.7rem; color: var(--messages-text-muted);">
-              ${error.message.includes('index') ? 'Please create the required index in Firebase Console' : 'Please try again later'}
+              ${error.message.includes("index") ? "Please create the required index in Firebase Console" : "Please try again later"}
             </p>
           </div>
         `;
-      });
+        },
+      );
   }
 
   // ============================================================
@@ -609,22 +637,25 @@ class MessagesSystem {
       return;
     }
 
-    this.conversationList.innerHTML = this.conversations.map(conv => {
-      const user = conv.otherUser || {};
-      const avatar = user.profilePicture || user.photoURL || user.avatarUrl || null;
-      const name = user.displayName || user.fullname || user.username || 'Artist';
-      const avatarInitial = name.charAt(0).toUpperCase();
-      const lastMsg = conv.lastMessage || 'No messages yet';
-      const timeAgo = this.formatTimeAgo(conv.lastMessageAt);
-      const unreadCount = conv.unreadCount?.[this.currentUser?.uid] || 0;
-      const isActive = conv.id === this.currentConversationId;
+    this.conversationList.innerHTML = this.conversations
+      .map((conv) => {
+        const user = conv.otherUser || {};
+        const avatar =
+          user.profilePicture || user.photoURL || user.avatarUrl || null;
+        const name =
+          user.displayName || user.fullname || user.username || "Artist";
+        const avatarInitial = name.charAt(0).toUpperCase();
+        const lastMsg = conv.lastMessage || "No messages yet";
+        const timeAgo = this.formatTimeAgo(conv.lastMessageAt);
+        const unreadCount = conv.unreadCount?.[this.currentUser?.uid] || 0;
+        const isActive = conv.id === this.currentConversationId;
 
-      const avatarHtml = avatar
-        ? `<img src="${avatar}" alt="${name}">`
-        : avatarInitial;
+        const avatarHtml = avatar
+          ? `<img src="${avatar}" alt="${name}">`
+          : avatarInitial;
 
-      return `
-        <div class="conversation-item ${isActive ? 'active' : ''}" data-id="${conv.id}">
+        return `
+        <div class="conversation-item ${isActive ? "active" : ""}" data-id="${conv.id}">
           <div class="conv-avatar">${avatarHtml}</div>
           <div class="conv-info">
             <div class="conv-name">${this.escapeHtml(name)}</div>
@@ -632,19 +663,22 @@ class MessagesSystem {
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0;">
             <span class="conv-time">${timeAgo}</span>
-            ${unreadCount > 0 ? `<span class="conv-unread">${unreadCount}</span>` : ''}
+            ${unreadCount > 0 ? `<span class="conv-unread">${unreadCount}</span>` : ""}
           </div>
         </div>
       `;
-    }).join('');
+      })
+      .join("");
 
-    this.conversationList.querySelectorAll('.conversation-item').forEach(el => {
-      el.addEventListener('click', () => {
-        const id = el.dataset.id;
-        this.selectConversation(id);
-        this.markConversationRead(id);
+    this.conversationList
+      .querySelectorAll(".conversation-item")
+      .forEach((el) => {
+        el.addEventListener("click", () => {
+          const id = el.dataset.id;
+          this.selectConversation(id);
+          this.markConversationRead(id);
+        });
       });
-    });
   }
 
   // ============================================================
@@ -653,26 +687,31 @@ class MessagesSystem {
 
   selectConversation(conversationId) {
     this.currentConversationId = conversationId;
-    const conv = this.conversations.find(c => c.id === conversationId);
+    const conv = this.conversations.find((c) => c.id === conversationId);
     if (!conv) return;
 
-    this.selectedUserId = conv.participants.find(id => id !== this.currentUser.uid);
+    this.selectedUserId = conv.participants.find(
+      (id) => id !== this.currentUser.uid,
+    );
     this.updateThreadHeader(conv);
     this.loadMessages(conversationId);
 
-    this.conversationList.querySelectorAll('.conversation-item').forEach(el => {
-      el.classList.toggle('active', el.dataset.id === conversationId);
-    });
+    this.conversationList
+      .querySelectorAll(".conversation-item")
+      .forEach((el) => {
+        el.classList.toggle("active", el.dataset.id === conversationId);
+      });
 
     if (this.isMobile) {
-      document.querySelector('.conversation-list').classList.add('hidden');
+      document.querySelector(".conversation-list").classList.add("hidden");
     }
   }
 
   updateThreadHeader(conv) {
     const user = conv.otherUser || {};
-    const name = user.displayName || user.fullname || user.username || 'Artist';
-    const avatar = user.profilePicture || user.photoURL || user.avatarUrl || null;
+    const name = user.displayName || user.fullname || user.username || "Artist";
+    const avatar =
+      user.profilePicture || user.photoURL || user.avatarUrl || null;
     const avatarInitial = name.charAt(0).toUpperCase();
 
     const avatarHtml = avatar
@@ -680,11 +719,11 @@ class MessagesSystem {
       : avatarInitial;
 
     this.threadAvatar.innerHTML = avatarHtml;
-    this.threadAvatar.style.backgroundImage = avatar ? '' : '';
+    this.threadAvatar.style.backgroundImage = avatar ? "" : "";
     this.threadUserName.textContent = name;
-    this.threadUserStatus.textContent = 'Online';
-    this.threadUserStatus.className = 'thread-user-status online';
-    this.statusDot.className = 'status-dot online';
+    this.threadUserStatus.textContent = "Online";
+    this.threadUserStatus.className = "thread-user-status online";
+    this.statusDot.className = "status-dot online";
 
     this.threadAvatar.onclick = (e) => {
       e.stopPropagation();
@@ -692,7 +731,7 @@ class MessagesSystem {
         this.showProfilePreview(this.selectedUserId);
       }
     };
-    this.threadAvatar.style.cursor = 'pointer';
+    this.threadAvatar.style.cursor = "pointer";
 
     this.threadUserName.onclick = (e) => {
       e.stopPropagation();
@@ -700,7 +739,7 @@ class MessagesSystem {
         this.showProfilePreview(this.selectedUserId);
       }
     };
-    this.threadUserName.style.cursor = 'pointer';
+    this.threadUserName.style.cursor = "pointer";
 
     if (this.threadProfileBtn) {
       this.threadProfileBtn.onclick = () => {
@@ -730,42 +769,49 @@ class MessagesSystem {
       </div>
     `;
 
-    this.unsubscribeMessages = firebase.firestore()
-      .collection('conversations')
+    this.unsubscribeMessages = firebase
+      .firestore()
+      .collection("conversations")
       .doc(conversationId)
-      .collection('messages')
-      .orderBy('createdAt', 'asc')
-      .onSnapshot((snapshot) => {
-        if (snapshot.empty) {
-          this.messages = [];
-          this.threadMessages.innerHTML = `
+      .collection("messages")
+      .orderBy("createdAt", "asc")
+      .onSnapshot(
+        (snapshot) => {
+          if (snapshot.empty) {
+            this.messages = [];
+            this.threadMessages.innerHTML = `
             <div class="thread-placeholder">
               <i class="fas fa-comment-dots"></i>
               <p>No messages yet</p>
               <p style="font-size:0.8rem;opacity:0.5;">Say hello!</p>
             </div>
           `;
-          return;
-        }
+            return;
+          }
 
-        const newMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        this.messages = newMessages;
-        this.renderMessages();
-        this.scrollToBottom();
+          const newMessages = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          this.messages = newMessages;
+          this.renderMessages();
+          this.scrollToBottom();
 
-        if (this.currentConversationId === conversationId) {
-          this.markConversationRead(conversationId);
-        }
-      }, (error) => {
-        console.error('Error loading messages:', error);
-        this.threadMessages.innerHTML = `
+          if (this.currentConversationId === conversationId) {
+            this.markConversationRead(conversationId);
+          }
+        },
+        (error) => {
+          console.error("Error loading messages:", error);
+          this.threadMessages.innerHTML = `
           <div class="thread-placeholder">
             <i class="fas fa-exclamation-triangle"></i>
             <p>Error loading messages</p>
             <p style="font-size:0.8rem;opacity:0.5;">Please try again</p>
           </div>
         `;
-      });
+        },
+      );
   }
 
   // ============================================================
@@ -787,9 +833,9 @@ class MessagesSystem {
     }
 
     let lastDate = null;
-    let html = '';
+    let html = "";
 
-    this.messages.forEach(msg => {
+    this.messages.forEach((msg) => {
       const msgDate = msg.createdAt?.toDate?.() || new Date(msg.createdAt);
       const dateStr = msgDate.toDateString();
 
@@ -799,14 +845,18 @@ class MessagesSystem {
       }
 
       const isSent = msg.senderId === this.currentUser?.uid;
-      const time = msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const time = msgDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       const text = this.linkifyMentions(this.escapeHtml(msg.text));
-      const readReceipt = isSent && msg.readBy?.includes(this.selectedUserId)
-        ? `<span class="msg-read-receipt"><i class="fas fa-check-double"></i></span>`
-        : '';
+      const readReceipt =
+        isSent && msg.readBy?.includes(this.selectedUserId)
+          ? `<span class="msg-read-receipt"><i class="fas fa-check-double"></i></span>`
+          : "";
 
       html += `
-        <div class="message-bubble ${isSent ? 'sent' : 'received'}">
+        <div class="message-bubble ${isSent ? "sent" : "received"}">
           ${text}
           <span class="msg-time">${time} ${readReceipt}</span>
         </div>
@@ -830,36 +880,45 @@ class MessagesSystem {
 
   async sendMessage() {
     const text = this.messageInput.value.trim();
-    if (!text || !this.selectedUserId || this.selectedUserId === this.currentUser?.uid) return;
+    if (
+      !text ||
+      !this.selectedUserId ||
+      this.selectedUserId === this.currentUser?.uid
+    )
+      return;
 
     try {
       this.sendBtn.disabled = true;
       this.sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-      const conversationId = this.currentConversationId || await this.getOrCreateConversation();
+      const conversationId =
+        this.currentConversationId || (await this.getOrCreateConversation());
 
-      await firebase.firestore()
-        .collection('conversations')
+      await firebase
+        .firestore()
+        .collection("conversations")
         .doc(conversationId)
-        .collection('messages')
+        .collection("messages")
         .add({
           senderId: this.currentUser.uid,
           text: text,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          readBy: [this.currentUser.uid]
+          readBy: [this.currentUser.uid],
         });
 
-      await firebase.firestore()
-        .collection('conversations')
+      await firebase
+        .firestore()
+        .collection("conversations")
         .doc(conversationId)
         .update({
           lastMessage: text.substring(0, 200),
           lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
-          [`unreadCount.${this.selectedUserId}`]: firebase.firestore.FieldValue.increment(1)
+          [`unreadCount.${this.selectedUserId}`]:
+            firebase.firestore.FieldValue.increment(1),
         });
 
-      this.messageInput.value = '';
-      this.msgCharCount.textContent = '0';
+      this.messageInput.value = "";
+      this.msgCharCount.textContent = "0";
       this.sendBtn.disabled = true;
       this.sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
 
@@ -869,10 +928,9 @@ class MessagesSystem {
       }
 
       await this.createNotifications(this.selectedUserId, text);
-
     } catch (error) {
-      console.error('Error sending message:', error);
-      this.showToast('Error sending message', 'error');
+      console.error("Error sending message:", error);
+      this.showToast("Error sending message", "error");
       this.sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
       this.sendBtn.disabled = false;
     }
@@ -884,10 +942,13 @@ class MessagesSystem {
 
   async getOrCreateConversation() {
     if (!this.selectedUserId || !this.currentUser) {
-      throw new Error('Missing user information');
+      throw new Error("Missing user information");
     }
 
-    const key = this.getConversationKey(this.currentUser.uid, this.selectedUserId);
+    const key = this.getConversationKey(
+      this.currentUser.uid,
+      this.selectedUserId,
+    );
 
     if (this.conversationLookup[key]) {
       const existingId = this.conversationLookup[key];
@@ -895,9 +956,10 @@ class MessagesSystem {
       return existingId;
     }
 
-    const existing = this.conversations.find(c =>
-      c.participants.includes(this.selectedUserId) &&
-      c.participants.includes(this.currentUser.uid)
+    const existing = this.conversations.find(
+      (c) =>
+        c.participants.includes(this.selectedUserId) &&
+        c.participants.includes(this.currentUser.uid),
     );
     if (existing) {
       this.conversationLookup[key] = existing.id;
@@ -906,13 +968,14 @@ class MessagesSystem {
     }
 
     try {
-      const snapshot = await firebase.firestore()
-        .collection('conversations')
-        .where('participants', 'array-contains', this.currentUser.uid)
+      const snapshot = await firebase
+        .firestore()
+        .collection("conversations")
+        .where("participants", "array-contains", this.currentUser.uid)
         .get();
 
       let found = null;
-      snapshot.forEach(doc => {
+      snapshot.forEach((doc) => {
         const data = doc.data();
         if (data.participants.includes(this.selectedUserId)) {
           found = { id: doc.id, ...data };
@@ -921,14 +984,16 @@ class MessagesSystem {
 
       if (found) {
         this.conversationLookup[key] = found.id;
-        const otherUserId = found.participants.find(id => id !== this.currentUser.uid);
+        const otherUserId = found.participants.find(
+          (id) => id !== this.currentUser.uid,
+        );
         if (otherUserId && this.userCache[otherUserId]) {
           found.otherUser = {
             uid: otherUserId,
-            ...this.userCache[otherUserId]
+            ...this.userCache[otherUserId],
           };
         }
-        const existsInArray = this.conversations.some(c => c.id === found.id);
+        const existsInArray = this.conversations.some((c) => c.id === found.id);
         if (!existsInArray) {
           this.conversations.push(found);
         }
@@ -936,20 +1001,24 @@ class MessagesSystem {
         return found.id;
       }
     } catch (error) {
-      console.warn('Error checking Firestore for existing conversation:', error);
+      console.warn(
+        "Error checking Firestore for existing conversation:",
+        error,
+      );
     }
 
-    const docRef = await firebase.firestore()
-      .collection('conversations')
+    const docRef = await firebase
+      .firestore()
+      .collection("conversations")
       .add({
         participants: [this.currentUser.uid, this.selectedUserId],
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
-        lastMessage: '',
+        lastMessage: "",
         unreadCount: {
           [this.currentUser.uid]: 0,
-          [this.selectedUserId]: 0
-        }
+          [this.selectedUserId]: 0,
+        },
       });
 
     this.conversationLookup[key] = docRef.id;
@@ -959,13 +1028,13 @@ class MessagesSystem {
       participants: [this.currentUser.uid, this.selectedUserId],
       otherUser: {
         uid: this.selectedUserId,
-        ...(this.userCache[this.selectedUserId] || {})
+        ...(this.userCache[this.selectedUserId] || {}),
       },
-      lastMessage: '',
+      lastMessage: "",
       unreadCount: {
         [this.currentUser.uid]: 0,
-        [this.selectedUserId]: 0
-      }
+        [this.selectedUserId]: 0,
+      },
     };
     this.conversations.push(newConv);
 
@@ -976,15 +1045,16 @@ class MessagesSystem {
     if (!this.currentUser) return;
 
     try {
-      await firebase.firestore()
-        .collection('conversations')
+      await firebase
+        .firestore()
+        .collection("conversations")
         .doc(conversationId)
         .update({
-          [`unreadCount.${this.currentUser.uid}`]: 0
+          [`unreadCount.${this.currentUser.uid}`]: 0,
         });
       this.updateNotificationBadge();
     } catch (error) {
-      console.error('Error marking read:', error);
+      console.error("Error marking read:", error);
     }
   }
 
@@ -994,12 +1064,12 @@ class MessagesSystem {
 
   async startConversation(userId) {
     if (this.isStartingConversation) {
-      console.log('⏳ Conversation already starting, skipping...');
+      console.log("⏳ Conversation already starting, skipping...");
       return;
     }
 
     if (userId === this.currentUser?.uid) {
-      this.showToast("You can't message yourself", 'error');
+      this.showToast("You can't message yourself", "error");
       return;
     }
 
@@ -1011,9 +1081,10 @@ class MessagesSystem {
 
       let existingId = this.conversationLookup[key];
       if (!existingId) {
-        const existing = this.conversations.find(c =>
-          c.participants.includes(userId) &&
-          c.participants.includes(this.currentUser.uid)
+        const existing = this.conversations.find(
+          (c) =>
+            c.participants.includes(userId) &&
+            c.participants.includes(this.currentUser.uid),
         );
         if (existing) {
           existingId = existing.id;
@@ -1043,15 +1114,14 @@ class MessagesSystem {
         this.markConversationRead(convId);
         this.isStartingConversation = false;
       }, 500);
-
     } catch (error) {
-      console.error('Error starting conversation:', error);
-      this.showToast('Error creating conversation', 'error');
+      console.error("Error starting conversation:", error);
+      this.showToast("Error creating conversation", "error");
       this.isStartingConversation = false;
     }
 
     if (this.isMobile) {
-      document.querySelector('.conversation-list').classList.add('hidden');
+      document.querySelector(".conversation-list").classList.add("hidden");
     }
   }
 
@@ -1061,72 +1131,89 @@ class MessagesSystem {
 
   async createNotifications(recipientId, text) {
     try {
-      const senderName = this.currentUser.displayName ||
+      const senderName =
+        this.currentUser.displayName ||
         this.userCache[this.currentUser.uid]?.fullname ||
         this.userCache[this.currentUser.uid]?.username ||
-        'User';
+        "User";
 
       if (recipientId !== this.currentUser.uid) {
-        await firebase.firestore()
-          .collection('users')
+        await firebase
+          .firestore()
+          .collection("users")
           .doc(recipientId)
-          .collection('notifications')
+          .collection("notifications")
           .add({
-            type: 'message',
+            type: "message",
             data: {
               fromUserId: this.currentUser.uid,
               fromUserName: senderName,
               conversationId: this.currentConversationId,
-              preview: text.substring(0, 60) + (text.length > 60 ? '...' : '')
+              preview: text.substring(0, 60) + (text.length > 60 ? "..." : ""),
             },
             read: false,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           });
 
-        const userRef = firebase.firestore().collection('users').doc(recipientId);
-        await userRef.set({
-          unreadNotifications: firebase.firestore.FieldValue.increment(1)
-        }, { merge: true });
+        const userRef = firebase
+          .firestore()
+          .collection("users")
+          .doc(recipientId);
+        await userRef.set(
+          {
+            unreadNotifications: firebase.firestore.FieldValue.increment(1),
+          },
+          { merge: true },
+        );
       }
 
       const mentions = text.match(/@([\w.]+)/g) || [];
       for (const mention of mentions) {
         const username = mention.substring(1);
-        const userDoc = await firebase.firestore()
-          .collection('users')
-          .where('username', '==', username)
+        const userDoc = await firebase
+          .firestore()
+          .collection("users")
+          .where("username", "==", username)
           .limit(1)
           .get();
 
         if (!userDoc.empty) {
           const user = userDoc.docs[0];
           if (user.id !== this.currentUser.uid && user.id !== recipientId) {
-            await firebase.firestore()
-              .collection('users')
+            await firebase
+              .firestore()
+              .collection("users")
               .doc(user.id)
-              .collection('notifications')
+              .collection("notifications")
               .add({
-                type: 'mention',
+                type: "mention",
                 data: {
                   fromUserId: this.currentUser.uid,
                   fromUserName: senderName,
                   message: text.substring(0, 100),
                   conversationId: this.currentConversationId,
-                  preview: text.substring(0, 60) + (text.length > 60 ? '...' : '')
+                  preview:
+                    text.substring(0, 60) + (text.length > 60 ? "..." : ""),
                 },
                 read: false,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
               });
 
-            const userRef = firebase.firestore().collection('users').doc(user.id);
-            await userRef.set({
-              unreadNotifications: firebase.firestore.FieldValue.increment(1)
-            }, { merge: true });
+            const userRef = firebase
+              .firestore()
+              .collection("users")
+              .doc(user.id);
+            await userRef.set(
+              {
+                unreadNotifications: firebase.firestore.FieldValue.increment(1),
+              },
+              { merge: true },
+            );
           }
         }
       }
     } catch (error) {
-      console.error('Error creating notifications:', error);
+      console.error("Error creating notifications:", error);
     }
   }
 
@@ -1136,18 +1223,20 @@ class MessagesSystem {
 
   async showProfilePreview(userId) {
     try {
-      const doc = await firebase.firestore()
-        .collection('users')
+      const doc = await firebase
+        .firestore()
+        .collection("users")
         .doc(userId)
         .get();
 
       if (!doc.exists) return;
 
       const data = doc.data();
-      const name = data.fullname || data.username || 'Artist';
-      const username = data.username || 'artist';
-      const avatar = data.profilePicture || data.photoURL || data.avatarUrl || null;
-      const bio = data.bio || 'No bio available';
+      const name = data.fullname || data.username || "Artist";
+      const username = data.username || "artist";
+      const avatar =
+        data.profilePicture || data.photoURL || data.avatarUrl || null;
+      const bio = data.bio || "No bio available";
       const stats = data.stats || { artworks: 0, followers: 0 };
 
       this.previewName.textContent = name;
@@ -1158,28 +1247,27 @@ class MessagesSystem {
 
       if (avatar) {
         this.previewAvatar.style.backgroundImage = `url(${avatar})`;
-        this.previewAvatar.style.backgroundSize = 'cover';
-        this.previewAvatar.style.backgroundPosition = 'center';
-        this.previewAvatar.textContent = '';
+        this.previewAvatar.style.backgroundSize = "cover";
+        this.previewAvatar.style.backgroundPosition = "center";
+        this.previewAvatar.textContent = "";
       } else {
-        this.previewAvatar.style.backgroundImage = '';
+        this.previewAvatar.style.backgroundImage = "";
         this.previewAvatar.textContent = name.charAt(0).toUpperCase();
       }
 
       this.previewViewProfile.onclick = () => {
-        window.location.href = `/pages/community/profiles.html?user=${userId}`;
+        window.location.href = `pages/community/profiles.html?user=${userId}`;
       };
 
-      this.profilePreviewModal.classList.add('active');
-
+      this.profilePreviewModal.classList.add("active");
     } catch (error) {
-      console.error('Error loading profile preview:', error);
-      this.showToast('Error loading profile', 'error');
+      console.error("Error loading profile preview:", error);
+      this.showToast("Error loading profile", "error");
     }
   }
 
   closeProfilePreview() {
-    this.profilePreviewModal.classList.remove('active');
+    this.profilePreviewModal.classList.remove("active");
   }
 
   // ============================================================
@@ -1187,47 +1275,52 @@ class MessagesSystem {
   // ============================================================
 
   setupKeyboardShortcuts() {
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
         e.preventDefault();
-        window.location.href = '/pages/community/search-users.html';
+        window.location.href = "pages/community/search-users.html";
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "p") {
         e.preventDefault();
         if (this.currentUser) {
-          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+      if ((e.ctrlKey || e.metaKey) && e.key === "n") {
         e.preventDefault();
-        window.location.href = '/pages/community/search-users.html';
+        window.location.href = "pages/community/search-users.html";
       }
 
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'c' || e.key === 'C')) {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        e.shiftKey &&
+        (e.key === "c" || e.key === "C")
+      ) {
         e.preventDefault();
-        this.paletteGrid.classList.toggle('active');
-        if (this.paletteGrid.classList.contains('active')) {
-          this.showToast('🎨 Color picker opened!', 'info');
+        this.paletteGrid.classList.toggle("active");
+        if (this.paletteGrid.classList.contains("active")) {
+          this.showToast("🎨 Color picker opened!", "info");
         }
       }
 
-      if (e.key === 'g' || e.key === 'G') {
+      if (e.key === "g" || e.key === "G") {
         if (!e.ctrlKey && !e.metaKey && !e.altKey) {
           this.triggerGlitch();
         }
       }
 
-      if (e.key === 't' || e.key === 'T') {
+      if (e.key === "t" || e.key === "T") {
         if (!e.ctrlKey && !e.metaKey && !e.altKey) {
-          this.showToast('✨ Keyboard shortcut test!', 'info');
+          this.showToast("✨ Keyboard shortcut test!", "info");
         }
       }
 
-      if (e.key >= '1' && e.key <= '5' && !e.ctrlKey && !e.metaKey) {
+      if (e.key >= "1" && e.key <= "5" && !e.ctrlKey && !e.metaKey) {
         const index = parseInt(e.key) - 1;
-        const items = this.conversationList.querySelectorAll('.conversation-item');
+        const items =
+          this.conversationList.querySelectorAll(".conversation-item");
         if (items[index]) {
           items[index].click();
         }
@@ -1244,11 +1337,11 @@ class MessagesSystem {
     this.isGlitching = true;
 
     const container = this.messagesContainer;
-    container.style.animation = 'none';
+    container.style.animation = "none";
     container.offsetHeight;
-    container.style.animation = 'glitchFlash 0.3s ease 2';
+    container.style.animation = "glitchFlash 0.3s ease 2";
 
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       @keyframes glitchFlash {
         0% { opacity: 1; transform: translate(0); filter: hue-rotate(0deg); }
@@ -1267,7 +1360,7 @@ class MessagesSystem {
     document.head.appendChild(style);
 
     setTimeout(() => {
-      container.style.animation = '';
+      container.style.animation = "";
       style.remove();
       this.isGlitching = false;
     }, 600);
@@ -1278,66 +1371,72 @@ class MessagesSystem {
   // ============================================================
 
   setupEventListeners() {
-    this.sendBtn.addEventListener('click', () => this.sendMessage());
+    this.sendBtn.addEventListener("click", () => this.sendMessage());
 
-    this.messageInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+    this.messageInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         this.sendMessage();
       }
     });
 
-    this.messageInput.addEventListener('input', () => {
+    this.messageInput.addEventListener("input", () => {
       const length = this.messageInput.value.length;
       this.msgCharCount.textContent = length;
       this.sendBtn.disabled = length === 0 || length > 2000;
     });
 
-    this.threadBackBtn.addEventListener('click', () => {
-      document.querySelector('.conversation-list').classList.remove('hidden');
+    this.threadBackBtn.addEventListener("click", () => {
+      document.querySelector(".conversation-list").classList.remove("hidden");
     });
 
-    this.emojiToggleBtn.addEventListener('click', (e) => {
+    this.emojiToggleBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      this.emojiPicker.classList.toggle('visible');
+      this.emojiPicker.classList.toggle("visible");
     });
 
-    document.querySelectorAll('.emoji-option').forEach(el => {
-      el.addEventListener('click', () => {
+    document.querySelectorAll(".emoji-option").forEach((el) => {
+      el.addEventListener("click", () => {
         const emoji = el.textContent.trim();
         const cursorPos = this.messageInput.selectionStart;
         const text = this.messageInput.value;
-        const newText = text.slice(0, cursorPos) + emoji + text.slice(cursorPos);
+        const newText =
+          text.slice(0, cursorPos) + emoji + text.slice(cursorPos);
         this.messageInput.value = newText;
         this.messageInput.focus();
         const newCursorPos = cursorPos + emoji.length;
         this.messageInput.selectionStart = newCursorPos;
         this.messageInput.selectionEnd = newCursorPos;
-        this.messageInput.dispatchEvent(new Event('input'));
-        this.emojiPicker.classList.remove('visible');
+        this.messageInput.dispatchEvent(new Event("input"));
+        this.emojiPicker.classList.remove("visible");
       });
     });
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.emoji-picker') && !e.target.closest('#emojiToggleBtn')) {
-        this.emojiPicker.classList.remove('visible');
+    document.addEventListener("click", (e) => {
+      if (
+        !e.target.closest(".emoji-picker") &&
+        !e.target.closest("#emojiToggleBtn")
+      ) {
+        this.emojiPicker.classList.remove("visible");
       }
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        this.emojiPicker.classList.remove('visible');
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        this.emojiPicker.classList.remove("visible");
       }
     });
 
-    this.fabNewChat.addEventListener('click', () => {
-      window.location.href = '/pages/community/search-users.html';
+    this.fabNewChat.addEventListener("click", () => {
+      window.location.href = "pages/community/search-users.html";
     });
 
-    document.getElementById('closePreviewModal').addEventListener('click', () => {
-      this.closeProfilePreview();
-    });
-    this.profilePreviewModal.addEventListener('click', (e) => {
+    document
+      .getElementById("closePreviewModal")
+      .addEventListener("click", () => {
+        this.closeProfilePreview();
+      });
+    this.profilePreviewModal.addEventListener("click", (e) => {
       if (e.target === this.profilePreviewModal) {
         this.closeProfilePreview();
       }
@@ -1352,11 +1451,11 @@ class MessagesSystem {
 
   updateMobileView() {
     if (this.isMobile && this.currentConversationId) {
-      document.querySelector('.conversation-list').classList.add('hidden');
+      document.querySelector(".conversation-list").classList.add("hidden");
     } else {
-      document.querySelector('.conversation-list').classList.remove('hidden');
+      document.querySelector(".conversation-list").classList.remove("hidden");
     }
-    this.threadBackBtn.style.display = this.isMobile ? 'block' : 'none';
+    this.threadBackBtn.style.display = this.isMobile ? "block" : "none";
   }
 
   // ============================================================
@@ -1364,19 +1463,20 @@ class MessagesSystem {
   // ============================================================
 
   linkifyMentions(text) {
-    if (!text) return '';
+    if (!text) return "";
     return text.replace(/@([\w.]+)/g, (match, username) => {
       return `<span class="msg-mention">@${username}</span>`;
     });
   }
 
   formatTimeAgo(date) {
-    if (!date) return 'Just now';
+    if (!date) return "Just now";
     const now = Date.now();
-    const diff = now - (date.toDate ? date.toDate().getTime() : new Date(date).getTime());
+    const diff =
+      now - (date.toDate ? date.toDate().getTime() : new Date(date).getTime());
 
     const seconds = Math.floor(diff / 1000);
-    if (seconds < 60) return 'Just now';
+    if (seconds < 60) return "Just now";
     const minutes = Math.floor(seconds / 60);
     if (minutes < 60) return `${minutes}m`;
     const hours = Math.floor(minutes / 60);
@@ -1392,53 +1492,57 @@ class MessagesSystem {
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    if (date.toDateString() === today.toDateString()) return 'Today';
-    if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    if (date.toDateString() === today.toDateString()) return "Today";
+    if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   }
 
   escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
+    if (!text) return "";
+    const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
   }
 
-  showToast(message, type = 'info') {
-    const toast = document.getElementById('toastNotification');
-    const toastMessage = document.getElementById('toastMessage');
+  showToast(message, type = "info") {
+    const toast = document.getElementById("toastNotification");
+    const toastMessage = document.getElementById("toastMessage");
 
     if (!toast) return;
 
     toastMessage.textContent = message;
 
-    if (type === 'error') {
-      toast.style.borderColor = '#ef4444';
-      const icon = toast.querySelector('i');
+    if (type === "error") {
+      toast.style.borderColor = "#ef4444";
+      const icon = toast.querySelector("i");
       if (icon) {
-        icon.style.color = '#ef4444';
-        icon.className = 'fas fa-exclamation-circle';
+        icon.style.color = "#ef4444";
+        icon.className = "fas fa-exclamation-circle";
       }
     } else {
       toast.style.borderColor = this.accentColor;
-      const icon = toast.querySelector('i');
+      const icon = toast.querySelector("i");
       if (icon) {
         icon.style.color = this.accentColor;
-        icon.className = 'fas fa-check-circle';
+        icon.className = "fas fa-check-circle";
       }
     }
 
-    toast.classList.add('show');
-    toast.style.display = 'flex';
+    toast.classList.add("show");
+    toast.style.display = "flex";
 
     if (this.toastTimeout) {
       clearTimeout(this.toastTimeout);
     }
 
     this.toastTimeout = setTimeout(() => {
-      toast.classList.remove('show');
+      toast.classList.remove("show");
       setTimeout(() => {
-        toast.style.display = 'none';
+        toast.style.display = "none";
       }, 500);
     }, 3000);
   }
@@ -1450,15 +1554,15 @@ class MessagesSystem {
         <p>Select a conversation to start messaging</p>
       </div>
     `;
-    this.threadUserName.textContent = 'Select a conversation';
-    this.threadUserStatus.textContent = '';
-    this.statusDot.className = 'status-dot offline';
-    this.threadAvatar.innerHTML = 'U';
-    this.threadAvatar.style.backgroundImage = '';
+    this.threadUserName.textContent = "Select a conversation";
+    this.threadUserStatus.textContent = "";
+    this.statusDot.className = "status-dot offline";
+    this.threadAvatar.innerHTML = "U";
+    this.threadAvatar.style.backgroundImage = "";
     this.threadAvatar.onclick = null;
     this.threadUserName.onclick = null;
-    this.threadAvatar.style.cursor = 'default';
-    this.threadUserName.style.cursor = 'default';
+    this.threadAvatar.style.cursor = "default";
+    this.threadUserName.style.cursor = "default";
   }
 }
 
@@ -1466,6 +1570,6 @@ class MessagesSystem {
 // INITIALIZE
 // ============================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   window.messagesSystem = new MessagesSystem();
 });

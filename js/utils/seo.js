@@ -162,7 +162,7 @@ class SEO {
           "@type": "EntryPoint",
           urlTemplate:
             window.location.origin +
-            "/pages/community/gallery.html?search={search_term_string}",
+            "pages/community/gallery.html?search={search_term_string}",
         },
         "query-input": "required name=search_term_string",
       },

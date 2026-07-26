@@ -3,118 +3,155 @@
  * Handles interactive features like button clicks, notifications, and dynamic content
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Software comparison page loaded');
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Software comparison page loaded");
 
   // ---- Theme Toggle ----
-  const darkBtn = document.getElementById('themeDark');
-  const lightBtn = document.getElementById('themeLight');
+  const darkBtn = document.getElementById("themeDark");
+  const lightBtn = document.getElementById("themeLight");
 
   // Check for saved theme preference
-  if (localStorage.getItem('theme') === 'light') {
-    document.body.classList.add('light-mode');
-    lightBtn.classList.add('active');
-    darkBtn.classList.remove('active');
+  if (localStorage.getItem("theme") === "light") {
+    document.body.classList.add("light-mode");
+    lightBtn.classList.add("active");
+    darkBtn.classList.remove("active");
   }
 
-  darkBtn.addEventListener('click', function() {
-    document.body.classList.remove('light-mode');
-    darkBtn.classList.add('active');
-    lightBtn.classList.remove('active');
-    localStorage.setItem('theme', 'dark');
+  darkBtn.addEventListener("click", function () {
+    document.body.classList.remove("light-mode");
+    darkBtn.classList.add("active");
+    lightBtn.classList.remove("active");
+    localStorage.setItem("theme", "dark");
   });
 
-  lightBtn.addEventListener('click', function() {
-    document.body.classList.add('light-mode');
-    lightBtn.classList.add('active');
-    darkBtn.classList.remove('active');
-    localStorage.setItem('theme', 'light');
+  lightBtn.addEventListener("click", function () {
+    document.body.classList.add("light-mode");
+    lightBtn.classList.add("active");
+    darkBtn.classList.remove("active");
+    localStorage.setItem("theme", "light");
   });
 
   // ---- "Read Journals" buttons - navigate to journals page with filter ----
-  document.querySelectorAll('.btn-reviews').forEach(btn => {
-    btn.addEventListener('click', function(e) {
+  document.querySelectorAll(".btn-reviews").forEach((btn) => {
+    btn.addEventListener("click", function (e) {
       // The href already points to the journals page with query param
       // Let the browser handle the navigation
-      const href = this.getAttribute('href');
-      if (!href || href === '#') {
+      const href = this.getAttribute("href");
+      if (!href || href === "#") {
         e.preventDefault();
-        window.location.href = '/pages/software/software-journals.html';
+        window.location.href = "pages/software/software-journals.html";
       }
       // Otherwise, let the browser navigate normally
     });
   });
 
   // ---- "Read Journals" CTA button ----
-  const ctaJournalBtn = document.querySelector('.btn-secondary-soft');
+  const ctaJournalBtn = document.querySelector(".btn-secondary-soft");
   if (ctaJournalBtn) {
-    ctaJournalBtn.addEventListener('click', function(e) {
+    ctaJournalBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      window.location.href = '/pages/software/software-journals.html';
+      window.location.href = "pages/software/software-journals.html";
     });
   }
 
   // ---- "Take the Quiz" CTA button ----
-  const ctaQuizBtn = document.querySelector('.btn-primary-soft');
+  const ctaQuizBtn = document.querySelector(".btn-primary-soft");
   if (ctaQuizBtn) {
-    ctaQuizBtn.addEventListener('click', function(e) {
+    ctaQuizBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      window.location.href = '/pages/tools/software-quiz.html';
+      window.location.href = "pages/tools/software-quiz.html";
     });
   }
 
   // ---- Software Details Modal ----
-  const compareButtons = document.querySelectorAll('.btn-compare');
+  const compareButtons = document.querySelectorAll(".btn-compare");
 
   // Software details database with official features page links
   const softwareDetails = {
-    'Photoshop': {
-      name: 'Adobe Photoshop',
-      description: 'Industry-standard for raster graphics editing, digital painting, and photo manipulation.',
-      features: ['Advanced brush engine', '3D editing', 'AI-powered tools', 'Cloud storage', 'Neural filters'],
-      bestFor: 'Professional illustrators, photographers, and designers',
-      featuresPage: 'https://www.adobe.com/products/photoshop/features.html',
-      trialLink: 'https://www.adobe.com/products/photoshop/free-trial-download.html'
+    Photoshop: {
+      name: "Adobe Photoshop",
+      description:
+        "Industry-standard for raster graphics editing, digital painting, and photo manipulation.",
+      features: [
+        "Advanced brush engine",
+        "3D editing",
+        "AI-powered tools",
+        "Cloud storage",
+        "Neural filters",
+      ],
+      bestFor: "Professional illustrators, photographers, and designers",
+      featuresPage: "https://www.adobe.com/products/photoshop/features.html",
+      trialLink:
+        "https://www.adobe.com/products/photoshop/free-trial-download.html",
     },
-    'Procreate': {
-      name: 'Procreate',
-      description: 'Powerful iPad illustration app with an intuitive interface and stunning performance.',
-      features: ['Apple Pencil integration', 'Over 200 brushes', '4K canvas support', 'Animation assist', 'ColorDrop'],
-      bestFor: 'Digital artists on iPad, illustrators, and sketchers',
-      featuresPage: 'https://procreate.com/features',
-      trialLink: 'https://procreate.com/handbook'
+    Procreate: {
+      name: "Procreate",
+      description:
+        "Powerful iPad illustration app with an intuitive interface and stunning performance.",
+      features: [
+        "Apple Pencil integration",
+        "Over 200 brushes",
+        "4K canvas support",
+        "Animation assist",
+        "ColorDrop",
+      ],
+      bestFor: "Digital artists on iPad, illustrators, and sketchers",
+      featuresPage: "https://procreate.com/features",
+      trialLink: "https://procreate.com/handbook",
     },
-    'ClipStudio': {
-      name: 'Clip Studio Paint',
-      description: 'The go-to software for manga, comics, and concept art with specialized tools.',
-      features: ['Vector layers', '3D models support', 'Frame border tools', 'Inking stability', 'Screen tone tools'],
-      bestFor: 'Manga artists, comic creators, and illustrators',
-      featuresPage: 'https://www.clipstudio.net/en/features/',
-      trialLink: 'https://www.clipstudio.net/en/trial/'
+    ClipStudio: {
+      name: "Clip Studio Paint",
+      description:
+        "The go-to software for manga, comics, and concept art with specialized tools.",
+      features: [
+        "Vector layers",
+        "3D models support",
+        "Frame border tools",
+        "Inking stability",
+        "Screen tone tools",
+      ],
+      bestFor: "Manga artists, comic creators, and illustrators",
+      featuresPage: "https://www.clipstudio.net/en/features/",
+      trialLink: "https://www.clipstudio.net/en/trial/",
     },
-    'Krita': {
-      name: 'Krita',
-      description: 'Free and open-source digital painting software loved by concept artists.',
-      features: ['Brush stabilizers', 'Wrap-around mode', 'Pop-up palette', 'Animation timeline', 'Resource manager'],
-      bestFor: 'Budget-conscious artists, illustrators, and open-source enthusiasts',
-      featuresPage: 'https://krita.org/en/features/highlights/',
-      trialLink: 'https://krita.org/en/download/'
+    Krita: {
+      name: "Krita",
+      description:
+        "Free and open-source digital painting software loved by concept artists.",
+      features: [
+        "Brush stabilizers",
+        "Wrap-around mode",
+        "Pop-up palette",
+        "Animation timeline",
+        "Resource manager",
+      ],
+      bestFor:
+        "Budget-conscious artists, illustrators, and open-source enthusiasts",
+      featuresPage: "https://krita.org/en/features/highlights/",
+      trialLink: "https://krita.org/en/download/",
     },
-    'Affinity': {
-      name: 'Affinity Photo',
-      description: 'Professional photo editing software with one-time purchase model.',
-      features: ['Live filters', 'Panorama stitching', 'Focus stacking', 'RAW editing', 'HDR merge'],
-      bestFor: 'Photographers and designers seeking Adobe alternative',
-      featuresPage: 'https://affinity.serif.com/en-us/photo/features/',
-      trialLink: 'https://affinity.serif.com/en-us/photo/trial/'
-    }
+    Affinity: {
+      name: "Affinity Photo",
+      description:
+        "Professional photo editing software with one-time purchase model.",
+      features: [
+        "Live filters",
+        "Panorama stitching",
+        "Focus stacking",
+        "RAW editing",
+        "HDR merge",
+      ],
+      bestFor: "Photographers and designers seeking Adobe alternative",
+      featuresPage: "https://affinity.serif.com/en-us/photo/features/",
+      trialLink: "https://affinity.serif.com/en-us/photo/trial/",
+    },
   };
 
   // Add click handlers to each button - FIXED to open trial links
-  compareButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
+  compareButtons.forEach((button) => {
+    button.addEventListener("click", function (e) {
       e.preventDefault();
-      const softwareKey = this.getAttribute('data-soft');
+      const softwareKey = this.getAttribute("data-soft");
 
       if (softwareKey && softwareDetails[softwareKey]) {
         showSoftwareModal(softwareDetails[softwareKey]);
@@ -129,8 +166,8 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function showSoftwareModal(software) {
     // Create modal element
-    const modal = document.createElement('div');
-    modal.className = 'software-modal';
+    const modal = document.createElement("div");
+    modal.className = "software-modal";
     modal.style.cssText = `
       position: fixed;
       top: 0;
@@ -146,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
       animation: fadeIn 0.2s ease;
     `;
 
-    const modalContent = document.createElement('div');
+    const modalContent = document.createElement("div");
     modalContent.style.cssText = `
       background: var(--bg-deep, #0a0815);
       border-radius: 24px;
@@ -195,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <div style="margin: 1.5rem 0;">
         <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-secondary, #b0a8c8);">✨ Key Features:</h3>
         <ul style="list-style: none; padding: 0;">
-          ${software.features.map(f => `<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary, #b0a8c8);"><span style="color: #10b981;">✓</span> ${f}</li>`).join('')}
+          ${software.features.map((f) => `<li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary, #b0a8c8);"><span style="color: #10b981;">✓</span> ${f}</li>`).join("")}
         </ul>
       </div>
 
@@ -244,28 +281,28 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(modal);
 
     // Close modal on click outside or close button
-    const closeBtn = modalContent.querySelector('.modal-close');
-    closeBtn.addEventListener('click', () => modal.remove());
-    modal.addEventListener('click', (e) => {
+    const closeBtn = modalContent.querySelector(".modal-close");
+    closeBtn.addEventListener("click", () => modal.remove());
+    modal.addEventListener("click", (e) => {
       if (e.target === modal) modal.remove();
     });
 
     // Add keydown listener for Escape
     const escHandler = (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         modal.remove();
-        document.removeEventListener('keydown', escHandler);
+        document.removeEventListener("keydown", escHandler);
       }
     };
-    document.addEventListener('keydown', escHandler);
+    document.addEventListener("keydown", escHandler);
   }
 
   /**
    * Fallback notification for demo purposes
    */
   function showGenericNotification() {
-    const toast = document.createElement('div');
-    toast.textContent = '✨ More details coming soon! Check back for updates.';
+    const toast = document.createElement("div");
+    toast.textContent = "✨ More details coming soon! Check back for updates.";
     toast.style.cssText = `
       position: fixed;
       bottom: 2rem;
@@ -285,14 +322,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.appendChild(toast);
 
     setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transition = 'opacity 0.3s ease';
+      toast.style.opacity = "0";
+      toast.style.transition = "opacity 0.3s ease";
       setTimeout(() => toast.remove(), 300);
     }, 2500);
   }
 
   // ---- Add animation keyframes dynamically ----
-  const styleSheet = document.createElement('style');
+  const styleSheet = document.createElement("style");
   styleSheet.textContent = `
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -312,38 +349,38 @@ document.addEventListener('DOMContentLoaded', function() {
   document.head.appendChild(styleSheet);
 
   // ---- Table row hover effect ----
-  const tableRows = document.querySelectorAll('.comparison-table tbody tr');
-  tableRows.forEach(row => {
-    row.addEventListener('mouseenter', function() {
-      this.style.transition = 'background 0.2s';
-      this.style.backgroundColor = 'rgba(255, 105, 180, 0.04)';
+  const tableRows = document.querySelectorAll(".comparison-table tbody tr");
+  tableRows.forEach((row) => {
+    row.addEventListener("mouseenter", function () {
+      this.style.transition = "background 0.2s";
+      this.style.backgroundColor = "rgba(255, 105, 180, 0.04)";
     });
-    row.addEventListener('mouseleave', function() {
-      this.style.backgroundColor = '';
+    row.addEventListener("mouseleave", function () {
+      this.style.backgroundColor = "";
     });
   });
 
   // ---- Mouse-following glow for feature cards ----
-document.querySelectorAll('.feature-compare-card').forEach(card => {
-  card.addEventListener('mousemove', function(e) {
-    const rect = this.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    this.style.setProperty('--mouse-x', x + '%');
-    this.style.setProperty('--mouse-y', y + '%');
+  document.querySelectorAll(".feature-compare-card").forEach((card) => {
+    card.addEventListener("mousemove", function (e) {
+      const rect = this.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      this.style.setProperty("--mouse-x", x + "%");
+      this.style.setProperty("--mouse-y", y + "%");
+    });
   });
-});
 
   // ---- Smooth scroll for anchor links ----
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const target = document.querySelector(this.getAttribute('href'));
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const target = document.querySelector(this.getAttribute("href"));
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     });
   });
 
-  console.log('✅ Software Comparison page initialized');
+  console.log("✅ Software Comparison page initialized");
 });

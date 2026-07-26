@@ -46,7 +46,7 @@ class ProfileHero {
       if (!this.currentUser) {
         if (!window.location.pathname.includes("login")) {
           window.location.href =
-            "/pages/auth/login.html?redirect=" +
+            "pages/auth/login.html?redirect=" +
             encodeURIComponent(
               window.location.pathname + window.location.search,
             );
@@ -389,236 +389,252 @@ class ProfileHero {
   }
   // Add to ProfileHero class in profile-enhanced.js
 
-// ============================================
-// LOAD POINTS
-// ============================================
+  // ============================================
+  // LOAD POINTS
+  // ============================================
 
-async loadPoints() {
+  async loadPoints() {
     if (!this.userId) return;
 
     try {
-        // Get total points from transactions
-        const snapshot = await db.collection('pointsTransactions')
-            .where('userId', '==', this.userId)
-            .get();
+      // Get total points from transactions
+      const snapshot = await db
+        .collection("pointsTransactions")
+        .where("userId", "==", this.userId)
+        .get();
 
-        let totalPoints = 0;
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            totalPoints += data.amount || 0;
-        });
+      let totalPoints = 0;
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        totalPoints += data.amount || 0;
+      });
 
-        // Also check user document for cached points
-        if (this.userData && this.userData.points) {
-            totalPoints = Math.max(totalPoints, this.userData.points);
-        }
+      // Also check user document for cached points
+      if (this.userData && this.userData.points) {
+        totalPoints = Math.max(totalPoints, this.userData.points);
+      }
 
-        // Update the points display
-        const pointsEl = document.querySelector('.stat-value[data-stat="points"]');
-        if (pointsEl) {
-            pointsEl.textContent = totalPoints;
-        }
+      // Update the points display
+      const pointsEl = document.querySelector(
+        '.stat-value[data-stat="points"]',
+      );
+      if (pointsEl) {
+        pointsEl.textContent = totalPoints;
+      }
 
-        // Store for later use
-        this.userPoints = totalPoints;
+      // Store for later use
+      this.userPoints = totalPoints;
 
-        return totalPoints;
+      return totalPoints;
     } catch (error) {
-        console.error('Error loading points:', error);
-        // Fallback to user data
-        const pointsEl = document.querySelector('.stat-value[data-stat="points"]');
-        if (pointsEl && this.userData?.points) {
-            pointsEl.textContent = this.userData.points;
-        }
-        return this.userData?.points || 0;
+      console.error("Error loading points:", error);
+      // Fallback to user data
+      const pointsEl = document.querySelector(
+        '.stat-value[data-stat="points"]',
+      );
+      if (pointsEl && this.userData?.points) {
+        pointsEl.textContent = this.userData.points;
+      }
+      return this.userData?.points || 0;
     }
-}
+  }
 
-// ============================================
-// LOAD CHALLENGES JOINED
-// ============================================
+  // ============================================
+  // LOAD CHALLENGES JOINED
+  // ============================================
 
-async loadJoinedChallenges() {
+  async loadJoinedChallenges() {
     if (!this.userId) return;
 
     try {
-        const snapshot = await db.collection('userChallenges')
-            .where('userId', '==', this.userId)
-            .get();
+      const snapshot = await db
+        .collection("userChallenges")
+        .where("userId", "==", this.userId)
+        .get();
 
-        const joinedChallenges = [];
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            joinedChallenges.push({
-                id: doc.id,
-                challengeId: data.challengeId,
-                challengeType: data.challengeType,
-                joinedAt: data.joinedAt?.toDate?.() || new Date(data.joinedAt),
-                status: data.status || 'active'
-            });
+      const joinedChallenges = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        joinedChallenges.push({
+          id: doc.id,
+          challengeId: data.challengeId,
+          challengeType: data.challengeType,
+          joinedAt: data.joinedAt?.toDate?.() || new Date(data.joinedAt),
+          status: data.status || "active",
         });
+      });
 
-        // Store for later
-        this.joinedChallenges = joinedChallenges;
+      // Store for later
+      this.joinedChallenges = joinedChallenges;
 
-        // Render challenges section
-        this.renderJoinedChallenges(joinedChallenges);
+      // Render challenges section
+      this.renderJoinedChallenges(joinedChallenges);
 
-        return joinedChallenges;
+      return joinedChallenges;
     } catch (error) {
-        console.error('Error loading joined challenges:', error);
-        return [];
+      console.error("Error loading joined challenges:", error);
+      return [];
     }
-}
+  }
 
-renderJoinedChallenges(challenges) {
-    const container = document.getElementById('joinedChallengesContainer');
+  renderJoinedChallenges(challenges) {
+    const container = document.getElementById("joinedChallengesContainer");
     if (!container) return;
 
     if (!challenges || challenges.length === 0) {
-        container.innerHTML = `
+      container.innerHTML = `
             <div class="empty-challenges">
                 <i class="fas fa-trophy" style="opacity: 0.3;"></i>
                 <p>No challenges joined yet</p>
-                ${this.isOwnProfile ? `<a href="/pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ''}
+                ${this.isOwnProfile ? `<a href="pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
             </div>
         `;
-        return;
+      return;
     }
 
     // Get challenge details
-    const challengeIds = challenges.map(c => c.challengeId);
+    const challengeIds = challenges.map((c) => c.challengeId);
     // Limit to 10 most recent
     const recent = challenges.slice(0, 10);
 
-    container.innerHTML = recent.map(c => `
+    container.innerHTML = recent
+      .map(
+        (c) => `
         <div class="challenge-card-mini">
             <div class="challenge-icon">${this.getChallengeIcon(c.challengeType)}</div>
             <div class="challenge-info">
-                <div class="challenge-name">${c.challengeId || 'Challenge'}</div>
-                <div class="challenge-type">${c.challengeType || 'Daily'}</div>
+                <div class="challenge-name">${c.challengeId || "Challenge"}</div>
+                <div class="challenge-type">${c.challengeType || "Daily"}</div>
             </div>
             <div class="challenge-status ${c.status}">
-                ${c.status === 'active' ? '🟢 Active' : '✅ Completed'}
+                ${c.status === "active" ? "🟢 Active" : "✅ Completed"}
             </div>
         </div>
-    `).join('');
-}
+    `,
+      )
+      .join("");
+  }
 
-getChallengeIcon(type) {
+  getChallengeIcon(type) {
     const icons = {
-        daily: '⚡',
-        weekly: '📅',
-        monthly: '🌟',
-        yearly: '🏆'
+      daily: "⚡",
+      weekly: "📅",
+      monthly: "🌟",
+      yearly: "🏆",
     };
-    return icons[type] || '🎯';
-}
+    return icons[type] || "🎯";
+  }
 
-// ============================================
-// LOAD BADGES
-// ============================================
+  // ============================================
+  // LOAD BADGES
+  // ============================================
 
-async loadBadges() {
+  async loadBadges() {
     if (!this.userId) return;
 
     try {
-        // Check user document for badges
-        let badges = this.userData?.badges || [];
+      // Check user document for badges
+      let badges = this.userData?.badges || [];
 
-        // Also check challenge wins
-        const winsSnapshot = await db.collection('challengeWinners')
-            .where('winnerUserId', '==', this.userId)
-            .get();
+      // Also check challenge wins
+      const winsSnapshot = await db
+        .collection("challengeWinners")
+        .where("winnerUserId", "==", this.userId)
+        .get();
 
-        winsSnapshot.forEach(doc => {
-            const data = doc.data();
-            const badgeName = data.challengeType || 'challenge';
-            const badge = {
-                id: `winner-${data.challengeId}`,
-                name: `🏆 ${data.challengeTitle || 'Challenge Winner'}`,
-                type: 'winner',
-                icon: '🏆',
-                earnedAt: data.createdAt?.toDate?.() || new Date(),
-                challengeId: data.challengeId
-            };
-            if (!badges.some(b => b.id === badge.id)) {
-                badges.push(badge);
-            }
-        });
+      winsSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const badgeName = data.challengeType || "challenge";
+        const badge = {
+          id: `winner-${data.challengeId}`,
+          name: `🏆 ${data.challengeTitle || "Challenge Winner"}`,
+          type: "winner",
+          icon: "🏆",
+          earnedAt: data.createdAt?.toDate?.() || new Date(),
+          challengeId: data.challengeId,
+        };
+        if (!badges.some((b) => b.id === badge.id)) {
+          badges.push(badge);
+        }
+      });
 
-        // Render badges
-        this.renderBadges(badges);
-        this.userBadges = badges;
+      // Render badges
+      this.renderBadges(badges);
+      this.userBadges = badges;
 
-        return badges;
+      return badges;
     } catch (error) {
-        console.error('Error loading badges:', error);
-        return this.userData?.badges || [];
+      console.error("Error loading badges:", error);
+      return this.userData?.badges || [];
     }
-}
+  }
 
-renderBadges(badges) {
-    const container = document.getElementById('badgesContainer');
+  renderBadges(badges) {
+    const container = document.getElementById("badgesContainer");
     if (!container) return;
 
     if (!badges || badges.length === 0) {
-        container.innerHTML = `
+      container.innerHTML = `
             <div class="empty-badges">
                 <i class="fas fa-award" style="opacity: 0.3;"></i>
                 <p>No badges earned yet</p>
                 <span style="font-size: 0.8rem; color: var(--text-muted);">Complete challenges to earn badges!</span>
             </div>
         `;
-        return;
+      return;
     }
 
     // Get unique badges
     const uniqueBadges = [];
     const seen = new Set();
-    badges.forEach(b => {
-        const key = b.name || b.id;
-        if (!seen.has(key)) {
-            seen.add(key);
-            uniqueBadges.push(b);
-        }
+    badges.forEach((b) => {
+      const key = b.name || b.id;
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueBadges.push(b);
+      }
     });
 
-    container.innerHTML = uniqueBadges.slice(0, 12).map(b => `
-        <div class="badge-item" title="${b.name} - ${b.type || 'badge'}">
-            <div class="badge-icon-display">${b.icon || '🏅'}</div>
+    container.innerHTML = uniqueBadges
+      .slice(0, 12)
+      .map(
+        (b) => `
+        <div class="badge-item" title="${b.name} - ${b.type || "badge"}">
+            <div class="badge-icon-display">${b.icon || "🏅"}</div>
             <div class="badge-name-display">${b.name}</div>
-            ${b.earnedAt ? `<div class="badge-date">${this.formatDate(b.earnedAt)}</div>` : ''}
+            ${b.earnedAt ? `<div class="badge-date">${this.formatDate(b.earnedAt)}</div>` : ""}
         </div>
-    `).join('');
-}
+    `,
+      )
+      .join("");
+  }
 
-formatDate(date) {
-    if (!date) return '';
+  formatDate(date) {
+    if (!date) return "";
     try {
-        const d = date instanceof Date ? date : new Date(date);
-        if (isNaN(d.getTime())) return '';
-        return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      const d = date instanceof Date ? date : new Date(date);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
     } catch (e) {
-        return '';
+      return "";
     }
-}
+  }
 
-// ============================================
-// UPDATE RENDER PROFILE - ADD NEW STATS
-// ============================================
+  // ============================================
+  // UPDATE RENDER PROFILE - ADD NEW STATS
+  // ============================================
 
-// Update the renderProfile method to include points and badges
-// Add this to the existing renderProfile method:
+  // Update the renderProfile method to include points and badges
+  // Add this to the existing renderProfile method:
 
-async renderProfile() {
+  async renderProfile() {
     // After renderProfile() call
-this.renderProfile();
+    this.renderProfile();
 
-// Apply portfolio mode if needed
-if (this.isPortfolioMode()) {
-    this.applyPortfolioMode();
-}
+    // Apply portfolio mode if needed
+    if (this.isPortfolioMode()) {
+      this.applyPortfolioMode();
+    }
     const data = this.userData;
     if (!data) return;
 
@@ -630,21 +646,29 @@ if (this.isPortfolioMode()) {
     await this.loadBadges();
 
     // Update stats - artworks, followers, following, likes
-    const statArtworks = document.querySelector('.stat-value[data-stat="artworks"]');
-    const statFollowers = document.querySelector('.stat-value[data-stat="followers"]');
-    const statFollowing = document.querySelector('.stat-value[data-stat="following"]');
+    const statArtworks = document.querySelector(
+      '.stat-value[data-stat="artworks"]',
+    );
+    const statFollowers = document.querySelector(
+      '.stat-value[data-stat="followers"]',
+    );
+    const statFollowing = document.querySelector(
+      '.stat-value[data-stat="following"]',
+    );
     const statLikes = document.querySelector('.stat-value[data-stat="likes"]');
-    const statPoints = document.querySelector('.stat-value[data-stat="points"]');
+    const statPoints = document.querySelector(
+      '.stat-value[data-stat="points"]',
+    );
 
     if (statArtworks) statArtworks.textContent = data.stats?.artworks || 0;
     if (statFollowers) statFollowers.textContent = data.stats?.followers || 0;
     if (statFollowing) statFollowing.textContent = data.stats?.following || 0;
     if (statLikes) statLikes.textContent = data.stats?.totalLikes || 0;
-    if (statPoints) statPoints.textContent = this.userPoints || data.points || 0;
+    if (statPoints)
+      statPoints.textContent = this.userPoints || data.points || 0;
 
     // ... rest of existing render code ...
-
-}
+  }
 
   // ============================================
   // ARTIST BADGE
@@ -1151,101 +1175,108 @@ if (this.isPortfolioMode()) {
     }
   }
 
-    // ============================================
+  // ============================================
   // MESSAGE USER
   // ============================================
 
   setupMessageModal() {
-    const modal = document.getElementById('messageModal');
-    const closeBtn = document.getElementById('closeMessageModal');
-    const cancelBtn = document.getElementById('cancelMessageBtn');
-    const sendBtn = document.getElementById('sendMessageBtn');
+    const modal = document.getElementById("messageModal");
+    const closeBtn = document.getElementById("closeMessageModal");
+    const cancelBtn = document.getElementById("cancelMessageBtn");
+    const sendBtn = document.getElementById("sendMessageBtn");
 
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.closeMessageModal());
+      closeBtn.addEventListener("click", () => this.closeMessageModal());
     }
     if (cancelBtn) {
-      cancelBtn.addEventListener('click', () => this.closeMessageModal());
+      cancelBtn.addEventListener("click", () => this.closeMessageModal());
     }
     if (modal) {
-      modal.addEventListener('click', (e) => {
+      modal.addEventListener("click", (e) => {
         if (e.target === modal) this.closeMessageModal();
       });
     }
 
     if (sendBtn) {
-      sendBtn.addEventListener('click', () => this.sendMessage());
+      sendBtn.addEventListener("click", () => this.sendMessage());
     }
   }
 
   openMessageModal() {
-    const modal = document.getElementById('messageModal');
-    const toField = document.getElementById('messageTo');
+    const modal = document.getElementById("messageModal");
+    const toField = document.getElementById("messageTo");
     if (modal && toField) {
-      toField.value = this.userData?.fullname || 'Artist';
-      document.getElementById('messageSubject').value = '';
-      document.getElementById('messageContent').value = '';
-      modal.classList.add('active');
+      toField.value = this.userData?.fullname || "Artist";
+      document.getElementById("messageSubject").value = "";
+      document.getElementById("messageContent").value = "";
+      modal.classList.add("active");
     }
   }
 
   closeMessageModal() {
-    document.getElementById('messageModal')?.classList.remove('active');
+    document.getElementById("messageModal")?.classList.remove("active");
   }
 
   async sendMessage() {
-    const subject = document.getElementById('messageSubject').value.trim();
-    const content = document.getElementById('messageContent').value.trim();
+    const subject = document.getElementById("messageSubject").value.trim();
+    const content = document.getElementById("messageContent").value.trim();
 
     if (!content) {
-      this.showToast('Please enter a message', 'error');
+      this.showToast("Please enter a message", "error");
       return;
     }
 
-    const sendBtn = document.getElementById('sendMessageBtn');
+    const sendBtn = document.getElementById("sendMessageBtn");
     const originalText = sendBtn.innerHTML;
     sendBtn.disabled = true;
     sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
 
     try {
       // Check if user is blocked
-      const blockCheck = await db.collection('users')
+      const blockCheck = await db
+        .collection("users")
         .doc(this.userId)
-        .collection('blockedUsers')
+        .collection("blockedUsers")
         .doc(this.currentUser.uid)
         .get();
 
       if (blockCheck.exists) {
-        this.showToast('You are blocked by this user', 'error');
+        this.showToast("You are blocked by this user", "error");
         return;
       }
 
       // Send message
-      await db.collection('messages').add({
+      await db.collection("messages").add({
         fromUserId: this.currentUser.uid,
-        fromUserName: this.currentUser.displayName || this.currentUser.email?.split('@')[0] || 'User',
+        fromUserName:
+          this.currentUser.displayName ||
+          this.currentUser.email?.split("@")[0] ||
+          "User",
         toUserId: this.userId,
-        toUserName: this.userData?.fullname || 'Artist',
-        subject: subject || 'No subject',
+        toUserName: this.userData?.fullname || "Artist",
+        subject: subject || "No subject",
         content: content,
         read: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
       // Create notification for recipient
-      if (typeof authManager !== 'undefined' && authManager) {
-        await authManager.createNotification(this.userId, 'message', {
+      if (typeof authManager !== "undefined" && authManager) {
+        await authManager.createNotification(this.userId, "message", {
           userId: this.currentUser.uid,
-          userName: this.currentUser.displayName || this.currentUser.email?.split('@')[0] || 'User',
-          subject: subject || 'No subject'
+          userName:
+            this.currentUser.displayName ||
+            this.currentUser.email?.split("@")[0] ||
+            "User",
+          subject: subject || "No subject",
         });
       }
 
       this.closeMessageModal();
-      this.showToast('✅ Message sent successfully!');
+      this.showToast("✅ Message sent successfully!");
     } catch (error) {
-      console.error('Error sending message:', error);
-      this.showToast('Error sending message: ' + error.message, 'error');
+      console.error("Error sending message:", error);
+      this.showToast("Error sending message: " + error.message, "error");
     } finally {
       sendBtn.disabled = false;
       sendBtn.innerHTML = originalText;
@@ -1257,80 +1288,85 @@ if (this.isPortfolioMode()) {
   // ============================================
 
   setupBlockModal() {
-    const modal = document.getElementById('blockModal');
-    const closeBtn = document.getElementById('closeBlockModal');
-    const cancelBtn = document.getElementById('cancelBlockBtn');
-    const confirmBtn = document.getElementById('confirmBlockBtn');
+    const modal = document.getElementById("blockModal");
+    const closeBtn = document.getElementById("closeBlockModal");
+    const cancelBtn = document.getElementById("cancelBlockBtn");
+    const confirmBtn = document.getElementById("confirmBlockBtn");
 
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.closeBlockModal());
+      closeBtn.addEventListener("click", () => this.closeBlockModal());
     }
     if (cancelBtn) {
-      cancelBtn.addEventListener('click', () => this.closeBlockModal());
+      cancelBtn.addEventListener("click", () => this.closeBlockModal());
     }
     if (modal) {
-      modal.addEventListener('click', (e) => {
+      modal.addEventListener("click", (e) => {
         if (e.target === modal) this.closeBlockModal();
       });
     }
 
     if (confirmBtn) {
-      confirmBtn.addEventListener('click', () => this.confirmBlock());
+      confirmBtn.addEventListener("click", () => this.confirmBlock());
     }
   }
 
   openBlockModal() {
-    const modal = document.getElementById('blockModal');
-    const nameField = document.getElementById('blockUserName');
+    const modal = document.getElementById("blockModal");
+    const nameField = document.getElementById("blockUserName");
     if (modal && nameField) {
-      nameField.textContent = this.userData?.fullname || 'this user';
-      modal.classList.add('active');
+      nameField.textContent = this.userData?.fullname || "this user";
+      modal.classList.add("active");
     }
   }
 
   closeBlockModal() {
-    document.getElementById('blockModal')?.classList.remove('active');
+    document.getElementById("blockModal")?.classList.remove("active");
   }
 
   async confirmBlock() {
-    const confirmBtn = document.getElementById('confirmBlockBtn');
+    const confirmBtn = document.getElementById("confirmBlockBtn");
     const originalText = confirmBtn.innerHTML;
     confirmBtn.disabled = true;
     confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Blocking...';
 
     try {
       // Add to blocked users
-      await db.collection('users')
+      await db
+        .collection("users")
         .doc(this.currentUser.uid)
-        .collection('blockedUsers')
+        .collection("blockedUsers")
         .doc(this.userId)
         .set({
           blockedUserId: this.userId,
-          blockedUserName: this.userData?.fullname || 'Artist',
-          blockedAt: firebase.firestore.FieldValue.serverTimestamp()
+          blockedUserName: this.userData?.fullname || "Artist",
+          blockedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
       // Also add to the blocked user's blockedBy collection
-      await db.collection('users')
+      await db
+        .collection("users")
         .doc(this.userId)
-        .collection('blockedBy')
+        .collection("blockedBy")
         .doc(this.currentUser.uid)
         .set({
           blockerId: this.currentUser.uid,
-          blockerName: this.currentUser.displayName || this.currentUser.email?.split('@')[0] || 'User',
-          blockedAt: firebase.firestore.FieldValue.serverTimestamp()
+          blockerName:
+            this.currentUser.displayName ||
+            this.currentUser.email?.split("@")[0] ||
+            "User",
+          blockedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
       this.closeBlockModal();
-      this.showToast('✅ User blocked successfully');
+      this.showToast("✅ User blocked successfully");
 
       // Redirect or refresh
       setTimeout(() => {
-        window.location.href = '/pages/community/hub.html';
+        window.location.href = "pages/community/hub.html";
       }, 1500);
     } catch (error) {
-      console.error('Error blocking user:', error);
-      this.showToast('Error blocking user: ' + error.message, 'error');
+      console.error("Error blocking user:", error);
+      this.showToast("Error blocking user: " + error.message, "error");
     } finally {
       confirmBtn.disabled = false;
       confirmBtn.innerHTML = originalText;
@@ -1562,10 +1598,11 @@ if (this.isPortfolioMode()) {
     }
 
     // Check if it's a video
-    const isVideo = url.match(/\.(mp4|webm|mov|gif)$/i) ||
-                    url.includes("video") ||
-                    url.includes(".mp4") ||
-                    url.includes(".webm");
+    const isVideo =
+      url.match(/\.(mp4|webm|mov|gif)$/i) ||
+      url.includes("video") ||
+      url.includes(".mp4") ||
+      url.includes(".webm");
 
     if (isVideo) {
       const video = document.createElement("video");
@@ -1785,14 +1822,14 @@ if (this.isPortfolioMode()) {
           switch (action) {
             case "edit":
               if (this.isOwnProfile) {
-                window.location.href = "/pages/account/settings.html";
+                window.location.href = "pages/account/settings.html";
               }
               break;
             case "settings":
-              window.location.href = "/pages/account/settings.html";
+              window.location.href = "pages/account/settings.html";
               break;
             case "notifications":
-              window.location.href = "/pages/community/notifications.html";
+              window.location.href = "pages/community/notifications.html";
               break;
             case "cv":
               this.generateCV();
@@ -1803,30 +1840,34 @@ if (this.isPortfolioMode()) {
         });
       });
 
-        // Inside setupEventListeners(), add:
+    // Inside setupEventListeners(), add:
 
-  // Message and Block sidebar icons
-  document.querySelector('[data-action="message"]')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!this.isOwnProfile) {
-      this.openMessageModal();
-    } else {
-      this.showToast("You can't message yourself", 'error');
-    }
-  });
+    // Message and Block sidebar icons
+    document
+      .querySelector('[data-action="message"]')
+      ?.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!this.isOwnProfile) {
+          this.openMessageModal();
+        } else {
+          this.showToast("You can't message yourself", "error");
+        }
+      });
 
-  document.querySelector('[data-action="block"]')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!this.isOwnProfile) {
-      this.openBlockModal();
-    } else {
-      this.showToast("You can't block yourself", 'error');
-    }
-  });
+    document
+      .querySelector('[data-action="block"]')
+      ?.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!this.isOwnProfile) {
+          this.openBlockModal();
+        } else {
+          this.showToast("You can't block yourself", "error");
+        }
+      });
 
-  // Also call these in the constructor or init:
-  this.setupMessageModal();
-  this.setupBlockModal();
+    // Also call these in the constructor or init:
+    this.setupMessageModal();
+    this.setupBlockModal();
 
     this.setupBadgeEdit();
     this.setupSocialLinksModal();
@@ -2019,7 +2060,7 @@ if (this.isPortfolioMode()) {
   handleShadowAction() {
     if (!this.currentUser) {
       alert("Please login to shadow this artist");
-      window.location.href = "/pages/auth/login.html";
+      window.location.href = "pages/auth/login.html";
       return;
     }
 
@@ -2036,7 +2077,7 @@ if (this.isPortfolioMode()) {
     document.querySelectorAll(".hero-badge.moderator").forEach((badge) => {
       badge.style.cursor = "pointer";
       badge.addEventListener("click", () => {
-        window.location.href = "/pages/admin/moderation.html";
+        window.location.href = "pages/admin/moderation.html";
       });
     });
   }
