@@ -440,7 +440,7 @@ class ArtworkDetail {
         );
 
         return `
-        <div class="related-card" data-id="${art.id}" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+        <div class="related-card" data-id="${art.id}" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
           <div class="related-image-wrapper" style="height: ${randomHeight}px;">
             <img src="${art.imageUrl}" alt="${art.title || "Artwork"}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
             <span class="related-category">${category}</span>
@@ -522,7 +522,7 @@ class ArtworkDetail {
       const user = firebase.auth().currentUser;
       if (!user) {
         alert("Please login to report content");
-        window.location.href = "pages/auth/login.html";
+        window.location.href = "/pages/auth/login.html";
         return;
       }
 
@@ -732,7 +732,7 @@ class ArtworkDetail {
       artistInfo.parentNode?.replaceChild(newArtistInfo, artistInfo);
 
       newArtistInfo.addEventListener("click", () => {
-        window.location.href = `pages/community/profiles.html?user=${this.artwork.artistId}`;
+        window.location.href = `/pages/community/profiles.html?user=${this.artwork.artistId}`;
       });
     }
   }
@@ -777,7 +777,7 @@ class ArtworkDetail {
   async toggleSave() {
     if (!this.currentUser) {
       alert("Please login to save artworks");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -1126,7 +1126,7 @@ class ArtworkDetail {
 
     document.querySelectorAll(".tag").forEach((tag) => {
       tag.addEventListener("click", () => {
-        window.location.href = `pages/community/gallery.html?tag=${tag.dataset.tag}`;
+        window.location.href = `/pages/community/gallery.html?tag=${tag.dataset.tag}`;
       });
     });
   }

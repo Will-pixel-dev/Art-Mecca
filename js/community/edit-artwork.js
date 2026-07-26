@@ -50,7 +50,7 @@ class EditArtwork {
           "error",
         );
         setTimeout(() => {
-          window.location.href = "pages/community/gallery.html";
+          window.location.href = "/pages/community/gallery.html";
         }, 2000);
         return;
       }
@@ -139,7 +139,7 @@ class EditArtwork {
 
       this.showToast("✅ Artwork updated successfully!");
       setTimeout(() => {
-        window.location.href = `pages/community/artwork-detail.html?id=${this.artworkId}`;
+        window.location.href = `/pages/community/artwork-detail.html?id=${this.artworkId}`;
       }, 1500);
     } catch (error) {
       console.error("Error saving artwork:", error);
@@ -202,7 +202,7 @@ class EditArtwork {
 
       this.showToast("✅ Artwork deleted successfully!");
       setTimeout(() => {
-        window.location.href = "pages/community/gallery.html";
+        window.location.href = "/pages/community/gallery.html";
       }, 1500);
     } catch (error) {
       console.error("Error deleting artwork:", error);

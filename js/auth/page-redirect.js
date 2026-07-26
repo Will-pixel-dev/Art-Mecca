@@ -70,7 +70,7 @@ class PageRedirect {
             This page requires you to be logged in.
           </p>
           <div style="display: flex; gap: 12px; justify-content: center;">
-            <a href="pages/auth/login.html" class="btn btn-primary">Log In</a>
+            <a href="/pages/auth/login.html" class="btn btn-primary">Log In</a>
             <a href="/" class="btn btn-secondary">Go to Home</a>
           </div>
         </div>

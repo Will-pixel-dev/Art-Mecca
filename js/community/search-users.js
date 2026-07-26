@@ -382,7 +382,7 @@ class SearchUsers {
         ) {
           const userId = card.dataset.userId;
           if (userId) {
-            window.location.href = `pages/community/profiles.html?user=${userId}`;
+            window.location.href = `/pages/community/profiles.html?user=${userId}`;
           }
         }
       });
@@ -488,7 +488,7 @@ class SearchUsers {
           </div>
           <div class="user-info-right">
             <div class="user-name">
-              <a href="pages/community/profiles.html?user=${user.id}">${this.escapeHtml(user.fullname)}</a>
+              <a href="/pages/community/profiles.html?user=${user.id}">${this.escapeHtml(user.fullname)}</a>
             </div>
             <div class="user-username">@${user.username}</div>
             <div class="user-bio">${this.escapeHtml(bio)}</div>
@@ -530,7 +530,7 @@ class SearchUsers {
   async toggleShadow(userId, btnElement) {
     if (!this.currentUser) {
       alert("Please login to shadow artists");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 

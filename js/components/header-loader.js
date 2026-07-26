@@ -79,8 +79,8 @@ class HeaderLoader {
                         <div style="display: flex; gap: 16px; align-items: center;">
                             <a href="/" style="color: rgba(255,255,255,0.7); text-decoration: none;">Home</a>
                             <a href="/#about" style="color: rgba(255,255,255,0.7); text-decoration: none;">About</a>
-                            <a href="pages/auth/login.html" style="color: white; text-decoration: none; padding: 6px 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;">Login</a>
-                            <a href="pages/auth/register.html" style="color: white; text-decoration: none; padding: 6px 16px; background: linear-gradient(135deg, #ff00ea, #ad03fc); border-radius: 4px;">Sign Up</a>
+                            <a href="/pages/auth/login.html" style="color: white; text-decoration: none; padding: 6px 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px;">Login</a>
+                            <a href="/pages/auth/register.html" style="color: white; text-decoration: none; padding: 6px 16px; background: linear-gradient(135deg, #ff00ea, #ad03fc); border-radius: 4px;">Sign Up</a>
                         </div>
                     </nav>
                 </div>
@@ -196,8 +196,8 @@ class HeaderLoader {
       } else {
         if (authButtons) {
           authButtons.innerHTML = `
-                        <a href="pages/auth/login.html" class="btn btn-outline btn-sm" style="padding: 6px 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: white; text-decoration: none; font-size: 0.75rem; transition: all 0.3s;">Log In</a>
-                        <a href="pages/auth/register.html" class="btn btn-primary btn-sm" style="padding: 6px 16px; background: linear-gradient(135deg, #ff00ea, #ad03fc); border-radius: 4px; color: white; text-decoration: none; font-size: 0.75rem; transition: all 0.3s;">Sign Up</a>
+                        <a href="/pages/auth/login.html" class="btn btn-outline btn-sm" style="padding: 6px 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: white; text-decoration: none; font-size: 0.75rem; transition: all 0.3s;">Log In</a>
+                        <a href="/pages/auth/register.html" class="btn btn-primary btn-sm" style="padding: 6px 16px; background: linear-gradient(135deg, #ff00ea, #ad03fc); border-radius: 4px; color: white; text-decoration: none; font-size: 0.75rem; transition: all 0.3s;">Sign Up</a>
                     `;
         }
 

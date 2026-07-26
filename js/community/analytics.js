@@ -206,7 +206,7 @@ class AnalyticsDashboard {
           <i class="fas fa-palette"></i>
           <h4>No artworks yet</h4>
           <p>Upload your first artwork to see analytics!</p>
-          <a href="pages/community/upload.html" class="btn-upload-analytics">
+          <a href="/pages/community/upload.html" class="btn-upload-analytics">
             <i class="fas fa-plus"></i> Upload Artwork
           </a>
         </div>
@@ -228,7 +228,7 @@ class AnalyticsDashboard {
         const rankDisplay = index < 3 ? medalEmojis[index] : `#${index + 1}`;
 
         return `
-        <div class="top-artwork-item" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+        <div class="top-artwork-item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
           <div class="artwork-rank">${rankDisplay}</div>
           <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title || "Artwork")}" class="artwork-img" loading="lazy">
           <div class="artwork-info">

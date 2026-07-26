@@ -21,9 +21,9 @@ class UploadManager {
       if (!user) {
         sessionStorage.setItem(
           "redirectAfterLogin",
-          "pages/community/upload.html",
+          "/pages/community/upload.html",
         );
-        window.location.href = "pages/auth/login.html";
+        window.location.href = "/pages/auth/login.html";
         return;
       }
 
@@ -431,7 +431,7 @@ class UploadManager {
       if (
         confirm("Are you sure you want to cancel? Your changes will be lost.")
       ) {
-        window.location.href = "pages/community/gallery.html";
+        window.location.href = "/pages/community/gallery.html";
       }
     });
 
@@ -503,7 +503,7 @@ class UploadManager {
           <p style="color: #ef4444; font-weight: 500; margin: 0;">
             <i class="fas fa-lock"></i> You must verify you are 18+ to upload mature content.
           </p>
-          <button onclick="window.location.href='pages/community/profiles.html?user=${this.currentUser.uid}'"
+          <button onclick="window.location.href='/pages/community/profiles.html?user=${this.currentUser.uid}'"
                   style="margin-top: 0.5rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #fe67ea, #63dbee);
                          color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">
             Verify Age in Profile
@@ -606,10 +606,10 @@ class UploadManager {
       setTimeout(() => {
         if (isNSFW) {
           window.location.href =
-            "pages/community/nsfw-gallery.html?uploaded=" + result.artworkId;
+            "/pages/community/nsfw-gallery.html?uploaded=" + result.artworkId;
         } else {
           window.location.href =
-            "pages/community/gallery.html?uploaded=" + result.artworkId;
+            "/pages/community/gallery.html?uploaded=" + result.artworkId;
         }
       }, 2000);
     } catch (error) {
@@ -1046,7 +1046,7 @@ class UploadManager {
       this.showMessage("Artwork uploaded successfully! 🎉", "success");
 
       setTimeout(() => {
-        window.location.href = `pages/community/gallery.html?uploaded=${result.artworkId}`;
+        window.location.href = `/pages/community/gallery.html?uploaded=${result.artworkId}`;
       }, 2000);
     } catch (error) {
       console.error("Upload error:", error);

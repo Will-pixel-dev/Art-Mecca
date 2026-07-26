@@ -16,7 +16,7 @@ class ModerationDashboard {
       this.currentUser = user;
 
       if (!user) {
-        window.location.href = "pages/auth/login.html";
+        window.location.href = "/pages/auth/login.html";
         return;
       }
 
@@ -798,7 +798,7 @@ class ModerationDashboard {
 
   viewArtwork(artworkId) {
     window.open(
-      `pages/community/artwork-detail.html?id=${artworkId}`,
+      `/pages/community/artwork-detail.html?id=${artworkId}`,
       "_blank",
     );
   }

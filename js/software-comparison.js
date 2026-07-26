@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const href = this.getAttribute("href");
       if (!href || href === "#") {
         e.preventDefault();
-        window.location.href = "pages/software/software-journals.html";
+        window.location.href = "/pages/software/software-journals.html";
       }
       // Otherwise, let the browser navigate normally
     });
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (ctaJournalBtn) {
     ctaJournalBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      window.location.href = "pages/software/software-journals.html";
+      window.location.href = "/pages/software/software-journals.html";
     });
   }
 
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (ctaQuizBtn) {
     ctaQuizBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      window.location.href = "pages/tools/software-quiz.html";
+      window.location.href = "/pages/tools/software-quiz.html";
     });
   }
 

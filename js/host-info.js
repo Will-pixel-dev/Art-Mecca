@@ -264,7 +264,7 @@ class HostInfo {
         item.style.cursor = "pointer";
         item.addEventListener("click", (e) => {
           e.stopPropagation();
-          window.location.href = `pages/community/profiles.html?user=${char.id}`;
+          window.location.href = `/pages/community/profiles.html?user=${char.id}`;
         });
       }
 
@@ -286,7 +286,7 @@ class HostInfo {
     if (hostAvatar) {
       hostAvatar.style.cursor = "pointer";
       hostAvatar.addEventListener("click", () => {
-        window.location.href = `pages/community/profiles.html?user=${this.hostUserId}`;
+        window.location.href = `/pages/community/profiles.html?user=${this.hostUserId}`;
       });
       hostAvatar.setAttribute("title", "Click to view host profile");
     }
@@ -295,7 +295,7 @@ class HostInfo {
     if (profileBtn) {
       profileBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        window.location.href = `pages/community/profiles.html?user=${this.hostUserId}`;
+        window.location.href = `/pages/community/profiles.html?user=${this.hostUserId}`;
       });
     }
   }

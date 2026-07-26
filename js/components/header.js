@@ -167,8 +167,8 @@ function initAuth() {
 
       if (authButtons) {
         authButtons.innerHTML = `
-                    <a href="pages/auth/login.html" class="btn btn-outline btn-sm">Log In</a>
-                    <a href="pages/auth/register.html" class="btn btn-primary btn-sm">Sign Up</a>
+                    <a href="/pages/auth/login.html" class="btn btn-outline btn-sm">Log In</a>
+                    <a href="/pages/auth/register.html" class="btn btn-primary btn-sm">Sign Up</a>
                 `;
       }
 
@@ -475,25 +475,25 @@ function renderNotifications(notifications) {
           iconClass = "like";
           iconHtml = '<i class="fas fa-heart"></i>';
           text = `<strong>${escapeHtml(userName)}</strong> liked your artwork <em>${escapeHtml(artworkTitle)}</em>`;
-          link = `pages/community/artwork-detail.html?id=${artworkId}`;
+          link = `/pages/community/artwork-detail.html?id=${artworkId}`;
           break;
         case "cheer":
           iconClass = "cheer";
           iconHtml = '<i class="fas fa-glass-cheers"></i>';
           text = `<strong>${escapeHtml(userName)}</strong> cheered for your artwork <em>${escapeHtml(artworkTitle)}</em>`;
-          link = `pages/community/artwork-detail.html?id=${artworkId}`;
+          link = `/pages/community/artwork-detail.html?id=${artworkId}`;
           break;
         case "shadow":
           iconClass = "shadow";
           iconHtml = '<i class="fas fa-eye"></i>';
           text = `<strong>${escapeHtml(userName)}</strong> started shadowing you`;
-          link = `pages/community/profiles.html?user=${userId}`;
+          link = `/pages/community/profiles.html?user=${userId}`;
           break;
         case "comment":
           iconClass = "comment";
           iconHtml = '<i class="fas fa-comment"></i>';
           text = `<strong>${escapeHtml(userName)}</strong> commented on your artwork <em>${escapeHtml(artworkTitle)}</em>`;
-          link = `pages/community/artwork-detail.html?id=${artworkId}`;
+          link = `/pages/community/artwork-detail.html?id=${artworkId}`;
           break;
         case "mention":
           iconClass = "comment";
@@ -501,9 +501,9 @@ function renderNotifications(notifications) {
           const mentionPreview = data.commentPreview || data.preview || "";
           text = `<strong>${escapeHtml(userName)}</strong> mentioned you in a comment on <em>${escapeHtml(artworkTitle)}</em>`;
           if (commentId) {
-            link = `pages/community/artwork-detail.html?id=${artworkId}&comment=${commentId}`;
+            link = `/pages/community/artwork-detail.html?id=${artworkId}&comment=${commentId}`;
           } else {
-            link = `pages/community/artwork-detail.html?id=${artworkId}`;
+            link = `/pages/community/artwork-detail.html?id=${artworkId}`;
           }
           if (mentionPreview) {
             text += `<div style="font-size: 0.75rem; color: var(--text-muted, #5a3a6a); margin-top: 2px; font-weight: normal;">"${escapeHtml(mentionPreview)}"</div>`;
@@ -516,7 +516,7 @@ function renderNotifications(notifications) {
           if (msgPreview) {
             text += `<div style="font-size: 0.75rem; color: var(--text-muted, #5a3a6a); margin-top: 2px; font-weight: normal;">"${escapeHtml(msgPreview)}"</div>`;
           }
-          link = `pages/community/messages.html`;
+          link = `/pages/community/messages.html`;
           break;
         default:
           iconClass = "like";

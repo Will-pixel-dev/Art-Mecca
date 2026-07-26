@@ -39,7 +39,7 @@ class AgeVerificationService {
   async startVerification(redirectUrl = window.location.href) {
     if (!this.currentUser) {
       alert("Please login first to verify your age.");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 

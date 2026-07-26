@@ -270,11 +270,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Number keys 1-5 for navigation
     if (["1", "2", "3", "4", "5"].includes(key)) {
       const navLinks = {
-        1: "pages/community/gallery.html",
-        2: "pages/community/challenges.html",
-        3: "pages/tutorials/tutorials.html",
-        4: "pages/tools/tools.html",
-        5: "pages/community/hub.html",
+        1: "/pages/community/gallery.html",
+        2: "/pages/community/challenges.html",
+        3: "/pages/tutorials/tutorials.html",
+        4: "/pages/tools/tools.html",
+        5: "/pages/community/hub.html",
       };
 
       const labels = {
@@ -665,7 +665,7 @@ document.addEventListener("DOMContentLoaded", function () {
         card.className = "artwork-card glass-panel";
         card.style.cursor = "pointer";
         card.addEventListener("click", () => {
-          window.location.href = `pages/community/artwork-detail.html?id=${artworkId}`;
+          window.location.href = `/pages/community/artwork-detail.html?id=${artworkId}`;
         });
         card.innerHTML = `
                     <div class="artwork-image">
@@ -782,7 +782,7 @@ document.addEventListener("DOMContentLoaded", function () {
         container.innerHTML = `
                     <div class="challenge-placeholder">
                         <i class="fas fa-trophy"></i>
-                        <span>No active challenges. <a href="pages/community/challenges.html" style="color: var(--neon-cyan);">Browse all →</a></span>
+                        <span>No active challenges. <a href="/pages/community/challenges.html" style="color: var(--neon-cyan);">Browse all →</a></span>
                     </div>
                 `;
         return;
@@ -911,7 +911,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.style.cursor = "pointer";
       card.addEventListener("click", () => {
-        window.location.href = `pages/community/challenges.html?type=${challenge.type}`;
+        window.location.href = `/pages/community/challenges.html?type=${challenge.type}`;
       });
 
       card.innerHTML = `
@@ -926,7 +926,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         ${!challenge.isIntuit && challenge.type ? `<span class="challenge-type-badge" style="background: ${color}; color: white;">${typeDisplay}</span>` : ""}
                     </div>
                 </div>
-                <a href="pages/community/challenges.html?type=${challenge.type}" class="challenge-join-btn" onclick="event.stopPropagation();">Join →</a>
+                <a href="/pages/community/challenges.html?type=${challenge.type}" class="challenge-join-btn" onclick="event.stopPropagation();">Join →</a>
             `;
       container.appendChild(card);
     });
@@ -1048,13 +1048,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       item.addEventListener("click", () => {
         if (activity.artworkId) {
-          window.location.href = `pages/community/artwork-detail.html?id=${activity.artworkId}`;
+          window.location.href = `/pages/community/artwork-detail.html?id=${activity.artworkId}`;
         } else if (activity.userId) {
-          window.location.href = `pages/community/profile.html?user=${activity.userId}`;
+          window.location.href = `/pages/community/profile.html?user=${activity.userId}`;
         } else if (activity.targetId) {
-          window.location.href = `pages/community/artwork-detail.html?id=${activity.targetId}`;
+          window.location.href = `/pages/community/artwork-detail.html?id=${activity.targetId}`;
         } else {
-          window.location.href = "pages/community/gallery.html";
+          window.location.href = "/pages/community/gallery.html";
         }
       });
 
@@ -1151,7 +1151,7 @@ document.addEventListener("DOMContentLoaded", function () {
         card.style.cursor = "pointer";
 
         card.addEventListener("click", () => {
-          window.location.href = `pages/community/profiles.html?user=${userId}`;
+          window.location.href = `/pages/community/profiles.html?user=${userId}`;
         });
 
         const fullname = data.fullname || data.displayName || "Artist";
@@ -1219,7 +1219,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <span><i class="fas fa-star"></i> ${formattedPoints}</span>
                     <span><i class="fas fa-users"></i> ${formattedFollowers}</span>
                 </div>
-                <a href="pages/community/profiles.html?user=${userId}" class="artist-view-btn" onclick="event.stopPropagation();">View Profile →</a>
+                <a href="/pages/community/profiles.html?user=${userId}" class="artist-view-btn" onclick="event.stopPropagation();">View Profile →</a>
             `;
         container.appendChild(card);
       }
@@ -1391,11 +1391,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.addEventListener("click", () => {
         if (winner.artworkId && !winner.artworkId.startsWith("placeholder-")) {
-          window.location.href = `pages/community/artwork-detail.html?id=${winner.artworkId}`;
+          window.location.href = `/pages/community/artwork-detail.html?id=${winner.artworkId}`;
         } else if (winner.userId) {
-          window.location.href = `pages/community/profile.html?user=${winner.userId}`;
+          window.location.href = `/pages/community/profile.html?user=${winner.userId}`;
         } else {
-          window.location.href = "pages/community/gallery.html";
+          window.location.href = "/pages/community/gallery.html";
         }
       });
 

@@ -144,7 +144,7 @@ class MyUploads {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
-        window.location.href = `pages/community/edit-artwork.html?id=${id}`;
+        window.location.href = `/pages/community/edit-artwork.html?id=${id}`;
       });
     });
 
@@ -160,7 +160,7 @@ class MyUploads {
       card.addEventListener("click", (e) => {
         if (!e.target.closest(".action-btn")) {
           const id = card.dataset.id;
-          window.location.href = `pages/community/artwork-detail.html?id=${id}`;
+          window.location.href = `/pages/community/artwork-detail.html?id=${id}`;
         }
       });
     });
@@ -314,7 +314,7 @@ class MyUploads {
   }
 
   redirectToUpload() {
-    window.location.href = "pages/community/upload.html";
+    window.location.href = "/pages/community/upload.html";
   }
 
   showToast(message, type = "success") {

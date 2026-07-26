@@ -60,7 +60,7 @@ class NSFWGallery {
     });
 
     document.getElementById("ageDenyBtn")?.addEventListener("click", () => {
-      window.location.href = "pages/community/gallery.html";
+      window.location.href = "/pages/community/gallery.html";
     });
 
     // Submit verification
@@ -85,7 +85,7 @@ class NSFWGallery {
         const user = firebase.auth().currentUser;
         if (!user) {
           alert("Please login first to verify your age.");
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
         this.showVerificationForm();
@@ -213,7 +213,7 @@ class NSFWGallery {
     if (!this.currentUser) {
       errorElement.textContent = "Please login first.";
       errorElement.style.display = "block";
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -353,7 +353,7 @@ class NSFWGallery {
     });
 
     document.getElementById("ageDenyBtn")?.addEventListener("click", () => {
-      window.location.href = "pages/community/gallery.html";
+      window.location.href = "/pages/community/gallery.html";
     });
 
     document
@@ -374,7 +374,7 @@ class NSFWGallery {
         const user = firebase.auth().currentUser;
         if (!user) {
           alert("Please login first to verify your age.");
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
         this.showVerificationForm();
@@ -390,7 +390,7 @@ class NSFWGallery {
           <h2>Access Denied</h2>
           <p>You must be 18 years or older to view this gallery.</p>
           <div class="age-buttons">
-            <button class="age-btn no" onclick="window.location.href='pages/community/gallery.html'">
+            <button class="age-btn no" onclick="window.location.href='/pages/community/gallery.html'">
               Return to Main Gallery
             </button>
           </div>
@@ -422,7 +422,7 @@ class NSFWGallery {
   async triggerAgeVerification() {
     if (!this.currentUser) {
       alert("Please login first to verify your age.");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -461,7 +461,7 @@ class NSFWGallery {
         const user = firebase.auth().currentUser;
         if (!user) {
           alert("Please login first to verify your age.");
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
         await this.triggerAgeVerification();
@@ -670,7 +670,7 @@ class NSFWGallery {
         }
 
         // If already unblurred, go to detail page
-        window.location.href = `pages/community/artwork-detail.html?id=${id}`;
+        window.location.href = `/pages/community/artwork-detail.html?id=${id}`;
       });
     });
 

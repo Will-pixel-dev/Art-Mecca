@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "success",
           );
           setTimeout(() => {
-            window.location.href = "pages/auth/login.html";
+            window.location.href = "/pages/auth/login.html";
           }, 3000);
         } else {
           showMessage(

@@ -298,7 +298,7 @@ class ActivityFeed {
                     <i class="fas fa-eye-slash"></i>
                     <h3>No artists shadowed yet</h3>
                     <p>Start shadowing artists to see their latest creations in your feed!</p>
-                    <a href="pages/community/search-users.html" class="btn-shadow-find">
+                    <a href="/pages/community/search-users.html" class="btn-shadow-find">
                         <i class="fas fa-search"></i> Find Artists to Shadow
                     </a>
                 </div>
@@ -438,7 +438,7 @@ class ActivityFeed {
           return;
         const id = item.dataset.id;
         if (id) {
-          window.location.href = `pages/community/artwork-detail.html?id=${id}`;
+          window.location.href = `/pages/community/artwork-detail.html?id=${id}`;
         }
       });
     });
@@ -448,7 +448,7 @@ class ActivityFeed {
       preview.addEventListener("click", (e) => {
         e.stopPropagation();
         const artworkId = preview.dataset.id;
-        window.location.href = `pages/community/artwork-detail.html?id=${artworkId}`;
+        window.location.href = `/pages/community/artwork-detail.html?id=${artworkId}`;
       });
     });
 
@@ -457,7 +457,7 @@ class ActivityFeed {
       tag.addEventListener("click", (e) => {
         e.stopPropagation();
         const tagName = tag.textContent.replace("#", "");
-        window.location.href = `pages/community/gallery.html?tag=${tagName}`;
+        window.location.href = `/pages/community/gallery.html?tag=${tagName}`;
       });
     });
   }

@@ -42,7 +42,7 @@ function initCookieBanner() {
         ">
             <i class="fas fa-cookie" style="color: var(--primary, #6b4ecc); margin-right: 8px;"></i>
             We use cookies to enhance your experience. By continuing, you agree to our
-            <a href="pages/admin/privacy.html" style="
+            <a href="/pages/admin/privacy.html" style="
                 color: var(--primary, #6b4ecc);
                 text-decoration: none;
                 border-bottom: 1px solid transparent;

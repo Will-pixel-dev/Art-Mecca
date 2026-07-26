@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const sectionMap = [
     {
-      pattern: "pages/tutorials/",
+      pattern: "/pages/tutorials/",
       section: "tutorials",
       keywords: [
         "tutorial",
@@ -22,12 +22,12 @@ document.addEventListener("DOMContentLoaded", function () {
       ],
     },
     {
-      pattern: "pages/software/",
+      pattern: "/pages/software/",
       section: "software",
       keywords: ["software-comparison", "software-quiz"],
     },
     {
-      pattern: "pages/tools/",
+      pattern: "/pages/tools/",
       section: "tools",
       keywords: [
         "tools",
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ],
     },
     {
-      pattern: "pages/community/",
+      pattern: "/pages/community/",
       section: "community",
       keywords: [
         "community",
@@ -50,12 +50,12 @@ document.addEventListener("DOMContentLoaded", function () {
       ],
     },
     {
-      pattern: "pages/Equip/",
+      pattern: "/pages/Equip/",
       section: "equip",
       keywords: ["equip", "earn", "blog", "portfolio", "cv"],
     },
     {
-      pattern: "pages/truly-yours/",
+      pattern: "/pages/truly-yours/",
       section: "truly-yours",
       keywords: ["truly-yours"],
     },

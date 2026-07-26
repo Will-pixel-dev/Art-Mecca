@@ -992,7 +992,7 @@ class CommunityHub {
       grid.innerHTML = activities
         .map(
           (activity) => `
-        <div class="activity-item" onclick="window.location.href='pages/community/artwork-detail.html?id=${activity.id}'">
+        <div class="activity-item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${activity.id}'">
           <div class="activity-image" style="background-image: url('${activity.imageUrl || ""}'); background-size: cover; background-position: center;">
             ${!activity.imageUrl ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.8rem;">No image</div>' : ""}
           </div>
@@ -1073,7 +1073,7 @@ class CommunityHub {
       grid.innerHTML = topArtworks
         .map(
           (art) => `
-      <div class="artwork-card" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+      <div class="artwork-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
         <div class="artwork-image" style="background-image: url('${art.imageUrl || ""}'); background-size: cover; background-position: center;">
           ${!art.imageUrl ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.7rem;">No image</div>' : ""}
         </div>
@@ -1172,7 +1172,7 @@ class CommunityHub {
       grid.innerHTML = topUsers
         .map(
           (user) => `
-        <div class="artist-card" onclick="window.location.href='pages/community/profiles.html?user=${user.id}'">
+        <div class="artist-card" onclick="window.location.href='/pages/community/profiles.html?user=${user.id}'">
           <div class="artist-cover">
             ${
               user.avatarUrl
@@ -1308,7 +1308,7 @@ class CommunityHub {
                   : `#${rank}`;
 
           return `
-          <div class="creator-card" onclick="window.location.href='pages/community/profiles.html?user=${user.id}'">
+          <div class="creator-card" onclick="window.location.href='/pages/community/profiles.html?user=${user.id}'">
             <div class="creator-rank ${rankClass}">${medal}</div>
             <div class="creator-avatar" style="background-image: url('${user.avatarUrl || ""}'); background-size: cover; background-position: center;">
               ${!user.avatarUrl ? user.fullname.charAt(0).toUpperCase() : ""}
@@ -1401,7 +1401,7 @@ class CommunityHub {
       .map(
         (winner, index) => `
       <div class="winner-item" style="--position: ${index + 1}">
-        <div class="winner-card" onclick="window.location.href='pages/community/artwork-detail.html?id=${winner.artworkId || "#"}'">
+        <div class="winner-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${winner.artworkId || "#"}'">
           ${
             winner.imageUrl
               ? `<img src="${winner.imageUrl}" alt="${winner.name}">`
@@ -1582,7 +1582,7 @@ class CommunityHub {
   handleStartChallenge(challengeType = "daily") {
     if (!this.currentUser) {
       window.location.href =
-        "pages/auth/login.html?redirect=" +
+        "/pages/auth/login.html?redirect=" +
         encodeURIComponent(window.location.pathname);
       return;
     }
@@ -1639,8 +1639,8 @@ class CommunityHub {
             <div class="modal-tips">
               <h5>💡 Quick Tips:</h5>
               <ul>
-                <li>Use our <a href="pages/tools/color-palette-generator.html" target="_blank">color tools</a></li>
-                <li>Check <a href="pages/tutorials/tutorials.html" target="_blank">tutorials</a> for guidance</li>
+                <li>Use our <a href="/pages/tools/color-palette-generator.html" target="_blank">color tools</a></li>
+                <li>Check <a href="/pages/tutorials/tutorials.html" target="_blank">tutorials</a> for guidance</li>
                 <li>Share your process in the community</li>
               </ul>
             </div>
@@ -1683,27 +1683,27 @@ class CommunityHub {
     if (uploadBtn) {
       uploadBtn.addEventListener("click", () => {
         closeModal();
-        window.location.href = `pages/community/upload.html?challenge=${challengeType}`;
+        window.location.href = `/pages/community/upload.html?challenge=${challengeType}`;
       });
     }
 
     if (createBtn) {
       createBtn.addEventListener("click", () => {
         closeModal();
-        window.location.href = "pages/tools/tools.html";
+        window.location.href = "/pages/tools/tools.html";
       });
     }
 
     if (inspirationBtn) {
       inspirationBtn.addEventListener("click", () => {
         closeModal();
-        window.location.href = "pages/community/gallery.html";
+        window.location.href = "/pages/community/gallery.html";
       });
     }
   }
 
   viewSubmissions(challengeType) {
-    window.location.href = `pages/community/gallery.html?filter=${challengeType}`;
+    window.location.href = `/pages/community/gallery.html?filter=${challengeType}`;
   }
 
   shareChallenge() {
@@ -1750,7 +1750,7 @@ class CommunityHub {
     document
       .getElementById("daily-challenges-btn")
       ?.addEventListener("click", () => {
-        window.location.href = "pages/community/challenges.html";
+        window.location.href = "/pages/community/challenges.html";
       });
 
     document

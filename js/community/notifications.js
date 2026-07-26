@@ -138,25 +138,25 @@ class NotificationsSystem {
         iconClass = "like";
         iconHtml = '<i class="fas fa-heart"></i>';
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> liked your artwork`;
-        link = `pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+        link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
         break;
       case "cheer":
         iconClass = "cheer";
         iconHtml = '<i class="fas fa-glass-cheers"></i>';
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> cheered for your artwork`;
-        link = `pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+        link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
         break;
       case "shadow":
         iconClass = "shadow";
         iconHtml = '<i class="fas fa-eye"></i>';
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> started shadowing you`;
-        link = `pages/community/profile.html?user=${data.userId || ""}`;
+        link = `/pages/community/profile.html?user=${data.userId || ""}`;
         break;
       case "comment":
         iconClass = "comment";
         iconHtml = '<i class="fas fa-comment"></i>';
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> commented on your artwork`;
-        link = `pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
+        link = `/pages/community/artwork-detail.html?id=${data.artworkId || ""}`;
         break;
     }
 

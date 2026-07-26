@@ -62,7 +62,7 @@ class MessagesSystem {
   async init() {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) {
-        window.location.href = "pages/auth/login.html";
+        window.location.href = "/pages/auth/login.html";
         return;
       }
 
@@ -482,7 +482,7 @@ class MessagesSystem {
             const findBtn = document.getElementById("findArtistsBtn");
             if (findBtn) {
               findBtn.addEventListener("click", () => {
-                window.location.href = "pages/community/search-users.html";
+                window.location.href = "/pages/community/search-users.html";
               });
             }
             this.conversations = [];
@@ -1256,7 +1256,7 @@ class MessagesSystem {
       }
 
       this.previewViewProfile.onclick = () => {
-        window.location.href = `pages/community/profiles.html?user=${userId}`;
+        window.location.href = `/pages/community/profiles.html?user=${userId}`;
       };
 
       this.profilePreviewModal.classList.add("active");
@@ -1278,19 +1278,19 @@ class MessagesSystem {
     document.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "k") {
         e.preventDefault();
-        window.location.href = "pages/community/search-users.html";
+        window.location.href = "/pages/community/search-users.html";
       }
 
       if ((e.ctrlKey || e.metaKey) && e.key === "p") {
         e.preventDefault();
         if (this.currentUser) {
-          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       }
 
       if ((e.ctrlKey || e.metaKey) && e.key === "n") {
         e.preventDefault();
-        window.location.href = "pages/community/search-users.html";
+        window.location.href = "/pages/community/search-users.html";
       }
 
       if (
@@ -1428,7 +1428,7 @@ class MessagesSystem {
     });
 
     this.fabNewChat.addEventListener("click", () => {
-      window.location.href = "pages/community/search-users.html";
+      window.location.href = "/pages/community/search-users.html";
     });
 
     document

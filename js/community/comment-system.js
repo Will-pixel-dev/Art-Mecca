@@ -749,7 +749,7 @@ class CommentSystem {
   async submitComment() {
     if (!this.currentUser) {
       this.showToast("Please login to comment", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -1037,7 +1037,7 @@ class CommentSystem {
   replyToComment(commentId, userName) {
     if (!this.currentUser) {
       this.showToast("Please login to reply", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -1068,7 +1068,7 @@ class CommentSystem {
   async likeComment(commentId) {
     if (!this.currentUser) {
       this.showToast("Please login to like", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -1250,7 +1250,7 @@ class CommentSystem {
   openReportModal(commentId) {
     if (!this.currentUser) {
       this.showToast("Please login to report", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -1498,7 +1498,7 @@ class CommentSystem {
         (u) => u.username.toLowerCase() === username.toLowerCase(),
       );
       if (user) {
-        return `<a href="pages/community/profiles.html?user=${user.uid}" class="comment-mention" style="color: var(--neon-purple, #8a19e1); font-weight: 600; text-decoration: none; transition: color 0.2s ease;" onmouseover="this.style.color='var(--neon-cyan, #58ebfe)'" onmouseout="this.style.color='var(--neon-purple, #8a19e1)'">@${this.escapeHtml(username)}</a>`;
+        return `<a href="/pages/community/profiles.html?user=${user.uid}" class="comment-mention" style="color: var(--neon-purple, #8a19e1); font-weight: 600; text-decoration: none; transition: color 0.2s ease;" onmouseover="this.style.color='var(--neon-cyan, #58ebfe)'" onmouseout="this.style.color='var(--neon-purple, #8a19e1)'">@${this.escapeHtml(username)}</a>`;
       }
       return match;
     });
@@ -1548,7 +1548,7 @@ class CommentSystem {
           e.stopPropagation();
           const userId = el.dataset.userId;
           if (userId) {
-            window.location.href = `pages/community/profiles.html?user=${userId}`;
+            window.location.href = `/pages/community/profiles.html?user=${userId}`;
           }
         });
       });

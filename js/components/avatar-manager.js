@@ -217,7 +217,7 @@ class AvatarManager {
     wrapper.title = "Login";
 
     const link = document.createElement("a");
-    link.href = "pages/auth/login.html";
+    link.href = "/pages/auth/login.html";
     link.style.cssText =
       "display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none;color:white;";
     link.innerHTML =
@@ -341,7 +341,7 @@ class AvatarManager {
     const profileItem = this.createDropdownLink(
       "fa-user",
       "My Profile",
-      `pages/community/profiles.html?user=${this.userId}`,
+      `/pages/community/profiles.html?user=${this.userId}`,
     );
     dropdown.appendChild(profileItem);
 
@@ -349,7 +349,7 @@ class AvatarManager {
     const uploadsItem = this.createDropdownLink(
       "fa-cloud-upload-alt",
       "My Uploads",
-      "pages/community/my-uploads.html",
+      "/pages/community/my-uploads.html",
     );
     dropdown.appendChild(uploadsItem);
 
@@ -357,7 +357,7 @@ class AvatarManager {
     const settingsItem = this.createDropdownLink(
       "fa-cog",
       "Account Settings",
-      "pages/account/settings.html",
+      "/pages/account/settings.html",
     );
     dropdown.appendChild(settingsItem);
 
@@ -366,7 +366,7 @@ class AvatarManager {
       const modItem = this.createDropdownLink(
         "fa-shield-alt",
         "Moderation Dashboard",
-        "pages/admin/moderation.html",
+        "/pages/admin/moderation.html",
         true, // isModerator
       );
       dropdown.appendChild(modItem);

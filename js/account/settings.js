@@ -18,7 +18,7 @@ class AccountSettings {
       this.currentUser = user;
 
       if (!user) {
-        window.location.href = "pages/auth/login.html";
+        window.location.href = "/pages/auth/login.html";
         return;
       }
 

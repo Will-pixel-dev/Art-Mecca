@@ -301,10 +301,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const user = firebase.auth().currentUser;
       if (user) {
         showToast("📝 Starting a new journal! Feature coming soon.");
-        // In production: window.location.href = 'pages/software/create-journal.html';
+        // In production: window.location.href = '/pages/software/create-journal.html';
       } else {
         showToast("🔐 Please log in to start a journal.", true);
-        // In production: window.location.href = 'pages/auth/login.html';
+        // In production: window.location.href = '/pages/auth/login.html';
       }
     });
   });

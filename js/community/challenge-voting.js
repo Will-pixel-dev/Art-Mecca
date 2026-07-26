@@ -16,7 +16,7 @@ class ChallengeVoting {
   // Vote on a challenge submission
   async vote(submissionId, voteType) {
     if (!this.currentUser) {
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return { success: false, error: "Please login to vote" };
     }
 

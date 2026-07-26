@@ -1014,7 +1014,7 @@ class ChallengesSystem {
   // ============================================ */
   async joinChallenge(challengeId) {
     if (!this.currentUser) {
-      window.location.href = `pages/auth/login.html?redirect=${encodeURIComponent(window.location.pathname)}`;
+      window.location.href = `/pages/auth/login.html?redirect=${encodeURIComponent(window.location.pathname)}`;
       return;
     }
 
@@ -1135,7 +1135,7 @@ class ChallengesSystem {
   // ============================================ */
   async submitArtwork(challengeId) {
     if (!this.currentUser) {
-      window.location.href = `pages/auth/login.html?redirect=${encodeURIComponent(window.location.pathname)}`;
+      window.location.href = `/pages/auth/login.html?redirect=${encodeURIComponent(window.location.pathname)}`;
       return;
     }
 
@@ -1150,7 +1150,7 @@ class ChallengesSystem {
       return;
     }
 
-    window.location.href = `pages/community/upload.html?challenge=${challengeId}`;
+    window.location.href = `/pages/community/upload.html?challenge=${challengeId}`;
   }
 
   // ============================================ */
@@ -1275,10 +1275,10 @@ class ChallengesSystem {
                       this.currentType === "my"
                         ? `
                         <div class="empty-actions">
-                            <a href="pages/community/challenges.html" class="btn-empty primary">
+                            <a href="/pages/community/challenges.html" class="btn-empty primary">
                                 <i class="fas fa-compass"></i> Browse Challenges
                             </a>
-                            <a href="pages/community/points.html" class="btn-empty secondary">
+                            <a href="/pages/community/points.html" class="btn-empty secondary">
                                 <i class="fas fa-coins"></i> View Prizes
                             </a>
                         </div>
@@ -1332,7 +1332,7 @@ class ChallengesSystem {
       if (btn.tagName === "BUTTON") {
         btn.addEventListener("click", (e) => {
           e.stopPropagation();
-          window.location.href = "pages/community/points.html";
+          window.location.href = "/pages/community/points.html";
         });
       }
     });
@@ -1502,13 +1502,13 @@ class ChallengesSystem {
                         ${
                           isMyChallenges
                             ? `
-                            <a href="pages/community/challenges.html" class="btn-challenge browse">
+                            <a href="/pages/community/challenges.html" class="btn-challenge browse">
                                 <i class="fas fa-compass"></i> Browse Challenges
                             </a>
                         `
                             : ""
                         }
-                        <a href="pages/community/points.html" class="btn-challenge view-prizes">
+                        <a href="/pages/community/points.html" class="btn-challenge view-prizes">
                             <i class="fas fa-coins"></i> View Prizes
                         </a>
                     </div>

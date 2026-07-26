@@ -46,7 +46,7 @@ class ProfileHero {
       if (!this.currentUser) {
         if (!window.location.pathname.includes("login")) {
           window.location.href =
-            "pages/auth/login.html?redirect=" +
+            "/pages/auth/login.html?redirect=" +
             encodeURIComponent(
               window.location.pathname + window.location.search,
             );
@@ -486,7 +486,7 @@ class ProfileHero {
             <div class="empty-challenges">
                 <i class="fas fa-trophy" style="opacity: 0.3;"></i>
                 <p>No challenges joined yet</p>
-                ${this.isOwnProfile ? `<a href="pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
+                ${this.isOwnProfile ? `<a href="/pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
             </div>
         `;
       return;
@@ -1362,7 +1362,7 @@ class ProfileHero {
 
       // Redirect or refresh
       setTimeout(() => {
-        window.location.href = "pages/community/hub.html";
+        window.location.href = "/pages/community/hub.html";
       }, 1500);
     } catch (error) {
       console.error("Error blocking user:", error);
@@ -1822,14 +1822,14 @@ class ProfileHero {
           switch (action) {
             case "edit":
               if (this.isOwnProfile) {
-                window.location.href = "pages/account/settings.html";
+                window.location.href = "/pages/account/settings.html";
               }
               break;
             case "settings":
-              window.location.href = "pages/account/settings.html";
+              window.location.href = "/pages/account/settings.html";
               break;
             case "notifications":
-              window.location.href = "pages/community/notifications.html";
+              window.location.href = "/pages/community/notifications.html";
               break;
             case "cv":
               this.generateCV();
@@ -2060,7 +2060,7 @@ class ProfileHero {
   handleShadowAction() {
     if (!this.currentUser) {
       alert("Please login to shadow this artist");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -2077,7 +2077,7 @@ class ProfileHero {
     document.querySelectorAll(".hero-badge.moderator").forEach((badge) => {
       badge.style.cursor = "pointer";
       badge.addEventListener("click", () => {
-        window.location.href = "pages/admin/moderation.html";
+        window.location.href = "/pages/admin/moderation.html";
       });
     });
   }

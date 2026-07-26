@@ -73,7 +73,7 @@ class AuthManager {
       container.style.display = "flex";
 
       container.innerHTML = `
-        <a href="pages/auth/login.html" class="user-btn" aria-label="Login" style="
+        <a href="/pages/auth/login.html" class="user-btn" aria-label="Login" style="
           text-decoration: none;
           color: rgba(26, 26, 46, 0.5);
           padding: 6px;
@@ -88,7 +88,7 @@ class AuthManager {
         ">
           <i class="fas fa-user"></i>
         </a>
-        <a href="pages/auth/register.html" class="signup-btn" style="
+        <a href="/pages/auth/register.html" class="signup-btn" style="
           padding: 8px 18px;
           border-radius: 8px;
           text-decoration: none;
@@ -146,7 +146,7 @@ class AuthManager {
       } else {
         userNameSpan.textContent = "Guest User";
         loginLink.textContent = "Sign In";
-        loginLink.href = "pages/auth/login.html";
+        loginLink.href = "/pages/auth/login.html";
         loginLink.onclick = null;
       }
     }
@@ -409,7 +409,7 @@ class AuthManager {
     let text = "New notification";
     let bgColor = "#fee2e2";
     let iconColor = "#ef4444";
-    let link = "pages/community/notifications.html";
+    let link = "/pages/community/notifications.html";
 
     switch (type) {
       case "like":
@@ -417,7 +417,7 @@ class AuthManager {
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> liked your artwork <strong>"${this.escapeHtml(data.artworkTitle || "Artwork")}"</strong>`;
         bgColor = "#fee2e2";
         iconColor = "#ef4444";
-        link = `pages/community/artwork-detail.html?id=${data.artworkId}`;
+        link = `/pages/community/artwork-detail.html?id=${data.artworkId}`;
         break;
 
       case "cheer":
@@ -425,7 +425,7 @@ class AuthManager {
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> cheered for your artwork <strong>"${this.escapeHtml(data.artworkTitle || "Artwork")}"</strong>`;
         bgColor = "#fef3c7";
         iconColor = "#f59e0b";
-        link = `pages/community/artwork-detail.html?id=${data.artworkId}`;
+        link = `/pages/community/artwork-detail.html?id=${data.artworkId}`;
         break;
 
       case "shadow":
@@ -433,7 +433,7 @@ class AuthManager {
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> started shadowing you`;
         bgColor = "#e0e7ff";
         iconColor = "#4f46e5";
-        link = `pages/community/profiles.html?user=${data.userId}`;
+        link = `/pages/community/profiles.html?user=${data.userId}`;
         break;
 
       case "comment":
@@ -444,7 +444,7 @@ class AuthManager {
         text = `<strong>${this.escapeHtml(data.userName || "Someone")}</strong> commented on your artwork <strong>"${this.escapeHtml(data.artworkTitle || "Artwork")}"</strong>${commentPreview}`;
         bgColor = "#dcfce7";
         iconColor = "#10b981";
-        link = `pages/community/artwork-detail.html?id=${data.artworkId}`;
+        link = `/pages/community/artwork-detail.html?id=${data.artworkId}`;
         break;
 
       case "mention":
@@ -456,8 +456,8 @@ class AuthManager {
         bgColor = "#e0e7ff";
         iconColor = "#8b5cf6";
         link = data.artworkId
-          ? `pages/community/artwork-detail.html?id=${data.artworkId}`
-          : "pages/community/notifications.html";
+          ? `/pages/community/artwork-detail.html?id=${data.artworkId}`
+          : "/pages/community/notifications.html";
         break;
 
       case "message":
@@ -469,8 +469,8 @@ class AuthManager {
         bgColor = "#dbeafe";
         iconColor = "#3b82f6";
         link = data.conversationId
-          ? `pages/community/messages.html?conversation=${data.conversationId}`
-          : "pages/community/messages.html";
+          ? `/pages/community/messages.html?conversation=${data.conversationId}`
+          : "/pages/community/messages.html";
         break;
 
       default:
@@ -478,7 +478,7 @@ class AuthManager {
         text = "New notification";
         bgColor = "#f1f5f9";
         iconColor = "#64748b";
-        link = "pages/community/notifications.html";
+        link = "/pages/community/notifications.html";
     }
 
     return `

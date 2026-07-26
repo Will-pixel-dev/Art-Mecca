@@ -156,7 +156,7 @@ class Profile {
               You must be <strong style="color: #ff0040;">18 or older</strong> to view this profile.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-              <a href="pages/community/gallery.html" style="
+              <a href="/pages/community/gallery.html" style="
                 padding: 0.6rem 1.5rem;
                 background: rgba(255, 255, 255, 0.02);
                 color: #f5eaff;
@@ -1135,7 +1135,7 @@ class Profile {
     grid.innerHTML = this.uploads
       .map(
         (art) => `
-      <div class="item" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+      <div class="item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
         <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy" />
         <div class="overlay">
           <div class="title">${art.isNSFW ? "🔞 " : ""}${this.escapeHtml(art.title)}</div>
@@ -1223,7 +1223,7 @@ class Profile {
     grid.innerHTML = this.liked
       .map(
         (art) => `
-      <div class="item" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+      <div class="item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
         <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy" />
         <div class="overlay">
           <div class="title">${art.isNSFW ? "🔞 " : ""}${this.escapeHtml(art.title)}</div>
@@ -1312,7 +1312,7 @@ class Profile {
     grid.innerHTML = this.saved
       .map(
         (art) => `
-      <div class="item" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+      <div class="item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
         <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy" />
         <div class="overlay">
           <div class="title">${art.isNSFW ? "🔞 " : ""}${this.escapeHtml(art.title)}</div>
@@ -1389,7 +1389,7 @@ class Profile {
       container.innerHTML = challenges
         .map(
           (c) => `
-        <div class="challenge-card" onclick="window.location.href='pages/community/challenges.html?highlight=${c.challengeId}'">
+        <div class="challenge-card" onclick="window.location.href='/pages/community/challenges.html?highlight=${c.challengeId}'">
           <span class="icon">${c.type === "daily" ? "⚡" : c.type === "weekly" ? "📅" : c.type === "monthly" ? "🌟" : "🏆"}</span>
           <div class="info">
             <div class="name">${c.challengeId || "Challenge"}</div>
@@ -1620,7 +1620,7 @@ class Profile {
       } else {
         artworks.forEach((art) => {
           html += `
-            <div class="portfolio-artwork-item" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+            <div class="portfolio-artwork-item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
               <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy" />
               <div class="info">
                 <div class="title">${art.isNSFW ? "🔞 " : ""}${this.escapeHtml(art.title)}</div>
@@ -1809,7 +1809,7 @@ class Profile {
         .map((doc) => {
           const data = doc.data();
           return `
-          <div class="collection-card" onclick="window.location.href='pages/community/collection.html?id=${doc.id}&user=${this.userId}'">
+          <div class="collection-card" onclick="window.location.href='/pages/community/collection.html?id=${doc.id}&user=${this.userId}'">
             <div class="thumb">📁</div>
             <div class="name">${this.escapeHtml(data.name)}</div>
             <div class="count">${data.artworkIds?.length || 0} artworks</div>
@@ -2046,7 +2046,7 @@ class Profile {
     document
       .getElementById("viewAllUploadsBtn")
       .addEventListener("click", () => {
-        window.location.href = `pages/community/gallery.html?user=${this.userId}`;
+        window.location.href = `/pages/community/gallery.html?user=${this.userId}`;
       });
 
     // Sidebar actions
@@ -2058,7 +2058,7 @@ class Profile {
             document.getElementById("paletteGrid").classList.toggle("active");
             break;
           case "settings":
-            window.location.href = "pages/account/settings.html";
+            window.location.href = "/pages/account/settings.html";
             break;
           case "share":
             this.sharePortfolio();
@@ -2091,7 +2091,7 @@ class Profile {
   openMessageModal() {
     if (!this.currentUser) {
       this.showToast("Please login first", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -2101,7 +2101,7 @@ class Profile {
     }
 
     // Redirect to messages page with the user parameter
-    window.location.href = `pages/community/messages.html?user=${this.userId}`;
+    window.location.href = `/pages/community/messages.html?user=${this.userId}`;
   }
 
   // ============================================
@@ -2771,7 +2771,7 @@ class Profile {
   openBlockModal() {
     if (!this.currentUser) {
       this.showToast("Please login first", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -2803,7 +2803,7 @@ class Profile {
         });
       this.showToast("User blocked ✅");
       setTimeout(
-        () => (window.location.href = "pages/community/hub.html"),
+        () => (window.location.href = "/pages/community/hub.html"),
         1500,
       );
     } catch (error) {

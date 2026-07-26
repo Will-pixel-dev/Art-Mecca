@@ -348,7 +348,7 @@ class ProfileSections {
   }
 
   viewCollection(collectionId) {
-    window.location.href = `pages/community/collection.html?id=${collectionId}&user=${this.userId}`;
+    window.location.href = `/pages/community/collection.html?id=${collectionId}&user=${this.userId}`;
   }
 
   // ============================================
@@ -416,7 +416,7 @@ class ProfileSections {
         <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: rgba(255,255,255,0.3);">
           <i class="fas fa-upload" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
           <p>No artworks uploaded yet</p>
-          ${this.isOwnProfile ? `<button onclick="window.location.href='pages/community/upload.html'" style="margin-top: 1rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #fe67ea, #63dbee); border: none; border-radius: 30px; color: white; font-weight: 600; cursor: pointer;">Upload Your First Artwork</button>` : ""}
+          ${this.isOwnProfile ? `<button onclick="window.location.href='/pages/community/upload.html'" style="margin-top: 1rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #fe67ea, #63dbee); border: none; border-radius: 30px; color: white; font-weight: 600; cursor: pointer;">Upload Your First Artwork</button>` : ""}
         </div>
       `;
       return;
@@ -431,7 +431,7 @@ class ProfileSections {
   createMasonryItem(art) {
     const isNSFW = art.isNSFW ? "🔞 " : "";
     return `
-      <div class="masonry-item" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+      <div class="masonry-item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
         <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy">
         <div class="item-overlay">
           <div class="item-title">${isNSFW}${this.escapeHtml(art.title)}</div>
@@ -793,7 +793,7 @@ class ProfileSections {
                 <div class="empty-challenges">
                     <i class="fas fa-trophy" style="opacity: 0.3;"></i>
                     <p>No challenges joined yet</p>
-                    ${this.isOwnProfile ? `<a href="pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
+                    ${this.isOwnProfile ? `<a href="/pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
                 </div>
             `;
         return;
@@ -874,7 +874,7 @@ class ProfileSections {
                 <div class="empty-challenges">
                     <i class="fas fa-trophy" style="opacity: 0.3;"></i>
                     <p>No challenges joined yet</p>
-                    ${this.isOwnProfile ? `<a href="pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
+                    ${this.isOwnProfile ? `<a href="/pages/community/challenges.html" class="btn-challenge">Browse Challenges</a>` : ""}
                 </div>
             `;
         return;
@@ -939,7 +939,7 @@ class ProfileSections {
           }
 
           // Build click handler - goes to challenges page with highlight
-          const challengeUrl = `pages/community/challenges.html?highlight=${encodeURIComponent(jc.challengeId)}`;
+          const challengeUrl = `/pages/community/challenges.html?highlight=${encodeURIComponent(jc.challengeId)}`;
 
           // Get the right icon based on type
           const typeIcon =
@@ -2324,7 +2324,7 @@ class ProfileSections {
                         border: 1px solid var(--border-color);
                         transition: all 0.3s ease;
                         cursor: pointer;
-                    " onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+                    " onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
                         <img src="${art.imageUrl}" alt="${this.escapeHtml(art.title)}" loading="lazy" style="
                             width: 100%;
                             aspect-ratio: 1/1;
@@ -2649,7 +2649,7 @@ class ProfileSections {
     document
       .getElementById("viewAllUploadsBtn")
       ?.addEventListener("click", () => {
-        window.location.href = `pages/community/gallery.html?user=${this.userId}`;
+        window.location.href = `/pages/community/gallery.html?user=${this.userId}`;
       });
 
     document

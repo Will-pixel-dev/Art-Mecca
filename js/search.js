@@ -84,7 +84,7 @@ class SearchEngine {
           description:
             data.description || data.excerpt || "Learn digital art techniques",
           tags: data.tags || [],
-          url: data.url || `pages/tutorials/tutorial-detail.html?id=${doc.id}`,
+          url: data.url || `/pages/tutorials/tutorial-detail.html?id=${doc.id}`,
           difficulty: data.difficulty || "intermediate",
           createdAt: data.createdAt,
           imageUrl: data.imageUrl || null,
@@ -112,7 +112,7 @@ class SearchEngine {
         description:
           "Learn fundamental eye rendering techniques for digital art",
         tags: ["eyes", "rendering", "basics", "digital painting"],
-        url: "pages/tutorials/eye-render-tutorial.html",
+        url: "/pages/tutorials/eye-render-tutorial.html",
         difficulty: "beginner",
       },
       {
@@ -122,7 +122,7 @@ class SearchEngine {
         category: "eyes",
         description: "Master advanced eye rendering with realistic reflections",
         tags: ["eyes", "advanced", "realistic", "reflections"],
-        url: "pages/tutorials/advanced-eye-rendering.html",
+        url: "/pages/tutorials/advanced-eye-rendering.html",
         difficulty: "advanced",
       },
       {
@@ -132,7 +132,7 @@ class SearchEngine {
         category: "nose",
         description: "Complete guide to nose anatomy and rendering techniques",
         tags: ["nose", "anatomy", "rendering", "face"],
-        url: "pages/tutorials/nose-rendering-tutorial.html",
+        url: "/pages/tutorials/nose-rendering-tutorial.html",
         difficulty: "beginner",
       },
       {
@@ -143,7 +143,7 @@ class SearchEngine {
         description:
           "Learn to render realistic lips with proper texture and lighting",
         tags: ["lips", "rendering", "texture", "lighting"],
-        url: "pages/tutorials/lip-rendering-tutorial.html",
+        url: "/pages/tutorials/lip-rendering-tutorial.html",
         difficulty: "intermediate",
       },
       {
@@ -154,7 +154,7 @@ class SearchEngine {
         description:
           "Master skin rendering with pores, subsurface scattering and textures",
         tags: ["skin", "texture", "rendering", "pores"],
-        url: "pages/tutorials/skin-rendering-tutorial.html",
+        url: "/pages/tutorials/skin-rendering-tutorial.html",
         difficulty: "advanced",
       },
       {
@@ -164,7 +164,7 @@ class SearchEngine {
         category: "facial-features",
         description: "Learn the fundamental structure of the human face",
         tags: ["anatomy", "face", "proportions", "facial features"],
-        url: "pages/tutorials/facial-anatomy-basics.html",
+        url: "/pages/tutorials/facial-anatomy-basics.html",
         difficulty: "beginner",
       },
       {
@@ -174,7 +174,7 @@ class SearchEngine {
         category: "character",
         description: "Learn to create compelling characters that tell a story",
         tags: ["character", "design", "sketching", "concept art"],
-        url: "pages/tutorials/character-design.html",
+        url: "/pages/tutorials/character-design.html",
         difficulty: "intermediate",
       },
       {
@@ -185,7 +185,7 @@ class SearchEngine {
         description:
           "Essential techniques for creating stunning digital artwork",
         tags: ["digital painting", "brushes", "layers", "blending"],
-        url: "pages/tutorials/digital-painting.html",
+        url: "/pages/tutorials/digital-painting.html",
         difficulty: "intermediate",
       },
       {
@@ -196,7 +196,7 @@ class SearchEngine {
         description:
           "Understand color theory to create stunning digital artwork",
         tags: ["color", "theory", "harmony", "palette"],
-        url: "pages/tutorials/color-theory.html",
+        url: "/pages/tutorials/color-theory.html",
         difficulty: "beginner",
       },
       {
@@ -207,7 +207,7 @@ class SearchEngine {
         description:
           "Learn the principles of composition to improve your artwork",
         tags: ["composition", "design", "rule of thirds", "golden ratio"],
-        url: "pages/tutorials/composition-basics.html",
+        url: "/pages/tutorials/composition-basics.html",
         difficulty: "beginner",
       },
     ];
@@ -233,7 +233,7 @@ class SearchEngine {
             category: "artist",
             description: data.bio || "Check out this artist's portfolio",
             tags: ["artist", "profile", data.username, data.displayName],
-            url: `pages/community/profiles.html?user=${doc.id}`,
+            url: `/pages/community/profiles.html?user=${doc.id}`,
             avatar: data.photoURL || data.avatarUrl || null,
             username: data.username || data.displayName,
           });
@@ -288,7 +288,7 @@ class SearchEngine {
             description:
               data.description || data.caption || "View this artwork",
             tags: data.tags || [],
-            url: `pages/community/artwork-detail.html?id=${doc.id}`,
+            url: `/pages/community/artwork-detail.html?id=${doc.id}`,
             imageUrl: data.imageUrl || null,
             artistId: data.artistId || null,
             artistName: data.artistName || null,
@@ -330,7 +330,7 @@ class SearchEngine {
           category: data.category || "tool",
           description: data.description || "Tool for digital artists",
           tags: data.tags || [],
-          url: data.url || `pages/tools/tool-detail.html?id=${doc.id}`,
+          url: data.url || `/pages/tools/tool-detail.html?id=${doc.id}`,
           icon: data.icon || null,
         });
       });
@@ -355,7 +355,7 @@ class SearchEngine {
         category: "color-tools",
         description: "Generate beautiful color palettes for your artwork",
         tags: ["color", "palette", "generator", "tools"],
-        url: "pages/tools/color-palette-generator.html",
+        url: "/pages/tools/color-palette-generator.html",
       },
       {
         id: "color-analyzer",
@@ -365,7 +365,7 @@ class SearchEngine {
         description:
           "Analyze and improve your color schemes for better harmony",
         tags: ["color", "analyzer", "scheme", "harmony"],
-        url: "pages/tools/color-scheme-analyzer.html",
+        url: "/pages/tools/color-scheme-analyzer.html",
       },
       {
         id: "prompt-generator",
@@ -374,7 +374,7 @@ class SearchEngine {
         category: "prompt-tools",
         description: "Get inspired with random character creation prompts",
         tags: ["character", "prompt", "generator", "inspiration"],
-        url: "pages/tools/prompt-generator.html",
+        url: "/pages/tools/prompt-generator.html",
       },
       {
         id: "software-quiz",
@@ -383,7 +383,7 @@ class SearchEngine {
         category: "quiz",
         description: "Find your perfect digital art software",
         tags: ["quiz", "software", "recommendation"],
-        url: "pages/tools/software-quiz.html",
+        url: "/pages/tools/software-quiz.html",
       },
     ];
   }
@@ -409,7 +409,7 @@ class SearchEngine {
           category: data.category || "resource",
           description: data.description || "Resource for digital artists",
           tags: data.tags || [],
-          url: data.url || `pages/resources/resource-detail.html?id=${doc.id}`,
+          url: data.url || `/pages/resources/resource-detail.html?id=${doc.id}`,
         });
       });
 
@@ -426,7 +426,7 @@ class SearchEngine {
           description:
             "Compare Photoshop, Procreate, Clip Studio Paint and more",
           tags: ["software", "comparison", "photoshop", "procreate"],
-          url: "pages/software/software-comparison.html",
+          url: "/pages/software/software-comparison.html",
         },
         {
           id: "equip",
@@ -436,7 +436,7 @@ class SearchEngine {
           description:
             "Portfolio templates, CV templates, and career resources",
           tags: ["portfolio", "cv", "career", "templates", "resources"],
-          url: "pages/Equip/Equip.html",
+          url: "/pages/Equip/Equip.html",
         },
       ];
     }
@@ -787,10 +787,10 @@ class SearchEngine {
                 <h3>No results for "${this.escapeHtml(query)}"</h3>
                 <p>Try adjusting your search terms or browse our categories:</p>
                 <div class="search-suggestions">
-                    <a href="pages/tutorials/tutorials.html" class="suggestion-link" onclick="closeSearch()">📚 Tutorials</a>
-                    <a href="pages/tools/tools.html" class="suggestion-link" onclick="closeSearch()">🛠️ Tools</a>
-                    <a href="pages/community/gallery.html" class="suggestion-link" onclick="closeSearch()">🖼️ Gallery</a>
-                    <a href="pages/community/search-users.html" class="suggestion-link" onclick="closeSearch()">👤 Find Artists</a>
+                    <a href="/pages/tutorials/tutorials.html" class="suggestion-link" onclick="closeSearch()">📚 Tutorials</a>
+                    <a href="/pages/tools/tools.html" class="suggestion-link" onclick="closeSearch()">🛠️ Tools</a>
+                    <a href="/pages/community/gallery.html" class="suggestion-link" onclick="closeSearch()">🖼️ Gallery</a>
+                    <a href="/pages/community/search-users.html" class="suggestion-link" onclick="closeSearch()">👤 Find Artists</a>
                 </div>
             </div>
         `;

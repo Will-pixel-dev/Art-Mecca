@@ -150,7 +150,7 @@ class UserProfile {
               You must be <strong style="color: #ff0040;">18 or older</strong> to view this profile.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-              <a href="pages/community/gallery.html" style="
+              <a href="/pages/community/gallery.html" style="
                 padding: 0.6rem 1.5rem;
                 background: rgba(255, 255, 255, 0.02);
                 color: #f5eaff;
@@ -298,7 +298,7 @@ class UserProfile {
           "linear-gradient(135deg, #fe67ea, #63dbee)";
         sidebarAvatar.style.cursor = "pointer";
         sidebarAvatar.onclick = () => {
-          window.location.href = `pages/community/profiles.html?user=${user.uid}`;
+          window.location.href = `/pages/community/profiles.html?user=${user.uid}`;
         };
       }
       if (logoutBtn) logoutBtn.style.display = "flex";
@@ -369,14 +369,14 @@ class UserProfile {
       likedBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
         const likedSection = document.getElementById("likedArtworksSection");
         if (likedSection) {
           likedSection.scrollIntoView({ behavior: "smooth" });
         } else {
-          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       });
     }
@@ -386,14 +386,14 @@ class UserProfile {
       savedTutsBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
         const savedSection = document.getElementById("savedTutorialsSection");
         if (savedSection) {
           savedSection.scrollIntoView({ behavior: "smooth" });
         } else {
-          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       });
     }
@@ -403,7 +403,7 @@ class UserProfile {
       completedBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
         const completedSection = document.getElementById(
@@ -412,7 +412,7 @@ class UserProfile {
         if (completedSection) {
           completedSection.scrollIntoView({ behavior: "smooth" });
         } else {
-          window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
+          window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
         }
       });
     }
@@ -422,10 +422,10 @@ class UserProfile {
       uploadsBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
-        window.location.href = "pages/community/my-uploads.html";
+        window.location.href = "/pages/community/my-uploads.html";
       });
     }
 
@@ -434,10 +434,10 @@ class UserProfile {
       notifBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
-        window.location.href = "pages/community/notifications.html";
+        window.location.href = "/pages/community/notifications.html";
       });
     }
 
@@ -446,10 +446,10 @@ class UserProfile {
       savesBtn.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
-        window.location.href = `pages/community/profiles.html?user=${this.currentUser.uid}`;
+        window.location.href = `/pages/community/profiles.html?user=${this.currentUser.uid}`;
       });
     }
 
@@ -1653,7 +1653,7 @@ class UserProfile {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             const id = btn.dataset.id;
-            window.location.href = `pages/community/edit-artwork.html?id=${id}`;
+            window.location.href = `/pages/community/edit-artwork.html?id=${id}`;
           });
         });
       }
@@ -1662,7 +1662,7 @@ class UserProfile {
         card.addEventListener("click", (e) => {
           if (!e.target.closest(".edit-artwork-btn")) {
             const id = card.dataset.id;
-            window.location.href = `pages/community/artwork-detail.html?id=${id}`;
+            window.location.href = `/pages/community/artwork-detail.html?id=${id}`;
           }
         });
       });
@@ -2048,7 +2048,7 @@ class UserProfile {
         container.innerHTML = artworks
           .map(
             (art) => `
-          <div class="saved-item-card" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.id}'">
+          <div class="saved-item-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
             <img src="${art.imageUrl}" alt="${art.title}" style="width: 100%; height: 120px; object-fit: cover;" loading="lazy" onerror="this.src='https://placehold.co/200x120/fe67ea/white?text=Artwork'">
             <div class="saved-item-info">
               <div class="saved-item-title">${this.escapeHtml(art.title)}</div>
@@ -2093,7 +2093,7 @@ class UserProfile {
       container.innerHTML = artworks
         .map(
           (art) => `
-        <div class="saved-item-card" onclick="window.location.href='pages/community/artwork-detail.html?id=${art.artworkId}'">
+        <div class="saved-item-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.artworkId}'">
           <img src="${art.thumbnail}" alt="${art.title}" style="width: 100%; height: 120px; object-fit: cover;" onerror="this.src='https://placehold.co/200x120/fe67ea/white?text=Artwork'">
           <div class="saved-item-info">
             <div class="saved-item-title">${this.escapeHtml(art.title)}</div>
@@ -2146,7 +2146,7 @@ class UserProfile {
           filename = idMappings[tut.tutorialId] || tut.tutorialId;
 
           return `
-          <div class="tutorial-card-small" onclick="window.location.href='pages/tutorials/${tut.category}/${filename}.html'">
+          <div class="tutorial-card-small" onclick="window.location.href='/pages/tutorials/${tut.category}/${filename}.html'">
             <div class="tutorial-thumb" loading="lazy" onerror="this.textContent='📖'">📖</div>
             <div class="tutorial-info-small">
               <div class="tutorial-title-small">${this.escapeHtml(tut.title)}</div>
@@ -2200,7 +2200,7 @@ class UserProfile {
           filename = idMappings[tut.tutorialId] || tut.tutorialId;
 
           return `
-          <div class="tutorial-card-small" onclick="window.location.href='pages/tutorials/${tut.category}/${filename}.html'">
+          <div class="tutorial-card-small" onclick="window.location.href='/pages/tutorials/${tut.category}/${filename}.html'">
             <div class="tutorial-thumb" loading="lazy" onerror="this.textContent='🏆'">🏆</div>
             <div class="tutorial-info-small">
               <div class="tutorial-title-small">${this.escapeHtml(tut.title)}</div>

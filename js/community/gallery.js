@@ -474,7 +474,7 @@ class CommunityGallery {
                     </button>
                 `
                     : `
-                    <a href="pages/auth/login.html" class="top-upload-btn" style="display:inline-block;margin-top:1.5rem;padding:0.8rem 2rem;text-decoration:none;">
+                    <a href="/pages/auth/login.html" class="top-upload-btn" style="display:inline-block;margin-top:1.5rem;padding:0.8rem 2rem;text-decoration:none;">
                         <i class="fas fa-sign-in-alt"></i> Sign In to Upload
                     </a>
                 `
@@ -486,10 +486,10 @@ class CommunityGallery {
     if (uploadBtn) {
       uploadBtn.addEventListener("click", () => {
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
-        window.location.href = "pages/community/upload.html";
+        window.location.href = "/pages/community/upload.html";
       });
     }
 
@@ -523,7 +523,7 @@ class CommunityGallery {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
         const id = btn.dataset.id;
-        window.location.href = `pages/community/edit-artwork.html?id=${id}`;
+        window.location.href = `/pages/community/edit-artwork.html?id=${id}`;
       });
     });
 
@@ -537,7 +537,7 @@ class CommunityGallery {
         }
         const id = card.dataset.id;
         if (id) {
-          window.location.href = `pages/community/artwork-detail.html?id=${id}`;
+          window.location.href = `/pages/community/artwork-detail.html?id=${id}`;
         }
       });
     });
@@ -547,7 +547,7 @@ class CommunityGallery {
         e.stopPropagation();
         const artistId = el.dataset.artistId;
         if (artistId) {
-          window.location.href = `pages/community/profiles.html?user=${artistId}`;
+          window.location.href = `/pages/community/profiles.html?user=${artistId}`;
         }
       });
     });
@@ -560,7 +560,7 @@ class CommunityGallery {
   async handleLike(artworkId, btn) {
     if (!this.currentUser) {
       this.showToast("Please login to like", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -607,7 +607,7 @@ class CommunityGallery {
   async handleCheer(artworkId, btn) {
     if (!this.currentUser) {
       this.showToast("Please login to cheer", "error");
-      window.location.href = "pages/auth/login.html";
+      window.location.href = "/pages/auth/login.html";
       return;
     }
 
@@ -734,7 +734,7 @@ class CommunityGallery {
 
     // Messages link
     const messagesLink = document.createElement("a");
-    messagesLink.href = "pages/community/messages.html";
+    messagesLink.href = "/pages/community/messages.html";
     messagesLink.className = "sidebar-link";
     messagesLink.innerHTML = `
   <i class="fas fa-envelope"></i>
@@ -777,10 +777,10 @@ class CommunityGallery {
       uploadsLink.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
-        window.location.href = "pages/community/my-uploads.html";
+        window.location.href = "/pages/community/my-uploads.html";
       });
     }
 
@@ -789,10 +789,10 @@ class CommunityGallery {
       notifLink.addEventListener("click", (e) => {
         e.preventDefault();
         if (!this.currentUser) {
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
-        window.location.href = "pages/community/notifications.html";
+        window.location.href = "/pages/community/notifications.html";
       });
     }
   }
@@ -842,7 +842,7 @@ class CommunityGallery {
       if (avatar) {
         avatar.style.cursor = "pointer";
         avatar.onclick = () => {
-          window.location.href = `pages/community/profiles.html?user=${user.uid}`;
+          window.location.href = `/pages/community/profiles.html?user=${user.uid}`;
         };
       }
 
@@ -997,10 +997,10 @@ class CommunityGallery {
       uploadBtn.addEventListener("click", () => {
         if (!this.currentUser) {
           this.showToast("Please login to upload", "error");
-          window.location.href = "pages/auth/login.html";
+          window.location.href = "/pages/auth/login.html";
           return;
         }
-        window.location.href = "pages/community/upload.html";
+        window.location.href = "/pages/community/upload.html";
       });
     }
 
