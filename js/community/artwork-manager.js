@@ -1,4 +1,4 @@
-// /js/community/artwork-manager.js
+// js/community/artwork-manager.js
 class ArtworkManager {
   async submitArtwork(challengeId, artworkData) {
     // Handle image uploads and store in Firestore

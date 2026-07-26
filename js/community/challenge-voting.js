@@ -1,4 +1,4 @@
-// //js/community/challenge-voting.js
+// js/community/challenge-voting.js
 
 class ChallengeVoting {
   constructor() {
