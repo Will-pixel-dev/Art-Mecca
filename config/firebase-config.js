@@ -1,3 +1,7 @@
+// ================================================================
+// FIREBASE-CONFIG.JS — COMPLETE FIXED VERSION
+// ================================================================
+
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBQzV4y2RSBE4RswMqnwAx7gaoYg-7GmyQ",
@@ -8,48 +12,71 @@ const firebaseConfig = {
     appId: "1:484328460999:web:2ab071c8577ccb85c064e2"
 };
 
-// Initialize Firebase
+// ============================================================
+// 1. INITIALIZE FIREBASE (ONCE)
+// ============================================================
 firebase.initializeApp(firebaseConfig);
+console.log('✅ Firebase initialized successfully!');
 
-// Initialize services
+// ============================================================
+// 2. INITIALIZE SERVICES
+// ============================================================
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// ✅ CRITICAL FIX: Set persistence to LOCAL (stay logged in)
+// ============================================================
+// 3. SET AUTH PERSISTENCE (ONCE)
+// ============================================================
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     .then(() => {
-        console.log('✅ Auth persistence set to LOCAL - user will stay logged in');
+        console.log('✅ Auth persistence set to LOCAL');
     })
     .catch((error) => {
-        console.error('❌ Error setting persistence:', error);
+        console.error('❌ Auth persistence error:', error);
     });
 
-console.log('Firebase initialized successfully!');
+// ============================================================
+// 4. SET FIRESTORE SETTINGS (ONCE, BEFORE ANY OTHER OPERATIONS)
+// ============================================================
+db.settings({
+    cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
+});
 
-// Enable offline persistence for better performance
-firebase.firestore().enablePersistence({
-  synchronizeTabs: true
+// ============================================================
+// 5. ENABLE OFFLINE PERSISTENCE (ONCE)
+// ============================================================
+db.enablePersistence({
+    synchronizeTabs: true  // This allows multi-tab support
 })
 .then(() => {
-  console.log('✅ Firestore persistence enabled');
+    console.log('✅ Firestore persistence enabled');
 })
-.catch((err) => {
-  console.warn('Firestore persistence error:', err);
+.catch((error) => {
+    console.error('❌ Firestore persistence error:', error);
+    if (error.code === 'failed-precondition') {
+        console.warn('⚠️ Multiple tabs open, persistence disabled in this tab');
+    } else if (error.code === 'unimplemented') {
+        console.warn('⚠️ Persistence not supported in this browser');
+    }
 });
 
-// Configure settings for better performance
-firebase.firestore().settings({
-  merge: true,
-  ignoreUndefinedProperties: true
-});
-// config/firebase-config.js - Add these at the bottom
+// ============================================================
+// 6. EXPORT FOR USE IN OTHER SCRIPTS
+// ============================================================
+window.auth = auth;
+window.db = db;
+window.storage = storage;
+window.firebaseApp = firebase.app();
 
-// Webhook Configuration
+console.log('✅ Firebase fully configured and ready');
+
+// ============================================================
+// 7. WEBHOOK CONFIGURATION (Optional - keep this)
+// ============================================================
 window.CONFIG = {
     ...window.CONFIG,
     WEBHOOK_URL: 'https://artmecca.com/api/verification-callback',
     REDIRECT_URL: 'https://artmecca.com/api/verification-callback.html',
     SUMSUB_API_URL: 'https://api.sumsub.com'
 };
-
