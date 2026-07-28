@@ -1,8 +1,6 @@
 /**
  * HEADER — Complete Header System
  * Standalone header with auth, avatar, notifications, and search
- *
- * Usage: Include this file after Firebase and your config
  */
 
 // ============================================================
@@ -12,47 +10,350 @@
 function initHeader() {
   console.log("🔧 Initializing header system...");
 
-  // Make sure Firebase is ready
   if (typeof firebase === "undefined" || !firebase.auth) {
     console.warn("⚠️ Firebase not ready, waiting...");
     setTimeout(initHeader, 500);
     return;
   }
 
-  // 1. Mobile menu toggle
+  // Force nav-links to be hidden initially on mobile
+  const navLinks = document.getElementById("nav-links");
+  if (navLinks && window.innerWidth <= 768) {
+    navLinks.classList.remove("open");
+    navLinks.style.display = "none";
+  }
+
   initMobileMenu();
-
-  // 2. Search overlay
   initSearch();
-
-  // 3. Auth state (Firebase)
   initAuth();
-
-  // 4. Notification system - with delay to ensure DOM is ready
   setTimeout(initNotificationSystem, 800);
-
-  // 5. Avatar manager (if available)
   initAvatarManager();
 }
 
 // ============================================================
-// MOBILE MENU
+// MOBILE MENU — COMPLETE FIX WITH INLINE DROPDOWNS & SCROLL
 // ============================================================
 
 function initMobileMenu() {
   const menuBtn = document.getElementById("mobile-menu-btn");
   const navLinks = document.getElementById("nav-links");
 
-  if (menuBtn && navLinks) {
+  if (!menuBtn || !navLinks) {
+    console.warn("⚠️ Mobile menu elements not found");
+    return;
+  }
+
+  console.log("📱 Initializing mobile menu...");
+
+  // ===== GET ALL DROPDOWNS =====
+  const dropdowns = document.querySelectorAll('.nav-dropdown');
+
+  // ===== RESET MOBILE DROPDOWNS =====
+  function resetMobileDropdowns() {
+    dropdowns.forEach(dropdown => {
+      dropdown.classList.remove('open');
+      const menu = dropdown.querySelector('.dropdown-menu');
+      if (menu) {
+        menu.style.display = 'none';
+        menu.style.maxHeight = '0';
+        menu.style.opacity = '0';
+        // Remove any inline position styles
+        menu.style.position = 'relative';
+      }
+    });
+  }
+
+  // ===== CLOSE MOBILE MENU =====
+  function closeMobileMenu() {
+    navLinks.classList.remove('open');
+    navLinks.style.display = 'none';
+    menuBtn.classList.remove('open');
+    resetMobileDropdowns();
+    // Reset scroll position
+    navLinks.scrollTop = 0;
+    // Reset any inline styles
+    document.querySelectorAll('.nav-dropdown .dropdown-menu').forEach(menu => {
+      menu.style.maxHeight = '';
+      menu.style.opacity = '';
+      menu.style.position = 'relative';
+    });
+  }
+
+  // ===== OPEN MOBILE MENU =====
+  function openMobileMenu() {
+    navLinks.classList.add('open');
+    navLinks.style.display = 'flex';
+    menuBtn.classList.add('open');
+    // Reset scroll position to top
+    navLinks.scrollTop = 0;
+  }
+
+  // ===== TOGGLE MOBILE MENU =====
+  function toggleMobileMenu() {
+    if (navLinks.classList.contains('open')) {
+      closeMobileMenu();
+    } else {
+      openMobileMenu();
+    }
+  }
+
+  // ===== TOGGLE DROPDOWN - Opens inline, pushes content down =====
+  function toggleDropdown(dropdown, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    const isOpen = dropdown.classList.contains('open');
+    const menu = dropdown.querySelector('.dropdown-menu');
+
+    // Close all other dropdowns
+    dropdowns.forEach(d => {
+      if (d !== dropdown && d.classList.contains('open')) {
+        d.classList.remove('open');
+        const otherMenu = d.querySelector('.dropdown-menu');
+        if (otherMenu) {
+          otherMenu.style.display = 'none';
+          otherMenu.style.maxHeight = '0';
+          otherMenu.style.opacity = '0';
+          otherMenu.style.position = 'relative';
+        }
+      }
+    });
+
+    // Toggle this dropdown
+    if (isOpen) {
+      dropdown.classList.remove('open');
+      if (menu) {
+        menu.style.display = 'none';
+        menu.style.maxHeight = '0';
+        menu.style.opacity = '0';
+        menu.style.position = 'relative';
+      }
+    } else {
+      dropdown.classList.add('open');
+      if (menu) {
+        // Force inline positioning
+        menu.style.position = 'relative';
+        menu.style.display = 'block';
+        menu.style.maxHeight = '500px';
+        menu.style.opacity = '1';
+        menu.style.top = 'auto';
+        menu.style.left = 'auto';
+        menu.style.right = 'auto';
+        menu.style.transform = 'none';
+
+        // Ensure all menu items are clickable
+        const items = menu.querySelectorAll('a');
+        items.forEach(item => {
+          item.style.pointerEvents = 'auto';
+          item.style.cursor = 'pointer';
+          item.style.position = 'relative';
+          item.style.zIndex = '10';
+          item.style.display = 'flex';
+        });
+
+        // Scroll to show the dropdown if needed
+        setTimeout(() => {
+          const dropdownRect = dropdown.getBoundingClientRect();
+          const navLinksRect = navLinks.getBoundingClientRect();
+          if (dropdownRect.bottom > navLinksRect.bottom) {
+            dropdown.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }, 100);
+      }
+    }
+  }
+
+  // ===== SETUP DROPDOWN HANDLERS =====
+  function setupDropdownHandlers() {
+    dropdowns.forEach(dropdown => {
+      // Find the parent link
+      const link = dropdown.querySelector('a');
+      if (!link) return;
+
+      // Remove existing click listeners
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
+
+      // Add click handler for mobile
+      newLink.addEventListener('click', function(e) {
+        // Only handle on mobile
+        if (window.innerWidth <= 768) {
+          const parent = this.closest('.nav-dropdown');
+          if (parent) {
+            toggleDropdown(parent, e);
+          }
+        }
+      });
+
+      // Ensure dropdown menu items are clickable
+      const menu = dropdown.querySelector('.dropdown-menu');
+      if (menu) {
+        // Initially hide the menu
+        menu.style.display = 'none';
+        menu.style.maxHeight = '0';
+        menu.style.opacity = '0';
+        menu.style.position = 'relative';
+
+        // Make sure all menu items have proper pointer events
+        const items = menu.querySelectorAll('a');
+        items.forEach(item => {
+          item.style.pointerEvents = 'auto';
+          item.style.cursor = 'pointer';
+          item.style.position = 'relative';
+          item.style.zIndex = '10';
+          item.style.display = 'flex';
+
+          // Add click handler for menu items
+          item.addEventListener('click', function(e) {
+            // Allow navigation
+            if (window.innerWidth <= 768) {
+              // Close menu after navigation
+              setTimeout(() => {
+                closeMobileMenu();
+              }, 300);
+            }
+          });
+        });
+      }
+    });
+  }
+
+  // ===== SETUP MENU BUTTON =====
+  function setupMenuButton() {
     const newMenuBtn = menuBtn.cloneNode(true);
     menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
 
-    newMenuBtn.addEventListener("click", () => {
-      navLinks.classList.toggle("open");
-      newMenuBtn.classList.toggle("open");
+    newMenuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleMobileMenu();
+    });
+
+    return newMenuBtn;
+  }
+
+  // ===== SETUP CLOSE ON OUTSIDE CLICK =====
+  function setupOutsideClick() {
+    document.addEventListener('click', function(e) {
+      if (window.innerWidth <= 768) {
+        const header = document.querySelector('.main-header');
+        const isClickInsideHeader = header && header.contains(e.target);
+        const isClickInsideDropdown = e.target.closest('.nav-dropdown');
+        const isClickInsideMenuBtn = e.target.closest('#mobile-menu-btn');
+
+        // If clicking outside the header and menu is open, close it
+        if (!isClickInsideHeader && navLinks.classList.contains('open')) {
+          closeMobileMenu();
+        }
+      }
     });
   }
+
+  // ===== SETUP CLOSE ON ESCAPE =====
+  function setupEscapeKey() {
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && window.innerWidth <= 768) {
+        if (navLinks.classList.contains('open')) {
+          closeMobileMenu();
+        }
+      }
+    });
+  }
+
+  // ===== SETUP RESIZE HANDLER =====
+  function setupResizeHandler() {
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        // Close everything if we resize to desktop
+        if (navLinks.classList.contains('open')) {
+          closeMobileMenu();
+          navLinks.style.display = '';
+        }
+        // Reset dropdown display styles
+        dropdowns.forEach(d => {
+          const menu = d.querySelector('.dropdown-menu');
+          if (menu) {
+            menu.style.display = '';
+            menu.style.maxHeight = '';
+            menu.style.opacity = '';
+            menu.style.position = '';
+          }
+          d.classList.remove('open');
+        });
+      } else {
+        // On mobile, ensure nav is hidden if not open
+        if (!navLinks.classList.contains('open')) {
+          navLinks.style.display = 'none';
+        }
+        // Reset any stuck dropdowns
+        dropdowns.forEach(d => {
+          if (!d.classList.contains('open')) {
+            const menu = d.querySelector('.dropdown-menu');
+            if (menu && menu.style.display === 'block') {
+              menu.style.display = 'none';
+              menu.style.maxHeight = '0';
+              menu.style.opacity = '0';
+              menu.style.position = 'relative';
+            }
+          }
+        });
+      }
+    });
+  }
+
+  // ===== ENSURE DROPDOWN ITEMS ARE CLICKABLE =====
+  function ensureDropdownClickability() {
+    setInterval(() => {
+      if (window.innerWidth <= 768) {
+        dropdowns.forEach(dropdown => {
+          if (dropdown.classList.contains('open')) {
+            const menu = dropdown.querySelector('.dropdown-menu');
+            if (menu && menu.style.display !== 'none') {
+              // Ensure menu is properly positioned
+              menu.style.position = 'relative';
+              menu.style.top = 'auto';
+              menu.style.left = 'auto';
+              menu.style.transform = 'none';
+
+              const items = menu.querySelectorAll('a');
+              items.forEach(item => {
+                item.style.pointerEvents = 'auto';
+                item.style.cursor = 'pointer';
+                item.style.position = 'relative';
+                item.style.zIndex = '10';
+                item.style.display = 'flex';
+              });
+            }
+          }
+        });
+      }
+    }, 300);
+  }
+
+  // ===== INITIALIZE =====
+  function init() {
+    // Hide nav on mobile initially
+    if (window.innerWidth <= 768) {
+      navLinks.style.display = 'none';
+      resetMobileDropdowns();
+    }
+
+    // Setup all handlers
+    setupMenuButton();
+    setupDropdownHandlers();
+    setupOutsideClick();
+    setupEscapeKey();
+    setupResizeHandler();
+    ensureDropdownClickability();
+
+    console.log('✅ Mobile menu initialized with inline dropdowns');
+  }
+
+  init();
 }
+
 
 // ============================================================
 // SEARCH OVERLAY
@@ -135,10 +436,10 @@ function initAuth() {
 
       if (authButtons) {
         authButtons.innerHTML = `
-                    <button class="btn-icon" id="logoutBtn" title="Logout" style="background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 1.1rem; padding: 8px;">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                `;
+          <button class="btn-icon" id="logoutBtn" title="Logout" style="background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 1.1rem; padding: 8px;">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        `;
         const logoutBtn = document.getElementById("logoutBtn");
         if (logoutBtn) {
           logoutBtn.addEventListener("click", () => {
@@ -151,10 +452,7 @@ function initAuth() {
       if (avatarContainer && window.avatarManager) {
         setTimeout(() => {
           window.avatarManager.renderAllAvatars();
-          setTimeout(
-            () => window.avatarManager.setupAvatarClickHandlers(),
-            100,
-          );
+          setTimeout(() => window.avatarManager.setupAvatarClickHandlers(), 100);
         }, 200);
       }
 
@@ -167,9 +465,9 @@ function initAuth() {
 
       if (authButtons) {
         authButtons.innerHTML = `
-                    <a href="/pages/auth/login.html" class="btn btn-outline btn-sm">Log In</a>
-                    <a href="/pages/auth/register.html" class="btn btn-primary btn-sm">Sign Up</a>
-                `;
+          <a href="/pages/auth/login.html" class="btn btn-outline btn-sm">Log In</a>
+          <a href="/pages/auth/register.html" class="btn btn-primary btn-sm">Sign Up</a>
+        `;
       }
 
       if (avatarContainer) {
@@ -209,7 +507,7 @@ function initAvatarManager() {
 }
 
 // ============================================================
-// NOTIFICATION SYSTEM
+// NOTIFICATION SYSTEM — COMPLETE (from Version 1)
 // ============================================================
 
 function initNotificationSystem() {
@@ -286,11 +584,11 @@ function initNotificationSystem() {
       const list = notificationDropdown.querySelector(".notification-list");
       if (list) {
         list.innerHTML = `
-                    <div class="notification-empty">
-                        <i class="fas fa-bell-slash"></i>
-                        <p>Log in to see notifications</p>
-                    </div>
-                `;
+          <div class="notification-empty">
+            <i class="fas fa-bell-slash"></i>
+            <p>Log in to see notifications</p>
+          </div>
+        `;
       }
     }
   }
@@ -312,54 +610,57 @@ function setupNotificationListener(userId) {
 
   console.log("📡 Setting up real-time notification listener for:", userId);
 
-  notificationUnsubscribe = firebase
-    .firestore()
-    .collection("users")
-    .doc(userId)
-    .collection("notifications")
-    .orderBy("createdAt", "desc")
-    .limit(10)
-    .onSnapshot(
-      (snapshot) => {
-        console.log(
-          "📡 Notification snapshot received, changes:",
-          snapshot.docChanges().length,
-        );
+  try {
+    notificationUnsubscribe = firebase
+      .firestore()
+      .collection("users")
+      .doc(userId)
+      .collection("notifications")
+      .orderBy("createdAt", "desc")
+      .limit(10)
+      .onSnapshot(
+        (snapshot) => {
+          console.log(
+            "📡 Notification snapshot received, changes:",
+            snapshot.docChanges().length,
+          );
 
-        const notifications = [];
-
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          notifications.push({
-            id: doc.id,
-            type: data.type || "like",
-            read: data.read || false,
-            data: data.data || {},
-            createdAt: data.createdAt || null,
-            message: data.message || "",
+          const notifications = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            notifications.push({
+              id: doc.id,
+              type: data.type || "like",
+              read: data.read || false,
+              data: data.data || {},
+              createdAt: data.createdAt || null,
+              message: data.message || "",
+            });
           });
-        });
 
-        const unreadCount = notifications.filter((n) => !n.read).length;
-        const badge = document.getElementById("notificationBadge");
-        if (badge) {
-          if (unreadCount > 0) {
-            badge.textContent = unreadCount > 9 ? "9+" : unreadCount;
-            badge.style.display = "flex";
-          } else {
-            badge.style.display = "none";
+          const unreadCount = notifications.filter((n) => !n.read).length;
+          const badge = document.getElementById("notificationBadge");
+          if (badge) {
+            if (unreadCount > 0) {
+              badge.textContent = unreadCount > 9 ? "9+" : unreadCount;
+              badge.style.display = "flex";
+            } else {
+              badge.style.display = "none";
+            }
           }
-        }
 
-        const dropdown = document.getElementById("notificationDropdown");
-        if (dropdown && dropdown.style.display === "block") {
-          renderNotifications(notifications);
+          const dropdown = document.getElementById("notificationDropdown");
+          if (dropdown && dropdown.style.display === "block") {
+            renderNotifications(notifications);
+          }
+        },
+        (error) => {
+          console.error("❌ Notification listener error:", error);
         }
-      },
-      (error) => {
-        console.error("❌ Notification listener error:", error);
-      },
-    );
+      );
+  } catch (error) {
+    console.error("❌ Failed to setup notification listener:", error);
+  }
 }
 
 // ============================================================
@@ -413,16 +714,16 @@ async function loadNotifications(userId) {
   } catch (error) {
     console.error("❌ Error loading notifications:", error);
     notificationList.innerHTML = `
-            <div class="notification-empty">
-                <i class="fas fa-exclamation-triangle"></i>
-                <p>Error loading notifications</p>
-            </div>
-        `;
+      <div class="notification-empty">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Error loading notifications</p>
+      </div>
+    `;
   }
 }
 
 // ============================================================
-// RENDER NOTIFICATIONS — WITH MESSAGE SUPPORT
+// RENDER NOTIFICATIONS — COMPLETE (from Version 1)
 // ============================================================
 
 function renderNotifications(notifications) {
@@ -431,11 +732,11 @@ function renderNotifications(notifications) {
 
   if (notifications.length === 0) {
     notificationList.innerHTML = `
-            <div class="notification-empty">
-                <i class="fas fa-bell-slash"></i>
-                <p>No notifications yet</p>
-            </div>
-        `;
+      <div class="notification-empty">
+        <i class="fas fa-bell-slash"></i>
+        <p>No notifications yet</p>
+      </div>
+    `;
     return;
   }
 
@@ -526,16 +827,16 @@ function renderNotifications(notifications) {
       }
 
       return `
-            <a href="${link}" class="notification-item ${unreadClass}" data-id="${notif.id}" data-read="${notif.read || false}">
-                <div class="notification-icon ${iconClass}">
-                    ${iconHtml}
-                </div>
-                <div class="notification-content">
-                    <div class="notification-text">${text}</div>
-                    <div class="notification-time">${timeAgo}</div>
-                </div>
-            </a>
-        `;
+        <a href="${link}" class="notification-item ${unreadClass}" data-id="${notif.id}" data-read="${notif.read || false}">
+          <div class="notification-icon ${iconClass}">
+            ${iconHtml}
+          </div>
+          <div class="notification-content">
+            <div class="notification-text">${text}</div>
+            <div class="notification-time">${timeAgo}</div>
+          </div>
+        </a>
+      `;
     })
     .join("");
 
