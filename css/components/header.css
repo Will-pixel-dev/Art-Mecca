@@ -213,12 +213,6 @@
   filter: drop-shadow(0 0 20px rgba(255, 0, 234, 0.3));
 }
 
-.nav-brand .logo .logo-icon::before,
-.nav-brand .logo .logo-icon::after {
-  content: none;
-  display: none;
-}
-
 .nav-brand .logo:hover .logo-icon {
   animation: logoGlowPulse 0.8s ease-in-out infinite;
   transform: rotate(-8deg) scale(1.15);
@@ -372,6 +366,168 @@
 
 .nav-links .truly-yours-link:hover::before {
   opacity: 1;
+}
+
+/* ============================================================
+   TRULY YOURS — GLOW + GLITCH EFFECT
+   ============================================================ */
+
+.nav-links .truly-yours-link {
+  color: var(--neon-magenta) !important;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 30px rgba(255, 0, 234, 0.2);
+  pointer-events: auto !important;
+  font-family: var(--font-condensed);
+  position: relative;
+
+  /* Glow pulse animation */
+  animation: trulyGlowPulse 2.5s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+/* Glow ring behind the text */
+.nav-links .truly-yours-link::before {
+  content: '';
+  position: absolute;
+  inset: -4px -8px;
+  border-radius: 4px;
+  background: radial-gradient(circle at center, rgba(255, 0, 234, 0.08), transparent 70%);
+  opacity: 0;
+  z-index: -1;
+  animation: trulyGlowRing 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Glitch lines that appear on hover */
+.nav-links .truly-yours-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 0, 234, 0.03) 2px,
+    rgba(255, 0, 234, 0.03) 4px
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Hover state — intensified glow + glitch */
+.nav-links .truly-yours-link:hover {
+  color: #ff66f0 !important;
+  text-shadow:
+    0 0 40px rgba(255, 0, 234, 0.6),
+    0 0 80px rgba(255, 0, 234, 0.3),
+    0 0 120px rgba(255, 0, 234, 0.1);
+  transform: scale(1.05);
+  animation: trulyGlitchHover 0.8s ease-in-out infinite;
+}
+
+.nav-links .truly-yours-link:hover::before {
+  opacity: 1;
+}
+
+.nav-links .truly-yours-link:hover::after {
+  opacity: 1;
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+
+/* Main glow pulse */
+@keyframes trulyGlowPulse {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(255, 0, 234, 0.15);
+    opacity: 0.9;
+  }
+  50% {
+    text-shadow:
+      0 0 40px rgba(255, 0, 234, 0.4),
+      0 0 80px rgba(255, 0, 234, 0.15);
+    opacity: 1;
+  }
+}
+
+/* Glow ring pulse */
+@keyframes trulyGlowRing {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Hover glitch effect — subtle random shifts */
+@keyframes trulyGlitchHover {
+  0%, 100% {
+    transform: scale(1.05) translateX(0);
+    text-shadow:
+      0 0 40px rgba(255, 0, 234, 0.6),
+      0 0 80px rgba(255, 0, 234, 0.3);
+  }
+  20% {
+    transform: scale(1.05) translateX(-2px);
+    text-shadow:
+      2px 0 #58ebfe,
+      0 0 40px rgba(255, 0, 234, 0.6);
+  }
+  40% {
+    transform: scale(1.05) translateX(2px);
+    text-shadow:
+      -2px 0 #58ebfe,
+      0 0 40px rgba(255, 0, 234, 0.6);
+  }
+  60% {
+    transform: scale(1.05) translateX(-1px);
+    text-shadow:
+      1px 0 #58ebfe,
+      0 0 40px rgba(255, 0, 234, 0.6);
+  }
+  80% {
+    transform: scale(1.05) translateX(1px);
+    text-shadow:
+      -1px 0 #58ebfe,
+      0 0 40px rgba(255, 0, 234, 0.6);
+  }
+}
+
+/* ============================================================
+   OPTIONAL: SPARKLE PARTICLES ON HOVER
+   ============================================================ */
+
+/* Small sparkle dots that appear on hover */
+.nav-links .truly-yours-link:hover .sparkle {
+  display: inline-block;
+}
+
+.sparkle {
+  display: none;
+  font-size: 0.5rem;
+  animation: sparkleFloat 1.5s ease-in-out infinite;
+}
+
+.sparkle:nth-child(1) { animation-delay: 0s; }
+.sparkle:nth-child(2) { animation-delay: 0.3s; }
+.sparkle:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes sparkleFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1);
+  }
 }
 
 /* ============================================================
@@ -1127,10 +1283,12 @@
     top: 8px;
     padding: 0 12px;
     background: rgba(10, 5, 8, 0.92);
+    overflow: visible;
   }
 
   .main-header .container {
     padding: 0 6px;
+    overflow: visible;
   }
 
   /* 18.2 NAVBAR */
@@ -1138,6 +1296,7 @@
     height: 56px;
     min-height: 56px;
     gap: 6px;
+    overflow: visible;
   }
 
   /* 18.3 HIDE ELEMENTS */
@@ -1175,23 +1334,28 @@
     align-items: stretch;
     z-index: 99999;
     overflow-y: auto;
-    max-height: 70vh;
+    overflow-x: hidden;
+    max-height: 60vh;
     width: auto;
     min-width: 0;
     pointer-events: none;
     margin: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
   .nav-links.open {
     display: flex;
     pointer-events: auto !important;
     animation: dropdownSlideDown 0.25s ease;
+    overflow-y: auto;
   }
 
   .nav-links li {
     width: 100%;
     list-style: none;
     position: relative;
+    flex-shrink: 0;
   }
 
   .nav-links .nav-link {
@@ -1201,6 +1365,7 @@
     display: block;
     text-align: left;
     border-radius: 4px;
+    flex-shrink: 0;
   }
 
   .nav-links .nav-link::before {
@@ -1230,6 +1395,7 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
   }
 
   .nav-dropdown > a {
@@ -1247,6 +1413,7 @@
     pointer-events: auto !important;
     cursor: pointer !important;
     min-height: 44px;
+    flex-shrink: 0;
   }
 
   .nav-dropdown > a:hover {
@@ -1271,118 +1438,132 @@
     margin-bottom: 2px;
   }
 
-  /* 18.7 MOBILE DROPDOWN MENU - Inline, pushes content down */
+  /* 18.7 MOBILE DROPDOWN MENU - INLINE - PUSHES CONTENT DOWN */
   .nav-dropdown .dropdown-menu {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    transform: none;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    box-shadow: none;
-    background: rgba(10, 5, 8, 0.6);
-    border: none;
-    border-left: 2px solid var(--neon-magenta);
-    border-radius: 4px;
-    padding: 4px 0 4px 12px;
-    margin: 2px 0 4px 0;
-    width: 100%;
-    min-width: auto;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    display: none;
-    z-index: 1;
-    overflow: visible;
-    max-height: none;
-    transition: all 0.25s ease;
-    position: relative;
-    flex-shrink: 0;
+    position: relative !important;
+    top: auto !important;
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    box-shadow: none !important;
+    background: rgba(10, 5, 8, 0.6) !important;
+    border: none !important;
+    border-left: 2px solid var(--neon-magenta) !important;
+    border-radius: 4px !important;
+    padding: 4px 0 4px 8px !important;
+    margin: 2px 0 4px 12px !important;
+    width: calc(100% - 12px) !important;
+    min-width: auto !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    display: none !important;
+    z-index: 1 !important;
+    overflow: visible !important;
+    max-height: none !important;
+    transition: max-height 0.3s ease, opacity 0.3s ease !important;
+    flex-shrink: 0 !important;
+    max-height: 0 !important;
+    opacity: 0 !important;
+    padding: 0 0 0 8px !important;
+    margin: 0 0 0 12px !important;
+    overflow: hidden !important;
   }
 
   .nav-dropdown.open .dropdown-menu {
     display: block !important;
     pointer-events: auto !important;
-    animation: dropdownSlideDown 0.25s ease;
+    animation: dropdownSlideDown 0.3s ease !important;
+    max-height: 500px !important;
+    opacity: 1 !important;
+    overflow-y: auto !important;
+    padding: 4px 0 4px 8px !important;
+    margin: 2px 0 4px 12px !important;
   }
 
-  /* 18.8 MOBILE DROPDOWN LINKS - Clickable and visible */
-  .dropdown-menu li {
-    display: block;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    z-index: 2;
-    pointer-events: auto !important;
-  }
-
+  /* 18.8 MOBILE DROPDOWN LINKS - REPLACE with this */
   .dropdown-menu li a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 14px 10px 12px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: all 0.2s ease;
-    white-space: normal;
-    word-wrap: break-word;
-    border-radius: 4px;
-    margin: 1px 0;
-    letter-spacing: 0.5px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 14px 10px 12px !important;
+    font-size: 0.7rem !important;
+    font-weight: 500 !important;
+    color: var(--text-muted) !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    border-radius: 4px !important;
+    margin: 1px 0 !important;
+    letter-spacing: 0.5px !important;
     cursor: pointer !important;
-    background: transparent;
-    border: none;
-    border-left: 2px solid transparent;
-    width: 100%;
-    justify-content: flex-start;
-    text-align: left;
-    position: relative;
-    font-family: var(--font-condensed);
-    z-index: 3;
+    background: rgba(10, 5, 8, 0.3) !important;
+    border: none !important;
+    border-left: 2px solid transparent !important;
+    width: 100% !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    position: relative !important;
+    font-family: var(--font-condensed) !important;
+    z-index: 3 !important;
     pointer-events: auto !important;
-    min-height: 40px;
+    min-height: 40px !important;
+    flex-shrink: 0 !important;
+    color: var(--text-secondary) !important;
+    /* CRITICAL - Kill the glitch animation and transforms */
+    transform: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+    will-change: background, color, padding-left;
   }
 
+  /* CRITICAL - Hover without shifting */
   .dropdown-menu li a:hover {
-    color: #ffffff;
-    background: rgba(88, 235, 254, 0.12);
-    padding-left: 22px;
-    border-left: 2px solid var(--neon-cyan);
+    color: #ffffff !important;
+    background: rgba(88, 235, 254, 0.12) !important;
+    padding-left: 22px !important;
+    border-left: 2px solid var(--neon-cyan) !important;
+    /* KILL ALL TRANSFORMS AND ANIMATIONS */
+    transform: none !important;
+    animation: none !important;
+    box-shadow: none !important;
   }
 
+  /* Keep the arrow in place */
   .dropdown-menu li a::before {
-    content: "▸";
-    position: absolute;
-    left: 4px;
-    color: var(--neon-cyan);
-    font-size: 0.5rem;
-    opacity: 0;
-    transition: all 0.2s ease;
-    pointer-events: none;
+    content: "▸" !important;
+    position: absolute !important;
+    left: 4px !important;
+    color: var(--neon-cyan) !important;
+    font-size: 0.5rem !important;
+    opacity: 0 !important;
+    transition: all 0.2s ease !important;
+    pointer-events: none !important;
+    transform: none !important;
   }
 
   .dropdown-menu li a:hover::before {
-    opacity: 1;
-    left: 2px;
+    opacity: 1 !important;
+    left: 4px !important; /* Don't move it */
   }
 
   .dropdown-menu li a::after {
-    content: "◆";
-    position: absolute;
-    right: 10px;
-    color: var(--neon-magenta);
-    font-size: 0.3rem;
-    opacity: 0;
-    transition: all 0.2s ease;
-    pointer-events: none;
+    content: "◆" !important;
+    position: absolute !important;
+    right: 10px !important;
+    color: var(--neon-magenta) !important;
+    font-size: 0.3rem !important;
+    opacity: 0 !important;
+    transition: all 0.2s ease !important;
+    pointer-events: none !important;
+    transform: none !important;
   }
 
   .dropdown-menu li a:hover::after {
-    opacity: 0.4;
+    opacity: 0.4 !important;
   }
 
   /* 18.9 NAV ACTIONS - MOBILE */
@@ -1438,67 +1619,23 @@
     min-width: auto;
   }
 
-  /* 18.12 Z-INDEX & POINTER-EVENTS FIXES */
-  .nav-links.open .nav-dropdown {
-    pointer-events: auto !important;
-    position: relative;
-    z-index: 1;
+  /* 18.12 SCROLLBAR STYLING */
+  .nav-links::-webkit-scrollbar {
+    width: 4px;
   }
 
-  .nav-links.open .nav-dropdown > a {
-    pointer-events: auto !important;
-    cursor: pointer;
+  .nav-links::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
   }
 
-  .nav-links.open li {
-    pointer-events: auto !important;
+  .nav-links::-webkit-scrollbar-thumb {
+    background: var(--gradient-neon);
+    border-radius: 4px;
   }
 
-  .nav-links.open .nav-dropdown.open {
-    z-index: 2;
-    position: relative;
-  }
-
-  .nav-links.open .nav-dropdown.open .dropdown-menu {
-    z-index: 1;
-    display: block;
-  }
-
-  .nav-links.open .nav-dropdown.open .dropdown-menu li {
-    z-index: 2;
-  }
-
-  .nav-links.open .nav-dropdown.open .dropdown-menu li a {
-    z-index: 3;
-    pointer-events: auto;
-  }
-
-  .nav-dropdown.open > a {
-    z-index: 1;
-    position: relative;
-  }
-
-  .nav-links.open li:not(.nav-dropdown.open) {
-    z-index: 1;
-    position: relative;
-  }
-
-  .nav-links.open li:not(.nav-dropdown.open) a {
-    z-index: 1;
-    position: relative;
-    pointer-events: auto;
-  }
-
-  .dropdown-menu {
-    pointer-events: auto;
-  }
-
-  .dropdown-menu li {
-    pointer-events: auto;
-  }
-
-  .dropdown-menu li a {
-    pointer-events: auto;
+  .nav-links::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-cyan);
   }
 }
 
@@ -1583,29 +1720,31 @@
   }
 
   .nav-dropdown .dropdown-menu {
-    padding: 4px 0 4px 8px;
+    padding: 4px 0 4px 8px !important;
+    margin: 2px 0 4px 8px !important;
+    width: calc(100% - 8px) !important;
   }
 
   .dropdown-menu li a {
-    padding: 8px 10px 8px 8px;
-    font-size: 0.65rem;
+    padding: 8px 10px 8px 8px !important;
+    font-size: 0.65rem !important;
   }
 
   .dropdown-menu li a:hover {
-    padding-left: 16px;
+    padding-left: 16px !important;
   }
 
   .dropdown-menu li a::before {
-    font-size: 0.4rem;
+    font-size: 0.4rem !important;
   }
 
   .dropdown-menu li a:hover::before {
-    left: 1px;
+    left: 1px !important;
   }
 
   .dropdown-menu li a::after {
-    right: 8px;
-    font-size: 0.25rem;
+    right: 8px !important;
+    font-size: 0.25rem !important;
   }
 
   /* 19.7 NAV ACTIONS */

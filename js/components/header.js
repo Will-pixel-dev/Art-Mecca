@@ -54,11 +54,17 @@ function initMobileMenu() {
       dropdown.classList.remove('open');
       const menu = dropdown.querySelector('.dropdown-menu');
       if (menu) {
-        menu.style.display = 'none';
-        menu.style.maxHeight = '0';
-        menu.style.opacity = '0';
-        // Remove any inline position styles
-        menu.style.position = 'relative';
+        // Remove inline styles so CSS takes over
+        menu.style.display = '';
+        menu.style.maxHeight = '';
+        menu.style.opacity = '';
+        menu.style.position = '';
+        menu.style.left = '';
+        menu.style.top = '';
+        menu.style.transform = '';
+        menu.style.width = '';
+        menu.style.margin = '';
+        menu.style.padding = '';
       }
     });
   }
@@ -69,14 +75,7 @@ function initMobileMenu() {
     navLinks.style.display = 'none';
     menuBtn.classList.remove('open');
     resetMobileDropdowns();
-    // Reset scroll position
     navLinks.scrollTop = 0;
-    // Reset any inline styles
-    document.querySelectorAll('.nav-dropdown .dropdown-menu').forEach(menu => {
-      menu.style.maxHeight = '';
-      menu.style.opacity = '';
-      menu.style.position = 'relative';
-    });
   }
 
   // ===== OPEN MOBILE MENU =====
@@ -84,7 +83,6 @@ function initMobileMenu() {
     navLinks.classList.add('open');
     navLinks.style.display = 'flex';
     menuBtn.classList.add('open');
-    // Reset scroll position to top
     navLinks.scrollTop = 0;
   }
 
@@ -97,7 +95,7 @@ function initMobileMenu() {
     }
   }
 
-  // ===== TOGGLE DROPDOWN - Opens inline, pushes content down =====
+  // ===== TOGGLE DROPDOWN =====
   function toggleDropdown(dropdown, event) {
     if (event) {
       event.preventDefault();
@@ -113,10 +111,11 @@ function initMobileMenu() {
         d.classList.remove('open');
         const otherMenu = d.querySelector('.dropdown-menu');
         if (otherMenu) {
-          otherMenu.style.display = 'none';
-          otherMenu.style.maxHeight = '0';
-          otherMenu.style.opacity = '0';
-          otherMenu.style.position = 'relative';
+          // Remove inline styles
+          otherMenu.style.display = '';
+          otherMenu.style.maxHeight = '';
+          otherMenu.style.opacity = '';
+          otherMenu.style.position = '';
         }
       }
     });
@@ -125,43 +124,16 @@ function initMobileMenu() {
     if (isOpen) {
       dropdown.classList.remove('open');
       if (menu) {
-        menu.style.display = 'none';
-        menu.style.maxHeight = '0';
-        menu.style.opacity = '0';
-        menu.style.position = 'relative';
+        // Remove inline styles
+        menu.style.display = '';
+        menu.style.maxHeight = '';
+        menu.style.opacity = '';
+        menu.style.position = '';
       }
     } else {
       dropdown.classList.add('open');
-      if (menu) {
-        // Force inline positioning
-        menu.style.position = 'relative';
-        menu.style.display = 'block';
-        menu.style.maxHeight = '500px';
-        menu.style.opacity = '1';
-        menu.style.top = 'auto';
-        menu.style.left = 'auto';
-        menu.style.right = 'auto';
-        menu.style.transform = 'none';
-
-        // Ensure all menu items are clickable
-        const items = menu.querySelectorAll('a');
-        items.forEach(item => {
-          item.style.pointerEvents = 'auto';
-          item.style.cursor = 'pointer';
-          item.style.position = 'relative';
-          item.style.zIndex = '10';
-          item.style.display = 'flex';
-        });
-
-        // Scroll to show the dropdown if needed
-        setTimeout(() => {
-          const dropdownRect = dropdown.getBoundingClientRect();
-          const navLinksRect = navLinks.getBoundingClientRect();
-          if (dropdownRect.bottom > navLinksRect.bottom) {
-            dropdown.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-        }, 100);
-      }
+      // Let CSS handle the display - don't set inline styles
+      // Just let the class toggle do the work
     }
   }
 
@@ -187,29 +159,15 @@ function initMobileMenu() {
         }
       });
 
-      // Ensure dropdown menu items are clickable
+      // Ensure dropdown menu items work
       const menu = dropdown.querySelector('.dropdown-menu');
       if (menu) {
-        // Initially hide the menu
-        menu.style.display = 'none';
-        menu.style.maxHeight = '0';
-        menu.style.opacity = '0';
-        menu.style.position = 'relative';
-
-        // Make sure all menu items have proper pointer events
         const items = menu.querySelectorAll('a');
         items.forEach(item => {
-          item.style.pointerEvents = 'auto';
-          item.style.cursor = 'pointer';
-          item.style.position = 'relative';
-          item.style.zIndex = '10';
-          item.style.display = 'flex';
-
-          // Add click handler for menu items
-          item.addEventListener('click', function(e) {
-            // Allow navigation
+          // Add click handler for menu items - just close menu after navigation
+          item.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
-              // Close menu after navigation
+              // Allow navigation, then close menu
               setTimeout(() => {
                 closeMobileMenu();
               }, 300);
@@ -241,11 +199,13 @@ function initMobileMenu() {
         const header = document.querySelector('.main-header');
         const isClickInsideHeader = header && header.contains(e.target);
         const isClickInsideDropdown = e.target.closest('.nav-dropdown');
-        const isClickInsideMenuBtn = e.target.closest('#mobile-menu-btn');
 
         // If clicking outside the header and menu is open, close it
         if (!isClickInsideHeader && navLinks.classList.contains('open')) {
-          closeMobileMenu();
+          // But don't close if clicking inside a dropdown
+          if (!isClickInsideDropdown) {
+            closeMobileMenu();
+          }
         }
       }
     });
@@ -266,36 +226,45 @@ function initMobileMenu() {
   function setupResizeHandler() {
     window.addEventListener('resize', function() {
       if (window.innerWidth > 768) {
-        // Close everything if we resize to desktop
         if (navLinks.classList.contains('open')) {
           closeMobileMenu();
           navLinks.style.display = '';
         }
-        // Reset dropdown display styles
+        // Reset all dropdowns
         dropdowns.forEach(d => {
+          d.classList.remove('open');
           const menu = d.querySelector('.dropdown-menu');
           if (menu) {
+            // Remove all inline styles
             menu.style.display = '';
             menu.style.maxHeight = '';
             menu.style.opacity = '';
             menu.style.position = '';
+            menu.style.left = '';
+            menu.style.top = '';
+            menu.style.transform = '';
+            menu.style.width = '';
+            menu.style.margin = '';
+            menu.style.padding = '';
           }
-          d.classList.remove('open');
         });
       } else {
         // On mobile, ensure nav is hidden if not open
         if (!navLinks.classList.contains('open')) {
           navLinks.style.display = 'none';
         }
-        // Reset any stuck dropdowns
+        // Reset any stuck dropdowns - remove inline styles
         dropdowns.forEach(d => {
           if (!d.classList.contains('open')) {
             const menu = d.querySelector('.dropdown-menu');
-            if (menu && menu.style.display === 'block') {
-              menu.style.display = 'none';
-              menu.style.maxHeight = '0';
-              menu.style.opacity = '0';
-              menu.style.position = 'relative';
+            if (menu) {
+              // Only reset if styles were applied inline
+              if (menu.style.display === 'block') {
+                menu.style.display = '';
+              }
+              menu.style.maxHeight = '';
+              menu.style.opacity = '';
+              menu.style.position = '';
             }
           }
         });
@@ -303,41 +272,11 @@ function initMobileMenu() {
     });
   }
 
-  // ===== ENSURE DROPDOWN ITEMS ARE CLICKABLE =====
-  function ensureDropdownClickability() {
-    setInterval(() => {
-      if (window.innerWidth <= 768) {
-        dropdowns.forEach(dropdown => {
-          if (dropdown.classList.contains('open')) {
-            const menu = dropdown.querySelector('.dropdown-menu');
-            if (menu && menu.style.display !== 'none') {
-              // Ensure menu is properly positioned
-              menu.style.position = 'relative';
-              menu.style.top = 'auto';
-              menu.style.left = 'auto';
-              menu.style.transform = 'none';
-
-              const items = menu.querySelectorAll('a');
-              items.forEach(item => {
-                item.style.pointerEvents = 'auto';
-                item.style.cursor = 'pointer';
-                item.style.position = 'relative';
-                item.style.zIndex = '10';
-                item.style.display = 'flex';
-              });
-            }
-          }
-        });
-      }
-    }, 300);
-  }
-
   // ===== INITIALIZE =====
   function init() {
     // Hide nav on mobile initially
     if (window.innerWidth <= 768) {
       navLinks.style.display = 'none';
-      resetMobileDropdowns();
     }
 
     // Setup all handlers
@@ -346,14 +285,12 @@ function initMobileMenu() {
     setupOutsideClick();
     setupEscapeKey();
     setupResizeHandler();
-    ensureDropdownClickability();
 
-    console.log('✅ Mobile menu initialized with inline dropdowns');
+    console.log('✅ Mobile menu initialized - CSS controlled');
   }
 
   init();
 }
-
 
 // ============================================================
 // SEARCH OVERLAY
