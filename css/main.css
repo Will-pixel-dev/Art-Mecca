@@ -481,3 +481,76 @@ a:focus-visible {
     transform: translate(-50%, -50%) scale(1.1);
   }
 }
+
+/* ===== DISABLE BLUR ON MOBILE FOR PERFORMANCE ===== */
+@media (max-width: 768px) {
+  /* Disable all backdrop filters */
+  .glass-panel,
+  .hero-content,
+  .host-info-container,
+  .winners-carousel-container,
+  .news-slider-container,
+  .artwork-card,
+  .challenge-card,
+  .feed-item,
+  .artist-card,
+  .home-cta,
+  .main-header,
+  .notification-dropdown,
+  .avatar-dropdown,
+  .search-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(10, 5, 8, 0.95) !important;
+  }
+
+  /* Light theme override */
+  [data-theme="light"] .glass-panel,
+  [data-theme="light"] .hero-content,
+  [data-theme="light"] .host-info-container,
+  [data-theme="light"] .winners-carousel-container,
+  [data-theme="light"] .news-slider-container,
+  [data-theme="light"] .artwork-card,
+  [data-theme="light"] .challenge-card,
+  [data-theme="light"] .feed-item,
+  [data-theme="light"] .artist-card,
+  [data-theme="light"] .home-cta,
+  [data-theme="light"] .main-header {
+    background: rgba(245, 240, 232, 0.95) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Disable noise overlay on mobile */
+  .noise-overlay {
+    display: none !important;
+  }
+
+  /* Reduce scanline opacity */
+  .scanlines {
+    opacity: 0.3 !important;
+  }
+
+  /* Simplify animations on mobile */
+  .glitch-welcome::before,
+  .glitch-welcome::after,
+  .glitch-header::before,
+  .glitch-header::after,
+  .glitch-header .glitch-layer,
+  .glitch-header .rgb-split {
+    animation-duration: 0s !important;
+    opacity: 0.05 !important;
+  }
+
+  /* Reduce hero animation intensity */
+  .neon-orb {
+    animation-duration: 8s !important;
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .grid-overlay {
+    background-size: 50px 50px !important;
+    opacity: 0.15 !important;
+  }
+}

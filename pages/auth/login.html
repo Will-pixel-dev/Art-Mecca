@@ -301,7 +301,11 @@
         let particles = [];
         let mouseX = -1000;
         let mouseY = -1000;
-        const particleCount = 80;
+        // Replace the particle count with this
+        const isMobile =
+          window.innerWidth < 768 ||
+          /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const particleCount = isMobile ? 30 : 80; // 30 on mobile, 80 on desktop
         let animationId = null;
 
         function resizeCanvas() {

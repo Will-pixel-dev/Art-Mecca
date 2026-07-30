@@ -1,0 +1,952 @@
+/* ================================================================
+   TABLET FIXES - Consolidated
+   All tablet-specific fixes in one place to avoid conflicts
+   ================================================================ */
+
+/* ============================================================
+   TABLET PORTRAIT & LANDSCAPE (768px - 1024px)
+   ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    /* ==========================================================
+       CONTAINER CENTERING
+       ========================================================== */
+    .container {
+        max-width: 95% !important;
+        width: 95% !important;
+        padding: 0 20px !important;
+        margin: 0 auto !important;
+    }
+
+    /* ==========================================================
+       HERO SECTION
+       ========================================================== */
+    .hero-layer-3 {
+        justify-content: center !important;
+        padding: 0 30px !important;
+    }
+
+    .hero-content {
+        max-width: 100% !important;
+        padding: 30px 40px !important;
+        margin: 0 auto !important;
+    }
+
+    .glitch-welcome {
+        font-size: 1.8rem !important;
+    }
+
+    .hero-stats-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    .hero-stat-value {
+        font-size: 1.8rem !important;
+    }
+
+    .hero-quick-actions {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+
+    .hero-quick-actions .btn {
+        padding: 10px 20px !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* ==========================================================
+       HOME DASHBOARD - Row Layouts
+       ========================================================== */
+    .home-dashboard .container {
+        display: block !important;
+    }
+
+    .row {
+        justify-content: center !important;
+        gap: 20px !important;
+    }
+
+    .row > * {
+        flex: 0 1 280px !important;
+        min-width: 200px !important;
+        max-width: 100% !important;
+    }
+
+    /* ==========================================================
+       GALLERY GRID
+       ========================================================== */
+    .artwork-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .gallery-grid {
+        column-count: 3 !important;
+        column-gap: 15px !important;
+    }
+
+    .gallery-item {
+        margin-bottom: 15px !important;
+    }
+
+    /* ==========================================================
+       WINNERS CAROUSEL
+       ========================================================== */
+    .winner-card {
+        flex: 0 0 calc(33.333% - 12px) !important;
+        min-height: 320px !important;
+        max-height: 380px !important;
+        padding: 10px !important;
+    }
+
+    .winner-artwork {
+        min-height: 150px !important;
+    }
+
+    .winner-rank {
+        font-size: 0.45rem !important;
+        padding: 2px 6px !important;
+    }
+
+    .winner-avatar {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .winner-info .winner-name {
+        font-size: 0.65rem !important;
+    }
+
+    .winner-info .winner-username {
+        font-size: 0.45rem !important;
+    }
+
+    .winner-stats .stat-item {
+        font-size: 0.45rem !important;
+    }
+
+    .winners-carousel {
+        padding: 4px 25px 4px 4px !important;
+        gap: 16px !important;
+    }
+
+    /* ==========================================================
+       CHALLENGE GRID
+       ========================================================== */
+    .challenge-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .challenge-card {
+        padding: 1.2rem !important;
+    }
+
+    .challenge-card .challenge-icon {
+        font-size: 2rem !important;
+    }
+
+    .challenge-card .challenge-info h4 {
+        font-size: 1rem !important;
+    }
+
+    /* ==========================================================
+       ARTIST GRID
+       ========================================================== */
+    .artist-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
+    }
+
+    .artist-card {
+        padding: 1.2rem !important;
+    }
+
+    .artist-card .artist-avatar {
+        width: 54px !important;
+        height: 54px !important;
+    }
+
+    .artist-card h4 {
+        font-size: 0.9rem !important;
+    }
+
+    .artist-card .artist-stats {
+        font-size: 0.65rem !important;
+        gap: 8px !important;
+    }
+
+    /* ==========================================================
+       ACTIVITY FEED
+       ========================================================== */
+    .feed-item {
+        padding: 0.8rem 1.2rem !important;
+    }
+
+    .feed-item .feed-icon {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 1.2rem !important;
+    }
+
+    .feed-item .feed-content p {
+        font-size: 0.85rem !important;
+    }
+
+    /* ==========================================================
+       NEWS SLIDER
+       ========================================================== */
+    .news-slide {
+        grid-template-columns: 1fr !important;
+        min-height: auto !important;
+    }
+
+    .news-slide-image {
+        min-height: 180px !important;
+        order: -1 !important;
+    }
+
+    .news-slide-content {
+        padding: 1.5rem 2rem !important;
+    }
+
+    .news-slide-content h3 {
+        font-size: 1.4rem !important;
+    }
+
+    .news-slide-content p {
+        font-size: 0.9rem !important;
+    }
+
+    /* ==========================================================
+       HOST INFO
+       ========================================================== */
+    .host-info-container {
+        padding: 2.5rem !important;
+        margin: 0 1rem !important;
+    }
+
+    .host-info-content {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+        justify-items: center !important;
+        text-align: center !important;
+    }
+
+    .host-text {
+        align-items: center !important;
+    }
+
+    .host-header {
+        align-items: center !important;
+    }
+
+    .host-badge {
+        align-self: center !important;
+    }
+
+    .host-bio {
+        text-align: center !important;
+        font-size: 0.95rem !important;
+    }
+
+    .host-quick-tips {
+        grid-template-columns: 1fr 1fr !important;
+        text-align: left !important;
+        gap: 6px 20px !important;
+    }
+
+    .tip-item {
+        justify-content: center !important;
+    }
+
+    .host-official-links {
+        align-items: center !important;
+    }
+
+    .links-grid {
+        justify-content: center !important;
+    }
+
+    .host-profile-btn {
+        align-self: center !important;
+    }
+
+    .host-avatar {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .host-avatar-emoji {
+        font-size: 3rem !important;
+    }
+
+    .host-graffiti-tag {
+        font-size: 3rem !important;
+    }
+
+    .host-header h2 {
+        font-size: 1.8rem !important;
+    }
+
+    /* ==========================================================
+       HOST CHARACTERS
+       ========================================================== */
+    .character-item .char-avatar {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 1.2rem !important;
+    }
+
+    .character-item .char-name {
+        font-size: 0.5rem !important;
+        max-width: 50px !important;
+    }
+
+    .characters-grid {
+        gap: 10px !important;
+    }
+
+    /* ==========================================================
+       CTA SECTION
+       ========================================================== */
+    .home-cta {
+        padding: 3rem 2.5rem !important;
+    }
+
+    .home-cta h2 {
+        font-size: 2.2rem !important;
+    }
+
+    .home-cta p {
+        font-size: 1.1rem !important;
+    }
+
+    .cta-buttons .btn {
+        padding: 14px 32px !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* ==========================================================
+       GRAFFITI TAGS - Hide on tablet
+       ========================================================== */
+    .graffiti-tag,
+    .host-graffiti-tag,
+    .cta-graffiti-tag {
+        display: none !important;
+    }
+
+    /* ==========================================================
+       SCROLL INDICATOR - Hide on tablet
+       ========================================================== */
+    .scroll-indicator {
+        display: none !important;
+    }
+}
+
+/* ============================================================
+   TABLET LANDSCAPE ONLY (specific fixes for horizontal)
+   ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+    /* ==========================================================
+       CONTAINER - Slightly wider in landscape
+       ========================================================== */
+    .container {
+        max-width: 92% !important;
+        width: 92% !important;
+        padding: 0 30px !important;
+    }
+
+    /* ==========================================================
+       HERO - More compact in landscape
+       ========================================================== */
+    .parallax-hero {
+        min-height: 80vh !important;
+        padding: 30px 20px !important;
+    }
+
+    .hero-content {
+        padding: 25px 35px !important;
+    }
+
+    .hero-stats-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .hero-stat-card {
+        padding: 12px 14px !important;
+    }
+
+    .hero-stat-value {
+        font-size: 1.6rem !important;
+    }
+
+    /* ==========================================================
+       WINNERS CAROUSEL - Show 3 cards in landscape
+       ========================================================== */
+    .winner-card {
+        flex: 0 0 calc(33.333% - 12px) !important;
+        min-height: 280px !important;
+        max-height: 340px !important;
+    }
+
+    /* ==========================================================
+       GALLERY - 3 columns in landscape
+       ========================================================== */
+    .artwork-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    .gallery-grid {
+        column-count: 3 !important;
+    }
+
+    /* ==========================================================
+       HEADER - Prevent overflow in landscape
+       ========================================================== */
+    .main-header {
+        padding: 0 12px !important;
+        margin: 8px 16px 0 !important;
+    }
+
+    .navbar {
+        height: 52px !important;
+        min-height: 52px !important;
+        gap: 4px !important;
+    }
+
+    .nav-brand .logo {
+        font-size: 0.8rem !important;
+        gap: 4px !important;
+    }
+
+    .nav-brand .logo .logo-icon {
+        font-size: 0.9rem !important;
+    }
+
+    .nav-brand .hud-tag {
+        display: none !important;
+    }
+
+    /* ==========================================================
+       NAV LINKS - Smaller in landscape
+       ========================================================== */
+    .nav-links {
+        gap: 2px !important;
+        margin: 0 6px !important;
+    }
+
+    .nav-links .nav-link {
+        font-size: 0.5rem !important;
+        padding: 4px 6px !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Hide less important nav items to save space */
+    .nav-links .nav-link[data-section="tutorials"],
+    .nav-links .nav-link[data-section="software"],
+    .nav-links .nav-link[data-section="tools"],
+    .nav-links .nav-link[data-section="community"],
+    .nav-links .nav-link[data-section="equip"] {
+        font-size: 0.45rem !important;
+        padding: 3px 4px !important;
+    }
+
+    .dropdown-arrow {
+        display: none !important;
+    }
+
+    .nav-links .truly-yours-link {
+        font-size: 0.6rem !important;
+        padding: 4px 8px !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* ==========================================================
+       NAV ACTIONS - Prevent overflow
+       ========================================================== */
+    .nav-actions {
+        gap: 2px !important;
+    }
+
+    .nav-actions .btn-icon {
+        font-size: 0.7rem !important;
+        padding: 4px 4px !important;
+    }
+
+    .nav-actions .btn {
+        font-size: 0.5rem !important;
+        padding: 3px 8px !important;
+    }
+
+    .hybrid-status {
+        display: none !important;
+    }
+
+    .notification-badge {
+        font-size: 0.4rem !important;
+        min-width: 12px !important;
+        padding: 0 3px !important;
+        top: -2px !important;
+        right: -2px !important;
+    }
+
+    /* ==========================================================
+       DROPDOWN - Prevent overflow
+       ========================================================== */
+    .dropdown-menu {
+        min-width: 140px !important;
+        left: 50% !important;
+        transform: translateX(-50%) translateY(8px) !important;
+    }
+
+    .nav-dropdown:hover .dropdown-menu {
+        transform: translateX(-50%) translateY(0) !important;
+    }
+
+    .dropdown-menu li a {
+        font-size: 0.5rem !important;
+        padding: 4px 10px !important;
+        white-space: nowrap !important;
+    }
+
+    /* ==========================================================
+       MOBILE MENU - Ensure it works in landscape tablet
+       ========================================================== */
+    .mobile-menu-btn {
+        display: none !important;
+    }
+
+    .nav-links.open {
+        display: flex !important;
+    }
+
+    /* ==========================================================
+       CHALLENGE & ARTIST GRIDS
+       ========================================================== */
+    .challenge-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    .artist-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+/* ============================================================
+   TABLET PORTRAIT ONLY (specific fixes for vertical)
+   ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+    /* ==========================================================
+       CONTAINER - Slightly narrower in portrait
+       ========================================================== */
+    .container {
+        max-width: 90% !important;
+        width: 90% !important;
+        padding: 0 20px !important;
+    }
+
+    /* ==========================================================
+       HERO - More vertical in portrait
+       ========================================================== */
+    .parallax-hero {
+        min-height: 100vh !important;
+    }
+
+    .hero-content {
+        padding: 35px 30px !important;
+    }
+
+    .hero-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    /* ==========================================================
+       WINNERS CAROUSEL - Show 2 cards in portrait
+       ========================================================== */
+    .winner-card {
+        flex: 0 0 calc(50% - 12px) !important;
+        min-height: 300px !important;
+        max-height: 360px !important;
+    }
+
+    /* ==========================================================
+       GALLERY - 2 columns in portrait
+       ========================================================== */
+    .artwork-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .gallery-grid {
+        column-count: 2 !important;
+    }
+
+    /* ==========================================================
+       HEADER - Keep compact but visible
+       ========================================================== */
+    .main-header {
+        padding: 0 16px !important;
+        margin: 10px 12px 0 !important;
+    }
+
+    .navbar {
+        height: 56px !important;
+        min-height: 56px !important;
+    }
+
+    .nav-brand .logo {
+        font-size: 0.9rem !important;
+    }
+
+    .nav-links .nav-link {
+        font-size: 0.55rem !important;
+        padding: 4px 8px !important;
+    }
+
+    /* ==========================================================
+       CHALLENGE & ARTIST GRIDS
+       ========================================================== */
+    .challenge-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .artist-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* ==========================================================
+       HOST QUICK TIPS - Single column in portrait
+       ========================================================== */
+    .host-quick-tips {
+        grid-template-columns: 1fr !important;
+    }
+
+    .tip-item {
+        justify-content: center !important;
+    }
+}
+
+/* ============================================================
+   SMALL TABLET / LARGE PHONE (600px - 768px)
+   ============================================================ */
+
+@media (min-width: 600px) and (max-width: 767px) {
+
+    /* ==========================================================
+       CONTAINER
+       ========================================================== */
+    .container {
+        max-width: 95% !important;
+        width: 95% !important;
+        padding: 0 15px !important;
+        margin: 0 auto !important;
+    }
+
+    /* ==========================================================
+       HERO
+       ========================================================== */
+    .hero-content {
+        padding: 25px 20px !important;
+    }
+
+    .glitch-welcome {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .hero-stat-value {
+        font-size: 1.4rem !important;
+    }
+
+    .hero-quick-actions {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .hero-quick-actions .btn {
+        justify-content: center !important;
+        padding: 12px 20px !important;
+    }
+
+    /* ==========================================================
+       GRIDS
+       ========================================================== */
+    .artwork-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    .gallery-grid {
+        column-count: 2 !important;
+        column-gap: 12px !important;
+    }
+
+    .challenge-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+    }
+
+    .artist-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* ==========================================================
+       WINNERS
+       ========================================================== */
+    .winner-card {
+        flex: 0 0 calc(100% - 0px) !important;
+        min-height: 280px !important;
+        max-height: 340px !important;
+    }
+
+    /* ==========================================================
+       HEADER
+       ========================================================== */
+    .main-header {
+        padding: 0 12px !important;
+        margin: 6px 8px 0 !important;
+    }
+
+    .navbar {
+        height: 52px !important;
+        min-height: 52px !important;
+    }
+
+    .nav-brand .logo {
+        font-size: 0.8rem !important;
+    }
+
+    .nav-brand .hud-tag {
+        display: none !important;
+    }
+
+    /* ==========================================================
+       NAVIGATION - Mobile style for small tablets
+       ========================================================== */
+    .mobile-menu-btn {
+        display: flex !important;
+    }
+
+    .nav-links {
+        display: none !important;
+        flex-direction: column !important;
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        left: -12px !important;
+        right: -12px !important;
+        background: rgba(10, 5, 8, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid var(--border-color, rgba(255, 0, 234, 0.15)) !important;
+        border-radius: 6px !important;
+        padding: 12px !important;
+        box-shadow: var(--shadow-card, 0 8px 32px rgba(0, 0, 0, 0.6)) !important;
+        gap: 2px !important;
+        z-index: 99999 !important;
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+    }
+
+    .nav-links.open {
+        display: flex !important;
+        pointer-events: auto !important;
+        animation: dropdownSlideDown 0.25s ease !important;
+    }
+
+    .nav-links .nav-link {
+        padding: 10px 14px !important;
+        font-size: 0.75rem !important;
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .nav-links .truly-yours-link {
+        font-size: 0.85rem !important;
+        padding: 10px 14px !important;
+    }
+
+    .nav-actions .btn {
+        font-size: 0.55rem !important;
+        padding: 4px 10px !important;
+    }
+
+    .nav-actions .btn-icon {
+        font-size: 0.8rem !important;
+        padding: 4px 6px !important;
+    }
+
+    .hybrid-status {
+        display: none !important;
+    }
+
+    /* ==========================================================
+       DROPDOWNS - Mobile style
+       ========================================================== */
+    .nav-dropdown {
+        position: relative !important;
+        width: 100% !important;
+    }
+
+    .nav-dropdown > a {
+        padding: 10px 14px !important;
+        font-size: 0.75rem !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-height: 44px !important;
+    }
+
+    .nav-dropdown .dropdown-menu {
+        position: relative !important;
+        top: auto !important;
+        left: 0 !important;
+        right: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        box-shadow: none !important;
+        background: rgba(10, 5, 8, 0.6) !important;
+        border: none !important;
+        border-left: 2px solid #ff00ea !important;
+        border-radius: 4px !important;
+        padding: 0 0 0 8px !important;
+        margin: 0 0 0 12px !important;
+        width: calc(100% - 12px) !important;
+        min-width: auto !important;
+        display: none !important;
+        max-height: 0 !important;
+        opacity: 0 !important;
+        overflow: hidden !important;
+        transition: max-height 0.3s ease, opacity 0.3s ease !important;
+    }
+
+    .nav-dropdown.open .dropdown-menu {
+        display: block !important;
+        max-height: 500px !important;
+        opacity: 1 !important;
+        padding: 4px 0 4px 8px !important;
+        margin: 2px 0 4px 12px !important;
+        overflow-y: auto !important;
+    }
+
+    .dropdown-menu li a {
+        padding: 8px 12px !important;
+        font-size: 0.65rem !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        min-height: 40px !important;
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .dropdown-menu li a:hover {
+        padding-left: 18px !important;
+        transform: none !important;
+        animation: none !important;
+    }
+
+    /* ==========================================================
+       HOST INFO
+       ========================================================== */
+    .host-info-container {
+        padding: 2rem 1.5rem !important;
+        margin: 0 0.5rem !important;
+    }
+
+    .host-info-content {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+        justify-items: center !important;
+        text-align: center !important;
+    }
+
+    .host-text {
+        align-items: center !important;
+    }
+
+    .host-header {
+        align-items: center !important;
+    }
+
+    .host-badge {
+        align-self: center !important;
+    }
+
+    .host-bio {
+        text-align: center !important;
+        font-size: 0.9rem !important;
+    }
+
+    .host-quick-tips {
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+    }
+
+    .tip-item {
+        justify-content: center !important;
+    }
+
+    .host-avatar {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    .host-avatar-emoji {
+        font-size: 2.5rem !important;
+    }
+
+    .host-header h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .host-graffiti-tag {
+        display: none !important;
+    }
+
+    /* ==========================================================
+       CTA
+       ========================================================== */
+    .home-cta {
+        padding: 2rem 1.5rem !important;
+    }
+
+    .home-cta h2 {
+        font-size: 1.8rem !important;
+    }
+
+    .home-cta p {
+        font-size: 1rem !important;
+    }
+
+    .cta-buttons {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+
+    .cta-buttons .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 24px !important;
+    }
+}
