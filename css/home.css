@@ -3796,3 +3796,893 @@ body {
 [data-theme="light"] .home-cta .cta-graffiti-tag {
   opacity: 0.08;
 }
+/* ============================================================
+   MOBILE RESPONSIVE FIXES - HOME PAGE
+   Consolidated mobile fixes for hero, news, artists, and CTA
+   ============================================================ */
+
+/* ============================================================
+   HERO SECTION - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Hero container */
+    .parallax-hero {
+        min-height: 80vh !important;
+        padding: 20px 10px !important;
+    }
+
+    .hero-layer-3 {
+        padding: 0 10px !important;
+        position: relative !important;
+        z-index: 3 !important;
+        width: 100% !important;
+    }
+
+    .hero-content {
+        padding: 20px 16px !important;
+        max-width: 100% !important;
+        border-radius: 6px !important;
+    }
+
+    /* Welcome text */
+    .glitch-welcome {
+        font-size: 1.2rem !important;
+        letter-spacing: 2px !important;
+    }
+
+    .typewriter-container {
+        font-size: 0.75rem !important;
+        min-height: 1.5rem !important;
+    }
+
+    /* Stats grid - 2 columns on mobile */
+    .hero-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+
+    .hero-stat-card {
+        padding: 10px 8px !important;
+        border-radius: 4px !important;
+    }
+
+    .hero-stat-value {
+        font-size: 1.3rem !important;
+    }
+
+    .hero-stat-label {
+        font-size: 0.5rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* Quick actions - stacked on mobile */
+    .hero-quick-actions {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    .hero-quick-actions .btn {
+        justify-content: center !important;
+        padding: 10px 16px !important;
+        font-size: 0.65rem !important;
+        letter-spacing: 1px !important;
+        width: 100% !important;
+    }
+
+    /* System status */
+    .hero-system-status {
+        font-size: 0.45rem !important;
+        gap: 4px !important;
+        padding: 4px 10px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .status-text {
+        font-size: 0.5rem !important;
+    }
+
+    .status-divider {
+        display: none !important;
+    }
+
+    /* Hide scroll indicator on mobile */
+    .scroll-indicator {
+        display: none !important;
+    }
+
+    /* Hide graffiti tags on mobile */
+    .graffiti-tag {
+        display: none !important;
+    }
+
+    /* Reduce neon orb size */
+    .neon-orb {
+        width: 200px !important;
+        height: 200px !important;
+    }
+
+    .grid-overlay {
+        background-size: 20px 20px !important;
+        opacity: 0.15 !important;
+    }
+}
+
+/* Small mobile (480px and below) */
+@media (max-width: 480px) {
+    .hero-content {
+        padding: 14px 12px !important;
+    }
+
+    .glitch-welcome {
+        font-size: 0.9rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    .typewriter-container {
+        font-size: 0.6rem !important;
+    }
+
+    .hero-stats-grid {
+        gap: 4px !important;
+    }
+
+    .hero-stat-card {
+        padding: 6px 4px !important;
+    }
+
+    .hero-stat-value {
+        font-size: 1rem !important;
+    }
+
+    .hero-stat-label {
+        font-size: 0.4rem !important;
+    }
+
+    .hero-quick-actions .btn {
+        padding: 8px 12px !important;
+        font-size: 0.55rem !important;
+    }
+
+    .hero-system-status {
+        font-size: 0.4rem !important;
+        padding: 3px 8px !important;
+    }
+
+    .status-text {
+        font-size: 0.4rem !important;
+    }
+
+    .neon-orb {
+        width: 120px !important;
+        height: 120px !important;
+    }
+}
+
+/* ============================================================
+   NEWS SLIDER - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .community-news-section {
+        padding: 40px 0 !important;
+    }
+
+    .section-header {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .section-header h2 {
+        font-size: 1.4rem !important;
+    }
+
+    .section-header p {
+        font-size: 0.85rem !important;
+    }
+
+    .news-slider-container {
+        border-radius: 4px !important;
+        margin: 0 8px !important;
+    }
+
+    .news-slide {
+        grid-template-columns: 1fr !important;
+        min-height: auto !important;
+    }
+
+    .news-slide-image {
+        min-height: 140px !important;
+        order: -1 !important;
+    }
+
+    .news-image-placeholder i {
+        font-size: 2rem !important;
+    }
+
+    .news-slide-content {
+        padding: 1.2rem 1.2rem !important;
+        gap: 6px !important;
+    }
+
+    .news-tag {
+        font-size: 0.5rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    .news-slide-content h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .news-slide-content p {
+        font-size: 0.8rem !important;
+        line-height: 1.4 !important;
+    }
+
+    .news-read-more {
+        font-size: 0.7rem !important;
+    }
+
+    .news-slider-controls {
+        padding: 10px 12px !important;
+        gap: 12px !important;
+    }
+
+    .news-slider-btn {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .news-slider-dots .dot {
+        width: 6px !important;
+        height: 6px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header h2 {
+        font-size: 1.1rem !important;
+    }
+
+    .news-slide-image {
+        min-height: 100px !important;
+    }
+
+    .news-slide-content {
+        padding: 0.8rem 0.8rem !important;
+    }
+
+    .news-slide-content h3 {
+        font-size: 0.9rem !important;
+    }
+
+    .news-slide-content p {
+        font-size: 0.7rem !important;
+    }
+
+    .news-slider-btn {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.6rem !important;
+    }
+
+    .news-slider-controls {
+        padding: 8px 8px !important;
+        gap: 8px !important;
+    }
+}
+
+/* ============================================================
+   WINNERS CAROUSEL - Mobile fixes (already has some, enhancing)
+   ============================================================ */
+@media (max-width: 768px) {
+    .winners-carousel-section {
+        padding: 40px 0 !important;
+    }
+
+    .winners-carousel-container {
+        padding: 12px 4px 8px !important;
+        border-radius: 6px !important;
+        margin: 0 8px !important;
+    }
+
+    .winners-carousel {
+        padding: 4px 12px 4px 4px !important;
+        gap: 12px !important;
+    }
+
+    .winner-card {
+        flex: 0 0 calc(100% - 0px) !important;
+        padding: 8px 8px 6px !important;
+        min-height: 280px !important;
+        max-height: 340px !important;
+        border-radius: 4px !important;
+    }
+
+    .winner-artwork {
+        min-height: 120px !important;
+        aspect-ratio: 16/9 !important;
+    }
+
+    .winner-rank {
+        font-size: 0.35rem !important;
+        padding: 1px 4px !important;
+        top: 4px !important;
+        left: 6px !important;
+    }
+
+    .winner-avatar {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 0.6rem !important;
+        top: 4px !important;
+        right: 6px !important;
+    }
+
+    .winner-info .winner-name {
+        font-size: 0.6rem !important;
+    }
+
+    .winner-info .winner-username {
+        font-size: 0.4rem !important;
+    }
+
+    .winner-stats .stat-item {
+        font-size: 0.4rem !important;
+    }
+
+    .winner-stats .stat-item .stat-value {
+        font-size: 0.4rem !important;
+    }
+
+    .winner-stats .stat-item .stat-icon {
+        font-size: 0.4rem !important;
+    }
+
+    /* Hide corner brackets on mobile */
+    .winner-card::before,
+    .winner-card::after {
+        width: 10px !important;
+        height: 10px !important;
+        border-width: 1px !important;
+    }
+
+    .winners-carousel-controls {
+        gap: 12px !important;
+        margin-top: 12px !important;
+        padding: 0 4px !important;
+    }
+
+    .carousel-btn {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.6rem !important;
+        border-radius: 4px !important;
+    }
+
+    .carousel-progress {
+        max-width: 80px !important;
+        height: 3px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .winner-card {
+        min-height: 220px !important;
+        max-height: 280px !important;
+        padding: 6px 6px 4px !important;
+    }
+
+    .winner-artwork {
+        min-height: 80px !important;
+    }
+
+    .winner-info .winner-name {
+        font-size: 0.5rem !important;
+    }
+
+    .winner-info .winner-username {
+        font-size: 0.35rem !important;
+    }
+
+    .winner-stats .stat-item {
+        font-size: 0.35rem !important;
+    }
+
+    .winner-stats .stat-item .stat-value {
+        font-size: 0.35rem !important;
+    }
+
+    .winner-stats .stat-item .stat-icon {
+        font-size: 0.35rem !important;
+    }
+
+    .carousel-btn {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.5rem !important;
+    }
+
+    .carousel-progress {
+        max-width: 60px !important;
+    }
+
+    .winner-card::before,
+    .winner-card::after {
+        display: none !important;
+    }
+
+    .winner-artwork .artwork-hud {
+        font-size: 0.3rem !important;
+        padding: 1px 4px !important;
+    }
+}
+
+/* ============================================================
+   ARTIST CARDS - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .featured-artists {
+        padding: 40px 0 !important;
+    }
+
+    .artist-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 0 8px !important;
+    }
+
+    .artist-card {
+        padding: 1rem !important;
+        border-radius: 6px !important;
+    }
+
+    .artist-card .artist-avatar {
+        width: 48px !important;
+        height: 48px !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .artist-card .artist-avatar .artist-initials {
+        font-size: 1.1rem !important;
+    }
+
+    .artist-card h4 {
+        font-size: 0.8rem !important;
+    }
+
+    .artist-card p {
+        font-size: 0.65rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .artist-card .artist-stats {
+        font-size: 0.55rem !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .artist-card .artist-stats span {
+        padding: 2px 6px !important;
+        font-size: 0.5rem !important;
+    }
+
+    .artist-card .artist-stats i {
+        font-size: 0.5rem !important;
+    }
+
+    .artist-card .artist-view-btn {
+        font-size: 0.6rem !important;
+        margin-top: 0.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .artist-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        padding: 0 4px !important;
+    }
+
+    .artist-card {
+        padding: 0.8rem !important;
+    }
+
+    .artist-card .artist-avatar {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .artist-card .artist-avatar .artist-initials {
+        font-size: 0.9rem !important;
+    }
+
+    .artist-card h4 {
+        font-size: 0.7rem !important;
+    }
+
+    .artist-card p {
+        font-size: 0.55rem !important;
+    }
+
+    .artist-card .artist-stats {
+        font-size: 0.45rem !important;
+        gap: 4px !important;
+    }
+
+    .artist-card .artist-stats span {
+        padding: 1px 4px !important;
+        font-size: 0.4rem !important;
+    }
+
+    .artist-card .artist-stats i {
+        font-size: 0.4rem !important;
+    }
+
+    .artist-card .artist-view-btn {
+        font-size: 0.5rem !important;
+    }
+}
+
+/* ============================================================
+   CTA SECTION - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .home-cta-section {
+        padding: 30px 0 60px !important;
+    }
+
+    .home-cta {
+        padding: 2rem 1.5rem !important;
+        border-radius: 6px !important;
+        margin: 0 8px !important;
+    }
+
+    .home-cta h2 {
+        font-size: 1.5rem !important;
+        letter-spacing: 1px !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .home-cta p {
+        font-size: 0.9rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .cta-buttons {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    .cta-buttons .btn {
+        padding: 12px 24px !important;
+        font-size: 0.75rem !important;
+        letter-spacing: 2px !important;
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    /* Hide graffiti tags on mobile */
+    .home-cta .cta-graffiti-tag {
+        display: none !important;
+    }
+
+    .home-cta .cta-glow {
+        opacity: 0.02 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-cta {
+        padding: 1.5rem 1rem !important;
+        margin: 0 4px !important;
+    }
+
+    .home-cta h2 {
+        font-size: 1.2rem !important;
+    }
+
+    .home-cta p {
+        font-size: 0.8rem !important;
+    }
+
+    .cta-buttons .btn {
+        padding: 10px 16px !important;
+        font-size: 0.65rem !important;
+    }
+}
+
+/* ============================================================
+   CHALLENGE CARDS - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .active-challenges {
+        padding: 40px 0 !important;
+    }
+
+    .challenge-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+        padding: 0 8px !important;
+    }
+
+    .challenge-card {
+        padding: 1rem !important;
+        border-radius: 6px !important;
+    }
+
+    .challenge-card .challenge-icon {
+        font-size: 1.8rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    .challenge-card .challenge-info h4 {
+        font-size: 0.85rem !important;
+    }
+
+    .challenge-card .challenge-info p {
+        font-size: 0.7rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .challenge-card .challenge-stats-mini {
+        font-size: 0.55rem !important;
+        gap: 8px !important;
+    }
+
+    .challenge-card .challenge-type-badge {
+        font-size: 0.45rem !important;
+        padding: 1px 6px !important;
+    }
+
+    .challenge-card .challenge-join-btn {
+        font-size: 0.65rem !important;
+        margin-top: 0.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .challenge-grid {
+        grid-template-columns: 1fr !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+
+    .challenge-card {
+        padding: 0.8rem !important;
+    }
+
+    .challenge-card .challenge-icon {
+        font-size: 1.5rem !important;
+    }
+
+    .challenge-card .challenge-info h4 {
+        font-size: 0.8rem !important;
+    }
+
+    .challenge-card .challenge-info p {
+        font-size: 0.65rem !important;
+    }
+}
+
+/* ============================================================
+   ARTWORK GRID - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .recent-artworks {
+        padding: 40px 0 !important;
+    }
+
+    .artwork-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 12px !important;
+        padding: 0 8px !important;
+    }
+
+    .artwork-card {
+        border-radius: 6px !important;
+    }
+
+    .artwork-card .artwork-image {
+        aspect-ratio: 1/1 !important;
+    }
+
+    .artwork-card .artwork-info {
+        padding: 0.6rem !important;
+    }
+
+    .artwork-card .artwork-info h4 {
+        font-size: 0.8rem !important;
+    }
+
+    .artwork-card .artwork-info p {
+        font-size: 0.65rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .artwork-card .artwork-meta {
+        font-size: 0.6rem !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .artwork-card .artwork-meta .artwork-tag {
+        font-size: 0.5rem !important;
+        padding: 1px 6px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .artwork-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        padding: 0 4px !important;
+    }
+
+    .artwork-card .artwork-info h4 {
+        font-size: 0.7rem !important;
+    }
+
+    .artwork-card .artwork-info p {
+        font-size: 0.55rem !important;
+    }
+
+    .artwork-card .artwork-meta {
+        font-size: 0.5rem !important;
+        gap: 4px !important;
+    }
+}
+
+/* ============================================================
+   SECTION HEADERS - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .section-badge {
+        font-size: 0.5rem !important;
+        padding: 2px 10px !important;
+        letter-spacing: 2px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .view-all {
+        font-size: 0.65rem !important;
+    }
+}
+
+/* ============================================================
+   ACTIVITY FEED - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .activity-feed {
+        padding: 40px 0 !important;
+    }
+
+    .feed-list {
+        padding: 0 8px !important;
+    }
+
+    .feed-item {
+        padding: 0.6rem 0.8rem !important;
+        border-radius: 6px !important;
+        gap: 8px !important;
+    }
+
+    .feed-item .feed-icon {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .feed-item .feed-content p {
+        font-size: 0.75rem !important;
+    }
+
+    .feed-item .feed-content .feed-time {
+        font-size: 0.55rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .feed-item {
+        padding: 0.4rem 0.6rem !important;
+    }
+
+    .feed-item .feed-icon {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .feed-item .feed-content p {
+        font-size: 0.65rem !important;
+    }
+
+    .feed-item .feed-content .feed-time {
+        font-size: 0.45rem !important;
+    }
+}
+
+/* ============================================================
+   TOAST NOTIFICATIONS - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .toast-container {
+        top: 60px !important;
+        right: 8px !important;
+        left: 8px !important;
+        max-width: none !important;
+    }
+
+    .toast {
+        padding: 10px 14px !important;
+        font-size: 0.75rem !important;
+        border-radius: 4px !important;
+    }
+
+    .toast .toast-icon {
+        font-size: 1.2rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .toast-container {
+        top: 50px !important;
+        right: 4px !important;
+        left: 4px !important;
+    }
+
+    .toast {
+        padding: 8px 10px !important;
+        font-size: 0.65rem !important;
+    }
+}
+
+/* ============================================================
+   KEYBOARD HINT - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .keyboard-hint {
+        display: none !important;
+    }
+}
+
+/* ============================================================
+   THEME TOGGLE - Mobile fixes
+   ============================================================ */
+@media (max-width: 768px) {
+    .theme-toggle-wrapper {
+        bottom: 16px !important;
+        right: 16px !important;
+    }
+
+    .theme-toggle {
+        padding: 6px 12px !important;
+        font-size: 0.55rem !important;
+        letter-spacing: 1px !important;
+    }
+
+    .theme-toggle .toggle-icon {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .theme-toggle-wrapper {
+        bottom: 10px !important;
+        right: 10px !important;
+    }
+
+    .theme-toggle {
+        padding: 4px 8px !important;
+        font-size: 0.45rem !important;
+    }
+
+    .theme-toggle .toggle-icon {
+        font-size: 0.6rem !important;
+    }
+
+    .theme-toggle .toggle-label {
+        display: none !important;
+    }
+}

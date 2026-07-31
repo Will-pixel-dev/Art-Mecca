@@ -1273,6 +1273,441 @@
   }
 }
 /* ============================================================
+   17.5 TABLET LANDSCAPE FIXES (768px - 1024px, horizontal)
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    /* HEADER - Prevent overflow */
+    .main-header {
+        margin: 8px 16px 0 !important;
+        padding: 0 12px !important;
+    }
+
+    .navbar {
+        height: 48px !important;
+        min-height: 48px !important;
+        gap: 4px !important;
+    }
+
+    /* BRAND / LOGO - Smaller */
+    .nav-brand .logo {
+        font-size: 0.7rem !important;
+        gap: 4px !important;
+    }
+    .nav-brand .logo .logo-icon {
+        font-size: 0.8rem !important;
+    }
+    .nav-brand .hud-tag {
+        display: none !important;
+    }
+
+    /* NAV LINKS - Compact */
+    .nav-links {
+        gap: 2px !important;
+        margin: 0 4px !important;
+    }
+    .nav-links .nav-link {
+        font-size: 0.45rem !important;
+        padding: 3px 5px !important;
+        letter-spacing: 0.3px !important;
+    }
+    /* Hide dropdown arrows on tablet to save space */
+    .dropdown-arrow {
+        display: none !important;
+    }
+    /* Truly Yours link */
+    .nav-links .truly-yours-link {
+        font-size: 0.55rem !important;
+        padding: 3px 6px !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* DROPDOWNS - Smaller */
+    .dropdown-menu {
+        min-width: 130px !important;
+        padding: 4px 0 !important;
+    }
+    .dropdown-menu li a {
+        font-size: 0.5rem !important;
+        padding: 4px 10px !important;
+        white-space: nowrap !important;
+    }
+
+    /* NAV ACTIONS - Prevent overflow */
+    .nav-actions {
+        gap: 2px !important;
+    }
+    .nav-actions .btn-icon {
+        font-size: 0.65rem !important;
+        padding: 3px 4px !important;
+    }
+    .nav-actions .btn {
+        font-size: 0.45rem !important;
+        padding: 3px 6px !important;
+    }
+    /* Hide hybrid status on tablet to save space */
+    .hybrid-status {
+        display: none !important;
+    }
+    .notification-badge {
+        font-size: 0.35rem !important;
+        min-width: 12px !important;
+        padding: 0 3px !important;
+        top: -2px !important;
+        right: -2px !important;
+    }
+
+    /* MOBILE MENU BUTTON - HIDE ON TABLET */
+    .mobile-menu-btn {
+        display: none !important;
+    }
+
+    /* ENSURE NAV LINKS ARE VISIBLE */
+    .nav-links {
+        display: flex !important;
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        flex-direction: row !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* ============================================================
+   17.6 TABLET PORTRAIT FIXES (768px - 1024px, vertical)
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .main-header {
+        margin: 10px 16px 0 !important;
+        padding: 0 16px !important;
+    }
+
+    .navbar {
+        height: 54px !important;
+        min-height: 54px !important;
+        gap: 6px !important;
+    }
+
+    /* BRAND */
+    .nav-brand .logo {
+        font-size: 0.85rem !important;
+        gap: 5px !important;
+    }
+    .nav-brand .logo .logo-icon {
+        font-size: 0.95rem !important;
+    }
+    .nav-brand .hud-tag {
+        display: none !important;
+    }
+
+    /* NAV LINKS */
+    .nav-links {
+        gap: 3px !important;
+        margin: 0 8px !important;
+    }
+    .nav-links .nav-link {
+        font-size: 0.5rem !important;
+        padding: 4px 6px !important;
+        letter-spacing: 0.5px !important;
+    }
+    .nav-links .truly-yours-link {
+        font-size: 0.6rem !important;
+        padding: 4px 8px !important;
+    }
+
+    /* DROPDOWNS */
+    .dropdown-menu {
+        min-width: 150px !important;
+    }
+    .dropdown-menu li a {
+        font-size: 0.55rem !important;
+        padding: 5px 12px !important;
+    }
+
+    /* NAV ACTIONS */
+    .nav-actions {
+        gap: 3px !important;
+    }
+    .nav-actions .btn-icon {
+        font-size: 0.75rem !important;
+        padding: 4px 5px !important;
+    }
+    .nav-actions .btn {
+        font-size: 0.5rem !important;
+        padding: 4px 8px !important;
+    }
+    .hybrid-status {
+        font-size: 0.45rem !important;
+        padding: 2px 6px !important;
+    }
+    .notification-badge {
+        font-size: 0.4rem !important;
+        min-width: 13px !important;
+        padding: 0 3px !important;
+    }
+
+    /* MOBILE MENU BUTTON - HIDE ON TABLET */
+    .mobile-menu-btn {
+        display: none !important;
+    }
+
+    /* ENSURE NAV LINKS ARE VISIBLE */
+    .nav-links {
+        display: flex !important;
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        flex-direction: row !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* ============================================================
+   17.7 SMALL TABLET / LARGE PHONE (600px - 767px)
+   ============================================================ */
+@media (min-width: 600px) and (max-width: 767px) {
+    .main-header {
+        margin: 6px 10px 0 !important;
+        padding: 0 12px !important;
+    }
+
+    .navbar {
+        height: 50px !important;
+        min-height: 50px !important;
+        gap: 4px !important;
+    }
+
+    /* BRAND */
+    .nav-brand .logo {
+        font-size: 0.75rem !important;
+        gap: 4px !important;
+    }
+    .nav-brand .logo .logo-icon {
+        font-size: 0.85rem !important;
+    }
+    .nav-brand .hud-tag {
+        display: none !important;
+    }
+
+    /* MOBILE MENU - SHOW HAMBURGER */
+    .mobile-menu-btn {
+        display: flex !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        padding: 4px 6px !important;
+        order: 5 !important;
+        margin-left: 2px !important;
+    }
+    .mobile-menu-btn span {
+        width: 20px !important;
+        height: 2px !important;
+        margin: 2.5px 0 !important;
+    }
+
+    /* NAV LINKS - MOBILE OVERLAY */
+    .nav-links {
+        display: none !important;
+        flex-direction: column !important;
+        position: absolute !important;
+        top: calc(100% + 8px) !important;
+        left: -12px !important;
+        right: -12px !important;
+        background: rgba(10, 5, 8, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 6px !important;
+        padding: 10px !important;
+        box-shadow: var(--shadow-card) !important;
+        gap: 2px !important;
+        z-index: 99999 !important;
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+        margin: 0 !important;
+        pointer-events: none !important;
+    }
+    .nav-links.open {
+        display: flex !important;
+        pointer-events: auto !important;
+        animation: dropdownSlideDown 0.25s ease !important;
+    }
+    .nav-links .nav-link {
+        padding: 8px 12px !important;
+        font-size: 0.7rem !important;
+        width: 100% !important;
+        display: block !important;
+        text-align: left !important;
+    }
+    .nav-links .truly-yours-link {
+        font-size: 0.8rem !important;
+        padding: 8px 12px !important;
+        display: block !important;
+        text-align: left !important;
+    }
+
+    /* DROPDOWNS - MOBILE STYLE */
+    .nav-dropdown {
+        position: relative !important;
+        width: 100% !important;
+    }
+    .nav-dropdown > a {
+        padding: 8px 12px !important;
+        font-size: 0.7rem !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        min-height: 40px !important;
+    }
+    .nav-dropdown > a .dropdown-arrow {
+        font-size: 0.5rem !important;
+        margin-left: 8px !important;
+        flex-shrink: 0 !important;
+    }
+    .nav-dropdown .dropdown-menu {
+        position: relative !important;
+        top: auto !important;
+        left: 0 !important;
+        right: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        box-shadow: none !important;
+        background: rgba(10, 5, 8, 0.6) !important;
+        border: none !important;
+        border-left: 2px solid var(--neon-magenta) !important;
+        border-radius: 4px !important;
+        padding: 0 0 0 8px !important;
+        margin: 0 0 0 10px !important;
+        width: calc(100% - 10px) !important;
+        min-width: auto !important;
+        display: none !important;
+        max-height: 0 !important;
+        opacity: 0 !important;
+        overflow: hidden !important;
+        transition: max-height 0.3s ease, opacity 0.3s ease !important;
+        pointer-events: none !important;
+    }
+    .nav-dropdown.open .dropdown-menu {
+        display: block !important;
+        max-height: 500px !important;
+        opacity: 1 !important;
+        padding: 4px 0 4px 8px !important;
+        margin: 2px 0 4px 10px !important;
+        overflow-y: auto !important;
+        pointer-events: auto !important;
+    }
+    .dropdown-menu li a {
+        padding: 7px 10px !important;
+        font-size: 0.6rem !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        min-height: 36px !important;
+        transform: none !important;
+        animation: none !important;
+        border-left: 2px solid transparent !important;
+    }
+    .dropdown-menu li a:hover {
+        padding-left: 16px !important;
+        transform: none !important;
+        animation: none !important;
+        border-left-color: var(--neon-cyan) !important;
+    }
+    /* Keep the arrow in place */
+    .dropdown-menu li a::before {
+        content: "▸" !important;
+        position: absolute !important;
+        left: 4px !important;
+        color: var(--neon-cyan) !important;
+        font-size: 0.5rem !important;
+        opacity: 0 !important;
+        transition: all 0.2s ease !important;
+        pointer-events: none !important;
+        transform: none !important;
+    }
+    .dropdown-menu li a:hover::before {
+        opacity: 1 !important;
+        left: 4px !important;
+    }
+    .dropdown-menu li a::after {
+        content: "◆" !important;
+        position: absolute !important;
+        right: 10px !important;
+        color: var(--neon-magenta) !important;
+        font-size: 0.3rem !important;
+        opacity: 0 !important;
+        transition: all 0.2s ease !important;
+        pointer-events: none !important;
+        transform: none !important;
+    }
+    .dropdown-menu li a:hover::after {
+        opacity: 0.4 !important;
+    }
+
+    /* NAV ACTIONS */
+    .nav-actions {
+        gap: 2px !important;
+        margin-left: auto !important;
+    }
+    .nav-actions .btn-icon {
+        font-size: 0.7rem !important;
+        padding: 3px 4px !important;
+    }
+    .nav-actions .btn {
+        font-size: 0.5rem !important;
+        padding: 3px 6px !important;
+    }
+    .nav-actions .btn-outline {
+        display: none !important;
+    }
+    .hybrid-status {
+        display: none !important;
+    }
+    .notification-badge {
+        font-size: 0.4rem !important;
+        min-width: 12px !important;
+        padding: 0 3px !important;
+        top: -2px !important;
+        right: -2px !important;
+    }
+
+    /* FIX NOTIFICATION DROPDOWN ON MOBILE */
+    .notification-dropdown {
+        position: fixed !important;
+        top: 56px !important;
+        right: 8px !important;
+        left: 8px !important;
+        width: auto !important;
+        max-width: none !important;
+        min-width: auto !important;
+    }
+
+    /* FIX AVATAR DROPDOWN ON MOBILE */
+    .avatar-dropdown {
+        position: fixed !important;
+        top: 56px !important;
+        right: 8px !important;
+        left: 8px !important;
+        width: auto !important;
+        min-width: auto !important;
+    }
+}
+/* ============================================================
    18. RESPONSIVE — MOBILE (768px and smaller)
    ============================================================ */
 @media (max-width: 768px) {
