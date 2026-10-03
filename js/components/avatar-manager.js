@@ -199,38 +199,15 @@ class AvatarManager {
     container._avatarWrapper = wrapper;
   }
 
-  buildLoggedOutElement(container) {
-    const wrapper = document.createElement("div");
-    wrapper.className = `avatar-wrapper avatar-${this.avatarSize}`;
-    wrapper.style.cssText = `
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 2px solid rgba(255,255,255,0.2);
-      cursor: pointer;
-      background: rgba(255,255,255,0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    `;
-    wrapper.title = "Login";
-
-    const link = document.createElement("a");
-    link.href = "/pages/auth/login.html";
-    link.style.cssText =
-      "display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none;color:white;";
-    link.innerHTML =
-      '<i class="fas fa-user" style="font-size:0.7rem;opacity:0.6;"></i>';
-
-    wrapper.appendChild(link);
-    container.appendChild(wrapper);
-  }
+ buildLoggedOutElement(container) {
+  // Leave container empty — header.js handles the logged-out state.
+  if (container) container.innerHTML = "";
+}
 
   renderLoggedOutState() {
     const containers = document.querySelectorAll(this.avatarContainer);
     containers.forEach((container) => {
-      this.buildLoggedOutElement(container);
+      container.innerHTML = "";
     });
   }
 
@@ -331,7 +308,6 @@ class AvatarManager {
       "fa-camera",
       "Change Avatar",
       () => {
-        this.closeDropdown();
         this.showAvatarUploadModal();
       },
     );
@@ -834,29 +810,7 @@ class AvatarManager {
 }
 
 // Initialize
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    if (typeof firebase !== "undefined" && typeof db !== "undefined") {
-      if (!window.avatarManager) {
-        console.log("🔄 Initializing AvatarManager...");
-        window.avatarManager = new AvatarManager({
-          containerSelector: ".nav-avatar-container",
-          size: "md",
-        });
-      }
-    } else {
-      console.warn("Firebase not ready, avatar manager will retry...");
-      setTimeout(() => {
-        if (typeof firebase !== "undefined" && typeof db !== "undefined") {
-          window.avatarManager = new AvatarManager({
-            containerSelector: ".nav-avatar-container",
-            size: "md",
-          });
-        }
-      }, 2000);
-    }
-  }, 500);
-});
+
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = AvatarManager;

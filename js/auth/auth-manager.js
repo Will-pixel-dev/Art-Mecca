@@ -57,58 +57,21 @@ class AuthManager {
   }
 
   renderAuthUI(container) {
-    if (!container) return;
-
-    container.innerHTML = "";
-
-    if (this.currentUser) {
-      container.className = "auth-buttons logged-in";
-      container.style.display = "none";
-
-      if (window.avatarManager) {
-        setTimeout(() => window.avatarManager.renderAllAvatars(), 100);
-      }
-    } else {
-      container.className = "auth-buttons logged-out";
-      container.style.display = "flex";
-
-      container.innerHTML = `
-        <a href="/pages/auth/login.html" class="user-btn" aria-label="Login" style="
-          text-decoration: none;
-          color: rgba(26, 26, 46, 0.5);
-          padding: 6px;
-          font-size: 1.1rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-          transition: all 0.3s ease;
-        ">
-          <i class="fas fa-user"></i>
-        </a>
-        <a href="/pages/auth/register.html" class="signup-btn" style="
-          padding: 8px 18px;
-          border-radius: 8px;
-          text-decoration: none;
-          background: linear-gradient(135deg, #fe67ea, #63dbee);
-          color: white;
-          font-weight: 600;
-          font-family: 'Inter', sans-serif;
-          font-size: 0.82rem;
-          white-space: nowrap;
-          border: none;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          display: inline-flex;
-          align-items: center;
-        ">
-          Sign Up
-        </a>
-      `;
-    }
+  // DISABLED — header.js owns .auth-buttons now.
+  // Keeping this function as a no-op so existing callers don't error.
+  if (!container) return;
+  // Only toggle the logged-in class so other pages can style accordingly:
+  if (this.currentUser) {
+    container.classList.add("logged-in");
+    container.classList.remove("logged-out");
+    container.style.display = "none";
+  } else {
+    container.classList.add("logged-out");
+    container.classList.remove("logged-in");
+    container.style.display = "flex";
+    // Do NOT inject HTML — header.js handles that.
   }
+}
 
   updateUI() {
     if (this.updateScheduled) return;

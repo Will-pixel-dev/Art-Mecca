@@ -10,24 +10,23 @@
 function initHeader() {
   console.log("🔧 Initializing header system...");
 
-  if (typeof firebase === "undefined" || !firebase.auth) {
-    console.warn("⚠️ Firebase not ready, waiting...");
-    setTimeout(initHeader, 500);
-    return;
-  }
-
-  // Force nav-links to be hidden initially on mobile
-  const navLinks = document.getElementById("nav-links");
-  if (navLinks && window.innerWidth <= 768) {
-    navLinks.classList.remove("open");
-    navLinks.style.display = "none";
-  }
-
+  // These don't need Firebase — run immediately:
   initMobileMenu();
   initSearch();
-  initAuth();
-  setTimeout(initNotificationSystem, 800);
-  initAvatarManager();
+
+  // These need Firebase — wait for it:
+  waitForFirebase(() => {
+    initAuth();
+    setTimeout(initNotificationSystem, 800);
+    initAvatarManager();
+  });
+}
+
+function waitForFirebase(callback) {
+  if (typeof firebase !== "undefined" && firebase.auth) {
+    return callback();
+  }
+  setTimeout(() => waitForFirebase(callback), 300);
 }
 
 // ============================================================
@@ -151,11 +150,15 @@ function initMobileMenu() {
       // Add click handler for mobile
       newLink.addEventListener('click', function(e) {
         // Only handle on mobile
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1100) {
           const parent = this.closest('.nav-dropdown');
-          if (parent) {
-            toggleDropdown(parent, e);
-          }
+          if (!parent) return;
+          const alreadyOpen = parent.classList.contains('open');
+    if (!alreadyOpen) {
+      toggleDropdown(parent, e);  // prevents default, opens menu
+    }
+    // else: allow default → navigates
+
         }
       });
 
@@ -166,7 +169,7 @@ function initMobileMenu() {
         items.forEach(item => {
           // Add click handler for menu items - just close menu after navigation
           item.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 1100) {
               // Allow navigation, then close menu
               setTimeout(() => {
                 closeMobileMenu();
@@ -195,7 +198,7 @@ function initMobileMenu() {
   // ===== SETUP CLOSE ON OUTSIDE CLICK =====
   function setupOutsideClick() {
     document.addEventListener('click', function(e) {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 1100) {
         const header = document.querySelector('.main-header');
         const isClickInsideHeader = header && header.contains(e.target);
         const isClickInsideDropdown = e.target.closest('.nav-dropdown');
@@ -214,7 +217,7 @@ function initMobileMenu() {
   // ===== SETUP CLOSE ON ESCAPE =====
   function setupEscapeKey() {
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && window.innerWidth <= 768) {
+      if (e.key === 'Escape' && window.innerWidth <= 1100) {
         if (navLinks.classList.contains('open')) {
           closeMobileMenu();
         }
@@ -225,7 +228,7 @@ function initMobileMenu() {
   // ===== SETUP RESIZE HANDLER =====
   function setupResizeHandler() {
     window.addEventListener('resize', function() {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 1100) {
         if (navLinks.classList.contains('open')) {
           closeMobileMenu();
           navLinks.style.display = '';
@@ -275,7 +278,7 @@ function initMobileMenu() {
   // ===== INITIALIZE =====
   function init() {
     // Hide nav on mobile initially
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1100) {
       navLinks.style.display = 'none';
     }
 
@@ -920,8 +923,8 @@ function escapeHtml(text) {
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", function () {
-    setTimeout(initHeader, 300);
+    setTimeout(initHeader, 0);
   });
 } else {
-  setTimeout(initHeader, 300);
+  setTimeout(initHeader, 0);
 }
