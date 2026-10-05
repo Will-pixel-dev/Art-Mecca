@@ -308,6 +308,12 @@ class AvatarManager {
       "fa-camera",
       "Change Avatar",
       () => {
+        // Remove the dropdown before opening the modal so they don't stack
+        if (this.dropdown && this.dropdown.parentNode) {
+          this.dropdown.remove();
+        }
+        this.dropdown = null;
+        this.dropdownOpen = false;
         this.showAvatarUploadModal();
       },
     );
