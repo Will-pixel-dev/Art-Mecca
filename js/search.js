@@ -112,7 +112,7 @@ class SearchEngine {
         description:
           "Learn fundamental eye rendering techniques for digital art",
         tags: ["eyes", "rendering", "basics", "digital painting"],
-        url: "/pages/tutorials/eye-render-tutorial.html",
+        url: "/pages/tutorials/facial-features/eye-render-tutorial.html",
         difficulty: "beginner",
       },
       {
@@ -122,7 +122,7 @@ class SearchEngine {
         category: "eyes",
         description: "Master advanced eye rendering with realistic reflections",
         tags: ["eyes", "advanced", "realistic", "reflections"],
-        url: "/pages/tutorials/advanced-eye-rendering.html",
+        url: "/pages/tutorials/facial-features/advanced-eye-rendering.html",
         difficulty: "advanced",
       },
       {
@@ -143,7 +143,7 @@ class SearchEngine {
         description:
           "Learn to render realistic lips with proper texture and lighting",
         tags: ["lips", "rendering", "texture", "lighting"],
-        url: "/pages/tutorials/lip-rendering-tutorial.html",
+        url: "/pages/tutorials/facial-features/lip-rendering-tutorial.html",
         difficulty: "intermediate",
       },
       {
@@ -154,7 +154,7 @@ class SearchEngine {
         description:
           "Master skin rendering with pores, subsurface scattering and textures",
         tags: ["skin", "texture", "rendering", "pores"],
-        url: "/pages/tutorials/skin-rendering-tutorial.html",
+        url: "/pages/tutorials/facial-features/skin-rendering-tutorial.html",
         difficulty: "advanced",
       },
       {
@@ -164,7 +164,7 @@ class SearchEngine {
         category: "facial-features",
         description: "Learn the fundamental structure of the human face",
         tags: ["anatomy", "face", "proportions", "facial features"],
-        url: "/pages/tutorials/facial-anatomy-basics.html",
+        url: "/pages/tutorials/facial-features/facial-anatomy-basics.html",
         difficulty: "beginner",
       },
       {
@@ -174,7 +174,7 @@ class SearchEngine {
         category: "character",
         description: "Learn to create compelling characters that tell a story",
         tags: ["character", "design", "sketching", "concept art"],
-        url: "/pages/tutorials/character-design.html",
+        url: "/pages/tutorials/character-design/character-design.html",
         difficulty: "intermediate",
       },
       {
@@ -185,7 +185,7 @@ class SearchEngine {
         description:
           "Essential techniques for creating stunning digital artwork",
         tags: ["digital painting", "brushes", "layers", "blending"],
-        url: "/pages/tutorials/digital-painting.html",
+        url: "/pages/tutorials/digital-painting/digital-painting.html",
         difficulty: "intermediate",
       },
       {
@@ -196,7 +196,7 @@ class SearchEngine {
         description:
           "Understand color theory to create stunning digital artwork",
         tags: ["color", "theory", "harmony", "palette"],
-        url: "/pages/tutorials/color-theory.html",
+        url: "/pages/tutorials/color-lighting/color-theory.html",
         difficulty: "beginner",
       },
       {
@@ -207,7 +207,7 @@ class SearchEngine {
         description:
           "Learn the principles of composition to improve your artwork",
         tags: ["composition", "design", "rule of thirds", "golden ratio"],
-        url: "/pages/tutorials/composition-basics.html",
+        url: "/pages/tutorials/digital-composition/digital-composition-basics.html",
         difficulty: "beginner",
       },
     ];
