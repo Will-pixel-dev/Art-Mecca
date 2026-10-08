@@ -21,7 +21,7 @@ class HostInfo {
         id: "Ar3QB139ZZbGQn0MF7TisgqKXxl1",
         name: "Ai",
         icon: "🤖",
-        color: "#58ebfe",
+        color: "#46c9fd",
         avatarUrl:
           "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2FAr3QB139ZZbGQn0MF7TisgqKXxl1%2Fprofile-picture.jpg?alt=media&token=190df5fe-1118-483d-b8c8-00ea31fe6b2c",
       },
@@ -29,15 +29,17 @@ class HostInfo {
         id: "2SSSuHhdGSMdr1grzQ7S2Rp2p4C3",
         name: "Aliscir",
         icon: "🎭",
-        color: "#ff00ea",
+        color: "#24fbc1",
         avatarUrl:
           "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2F2SSSuHhdGSMdr1grzQ7S2Rp2p4C3%2Fprofile-picture.jpg?alt=media&token=602259a3-bf4d-429f-80c0-7d3072c0d438",
       },
       {
-        id: "coming-soon",
-        name: "Coming Soon",
+        id: "0iDNIdLw23cZ6Z8A8aIZbIZtLYo2",
+        name: "Truly",
         icon: "✦",
-        color: "#4ff3a6",
+        color: "#e71dfd",
+        avatarUrl:
+          "https://firebasestorage.googleapis.com/v0/b/truly-yours-artisan-hub.firebasestorage.app/o/avatars%2F0iDNIdLw23cZ6Z8A8aIZbIZtLYo2%2Fprofile-picture.jpg?alt=media&token=5c3d4e5f-6g7h-8i9j-0k1l-2m3n4o5p6q7",
       },
     ];
 
@@ -229,11 +231,11 @@ class HostInfo {
       // Gradient
       const gradients = {
         BMMWyg3a07MjXB1bHmoGtiXcIWB3:
-          "linear-gradient(135deg, #ff6b00, #ff00ea)",
+          "linear-gradient(135deg, #ff6b00, #ff8800)",
         Ar3QB139ZZbGQn0MF7TisgqKXxl1:
-          "linear-gradient(135deg, #58ebfe, #00d4ff)",
+          "linear-gradient(135deg, #2ad8ef, #2082fb)",
         "2SSSuHhdGSMdr1grzQ7S2Rp2p4C3":
-          "linear-gradient(135deg, #ff00ea, #ad03fc)",
+          "linear-gradient(135deg, #4ff3a6, #10b981)",
       };
       const gradient = isComingSoon
         ? "linear-gradient(135deg, #4ff3a6, #10b981)"
