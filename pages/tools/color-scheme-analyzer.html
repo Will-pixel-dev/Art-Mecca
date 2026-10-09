@@ -1400,7 +1400,7 @@
     <div class="noise-overlay" id="noiseOverlay"></div>
     <div class="vignette"></div>
     <div class="scanlines"></div>
-    <canvas id="particleCanvas"></canvas>
+    <canvas id="particleCanvas" data-particle-color="blue"></canvas>
 
     <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
@@ -2011,127 +2011,7 @@
         }
 
         // ====== PARTICLES ======
-        const particleCanvas = document.getElementById("particleCanvas");
-        if (particleCanvas) {
-          const ctx = particleCanvas.getContext("2d");
-          let particles = [];
-          let mouseX = -1000;
-          let mouseY = -1000;
-          const PARTICLE_COUNT = 80;
-
-          function resizeCanvas() {
-            particleCanvas.width = window.innerWidth;
-            particleCanvas.height = window.innerHeight;
-          }
-
-          window.addEventListener("resize", resizeCanvas);
-          resizeCanvas();
-
-          window.addEventListener("mousemove", (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-          });
-
-          class Particle {
-            constructor() {
-              this.reset();
-            }
-            reset() {
-              this.x = Math.random() * particleCanvas.width;
-              this.y = Math.random() * particleCanvas.height;
-              this.size = Math.random() * 2.5 + 0.5;
-              this.speedX = (Math.random() - 0.5) * 0.3;
-              this.speedY = (Math.random() - 0.5) * 0.3;
-              this.opacity = Math.random() * 0.3 + 0.05;
-              const colors = [
-                "#3b82f6",
-                "#2563eb",
-                "#58ebfe",
-                "#60a5fa",
-                "#93bbfc",
-              ];
-              this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-            update() {
-              this.x += this.speedX;
-              this.y += this.speedY;
-              const dx = mouseX - this.x;
-              const dy = mouseY - this.y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              if (dist < 200) {
-                const force = ((200 - dist) / 200) * 0.015;
-                this.speedX += (dx / dist) * force;
-                this.speedY += (dy / dist) * force;
-              }
-              this.speedX *= 0.999;
-              this.speedY *= 0.999;
-              const maxSpeed = 1.2;
-              const speed = Math.sqrt(
-                this.speedX * this.speedX + this.speedY * this.speedY,
-              );
-              if (speed > maxSpeed) {
-                this.speedX = (this.speedX / speed) * maxSpeed;
-                this.speedY = (this.speedY / speed) * maxSpeed;
-              }
-              if (
-                this.x < 0 ||
-                this.x > particleCanvas.width ||
-                this.y < 0 ||
-                this.y > particleCanvas.height
-              )
-                this.reset();
-            }
-            draw() {
-              ctx.beginPath();
-              ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-              ctx.fillStyle = this.color;
-              ctx.globalAlpha = this.opacity;
-              ctx.shadowColor = this.color;
-              ctx.shadowBlur = 12;
-              ctx.fill();
-              ctx.shadowBlur = 0;
-              ctx.globalAlpha = 1;
-            }
-          }
-
-          for (let i = 0; i < PARTICLE_COUNT; i++)
-            particles.push(new Particle());
-
-          function drawConnections() {
-            for (let i = 0; i < particles.length; i++) {
-              for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 120) {
-                  const opacity = (1 - dist / 120) * 0.05;
-                  ctx.beginPath();
-                  ctx.moveTo(particles[i].x, particles[i].y);
-                  ctx.lineTo(particles[j].x, particles[j].y);
-                  ctx.strokeStyle = "#3b82f6";
-                  ctx.globalAlpha = opacity;
-                  ctx.lineWidth = 0.6;
-                  ctx.shadowColor = "#3b82f6";
-                  ctx.shadowBlur = 4;
-                  ctx.stroke();
-                  ctx.shadowBlur = 0;
-                  ctx.globalAlpha = 1;
-                }
-              }
-            }
-          }
-
-          function animateParticles() {
-            ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-            particles.forEach((p) => {
-              p.update();
-              p.draw();
-            });
-            drawConnections();
-            requestAnimationFrame(animateParticles);
-          }
-
-          animateParticles();
+        /* Particle system removed — now handled by particles-global.js */
         }
 
         // ====== DOM REFS ======
@@ -2594,5 +2474,6 @@
       });
     </script>
     ======
-  </body>
+      <script src="/particles-global.js"></script>
+</body>
 </html>

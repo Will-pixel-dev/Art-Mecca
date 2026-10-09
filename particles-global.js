@@ -12,55 +12,80 @@
     // DETECT TOUCH DEVICE
     // ========================================
     const isTouchDevice = 'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    navigator.maxTouchPoints > 0 ||
+    /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    const isMobile = window.innerWidth < 768 || isTouchDevice;
+const isMobile = window.innerWidth < 768 || isTouchDevice;
+
+// Accessibility: respect prefers-reduced-motion
+const prefersReducedMotion =
+    window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Low-end device heuristic
+const isLowEndDevice =
+    (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+    (navigator.deviceMemory && navigator.deviceMemory <= 2);
 
     // ========================================
     // CONFIGURATION
     // ========================================
-    const CONFIG = {
-        // Mobile gets fewer particles
-        particleCount: isMobile ? 25 : 80,
-        // Shorter connections on mobile = less drawing
-        connectionDistance: isMobile ? 80 : 120,
-        // Smaller mouse radius on mobile
-        mouseRadius: isMobile ? 120 : 200,
-        // Max particle speed
-        maxSpeed: isMobile ? 0.8 : 1.2,
-        // Particle sizes (slightly smaller on mobile)
-        minSize: isMobile ? 0.3 : 0.5,
-        maxSize: isMobile ? 1.8 : 2.5,
-        // Opacity range
-        minOpacity: 0.05,
-        maxOpacity: isMobile ? 0.2 : 0.35,
-        // Connection opacity (lighter on mobile)
-        connectionOpacity: isMobile ? 0.02 : 0.04,
-        // How often to draw (skip frames on mobile)
-        frameSkip: isMobile ? 1 : 0, // 0 = every frame, 1 = every other frame
-    };
-
+   const CONFIG = {
+    // Particle count: desktop 80 → mobile 25 → low-end mobile 15
+    particleCount: isLowEndDevice ? 15 : (isMobile ? 25 : 80),
+    // Connection distance: shorter on mobile = fewer pair checks
+    connectionDistance: isMobile ? 80 : 120,
+    // Mouse/touch radius of influence
+    mouseRadius: isMobile ? 120 : 200,
+    // Max particle speed
+    maxSpeed: isMobile ? 0.8 : 1.2,
+    // Particle sizes
+    minSize: isMobile ? 0.3 : 0.5,
+    maxSize: isMobile ? 1.8 : 2.5,
+    // Opacity range
+    minOpacity: 0.05,
+    maxOpacity: isMobile ? 0.2 : 0.35,
+    // Connection opacity
+    connectionOpacity: isMobile ? 0.02 : 0.04,
+    // Frame skip: 0 = every frame, 1 = every other, 2 = every third
+    // Low-end devices skip 2 frames to save battery
+    frameSkip: isLowEndDevice ? 2 : (isMobile ? 1 : 0),
+    // Disable shadowBlur entirely on low-end devices (huge perf win)
+    useShadow: !isLowEndDevice,
+};
     // ========================================
     // COLOR PALETTES
     // ========================================
     const PALETTES = {
-        rainbow: ['#ff0040', '#ff6b00', '#ffc72e', '#4ff3a6', '#58ebfe', '#0088ff', '#ad03fc', '#ff00ea'],
-        neon: ['#ff00ff', '#00ffff', '#ff0055', '#55ff00', '#ffaa00'],
-        blue: ['#0088ff', '#00ccff', '#4ff3a6', '#58ebfe', '#0066cc'],
-        purple: ['#ad03fc', '#7b2ffc', '#ff00ea', '#cc00ff', '#9b59b6'],
-        green: ['#4ff3a6', '#2ecc71', '#1abc9c', '#55ff00', '#00ff88'],
-        red: ['#ff0040', '#ff6b00', '#ff3333', '#ff0055', '#cc0033'],
-        white: ['#ffffff', '#e0e0e0', '#f5f5f5', '#cccccc', '#ffffff'],
-    };
+    rainbow:  ['#ff0040', '#ff6b00', '#ffc72e', '#4ff3a6', '#58ebfe', '#0088ff', '#ad03fc', '#ff00ea'],
+    neon:     ['#ff00ff', '#00ffff', '#ff0055', '#55ff00', '#ffaa00'],
+    blue:     ['#0088ff', '#00ccff', '#4ff3a6', '#58ebfe', '#0066cc'],
+    twilight: ['#ad03fc', '#00d4ff', '#58ebfe', '#c84dff', '#ff00ea', '#6b00b3'],
+    purple:   ['#8a19e1', '#ad03fc', '#c84dff', '#6b00b3', '#a855f7', '#7c3aed'],
+    green:    ['#4ff3a6', '#2ecc71', '#1abc9c', '#55ff00', '#00ff88'],
+    red:      ['#ff0040', '#ff6b00', '#ff3333', '#ff0055', '#cc0033'],
+    pink:     ['#ff00ea', '#ff6bf0', '#ff2dea', '#db0050', '#ff00c3'],
+    gold:     ['#ff6b00', '#ff8800', '#ffaa00', '#ffcc00', '#ffff00'],
+    venus:    ['#ff0040', '#ff2d95', '#ff00ea', '#ff6bb5', '#ff0040', '#ff0080', '#cc0033'],
+    velvet:   ['#02093b', '#3b0227', '#620412', '#7c0444', '#810303', '#2d0052'],
+    sunset:   ['#ff6b00', '#ff2d95', '#ff4d00', '#ff00aa', '#ff8c00', '#ff1493'],
+    white:    ['#ffffff', '#e0e0e0', '#d2e4fc', '#cccccc', '#ffffff'],
+};
 
     // ========================================
     // HELPER FUNCTIONS
     // ========================================
-    function getPalette(canvas) {
+        function getPalette(canvas) {
         const colorAttr = canvas.getAttribute('data-particle-color');
-        if (colorAttr && PALETTES[colorAttr]) {
-            return PALETTES[colorAttr];
+        if (colorAttr) {
+            if (PALETTES[colorAttr]) {
+                return PALETTES[colorAttr];
+            }
+            console.warn(
+                `⚠️ Particle palette "${colorAttr}" not found. ` +
+                `Falling back to "rainbow". ` +
+                `Valid options: ${Object.keys(PALETTES).join(', ')}`
+            );
         }
         return PALETTES.rainbow;
     }
@@ -285,9 +310,11 @@
 
                             ctx.strokeStyle = gradient;
                             ctx.globalAlpha = opacity;
-                            ctx.lineWidth = 0.6;
-                            ctx.shadowColor = particles[i].color;
-                            ctx.shadowBlur = 4;
+                                                        ctx.lineWidth = 0.6;
+                            if (CONFIG.useShadow) {
+                                ctx.shadowColor = particles[i].color;
+                                ctx.shadowBlur = 4;
+                            }
                             ctx.stroke();
                         }
                     }
@@ -296,20 +323,32 @@
             }
 
             // ===== DRAW PARTICLES =====
-            ctx.save();
-            for (const p of particles) {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.opacity;
+                   ctx.save();
+        for (const p of particles) {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.opacity;
+            if (CONFIG.useShadow) {
                 ctx.shadowColor = p.color;
                 ctx.shadowBlur = 15;
-                ctx.fill();
             }
-            ctx.restore();
+            ctx.fill();
+        }
+        ctx.restore();
         }
 
-        animate() {
+                animate() {
+            // Reduced-motion: draw one static frame, then stop the loop entirely.
+            if (prefersReducedMotion) {
+                if (!this._staticDrawn) {
+                    this.update();
+                    this.draw();
+                    this._staticDrawn = true;
+                }
+                return; // don't schedule another frame
+            }
+
             // Frame skipping for mobile performance
             if (CONFIG.frameSkip > 0) {
                 this.frameCount++;
@@ -371,7 +410,13 @@
             canvas._particleSystem = system;
         });
 
-        console.log(`✅ Particle systems initialized (${canvases.length} canvas, ${isMobile ? 'Mobile' : 'Desktop'} mode)`);
+                console.log(
+            `✅ Particle systems initialized ` +
+            `(${canvases.length} canvas, ` +
+            `${isMobile ? 'Mobile' : 'Desktop'} mode, ` +
+            `${isLowEndDevice ? 'Low-end' : 'Standard'} device, ` +
+            `${prefersReducedMotion ? 'Reduced-motion: static' : 'Animated'})`
+        );
     }
 
     // ========================================
