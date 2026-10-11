@@ -1,0 +1,567 @@
+/* ============================================================
+   PAGE HERO — 3-Layer System
+   Layer 1: Background (image/video)
+   Layer 2: Ambient overlay (optional, blend-mode)
+   Layer 3: Site content
+   ============================================================ */
+
+.page-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 620px;
+  /* No max-height — full viewport */
+  overflow: hidden;
+  isolation: isolate;
+  background: #0a0508;
+}
+
+/* ---------- Shared layer positioning ---------- */
+.page-hero .hero-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.page-hero .hero-layer-1 {
+  z-index: 1;
+  background: radial-gradient(ellipse at center, #150823 0%, #0a0508 100%);
+}
+
+.page-hero .hero-layer-1 img,
+.page-hero .hero-layer-1 video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.page-hero .hero-layer-2 {
+  z-index: 2;
+  mix-blend-mode: var(--hero-layer2-blend, screen);
+  opacity: var(--hero-layer2-opacity, 0.6);
+  transition: opacity 0.4s ease;
+}
+
+.page-hero .hero-layer-2[data-enabled="false"] {
+  display: none;
+}
+
+.page-hero .hero-layer-2 img,
+.page-hero .hero-layer-2 video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- Layer 3 — Content container ---------- */
+.page-hero .hero-layer-3 {
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  pointer-events: none;
+  padding: 3rem 3vw;         /* was 10vw — smaller padding lets content reach the edges */
+  text-align: center;
+}
+
+
+/* ---------- Content card — dark backdrop hugs the content ---------- */
+.page-hero .hero-content {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  max-width: min(900px, 90vw);   /* was 720px — much wider, but capped to viewport */
+  padding: 3rem 3.5rem;
+  background: rgba(8, 4, 12, var(--hero-overlay-opacity, 0.5));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(0, 0, 0, 0.2);
+  pointer-events: auto;
+  color: var(--text-primary, #f5eaff);
+  overflow: visible;             /* don't clip text */
+  transition:
+    background 0.4s ease,
+    padding 0.3s ease,
+    border-radius 0.3s ease;
+}
+
+/* ---------- Content anchoring ---------- */
+.page-hero[data-anchor="left"] .hero-layer-3 {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.page-hero[data-anchor="left"] .hero-content {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.page-hero[data-anchor="right"] .hero-layer-3 {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.page-hero[data-anchor="right"] .hero-content {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.page-hero[data-anchor="center"] .hero-layer-3 {
+  justify-content: center;
+  text-align: center;
+}
+
+.page-hero[data-anchor="center"] .hero-content {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------- Scroll indicator ---------- */
+.page-hero .hero-scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.5;
+  animation: heroBounce 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.page-hero .hero-scroll-indicator .text {
+  font-family: var(--font-mono, "Share Tech Mono", monospace);
+  font-size: 0.55rem;
+  color: var(--text-muted, #5a3a6a);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.page-hero .hero-scroll-indicator .line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--text-muted, #5a3a6a), transparent);
+}
+
+@keyframes heroBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ============================================================
+   ADMIN — Hero Editor panel
+   (unchanged from previous version, kept for completeness)
+   ============================================================ */
+
+.hero-editor-trigger {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(10, 5, 8, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 199, 46, 0.3);
+  border-radius: 8px;
+  color: #ffc72e;
+  font-family: var(--font-condensed, "Rajdhani", sans-serif);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hero-editor-trigger:hover {
+  background: rgba(255, 199, 46, 0.1);
+  border-color: #ffc72e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255, 199, 46, 0.2);
+}
+
+.hero-editor-panel {
+  position: fixed;
+  bottom: 80px;
+  left: 24px;
+  z-index: 9999;
+  width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: rgba(10, 5, 8, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 199, 46, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  display: none;
+  color: var(--text-primary, #f5eaff);
+  font-family: var(--font-condensed, "Rajdhani", sans-serif);
+}
+
+.hero-editor-panel.open {
+  display: block;
+  animation: heSlideIn 0.25s ease;
+}
+
+@keyframes heSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-editor-panel .he-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 1rem;
+}
+
+.hero-editor-panel .he-header h3 {
+  font-family: var(--font-display, "Orbitron", monospace);
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  color: #ffc72e;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.hero-editor-panel .he-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+.hero-editor-panel .he-close:hover { color: #ffc72e; }
+
+.hero-editor-panel .he-section {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.hero-editor-panel .he-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.hero-editor-panel .he-label {
+  display: block;
+  font-family: var(--font-mono, "Share Tech Mono", monospace);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.5rem;
+}
+
+.hero-editor-panel .he-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(255, 199, 46, 0.08);
+  border: 1px solid rgba(255, 199, 46, 0.3);
+  border-radius: 6px;
+  color: #ffc72e;
+  font-family: var(--font-condensed, "Rajdhani", sans-serif);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+.hero-editor-panel .he-upload-btn:hover {
+  background: rgba(255, 199, 46, 0.15);
+  border-color: #ffc72e;
+}
+.hero-editor-panel .he-upload-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.hero-editor-panel .he-thumb {
+  margin-top: 0.5rem;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.hero-editor-panel .he-thumb img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-editor-panel .he-remove-btn {
+  margin-left: auto;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  font-size: 0.65rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hero-editor-panel .he-remove-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.hero-editor-panel .he-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0.4rem;
+}
+
+.hero-editor-panel .he-slider-row input[type="range"] {
+  flex: 1;
+  accent-color: #ffc72e;
+}
+
+.hero-editor-panel .he-slider-row .he-value {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  color: #ffc72e;
+  min-width: 32px;
+  text-align: right;
+}
+
+.hero-editor-panel .he-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  user-select: none;
+}
+.hero-editor-panel .he-toggle input {
+  accent-color: #ffc72e;
+  cursor: pointer;
+}
+
+.hero-editor-panel .he-btn-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hero-editor-panel .he-anchor-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-condensed, "Rajdhani", sans-serif);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hero-editor-panel .he-anchor-btn:hover {
+  border-color: rgba(255, 199, 46, 0.5);
+  color: #ffc72e;
+}
+.hero-editor-panel .he-anchor-btn.active {
+  background: rgba(255, 199, 46, 0.15);
+  border-color: #ffc72e;
+  color: #ffc72e;
+}
+
+.hero-editor-panel select {
+  width: 100%;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: var(--text-primary, #f5eaff);
+  font-family: var(--font-condensed, "Rajdhani", sans-serif);
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+}
+
+.hero-editor-panel select option {
+  background: #0a0508;
+  color: #f5eaff;
+}
+
+.hero-editor-panel .he-status {
+  margin-top: 0.5rem;
+  font-size: 0.65rem;
+  font-family: var(--font-mono, monospace);
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  min-height: 1em;
+}
+.hero-editor-panel .he-status.error { color: #ef4444; }
+.hero-editor-panel .he-status.success { color: #10b981; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .page-hero {
+    height: 90vh;
+    min-height: 520px;
+  }
+
+  .page-hero .hero-layer-3 {
+    padding: 2rem 1.5rem;
+  }
+
+  /* Force center anchor on mobile regardless of desktop setting */
+  .page-hero[data-anchor="left"] .hero-layer-3,
+  .page-hero[data-anchor="right"] .hero-layer-3 {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Content card fills more width on mobile */
+  .page-hero .hero-content {
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+    border-radius: 14px;
+  }
+
+  .hero-editor-trigger {
+    bottom: 16px;
+    left: 16px;
+    padding: 8px 12px;
+    font-size: 0.6rem;
+  }
+
+  .hero-editor-panel {
+    bottom: 68px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero .hero-scroll-indicator {
+    animation: none;
+  }
+}
+
+/* ============================================================ */
+/* HERO TEXT LEGIBILITY                                          */
+/* ============================================================ */
+
+/* --- Main title --- */
+.page-hero .hero-graffiti-title {
+  /* Cap the size so 5-6 letter words always fit at any viewport width */
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  /* Strong glow + shadow so it reads on any background */
+  text-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(255, 56, 228, 0.35),
+    0 0 80px rgba(255, 56, 228, 0.15);
+  filter: drop-shadow(0 0 30px rgba(255, 56, 228, 0.25))
+          drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+  overflow: visible;
+  word-break: keep-all;
+}
+
+/* --- Subtitle --- */
+.page-hero .hero-graffiti-sub {
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.9),
+    0 0 20px rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+}
+
+/* --- Stats (the "10 Artists / 9 Artworks / 19 Active Challenges" list) --- */
+.page-hero .hero-live-stats,
+.page-hero .hero-stats,
+.page-hero .hero-stats-grid {
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.9),
+    0 0 18px rgba(0, 0, 0, 0.6);
+}
+
+.page-hero .hero-stat-label,
+.page-hero .hero-stat-num,
+.page-hero .stat-label,
+.page-hero .stat-value {
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.9),
+    0 0 18px rgba(0, 0, 0, 0.6);
+}
+
+/* --- Other hero content --- */
+.page-hero .hero-content p,
+.page-hero .hero-content h1,
+.page-hero .hero-content h2,
+.page-hero .hero-content h3 {
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.85),
+    0 0 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Main hero titles get a colored glow on top of the shadow */
+.page-hero .hero-content h1,
+.page-hero .hero-graffiti-title {
+  text-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(255, 56, 228, 0.35),
+    0 0 60px rgba(255, 56, 228, 0.15);
+}
+
+@media (max-width: 1100px) {
+  .page-hero .hero-graffiti-title {
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-hero .hero-layer-3 {
+    padding: 2rem 1.25rem;
+  }
+
+  .page-hero .hero-content {
+    max-width: 100%;
+    padding: 2rem 1.75rem;
+  }
+
+  .page-hero .hero-graffiti-title {
+    font-size: clamp(2rem, 9vw, 3.5rem);
+  }
+}

@@ -1,12 +1,14 @@
-// ============================================ */
-// COMMUNITY HUB - COMPLETE FUNCTIONALITY      */
-// SELF-UPDATING WEEKLY & MONTHLY CHALLENGES   */
-// ============================================ */
+// ============================================
+// COMMUNITY HUB - COMPLETE FUNCTIONALITY
+// Reads challenges from Firestore, shows real stats
+// ============================================
 
 class CommunityHub {
   constructor() {
     this.currentUser = null;
     this.isAdmin = false;
+    this.db = firebase.firestore();
+
     this.countdownIntervals = {
       daily: null,
       weekly: null,
@@ -14,330 +16,92 @@ class CommunityHub {
       yearly: null,
     };
 
+    // Active challenges loaded from Firestore (or generated as fallback)
+    this.activeChallenges = {
+      daily: null,
+      weekly: null,
+      monthly: null,
+      yearly: null,
+    };
+
+    // Local fallback themes (used only when Firestore is empty)
     this.dailyPrompts = [
-      {
-        title: "At the Top of the World",
-        description:
-          "Create artwork depicting the highest peaks, both literal and metaphorical. Show us what being 'at the top' means to you.",
-        tags: ["mountain", "achievement", "perspective", "landscape"],
-      },
-      {
-        title: "Breathe",
-        description:
-          "Capture the essence of breath, life, and moments of calm. Show us what it means to truly breathe.",
-        tags: ["calm", "life", "meditation", "peace"],
-      },
-      {
-        title: "Fallen",
-        description:
-          "Explore themes of descent, loss, or transformation. What does it mean to have fallen?",
-        tags: ["descent", "transformation", "metaphor", "emotion"],
-      },
-      {
-        title: "A Thousand Words",
-        description:
-          "Create an image that tells a complex story without using any text. Let your art speak volumes.",
-        tags: ["storytelling", "narrative", "expression", "communication"],
-      },
-      {
-        title: "Echoes of Silence",
-        description:
-          "Depict the powerful presence of silence and the echoes it leaves behind.",
-        tags: ["quiet", "reflection", "space", "atmosphere"],
-      },
-      {
-        title: "Uncharted Waters",
-        description:
-          "Venture into the unknown. Show us exploration, discovery, and new beginnings.",
-        tags: ["exploration", "adventure", "unknown", "journey"],
-      },
-      {
-        title: "Forgotten Memories",
-        description:
-          "Bring to life memories that have faded but not disappeared entirely.",
-        tags: ["memory", "nostalgia", "past", "emotion"],
-      },
-      {
-        title: "Neon Dreams",
-        description:
-          "Create a vibrant, neon-infused artwork that captures the energy of the night.",
-        tags: ["neon", "night", "vibrant", "urban"],
-      },
-      {
-        title: "Silent Echo",
-        description:
-          "Depict the powerful presence of silence and the echoes it leaves behind.",
-        tags: ["quiet", "reflection", "space", "atmosphere"],
-      },
-      {
-        title: "Golden Hour",
-        description: "Capture the magic of golden hour light in your artwork.",
-        tags: ["lighting", "warm", "magic", "sunset"],
-      },
+      { title: "At the Top of the World", description: "Create artwork depicting the highest peaks, both literal and metaphorical. Show us what being 'at the top' means to you.", tags: ["mountain", "achievement", "perspective", "landscape"] },
+      { title: "Breathe", description: "Capture the essence of breath, life, and moments of calm. Show us what it means to truly breathe.", tags: ["calm", "life", "meditation", "peace"] },
+      { title: "Fallen", description: "Explore themes of descent, loss, or transformation. What does it mean to have fallen?", tags: ["descent", "transformation", "metaphor", "emotion"] },
+      { title: "A Thousand Words", description: "Create an image that tells a complex story without using any text. Let your art speak volumes.", tags: ["storytelling", "narrative", "expression", "communication"] },
+      { title: "Echoes of Silence", description: "Depict the powerful presence of silence and the echoes it leaves behind.", tags: ["quiet", "reflection", "space", "atmosphere"] },
+      { title: "Uncharted Waters", description: "Venture into the unknown. Show us exploration, discovery, and new beginnings.", tags: ["exploration", "adventure", "unknown", "journey"] },
+      { title: "Forgotten Memories", description: "Bring to life memories that have faded but not disappeared entirely.", tags: ["memory", "nostalgia", "past", "emotion"] },
+      { title: "Neon Dreams", description: "Create a vibrant, neon-infused artwork that captures the energy of the night.", tags: ["neon", "night", "vibrant", "urban"] },
+      { title: "Silent Echo", description: "Depict the powerful presence of silence and the echoes it leaves behind.", tags: ["quiet", "reflection", "space", "atmosphere"] },
+      { title: "Golden Hour", description: "Capture the magic of golden hour light in your artwork.", tags: ["lighting", "warm", "magic", "sunset"] },
     ];
 
-    // Monthly challenge themes (rotating)
-    this.monthlyThemes = [
-      {
-        title: '"Mythical Realms Reimagined"',
-        description:
-          "Take a classic mythical creature or legend and give it a fresh, unexpected twist. What would a phoenix look like in a cyberpunk world? How does a dragon adapt to climate change? Your imagination is the only limit.",
-        tags: ["mythology", "fantasy", "reimagine", "worldbuilding"],
-      },
-      {
-        title: '"Urban Echoes"',
-        description:
-          "Capture the hidden stories of the city - the forgotten corners, the midnight alleys, the quiet moments between skyscrapers. Show us the soul of the city that others overlook.",
-        tags: ["urban", "city", "hidden", "storytelling"],
-      },
-      {
-        title: '"Ethereal Visions"',
-        description:
-          "Explore the space between dreams and reality. Create artwork that feels both familiar and otherworldly, where the boundaries of imagination blur.",
-        tags: ["dreams", "surreal", "ethereal", "fantasy"],
-      },
-      {
-        title: '"Elements Unleashed"',
-        description:
-          "Channel the raw power of earth, wind, fire, and water. Show us the elemental forces that shape our world in your unique visual language.",
-        tags: ["elements", "nature", "power", "force"],
-      },
-      {
-        title: '"Timeless Portraits"',
-        description:
-          "Create portraits that transcend time - figures that could belong to any era, any culture, any world. Tell a story through a single gaze.",
-        tags: ["portraits", "timeless", "expression", "character"],
-      },
-      {
-        title: '"Mechanical Dreams"',
-        description:
-          "Blend organic life with mechanical precision. Create creatures and worlds where technology and nature coexist in harmony or conflict.",
-        tags: ["steampunk", "cyber", "mechanical", "organic"],
-      },
-      {
-        title: '"Cosmic Wanderers"',
-        description:
-          "Journey through the cosmos - explore strange new worlds, alien landscapes, and the infinite possibilities of space.",
-        tags: ["space", "cosmic", "alien", "infinite"],
-      },
-      {
-        title: '"Whispers of the Past"',
-        description:
-          "Bring history to life through art. Reimagine ancient civilizations, lost cultures, and the echoes of bygone eras.",
-        tags: ["history", "ancient", "culture", "heritage"],
-      },
-      {
-        title: '"Flora & Fauna Fantasia"',
-        description:
-          "Create a vibrant celebration of the natural world. Reimagine plants and animals in fantastical ways that celebrate biodiversity.",
-        tags: ["nature", "fantasy", "animals", "plants"],
-      },
-      {
-        title: '"Architectural Dreams"',
-        description:
-          "Design impossible structures - buildings that defy physics, cities that float, homes that breathe. Show us the architecture of imagination.",
-        tags: ["architecture", "design", "impossible", "dreams"],
-      },
-      {
-        title: '"Shadow & Light"',
-        description:
-          "Explore the dramatic interplay between shadow and light. Create artwork where the darkness reveals as much as it conceals.",
-        tags: ["shadows", "light", "contrast", "mystery"],
-      },
-      {
-        title: '"Festival of Colors"',
-        description:
-          "Celebrate the joy of color - create vibrant, energetic artwork that captures the spirit of celebration and cultural festivity.",
-        tags: ["color", "celebration", "festival", "vibrant"],
-      },
-    ];
-
-    // Weekly challenge themes
     this.weeklyThemes = [
-      {
-        title: '"Urban Jungle"',
-        description:
-          "Create artwork that blends city architecture with natural elements. Think vines growing on skyscrapers, tree roots breaking through pavement, or wildlife adapting to urban environments.",
-        tags: ["cityscape", "nature", "surreal", "contrast"],
-      },
-      {
-        title: '"Golden Hour Glow"',
-        description:
-          "Capture the magic of the golden hour - that brief moment when the sun casts everything in warm, glowing light. Show us the beauty of transition.",
-        tags: ["golden hour", "lighting", "warm", "transition"],
-      },
-      {
-        title: '"Silent Stories"',
-        description:
-          "Create artwork that tells a story without words. Let the composition, color, and mood convey a narrative that speaks to the viewer.",
-        tags: ["storytelling", "narrative", "silence", "expression"],
-      },
-      {
-        title: '"Fractured Realities"',
-        description:
-          "Explore the beauty in broken things. Show us shattered perspectives, fragmented visions, and the art that emerges from the pieces.",
-        tags: ["fractured", "abstract", "broken", "perspective"],
-      },
-      {
-        title: '"Midnight Musings"',
-        description:
-          "Capture the introspection and mystery of the midnight hour. Create artwork that feels intimate, quiet, and deeply personal.",
-        tags: ["night", "introspection", "quiet", "intimate"],
-      },
-      {
-        title: '"Abstract Emotions"',
-        description:
-          "Translate feelings into abstract form. Let color, shape, and texture express what words cannot capture.",
-        tags: ["abstract", "emotion", "feeling", "expression"],
-      },
-      {
-        title: '"Culinary Canvas"',
-        description:
-          "Treat food as art - create stunning compositions that celebrate the beauty and creativity of cuisine.",
-        tags: ["food", "culinary", "creative", "composition"],
-      },
-      {
-        title: '"Dance of the Elements"',
-        description:
-          "Capture movement and energy in a single frame. Show us the grace, power, and beauty of things in motion.",
-        tags: ["dance", "movement", "energy", "grace"],
-      },
-      {
-        title: '"Futuristic Visions"',
-        description:
-          "Imagine the world of tomorrow. Create artwork that explores the possibilities of future technology, society, and human evolution.",
-        tags: ["future", "technology", "futuristic", "imagination"],
-      },
-      {
-        title: '"Organic Abstracts"',
-        description:
-          "Find the abstract beauty in the natural world. Create compositions inspired by organic forms, patterns, and textures.",
-        tags: ["organic", "abstract", "nature", "patterns"],
-      },
-      {
-        title: '"Cultural Fusion"',
-        description:
-          "Blend cultural elements from different traditions and eras to create something entirely new and beautiful.",
-        tags: ["culture", "fusion", "diverse", "creative"],
-      },
-      {
-        title: '"Dreamscapes"',
-        description:
-          "Bring your dreams to life. Create surreal landscapes and scenes that exist only in the realm of imagination.",
-        tags: ["dreams", "surreal", "landscape", "imagination"],
-      },
+      { title: "Urban Jungle", description: "Create artwork that blends city architecture with natural elements.", tags: ["cityscape", "nature", "surreal", "contrast"] },
+      { title: "Golden Hour Glow", description: "Capture the magic of the golden hour - that brief moment when the sun casts everything in warm, glowing light.", tags: ["golden hour", "lighting", "warm", "transition"] },
+      { title: "Silent Stories", description: "Create artwork that tells a story without words.", tags: ["storytelling", "narrative", "silence", "expression"] },
+      { title: "Fractured Realities", description: "Explore the beauty in broken things.", tags: ["fractured", "abstract", "broken", "perspective"] },
+      { title: "Midnight Musings", description: "Capture the introspection and mystery of the midnight hour.", tags: ["night", "introspection", "quiet", "intimate"] },
+      { title: "Abstract Emotions", description: "Translate feelings into abstract form.", tags: ["abstract", "emotion", "feeling", "expression"] },
+      { title: "Culinary Canvas", description: "Treat food as art.", tags: ["food", "culinary", "creative", "composition"] },
+      { title: "Dance of the Elements", description: "Capture movement and energy in a single frame.", tags: ["dance", "movement", "energy", "grace"] },
+      { title: "Futuristic Visions", description: "Imagine the world of tomorrow.", tags: ["future", "technology", "futuristic", "imagination"] },
+      { title: "Organic Abstracts", description: "Find the abstract beauty in the natural world.", tags: ["organic", "abstract", "nature", "patterns"] },
+      { title: "Cultural Fusion", description: "Blend cultural elements from different traditions and eras.", tags: ["culture", "fusion", "diverse", "creative"] },
+      { title: "Dreamscapes", description: "Bring your dreams to life.", tags: ["dreams", "surreal", "landscape", "imagination"] },
+    ];
+
+    this.monthlyThemes = [
+      { title: "Mythical Realms Reimagined", description: "Take a classic mythical creature or legend and give it a fresh, unexpected twist.", tags: ["mythology", "fantasy", "reimagine", "worldbuilding"] },
+      { title: "Urban Echoes", description: "Capture the hidden stories of the city.", tags: ["urban", "city", "hidden", "storytelling"] },
+      { title: "Ethereal Visions", description: "Explore the space between dreams and reality.", tags: ["dreams", "surreal", "ethereal", "fantasy"] },
+      { title: "Elements Unleashed", description: "Channel the raw power of earth, wind, fire, and water.", tags: ["elements", "nature", "power", "force"] },
+      { title: "Timeless Portraits", description: "Create portraits that transcend time.", tags: ["portraits", "timeless", "expression", "character"] },
+      { title: "Mechanical Dreams", description: "Blend organic life with mechanical precision.", tags: ["steampunk", "cyber", "mechanical", "organic"] },
+      { title: "Cosmic Wanderers", description: "Journey through the cosmos.", tags: ["space", "cosmic", "alien", "infinite"] },
+      { title: "Whispers of the Past", description: "Bring history to life through art.", tags: ["history", "ancient", "culture", "heritage"] },
+      { title: "Flora & Fauna Fantasia", description: "Create a vibrant celebration of the natural world.", tags: ["nature", "fantasy", "animals", "plants"] },
+      { title: "Architectural Dreams", description: "Design impossible structures.", tags: ["architecture", "design", "impossible", "dreams"] },
+      { title: "Shadow & Light", description: "Explore the dramatic interplay between shadow and light.", tags: ["shadows", "light", "contrast", "mystery"] },
+      { title: "Festival of Colors", description: "Celebrate the joy of color.", tags: ["color", "celebration", "festival", "vibrant"] },
+    ];
+
+    this.yearlyThemes = [
+      { title: "Metamorphosis: A Year of Growth", description: "Document your artistic journey and personal growth over a year.", tags: ["growth", "journey", "transformation", "evolution"] },
+      { title: "Chronicles of Time: Seasonal Diary", description: "Create a visual diary of the seasons and passing of time.", tags: ["time", "seasons", "reflection", "nature"] },
+      { title: "52 Weeks of Creative Exploration", description: "52 weeks of creative exploration, one piece per week.", tags: ["consistency", "exploration", "growth", "discipline"] },
     ];
 
     this.init();
   }
 
-  // ============================================ */
-  // GET CURRENT WEEK NUMBER                     */
-  // ============================================ */
-  getCurrentWeekNumber() {
-    const now = new Date();
-    const startOfYear = new Date(now.getFullYear(), 0, 1);
-    const days = Math.floor((now - startOfYear) / (1000 * 60 * 60 * 24));
-    return Math.ceil((days + startOfYear.getDay() + 1) / 7);
-  }
-
-  // ============================================ */
-  // GET CURRENT MONTH THEME                     */
-  // ============================================ */
-  getCurrentMonthTheme() {
-    const now = new Date();
-    const monthIndex = now.getMonth(); // 0-11
-    return this.monthlyThemes[monthIndex % this.monthlyThemes.length];
-  }
-
-  // ============================================ */
-  // GET CURRENT WEEK THEME                      */
-  // ============================================ */
-  getCurrentWeekTheme() {
-    const weekNumber = this.getCurrentWeekNumber();
-    // Use week number to cycle through themes (minus 1 because week 1 = index 0)
-    const themeIndex = (weekNumber - 1) % this.weeklyThemes.length;
-    return this.weeklyThemes[themeIndex];
-  }
-
-  // ============================================ */
-  // GET WEEK DATE RANGE                         */
-  // ============================================ */
-  getWeekDateRange() {
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(
-      now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1),
-    );
-    startOfWeek.setHours(0, 0, 0, 0);
-
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-    endOfWeek.setHours(23, 59, 59, 0);
-
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const startStr = `${months[startOfWeek.getMonth()]} ${startOfWeek.getDate()}`;
-    const endStr = `${months[endOfWeek.getMonth()]} ${endOfWeek.getDate()}`;
-    return `${startStr} - ${endStr}`;
-  }
-
-  // ============================================ */
-  // GET MONTH NAME                              */
-  // ============================================ */
-  getMonthName() {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const now = new Date();
-    const year = now.getFullYear();
-    return `${months[now.getMonth()]} ${year}`;
-  }
-
-  // ============================================ */
-  // INIT                                        */
-  // ============================================ */
+  // ============================================
+  // INIT
+  // ============================================
   async init() {
     firebase.auth().onAuthStateChanged(async (user) => {
       this.currentUser = user;
+
       if (user) {
         await this.checkAdminStatus();
       }
-      this.loadDailyChallenge();
+
+      // Load challenges first (needed by render)
+      await this.loadActiveChallenges();
+
+      // Load everything else in parallel where possible
       this.loadChallengeStats();
-      this.loadWeeklyChallenge();
-      this.loadMonthlyChallenge();
-      this.loadYearlyChallenge();
       this.loadCommunityStats();
       this.loadRecentActivity();
       this.loadFeaturedArtworks();
+      this.loadFeaturedTutorials();
       this.loadFeaturedArtists();
       this.loadTopCreators();
       this.loadWinners();
       this.loadBulletinPosts();
+
       this.startAllCountdowns();
       this.setupEventListeners();
       this.setupThemeToggle();
@@ -351,9 +115,260 @@ class CommunityHub {
     });
   }
 
-  // ============================================ */
-  // ALL COUNTDOWNS                              */
-  // ============================================ */
+  // ============================================
+  // CHALLENGES - READ FROM FIRESTORE
+  // ============================================
+  async loadActiveChallenges() {
+    try {
+      const snapshot = await this.db
+        .collection("challenges")
+        .where("status", "==", "active")
+        .get();
+
+      if (snapshot.empty) {
+        console.warn(
+          "⚠️ No active challenges in Firestore. Using local fallback generation.",
+        );
+        this.generateFallbackChallenges();
+        this.renderChallenges();
+        return;
+      }
+
+      const challenges = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        challenges.push({
+          id: doc.id,
+          ...data,
+          startDate: data.startDate?.toDate?.() || new Date(data.startDate),
+          endDate: data.endDate?.toDate?.() || new Date(data.endDate),
+        });
+      });
+
+      // Prefer Intuit versions, fall back to any matching type
+      this.activeChallenges.daily =
+        challenges.find((c) => c.type === "daily" && c.isIntuit) ||
+        challenges.find((c) => c.type === "daily") ||
+        null;
+
+      this.activeChallenges.weekly =
+        challenges.find((c) => c.type === "weekly" && c.isIntuit) ||
+        challenges.find((c) => c.type === "weekly") ||
+        null;
+
+      this.activeChallenges.monthly =
+        challenges.find((c) => c.type === "monthly" && c.isIntuit) ||
+        challenges.find((c) => c.type === "monthly") ||
+        null;
+
+      this.activeChallenges.yearly =
+        challenges.find((c) => c.type === "yearly" && c.isIntuit) ||
+        challenges.find((c) => c.type === "yearly") ||
+        null;
+
+      console.log(
+        `✅ Loaded ${challenges.length} active challenges from Firestore`,
+      );
+      this.renderChallenges();
+    } catch (error) {
+      console.error("Error loading challenges from Firestore:", error);
+      this.generateFallbackChallenges();
+      this.renderChallenges();
+    }
+  }
+
+  generateFallbackChallenges() {
+    const now = new Date();
+    const dayOfYear = Math.floor(
+      (now - new Date(now.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24),
+    );
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const daysSinceStart = Math.floor(
+      (now - startOfYear) / (1000 * 60 * 60 * 24),
+    );
+    const weekNumber = Math.ceil(
+      (daysSinceStart + startOfYear.getDay() + 1) / 7,
+    );
+
+    // Daily
+    const dailyPrompt = this.dailyPrompts[dayOfYear % this.dailyPrompts.length];
+    const dailyStart = new Date(now);
+    dailyStart.setHours(0, 0, 0, 0);
+    const dailyEnd = new Date(now);
+    dailyEnd.setHours(23, 59, 59, 0);
+
+    this.activeChallenges.daily = {
+      id: "intuit-daily-fallback",
+      type: "daily",
+      title: `"${dailyPrompt.title}"`,
+      description: dailyPrompt.description,
+      tags: dailyPrompt.tags,
+      startDate: dailyStart,
+      endDate: dailyEnd,
+      isIntuit: true,
+      prize: "Daily Champion Badge + 100 Points + Featured on Homepage",
+      prizeValue: 100,
+    };
+
+    // Weekly
+    const weeklyTheme =
+      this.weeklyThemes[(weekNumber - 1) % this.weeklyThemes.length];
+    const day = now.getDay();
+    const diffToMonday = day === 0 ? 6 : day - 1;
+    const weeklyStart = new Date(now);
+    weeklyStart.setDate(now.getDate() - diffToMonday);
+    weeklyStart.setHours(0, 0, 0, 0);
+    const weeklyEnd = new Date(weeklyStart);
+    weeklyEnd.setDate(weeklyStart.getDate() + 6);
+    weeklyEnd.setHours(23, 59, 59, 0);
+
+    this.activeChallenges.weekly = {
+      id: "intuit-weekly-fallback",
+      type: "weekly",
+      title: `"${weeklyTheme.title}"`,
+      description: weeklyTheme.description,
+      tags: weeklyTheme.tags,
+      startDate: weeklyStart,
+      endDate: weeklyEnd,
+      isIntuit: true,
+      prize: "Champion Badge + Social Media Feature + 250 Points",
+      prizeValue: 250,
+    };
+
+    // Monthly
+    const monthlyTheme =
+      this.monthlyThemes[now.getMonth() % this.monthlyThemes.length];
+    const monthlyStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthlyEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    monthlyEnd.setHours(23, 59, 59, 0);
+
+    this.activeChallenges.monthly = {
+      id: "intuit-monthly-fallback",
+      type: "monthly",
+      title: `"${monthlyTheme.title}"`,
+      description: monthlyTheme.description,
+      tags: monthlyTheme.tags,
+      startDate: monthlyStart,
+      endDate: monthlyEnd,
+      isIntuit: true,
+      prize: "Master Badge + Homepage Feature + 500 Points",
+      prizeValue: 500,
+    };
+
+    // Yearly
+    const yearlyTheme = this.yearlyThemes[0];
+    const yearlyStart = new Date(now.getFullYear(), 0, 1);
+    const yearlyEnd = new Date(now.getFullYear(), 11, 31);
+    yearlyEnd.setHours(23, 59, 59, 0);
+
+    this.activeChallenges.yearly = {
+      id: "intuit-yearly-fallback",
+      type: "yearly",
+      title: `"${yearlyTheme.title}"`,
+      description: yearlyTheme.description,
+      tags: yearlyTheme.tags,
+      startDate: yearlyStart,
+      endDate: yearlyEnd,
+      isIntuit: true,
+      prize: "Soul Chaser Badge + Featured Artist + Custom Challenge Theme",
+      prizeValue: 1000,
+    };
+
+    console.log("📝 Generated fallback challenges locally");
+  }
+
+  renderChallenges() {
+    if (this.activeChallenges.daily) this.renderDailyChallenge();
+    if (this.activeChallenges.weekly) this.renderWeeklyChallenge();
+    if (this.activeChallenges.monthly) this.renderMonthlyChallenge();
+    if (this.activeChallenges.yearly) this.renderYearlyChallenge();
+  }
+
+  renderDailyChallenge() {
+    const c = this.activeChallenges.daily;
+
+    const titleEl = document.getElementById("daily-prompt-title");
+    const descEl = document.getElementById("daily-prompt-description");
+    const dateEl = document.getElementById("challenge-date");
+    const tagsEl = document.getElementById("daily-tags");
+
+    if (titleEl) titleEl.textContent = c.title;
+    if (descEl) descEl.textContent = c.description;
+    if (dateEl) {
+      dateEl.textContent = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
+    this.renderTags(tagsEl, c.tags);
+  }
+
+  renderWeeklyChallenge() {
+    const c = this.activeChallenges.weekly;
+    const titleEl = document.getElementById("weekly-title");
+    const descEl = document.getElementById("weekly-description");
+    const rangeEl = document.getElementById("weekly-date-range");
+    const tagsEl = document.getElementById("weekly-tags");
+
+    if (titleEl) titleEl.textContent = c.title;
+    if (descEl) descEl.textContent = c.description;
+    if (rangeEl && c.startDate && c.endDate) {
+      const fmt = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      rangeEl.textContent = `${fmt(c.startDate)} - ${fmt(c.endDate)}`;
+    }
+    this.renderTags(tagsEl, c.tags);
+  }
+
+  renderMonthlyChallenge() {
+    const c = this.activeChallenges.monthly;
+    const titleEl = document.getElementById("monthly-title");
+    const descEl = document.getElementById("monthly-description");
+    const dateEl = document.getElementById("monthly-date");
+    const tagsEl = document.getElementById("monthly-tags");
+
+    if (titleEl) titleEl.textContent = c.title;
+    if (descEl) descEl.textContent = c.description;
+    if (dateEl && c.startDate) {
+      dateEl.textContent = c.startDate.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
+    }
+    this.renderTags(tagsEl, c.tags);
+  }
+
+  renderYearlyChallenge() {
+    const c = this.activeChallenges.yearly;
+    const titleEl = document.getElementById("yearly-title");
+    const descEl = document.getElementById("yearly-description");
+    const dateEl = document.getElementById("yearly-date");
+    const tagsEl = document.getElementById("yearly-tags");
+
+    if (titleEl) titleEl.textContent = c.title;
+    if (descEl) descEl.textContent = c.description;
+    if (dateEl) dateEl.textContent = `${new Date().getFullYear()} Grand Challenge`;
+    this.renderTags(tagsEl, c.tags);
+  }
+
+  renderTags(container, tags) {
+    if (!container || !tags) return;
+    const tagEls = container.querySelectorAll(".challenge-tag");
+    tags.forEach((tag, i) => {
+      if (tagEls[i]) {
+        tagEls[i].textContent = `#${tag}`;
+        tagEls[i].style.display = "inline-block";
+      }
+    });
+    for (let i = tags.length; i < tagEls.length; i++) {
+      tagEls[i].style.display = "none";
+    }
+  }
+
+  // ============================================
+  // COUNTDOWNS
+  // ============================================
   startAllCountdowns() {
     Object.keys(this.countdownIntervals).forEach((key) => {
       if (this.countdownIntervals[key]) {
@@ -369,611 +384,203 @@ class CommunityHub {
   }
 
   startDailyCountdown() {
-    const countdownElement = document.getElementById("countdown");
-    if (!countdownElement) return;
+    const el = document.getElementById("countdown");
+    if (!el) return;
 
-    const updateDaily = () => {
+    const update = () => {
       const now = new Date();
       const tomorrow = new Date(now);
       tomorrow.setDate(tomorrow.getDate() + 1);
       tomorrow.setHours(0, 0, 0, 0);
-
       const diff = tomorrow - now;
-
-      if (diff <= 0) {
-        const newTomorrow = new Date(now);
-        newTomorrow.setDate(newTomorrow.getDate() + 1);
-        newTomorrow.setHours(0, 0, 0, 0);
-        const newDiff = newTomorrow - now;
-        const hours = Math.floor(newDiff / (1000 * 60 * 60));
-        const minutes = Math.floor((newDiff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((newDiff % (1000 * 60)) / 1000);
-        countdownElement.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-        return;
-      }
-
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      countdownElement.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      el.textContent = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
     };
 
-    updateDaily();
-    if (this.countdownIntervals.daily) {
-      clearInterval(this.countdownIntervals.daily);
-    }
-    this.countdownIntervals.daily = setInterval(updateDaily, 1000);
+    update();
+    this.countdownIntervals.daily = setInterval(update, 1000);
   }
 
   startWeeklyCountdown() {
-    const countdownElement = document.getElementById("weekly-days-left");
-    if (!countdownElement) return;
+    const el = document.getElementById("weekly-days-left");
+    if (!el) return;
 
-    const updateWeekly = () => {
+    const update = () => {
       const now = new Date();
-
-      // Calculate next Monday
       const nextMonday = new Date(now);
-      const daysUntilMonday = (8 - now.getDay()) % 7 || 7;
-      nextMonday.setDate(now.getDate() + daysUntilMonday);
+      const daysUntil = (8 - now.getDay()) % 7 || 7;
+      nextMonday.setDate(now.getDate() + daysUntil);
       nextMonday.setHours(0, 0, 0, 0);
-
-      const diff = nextMonday - now;
-
-      if (diff <= 0) {
-        const newMonday = new Date(now);
-        const newDaysUntilMonday = (8 - now.getDay()) % 7 || 7;
-        newMonday.setDate(now.getDate() + newDaysUntilMonday);
-        newMonday.setHours(0, 0, 0, 0);
-        const newDiff = newMonday - now;
-        const days = Math.floor(newDiff / (1000 * 60 * 60 * 24));
-        countdownElement.textContent = `${days} days left`;
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      countdownElement.textContent = `${days} days left`;
+      const days = Math.floor((nextMonday - now) / 86400000);
+      el.textContent = `${days} day${days === 1 ? "" : "s"} left`;
     };
 
-    updateWeekly();
-    if (this.countdownIntervals.weekly) {
-      clearInterval(this.countdownIntervals.weekly);
-    }
-    this.countdownIntervals.weekly = setInterval(updateWeekly, 60000);
+    update();
+    this.countdownIntervals.weekly = setInterval(update, 60000);
   }
 
   startMonthlyCountdown() {
-    const countdownElement = document.getElementById("monthly-days-left");
-    if (!countdownElement) return;
+    const el = document.getElementById("monthly-days-left");
+    if (!el) return;
 
-    const updateMonthly = () => {
+    const update = () => {
       const now = new Date();
-
-      // Calculate end of month
       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
       endOfMonth.setHours(23, 59, 59, 0);
-
-      const diff = endOfMonth - now;
-
-      if (diff <= 0) {
-        const nextMonthEnd = new Date(now.getFullYear(), now.getMonth() + 2, 0);
-        nextMonthEnd.setHours(23, 59, 59, 0);
-        const newDiff = nextMonthEnd - now;
-        const days = Math.floor(newDiff / (1000 * 60 * 60 * 24));
-        countdownElement.textContent = `${days} days left`;
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      countdownElement.textContent = `${days} days left`;
+      const days = Math.floor((endOfMonth - now) / 86400000);
+      el.textContent = `${days} day${days === 1 ? "" : "s"} left`;
     };
 
-    updateMonthly();
-    if (this.countdownIntervals.monthly) {
-      clearInterval(this.countdownIntervals.monthly);
-    }
-    this.countdownIntervals.monthly = setInterval(updateMonthly, 60000);
+    update();
+    this.countdownIntervals.monthly = setInterval(update, 60000);
   }
 
   startYearlyCountdown() {
-    const countdownElement = document.getElementById("yearly-days-left");
-    if (!countdownElement) return;
+    const el = document.getElementById("yearly-days-left");
+    if (!el) return;
 
-    const updateYearly = () => {
+    const update = () => {
       const now = new Date();
-
       const endOfYear = new Date(now.getFullYear(), 11, 31);
       endOfYear.setHours(23, 59, 59, 0);
-
-      const diff = endOfYear - now;
-
-      if (diff <= 0) {
-        const nextYearEnd = new Date(now.getFullYear() + 1, 11, 31);
-        nextYearEnd.setHours(23, 59, 59, 0);
-        const newDiff = nextYearEnd - now;
-        const days = Math.floor(newDiff / (1000 * 60 * 60 * 24));
-        countdownElement.textContent = `${days} days left`;
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      countdownElement.textContent = `${days} days left`;
+      const days = Math.floor((endOfYear - now) / 86400000);
+      el.textContent = `${days} day${days === 1 ? "" : "s"} left`;
     };
 
-    updateYearly();
-    if (this.countdownIntervals.yearly) {
-      clearInterval(this.countdownIntervals.yearly);
-    }
-    this.countdownIntervals.yearly = setInterval(updateYearly, 3600000);
+    update();
+    this.countdownIntervals.yearly = setInterval(update, 3600000);
   }
 
-  // ============================================ */
-  // WEEKLY CHALLENGE - SELF-UPDATING           */
-  // ============================================ */
-  loadWeeklyChallenge() {
-    const weekNumber = this.getCurrentWeekNumber();
-    const theme = this.getCurrentWeekTheme();
-    const dateRange = this.getWeekDateRange();
-
-    document.getElementById("weekly-title").textContent = theme.title;
-    document.getElementById("weekly-description").textContent =
-      theme.description;
-    document.getElementById("weekly-date-range").textContent =
-      `Week ${weekNumber} · ${dateRange}`;
-    document.getElementById("weekly-prize").innerHTML =
-      `<i class="fas fa-gem"></i> Prize: Featured artist spot + 500 community points`;
-
-    const tags = document.querySelectorAll("#weekly-tags .challenge-tag");
-    theme.tags.forEach((tag, index) => {
-      if (tags[index]) {
-        tags[index].textContent = `#${tag}`;
-        tags[index].style.display = "inline-block";
-      }
-    });
-    for (let i = theme.tags.length; i < tags.length; i++) {
-      tags[i].style.display = "none";
-    }
-  }
-
-  // ============================================ */
-  // MONTHLY CHALLENGE - SELF-UPDATING          */
-  // ============================================ */
-  loadMonthlyChallenge() {
-    const theme = this.getCurrentMonthTheme();
-    const monthName = this.getMonthName();
-
-    document.getElementById("monthly-title").textContent = theme.title;
-    document.getElementById("monthly-description").textContent =
-      theme.description;
-    document.getElementById("monthly-date").textContent =
-      `${monthName} · ${theme.tags[0] || "Creative"}`;
-    document.getElementById("monthly-prize").innerHTML =
-      `<i class="fas fa-trophy"></i> Prize: $100 gift card + 1-year premium membership + Featured exhibition`;
-
-    const tags = document.querySelectorAll("#monthly-tags .challenge-tag");
-    theme.tags.forEach((tag, index) => {
-      if (tags[index]) {
-        tags[index].textContent = `#${tag}`;
-        tags[index].style.display = "inline-block";
-      }
-    });
-    for (let i = theme.tags.length; i < tags.length; i++) {
-      tags[i].style.display = "none";
-    }
-  }
-
-  // ============================================ */
-  // YEARLY CHALLENGE                            */
-  // ============================================ */
-  loadYearlyChallenge() {
-    const year = new Date().getFullYear();
-    const yearlyData = {
-      title: '"Metamorphosis: The Year of Transformation"',
-      description:
-        "Document transformation through 12 themed chapters - one for each month. From personal growth to environmental change, from character evolution to artistic style development. Create a cohesive body of work that tells a story of change and emergence.",
-      tags: ["transformation", "growth", "evolution", "series"],
-      year: `${year} Grand Challenge`,
-      prize:
-        '$5,000 + Solo exhibition + Mentorship program + "Artisan of the Year" title + Soul Chaser Badge',
-    };
-
-    document.getElementById("yearly-title").textContent = yearlyData.title;
-    document.getElementById("yearly-description").textContent =
-      yearlyData.description;
-    document.getElementById("yearly-date").textContent = yearlyData.year;
-    document.getElementById("yearly-prize").innerHTML =
-      `<i class="fas fa-crown"></i> Grand Prize: ${yearlyData.prize}`;
-
-    const tags = document.querySelectorAll("#yearly-tags .challenge-tag");
-    yearlyData.tags.forEach((tag, index) => {
-      if (tags[index]) {
-        tags[index].textContent = `#${tag}`;
-        tags[index].style.display = "inline-block";
-      }
-    });
-    for (let i = yearlyData.tags.length; i < tags.length; i++) {
-      tags[i].style.display = "none";
-    }
-  }
-
-  // ============================================ */
-  // ADMIN CHECK - FIXED WITH TOGGLE VISIBILITY  */
-  // ============================================ */
-  async checkAdminStatus() {
-    try {
-      const doc = await firebase
-        .firestore()
-        .collection("users")
-        .doc(this.currentUser.uid)
-        .get();
-      if (doc.exists) {
-        const data = doc.data();
-        this.isAdmin =
-          data.role === "admin" ||
-          data.role === "moderator" ||
-          data.isAdmin === true;
-
-        // Get all admin elements
-        const adminToggle = document.querySelector(".bulletin-admin-toggle");
-        const adminPanel = document.querySelector(".bulletin-admin");
-        const heroControls = document.querySelector(".hero-controls");
-
-        if (this.isAdmin) {
-          // Show admin elements
-          if (adminToggle) {
-            adminToggle.classList.add("visible");
-            adminToggle.style.display = "block";
-          }
-          if (adminPanel) {
-            adminPanel.classList.add("visible");
-            adminPanel.style.display = "block";
-          }
-          if (heroControls) {
-            heroControls.classList.add("visible");
-            heroControls.style.display = "flex";
-          }
-          console.log("✅ Admin mode activated!");
-        } else {
-          // Hide admin elements
-          if (adminToggle) {
-            adminToggle.classList.remove("visible");
-            adminToggle.style.display = "none";
-          }
-          if (adminPanel) {
-            adminPanel.classList.remove("visible");
-            adminPanel.style.display = "none";
-          }
-          if (heroControls) {
-            heroControls.classList.remove("visible");
-            heroControls.style.display = "none";
-          }
-          console.log("👤 User mode (not admin)");
-        }
-      }
-    } catch (error) {
-      console.error("Error checking admin status:", error);
-    }
-  }
-
-  // ============================================ */
-  // THEME TOGGLE                                */
-  // ============================================ */
-  setupThemeToggle() {
-    const toggleBtn = document.getElementById("themeToggle");
-    if (!toggleBtn) return;
-
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    this.applyTheme(savedTheme);
-
-    toggleBtn.addEventListener("click", () => {
-      const currentTheme = document.body.classList.contains("light-mode")
-        ? "light"
-        : "dark";
-      const newTheme = currentTheme === "light" ? "dark" : "light";
-      this.applyTheme(newTheme);
-      localStorage.setItem("theme", newTheme);
-    });
-  }
-
-  applyTheme(theme) {
-    const body = document.body;
-    const toggleBtn = document.getElementById("themeToggle");
-
-    if (theme === "light") {
-      body.classList.remove("dark-mode");
-      body.classList.add("light-mode");
-      if (toggleBtn) {
-        toggleBtn.innerHTML =
-          '<i class="fas fa-moon"></i><i class="fas fa-sun"></i>';
-      }
-    } else {
-      body.classList.remove("light-mode");
-      body.classList.add("dark-mode");
-      if (toggleBtn) {
-        toggleBtn.innerHTML =
-          '<i class="fas fa-moon"></i><i class="fas fa-sun"></i>';
-      }
-    }
-  }
-
-  // ============================================ */
-  // EXPORT INTUIT CHALLENGES FOR CHALLENGES.JS   */
-  // ============================================ */
-  getIntuitChallenges() {
-    const now = new Date();
-    const weekNumber = this.getCurrentWeekNumber();
-    const monthIndex = now.getMonth();
-
-    // Intuit Yearly
-    const intuitYearly = {
-      id: "intuit-yearly-1",
-      type: "yearly",
-      title: '"Metamorphosis: The Year of Transformation"',
-      description:
-        "Document transformation through 12 themed chapters - one for each month. From personal growth to environmental change, from character evolution to artistic style development. Create a cohesive body of work that tells a story of change and emergence.",
-      icon: "👑",
-      tags: ["transformation", "growth", "evolution", "series"],
-      startDate: new Date(now.getFullYear(), 0, 1),
-      endDate: new Date(now.getFullYear(), 11, 31),
-      prize:
-        "Grand Master Badge + Featured Artist + Solo Exhibition + Design a Challenge",
-      prizeValue: 1000,
-      participants: 0,
-      submissions: 0,
-      status: "active",
-      isIntuit: true,
-      badge: "grand_master",
-      color: "#ff38e4",
-    };
-
-    // Intuit Monthly
-    const monthlyTheme = this.getCurrentMonthTheme();
-    const intuitMonthly = {
-      id: "intuit-monthly-1",
-      type: "monthly",
-      title: `"${monthlyTheme.title}"`,
-      description: monthlyTheme.description,
-      icon: "⭐",
-      tags: monthlyTheme.tags,
-      startDate: new Date(now.getFullYear(), now.getMonth(), 1),
-      endDate: new Date(now.getFullYear(), now.getMonth() + 1, 0),
-      prize: "Master Badge + Homepage Feature + Pick Next Monthly Theme",
-      prizeValue: 500,
-      participants: 0,
-      submissions: 0,
-      status: "active",
-      isIntuit: true,
-      badge: "monthly_master",
-      color: "#ff38e4",
-    };
-
-    // Intuit Weekly
-    const weeklyTheme = this.getCurrentWeekTheme();
-    const intuitWeeklyStart = new Date(now);
-    const daysUntilNextMonday = (7 - now.getDay() + 1) % 7 || 7;
-    intuitWeeklyStart.setDate(now.getDate() + daysUntilNextMonday);
-    intuitWeeklyStart.setHours(0, 0, 0, 0);
-
-    const intuitWeeklyEnd = new Date(intuitWeeklyStart);
-    intuitWeeklyEnd.setDate(intuitWeeklyEnd.getDate() + 6);
-    intuitWeeklyEnd.setHours(23, 59, 59, 0);
-
-    const intuitWeekly = {
-      id: "intuit-weekly-1",
-      type: "weekly",
-      title: `"${weeklyTheme.title}"`,
-      description: weeklyTheme.description,
-      icon: "✨",
-      tags: weeklyTheme.tags,
-      startDate: intuitWeeklyStart,
-      endDate: intuitWeeklyEnd,
-      prize: "Champion Badge + Social Media Feature + Pinned in Community",
-      prizeValue: 250,
-      participants: 0,
-      submissions: 0,
-      status: "active",
-      isIntuit: true,
-      badge: "weekly_winner",
-      color: "#ff38e4",
-    };
-
-    return [intuitYearly, intuitMonthly, intuitWeekly];
-  }
-
-  // ============================================ */
-  // HERO CONTROLS                               */
-  // ============================================ */
-  setupHeroControls() {
-    const layer1Upload = document.getElementById("layer1Upload");
-    const layer2Upload = document.getElementById("layer2Upload");
-
-    if (layer1Upload) {
-      layer1Upload.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          this.uploadHeroLayer(file, "layer1");
-        }
-      });
-    }
-
-    if (layer2Upload) {
-      layer2Upload.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          this.uploadHeroLayer(file, "layer2");
-        }
-      });
-    }
-  }
-
-  async uploadHeroLayer(file, layer) {
-    if (!this.isAdmin) {
-      this.showToast(
-        "You do not have permission to change the hero image.",
-        "error",
-      );
-      return;
-    }
-
-    const loading = document.getElementById("uploadLoading");
-    if (loading) {
-      loading.style.display = "block";
-      loading.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
-    }
-
-    try {
-      const storageRef = firebase.storage().ref();
-      const filePath = `hub-hero/${layer}/${Date.now()}_${file.name}`;
-      const uploadTask = storageRef.child(filePath).put(file);
-      const snapshot = await uploadTask;
-      const downloadURL = await snapshot.ref.getDownloadURL();
-
-      const container = document.getElementById(`${layer}Content`);
-      if (container) {
-        if (file.type.startsWith("video/")) {
-          container.innerHTML = `<video src="${downloadURL}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>`;
-        } else {
-          container.innerHTML = `<img src="${downloadURL}" alt="Hero background" style="width:100%;height:100%;object-fit:cover;">`;
-        }
-      }
-
-      await firebase
-        .firestore()
-        .collection("settings")
-        .doc("hubHero")
-        .set(
-          {
-            [`${layer}Url`]: downloadURL,
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            updatedBy: this.currentUser.uid,
-          },
-          { merge: true },
-        );
-
-      this.showToast("Hero image updated successfully! ✅");
-    } catch (error) {
-      console.error("Error uploading hero layer:", error);
-      this.showToast("Error uploading image. Please try again.", "error");
-    } finally {
-      if (loading) loading.style.display = "none";
-    }
-  }
-
-  // ============================================ */
-  // DAILY CHALLENGE                             */
-  // ============================================ */
-  loadDailyChallenge() {
-    const today = new Date();
-    const dayOfYear = Math.floor(
-      (today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24),
-    );
-    const promptIndex = dayOfYear % this.dailyPrompts.length;
-    const todayPrompt = this.dailyPrompts[promptIndex];
-
-    document.getElementById("daily-prompt-title").textContent =
-      todayPrompt.title;
-    document.getElementById("daily-prompt-description").textContent =
-      todayPrompt.description;
-    document.getElementById("challenge-date").textContent =
-      today.toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-
-    const tags = document.querySelectorAll("#daily-tags .challenge-tag");
-    todayPrompt.tags.forEach((tag, index) => {
-      if (tags[index]) {
-        tags[index].textContent = `#${tag}`;
-        tags[index].style.display = "inline-block";
-      }
-    });
-    for (let i = todayPrompt.tags.length; i < tags.length; i++) {
-      tags[i].style.display = "none";
-    }
-  }
-
+  // ============================================
+  // CHALLENGE STATS (real counts)
+  // ============================================
   async loadChallengeStats() {
+    const participantsEl = document.getElementById("daily-participants");
+    const submissionsEl = document.getElementById("daily-submissions");
+
+    if (!participantsEl && !submissionsEl) return;
+
     try {
-      const participantsSnapshot = await firebase
-        .firestore()
-        .collection("challengeParticipants")
-        .get();
-      const submissionsSnapshot = await firebase
-        .firestore()
-        .collection("submissions")
-        .where("type", "==", "challenge")
-        .get();
+      const dailyId = this.activeChallenges.daily?.id;
 
-      const participants = participantsSnapshot.size || 0;
-      const submissions = submissionsSnapshot.size || 0;
+      // Count participants for today's challenge
+      let participants = 0;
+      let submissions = 0;
 
-      document.getElementById("daily-participants").textContent =
-        participants > 0 ? participants : "0";
-      document.getElementById("daily-submissions").textContent =
-        submissions > 0 ? submissions : "0";
+      if (dailyId && !dailyId.startsWith("intuit-daily-fallback")) {
+        const participantsSnap = await this.db
+          .collection("userChallenges")
+          .where("challengeId", "==", dailyId)
+          .get();
+        participants = participantsSnap.size;
+
+        const submissionsSnap = await this.db
+          .collection("challengeSubmissions")
+          .where("challengeId", "==", dailyId)
+          .get();
+        submissions = submissionsSnap.size;
+      }
+
+      this.setStatValue(participantsEl, participants, "Be the first");
+      this.setStatValue(submissionsEl, submissions, "Be the first");
     } catch (error) {
       console.error("Error loading challenge stats:", error);
-      document.getElementById("daily-participants").textContent =
-        Math.floor(Math.random() * 100) + 50;
-      document.getElementById("daily-submissions").textContent =
-        Math.floor(Math.random() * 70) + 30;
+      if (participantsEl) participantsEl.textContent = "—";
+      if (submissionsEl) submissionsEl.textContent = "—";
     }
   }
 
-  // ============================================ */
-  // COMMUNITY STATS                             */
-  // ============================================ */
+  // ============================================
+  // COMMUNITY STATS (fixed — no phantom elements)
+  // ============================================
   async loadCommunityStats() {
     try {
-      const usersSnapshot = await firebase
-        .firestore()
-        .collection("users")
-        .get();
-      const artworksSnapshot = await firebase
-        .firestore()
-        .collection("artworks")
-        .where("status", "==", "published")
-        .get();
+      const [usersSnap, artworksSnap, submissionsSnap] = await Promise.all([
+        this.db.collection("users").get(),
+        this.db
+          .collection("artworks")
+          .where("status", "==", "published")
+          .get(),
+        this.db.collection("challengeSubmissions").get(),
+      ]);
 
-      document.getElementById("total-members").textContent =
-        usersSnapshot.size > 0 ? usersSnapshot.size : "0";
-      document.getElementById("total-artworks").textContent =
-        artworksSnapshot.size > 0 ? artworksSnapshot.size : "0";
-      document.getElementById("active-challenges").textContent = "3";
-      document.getElementById("trending-artworks").textContent = "12";
+      const userCount = usersSnap.size;
+      const artworkCount = artworksSnap.size;
+      const submissionCount = submissionsSnap.size;
 
-      document.getElementById("cta-members").textContent =
-        usersSnapshot.size > 0 ? usersSnapshot.size : "0";
-      document.getElementById("cta-artworks").textContent =
-        artworksSnapshot.size > 0 ? artworksSnapshot.size : "0";
-      document.getElementById("cta-submissions").textContent =
-        Math.floor(Math.random() * 500) + 200;
+      // Total members / artworks
+      this.setCountEl("total-members", userCount);
+      this.setCountEl("total-artworks", artworkCount);
+
+      // CTA stats
+      this.setCountEl("cta-members", userCount);
+      this.setCountEl("cta-artworks", artworkCount);
+      this.setCountEl("cta-submissions", submissionCount);
+
+            // Hero live stats
+      this.setCountEl("heroStatArtists", userCount);
+      this.setCountEl("heroStatArtworks", artworkCount);
+      // Active challenges count
+      const challengesSnap = await this.db
+        .collection("challenges")
+        .where("status", "==", "active")
+        .get();
+      this.setCountEl("heroStatChallenges", challengesSnap.size);
+
+      console.log(
+        `📊 Community stats: ${userCount} users, ${artworkCount} artworks, ${submissionCount} submissions`,
+      );
     } catch (error) {
       console.error("Error loading community stats:", error);
+      // Silent failure — the numbers just stay as their initial values
     }
   }
 
-  // ============================================ */
-  // RECENT ACTIVITY                             */
-  // ============================================ */
+  setCountEl(id, count) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = this.formatCount(count);
+  }
+
+  setStatValue(el, count, emptyText) {
+    if (!el) return;
+    if (count === 0) {
+      el.textContent = emptyText;
+      el.style.fontSize = "0.9rem";
+      el.style.opacity = "0.7";
+    } else {
+      el.textContent = count;
+    }
+  }
+
+  formatCount(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+    return String(n);
+  }
+
+  // ============================================
+  // RECENT ACTIVITY
+  // ============================================
   async loadRecentActivity() {
     const grid = document.getElementById("activity-grid");
     if (!grid) return;
 
     try {
-      const snapshot = await firebase
-        .firestore()
+      const snapshot = await this.db
         .collection("artworks")
         .where("status", "==", "published")
         .orderBy("createdAt", "desc")
-        .limit(6)
+        .limit(5)
         .get();
 
       if (snapshot.empty) {
-        grid.innerHTML = this.getEmptyActivityHTML();
+        grid.innerHTML = this.emptyState(
+          "fas fa-clock",
+          "No activity yet — be the first to upload!",
+        );
         return;
       }
 
@@ -991,20 +598,20 @@ class CommunityHub {
 
       grid.innerHTML = activities
         .map(
-          (activity) => `
-        <div class="activity-item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${activity.id}'">
-          <div class="activity-image" style="background-image: url('${activity.imageUrl || ""}'); background-size: cover; background-position: center;">
-            ${!activity.imageUrl ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.8rem;">No image</div>' : ""}
+          (a) => `
+        <div class="activity-item" onclick="window.location.href='/pages/community/artwork-detail.html?id=${a.id}'">
+          <div class="activity-image" style="background-image: url('${a.imageUrl || ""}'); background-size: cover; background-position: center;">
+            ${!a.imageUrl ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.8rem;">No image</div>' : ""}
           </div>
           <div class="activity-content">
             <div class="activity-meta">
               <div class="activity-user">
-                <div class="user-avatar">${activity.artistName.charAt(0).toUpperCase()}</div>
-                ${activity.artistName}
+                <div class="user-avatar">${a.artistName.charAt(0).toUpperCase()}</div>
+                ${this.escapeHtml(a.artistName)}
               </div>
-              <span>${this.formatTimeAgo(activity.createdAt)}</span>
+              <span>${this.formatTimeAgo(a.createdAt)}</span>
             </div>
-            <div class="activity-title">${this.escapeHtml(activity.title)}</div>
+            <div class="activity-title">${this.escapeHtml(a.title)}</div>
             <div class="activity-desc">New artwork uploaded to the gallery</div>
           </div>
         </div>
@@ -1013,45 +620,36 @@ class CommunityHub {
         .join("");
     } catch (error) {
       console.error("Error loading recent activity:", error);
-      grid.innerHTML = this.getEmptyActivityHTML();
+      grid.innerHTML = this.emptyState(
+        "fas fa-exclamation-triangle",
+        "Could not load activity right now.",
+      );
     }
   }
 
-  getEmptyActivityHTML() {
-    return `
-      <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
-        <i class="fas fa-clock" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3;"></i>
-        <p>No recent activity yet. Be the first to upload!</p>
-      </div>
-    `;
-  }
-
-  // ============================================ */
-  // FEATURED ARTWORKS - FIXED NO INDEX         */
-  // ============================================ */
+  // ============================================
+  // FEATURED ARTWORKS (efficient query)
+  // ============================================
   async loadFeaturedArtworks() {
     const grid = document.getElementById("featured-artworks-grid");
     if (!grid) return;
 
     try {
-      // First get all published artworks
-      const snapshot = await firebase
-        .firestore()
+      const snapshot = await this.db
         .collection("artworks")
         .where("status", "==", "published")
+        .orderBy("likes", "desc")
+        .limit(6)
         .get();
 
       if (snapshot.empty) {
-        grid.innerHTML = `
-        <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
-          <i class="fas fa-image" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3;"></i>
-          <p>No featured artworks yet.</p>
-        </div>
-      `;
+        grid.innerHTML = this.emptyState(
+          "fas fa-image",
+          "No featured artworks yet — be the first to upload!",
+        );
         return;
       }
 
-      // Sort in memory instead of using orderBy (avoids index requirement)
       const artworks = [];
       snapshot.forEach((doc) => {
         const data = doc.data();
@@ -1062,85 +660,135 @@ class CommunityHub {
           imageUrl: data.imageUrl,
           likes: data.likes || 0,
           cheers: data.cheers || 0,
-          createdAt: data.createdAt,
         });
       });
 
-      // Sort by likes (most liked first)
-      artworks.sort((a, b) => b.likes - a.likes);
-      const topArtworks = artworks.slice(0, 6);
-
-      grid.innerHTML = topArtworks
+      grid.innerHTML = artworks
         .map(
           (art) => `
-      <div class="artwork-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
-        <div class="artwork-image" style="background-image: url('${art.imageUrl || ""}'); background-size: cover; background-position: center;">
-          ${!art.imageUrl ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.7rem;">No image</div>' : ""}
-        </div>
-        <div class="artwork-info">
-          <div class="artwork-title">${this.escapeHtml(art.title)}</div>
-          <div class="artwork-artist">${this.escapeHtml(art.artistName)}</div>
-          <div class="artwork-stats">
-            <span><i class="fas fa-heart" style="color:#ef4444;"></i> ${art.likes}</span>
-            <span><i class="fas fa-glass-cheers" style="color:#f59e0b;"></i> ${art.cheers}</span>
+        <div class="artwork-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${art.id}'">
+          <div class="artwork-image" style="background-image: url('${art.imageUrl || ""}'); background-size: cover; background-position: center;">
+            ${!art.imageUrl ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:0.7rem;">No image</div>' : ""}
+          </div>
+          <div class="artwork-info">
+            <div class="artwork-title">${this.escapeHtml(art.title)}</div>
+            <div class="artwork-artist">${this.escapeHtml(art.artistName)}</div>
+            <div class="artwork-stats">
+              <span><i class="fas fa-heart" style="color:#ef4444;"></i> ${art.likes}</span>
+              <span><i class="fas fa-glass-cheers" style="color:#f59e0b;"></i> ${art.cheers}</span>
+            </div>
           </div>
         </div>
-      </div>
-    `,
+      `,
         )
         .join("");
     } catch (error) {
       console.error("Error loading featured artworks:", error);
-      grid.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
-        <p>Error loading artworks. Please refresh.</p>
-      </div>
-    `;
+      grid.innerHTML = this.emptyState(
+        "fas fa-exclamation-triangle",
+        "Could not load artworks right now.",
+      );
     }
   }
-  // ============================================ */
-  // FEATURED ARTISTS - FIXED                    */
-  // ============================================ */
+
+    // ============================================
+  // FEATURED TUTORIALS (reads from tutorialData)
+  // ============================================
+  async loadFeaturedTutorials() {
+    const grid = document.getElementById("featured-tutorials-grid");
+    if (!grid) return;
+
+    try {
+      // Wait up to 2s for tutorialData to be available
+      let waited = 0;
+      while (!window.tutorialData && waited < 2000) {
+        await new Promise((r) => setTimeout(r, 100));
+        waited += 100;
+      }
+
+      if (!window.tutorialData) {
+        grid.innerHTML = this.emptyState(
+          "fas fa-graduation-cap",
+          "Tutorials coming soon — check back!",
+        );
+        return;
+      }
+
+      const tutorials = window.tutorialData.getFeaturedTutorials(3);
+
+      if (!tutorials || tutorials.length === 0) {
+        grid.innerHTML = this.emptyState(
+          "fas fa-graduation-cap",
+          "No featured tutorials yet.",
+        );
+        return;
+      }
+
+      grid.innerHTML = tutorials
+        .map((t) => {
+          const diff = (t.difficulty || "beginner").toLowerCase();
+          const imgStyle = t.image
+            ? `background-image: url('${t.image}');`
+            : "";
+          const placeholder = t.image
+            ? ""
+            : `<i class="fas fa-graduation-cap"></i>`;
+
+          return `
+          <div class="tutorial-card" onclick="window.location.href='${t.file || "/pages/tutorials/tutorials.html"}'">
+            <div class="tutorial-image" style="${imgStyle}">
+              ${placeholder}
+            </div>
+            <div class="tutorial-info">
+              <span class="tutorial-difficulty ${diff}">${diff}</span>
+              <h3 class="tutorial-title">${this.escapeHtml(t.title)}</h3>
+              <div class="tutorial-meta">
+                <span><i class="fas fa-clock"></i> ${t.duration || 20} min</span>
+                <span class="tutorial-read">Read Tutorial →</span>
+              </div>
+            </div>
+          </div>
+        `;
+        })
+        .join("");
+    } catch (error) {
+      console.error("Error loading featured tutorials:", error);
+      grid.innerHTML = this.emptyState(
+        "fas fa-exclamation-triangle",
+        "Could not load tutorials right now.",
+      );
+    }
+  }
+
+  // ============================================
+  // FEATURED ARTISTS
+  // ============================================
   async loadFeaturedArtists() {
     const grid = document.getElementById("featured-artists-grid");
     if (!grid) return;
 
     try {
-      const usersSnapshot = await firebase
-        .firestore()
-        .collection("users")
-        .get();
-
-      // Get all artworks to count per user
-      const artworksSnapshot = await firebase
-        .firestore()
+      const usersSnap = await this.db.collection("users").get();
+      const artworksSnap = await this.db
         .collection("artworks")
         .where("status", "==", "published")
         .get();
 
-      // Count artworks per user
       const artworkCounts = {};
-      artworksSnapshot.forEach((doc) => {
+      artworksSnap.forEach((doc) => {
         const data = doc.data();
         const uid = data.userId || data.uid || data.artistId;
-        if (uid) {
-          artworkCounts[uid] = (artworkCounts[uid] || 0) + 1;
-        }
+        if (uid) artworkCounts[uid] = (artworkCounts[uid] || 0) + 1;
       });
 
-      // Get followers count from users
       const users = [];
-      usersSnapshot.forEach((doc) => {
+      usersSnap.forEach((doc) => {
         const data = doc.data();
         const uid = doc.id;
-        // Count followers - if followers is an array or subcollection
         let followerCount = 0;
         if (data.followers) {
-          if (Array.isArray(data.followers)) {
-            followerCount = data.followers.length;
-          } else if (typeof data.followers === "number") {
-            followerCount = data.followers;
-          }
+          if (Array.isArray(data.followers)) followerCount = data.followers.length;
+          else if (typeof data.followers === "number") followerCount = data.followers;
         }
 
         users.push({
@@ -1149,56 +797,37 @@ class CommunityHub {
           username: data.username || "artist",
           artworks: artworkCounts[uid] || 0,
           followers: followerCount,
-          likes: data.totalLikes || 0,
           avatarUrl: data.profilePicture || data.photoURL || null,
-          bio: data.bio || "",
         });
       });
 
-      // Sort by artworks count (most active first)
       users.sort((a, b) => b.artworks - a.artworks);
-      const topUsers = users.slice(0, 6);
+      const top = users.slice(0, 6);
 
-      if (topUsers.length === 0) {
-        grid.innerHTML = `
-          <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
-            <i class="fas fa-users" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3;"></i>
-            <p>No featured artists yet.</p>
-          </div>
-        `;
+      if (top.length === 0) {
+        grid.innerHTML = this.emptyState(
+          "fas fa-users",
+          "No featured artists yet.",
+        );
         return;
       }
 
-      grid.innerHTML = topUsers
+      grid.innerHTML = top
         .map(
-          (user) => `
-        <div class="artist-card" onclick="window.location.href='/pages/community/profiles.html?user=${user.id}'">
+          (u) => `
+        <div class="artist-card" onclick="window.location.href='/pages/community/profiles.html?user=${u.id}'">
           <div class="artist-cover">
-            ${
-              user.avatarUrl
-                ? `<img src="${user.avatarUrl}" alt="${user.fullname}">`
-                : `<div style="font-size:4rem;opacity:0.3;">🎨</div>`
-            }
+            ${u.avatarUrl ? `<img src="${u.avatarUrl}" alt="${this.escapeHtml(u.fullname)}">` : `<div style="font-size:4rem;opacity:0.3;">🎨</div>`}
             <div class="artist-avatar-overlay">
-              ${
-                user.avatarUrl
-                  ? `<img src="${user.avatarUrl}" alt="${user.fullname}">`
-                  : user.fullname.charAt(0).toUpperCase()
-              }
+              ${u.avatarUrl ? `<img src="${u.avatarUrl}" alt="${this.escapeHtml(u.fullname)}">` : this.escapeHtml(u.fullname.charAt(0).toUpperCase())}
             </div>
           </div>
           <div class="artist-info">
-            <div class="artist-name">${this.escapeHtml(user.fullname)}</div>
-            <div class="artist-specialty">@${user.username}</div>
+            <div class="artist-name">${this.escapeHtml(u.fullname)}</div>
+            <div class="artist-specialty">@${this.escapeHtml(u.username)}</div>
             <div class="artist-stats">
-              <div class="stat">
-                <span class="number">${user.artworks}</span>
-                <span class="label">Artworks</span>
-              </div>
-              <div class="stat">
-                <span class="number">${user.followers}</span>
-                <span class="label">Followers</span>
-              </div>
+              <div class="stat"><span class="number">${u.artworks}</span><span class="label">Artworks</span></div>
+              <div class="stat"><span class="number">${u.followers}</span><span class="label">Followers</span></div>
             </div>
           </div>
         </div>
@@ -1207,120 +836,86 @@ class CommunityHub {
         .join("");
     } catch (error) {
       console.error("Error loading featured artists:", error);
-      grid.innerHTML = `
-        <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
-          <p>Error loading artists. Please refresh.</p>
-        </div>
-      `;
+      grid.innerHTML = this.emptyState(
+        "fas fa-exclamation-triangle",
+        "Could not load artists right now.",
+      );
     }
   }
 
-  // ============================================ */
-  // TOP CREATORS - FIXED LEADERBOARD            */
-  // ============================================ */
+  // ============================================
+  // TOP CREATORS
+  // ============================================
   async loadTopCreators() {
     const grid = document.getElementById("creators-grid");
     if (!grid) return;
 
     try {
-      const usersSnapshot = await firebase
-        .firestore()
-        .collection("users")
-        .get();
+      const [usersSnap, artworksSnap] = await Promise.all([
+        this.db.collection("users").get(),
+        this.db.collection("artworks").where("status", "==", "published").get(),
+      ]);
 
-      // Get all artworks to count per user
-      const artworksSnapshot = await firebase
-        .firestore()
-        .collection("artworks")
-        .where("status", "==", "published")
-        .get();
-
-      // Count artworks per user
       const artworkCounts = {};
-      artworksSnapshot.forEach((doc) => {
+      artworksSnap.forEach((doc) => {
         const data = doc.data();
         const uid = data.userId || data.uid || data.artistId;
-        if (uid) {
-          artworkCounts[uid] = (artworkCounts[uid] || 0) + 1;
-        }
+        if (uid) artworkCounts[uid] = (artworkCounts[uid] || 0) + 1;
       });
 
       const users = [];
-      usersSnapshot.forEach((doc) => {
+      usersSnap.forEach((doc) => {
         const data = doc.data();
         const uid = doc.id;
-
-        // Count followers
         let followerCount = 0;
-        if (data.followers) {
-          if (Array.isArray(data.followers)) {
-            followerCount = data.followers.length;
-          } else if (typeof data.followers === "number") {
-            followerCount = data.followers;
-          }
-        }
+        if (Array.isArray(data.followers)) followerCount = data.followers.length;
+        else if (typeof data.followers === "number") followerCount = data.followers;
 
         const artworks = artworkCounts[uid] || 0;
         const likes = data.totalLikes || 0;
-        // Calculate points: 10 points per artwork, 2 per follower, 0.5 per like
-        const points = Math.round(
-          artworks * 10 + followerCount * 2 + likes * 0.5,
-        );
+        const points = Math.round(artworks * 10 + followerCount * 2 + likes * 0.5);
 
         users.push({
           id: uid,
           fullname: data.fullname || data.displayName || "Artist",
-          username: data.username || "artist",
-          artworks: artworks,
+          artworks,
           followers: followerCount,
-          likes: likes,
-          points: points,
+          points,
           avatarUrl: data.profilePicture || data.photoURL || null,
         });
       });
 
-      // Sort by points (highest first)
       users.sort((a, b) => b.points - a.points);
-      const topUsers = users.slice(0, 10);
+      const top = users.slice(0, 10);
 
-      if (topUsers.length === 0) {
-        grid.innerHTML = `
-          <div style="text-align:center;padding:2rem;color:var(--text-muted);">
-            <p>No top creators yet. Be the first!</p>
-          </div>
-        `;
+      if (top.length === 0) {
+        grid.innerHTML = this.emptyState("fas fa-crown", "No creators yet.");
         return;
       }
 
       const rankClasses = ["gold", "silver", "bronze"];
 
-      grid.innerHTML = topUsers
-        .map((user, index) => {
-          const rank = index + 1;
-          const rankClass = rank <= 3 ? rankClasses[index] : "normal";
+      grid.innerHTML = top
+        .map((u, i) => {
+          const rank = i + 1;
+          const rankClass = rank <= 3 ? rankClasses[i] : "normal";
           const medal =
-            rank === 1
-              ? "🥇"
-              : rank === 2
-                ? "🥈"
-                : rank === 3
-                  ? "🥉"
-                  : `#${rank}`;
+            rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
 
           return `
-          <div class="creator-card" onclick="window.location.href='/pages/community/profiles.html?user=${user.id}'">
+          <div class="creator-card" onclick="window.location.href='/pages/community/profiles.html?user=${u.id}'">
             <div class="creator-rank ${rankClass}">${medal}</div>
-            <div class="creator-avatar" style="background-image: url('${user.avatarUrl || ""}'); background-size: cover; background-position: center;">
-              ${!user.avatarUrl ? user.fullname.charAt(0).toUpperCase() : ""}
+            <div class="creator-avatar" style="background-image: url('${u.avatarUrl || ""}'); background-size: cover; background-position: center;">
+              ${!u.avatarUrl ? this.escapeHtml(u.fullname.charAt(0).toUpperCase()) : ""}
             </div>
             <div class="creator-info">
-              <div class="creator-name">${this.escapeHtml(user.fullname)}</div>
+              <div class="creator-name">${this.escapeHtml(u.fullname)}</div>
               <div class="creator-stats">
-                <span><i class="fas fa-palette"></i> ${user.artworks} artworks</span>
-                <span><i class="fas fa-users"></i> ${user.followers} followers</span>
+                <span><i class="fas fa-palette"></i> ${u.artworks} artworks</span>
+                <span><i class="fas fa-users"></i> ${u.followers} followers</span>
               </div>
             </div>
-            <div class="creator-points">${user.points} pts</div>
+            <div class="creator-points">${u.points} pts</div>
             ${rank <= 3 ? `<div class="creator-badge">${rank === 1 ? "🏆 Top Creator" : rank === 2 ? "🥈 Silver" : "🥉 Bronze"}</div>` : ""}
           </div>
         `;
@@ -1328,67 +923,62 @@ class CommunityHub {
         .join("");
     } catch (error) {
       console.error("Error loading top creators:", error);
-      grid.innerHTML = `
-        <div style="text-align:center;padding:2rem;color:var(--text-muted);">
-          <p>Error loading top creators. Please refresh.</p>
-        </div>
-      `;
+      grid.innerHTML = this.emptyState(
+        "fas fa-exclamation-triangle",
+        "Could not load leaderboard right now.",
+      );
     }
   }
 
-  // ============================================ */
-  // WINNERS CAROUSEL                           */
-  // ============================================ */
+  // ============================================
+  // WINNERS CAROUSEL — 3D ring, #1 special
+  // ============================================
   async loadWinners() {
     const container = document.getElementById("winners-carousel");
     if (!container) return;
 
     try {
-      const snapshot = await firebase
-        .firestore()
+      const snapshot = await this.db
         .collection("challengeWinners")
         .orderBy("createdAt", "desc")
         .limit(10)
         .get();
 
+      let winners = [];
       if (snapshot.empty) {
-        const placeholders = Array(10)
-          .fill(null)
-          .map((_, i) => ({
-            id: `placeholder-${i}`,
-            rank: i + 1,
-            name: `Winner ${i + 1}`,
-            imageUrl: null,
-            artworkId: null,
-          }));
-        this.renderWinnersCarousel(placeholders);
-        return;
-      }
-
-      const winners = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        winners.push({
-          id: doc.id,
-          rank: data.rank || winners.length + 1,
-          name: data.artistName || "Artist",
-          imageUrl: data.imageUrl,
-          artworkId: data.artworkId,
-        });
-      });
-
-      this.renderWinnersCarousel(winners);
-    } catch (error) {
-      console.error("Error loading winners:", error);
-      const placeholders = Array(10)
-        .fill(null)
-        .map((_, i) => ({
+        winners = Array.from({ length: 10 }, (_, i) => ({
           id: `placeholder-${i}`,
           rank: i + 1,
           name: `Winner ${i + 1}`,
           imageUrl: null,
           artworkId: null,
         }));
+      } else {
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          winners.push({
+            id: doc.id,
+            rank: data.rank || winners.length + 1,
+            name: data.winnerUserName || data.artistName || "Artist",
+            imageUrl: data.imageUrl,
+            artworkId: data.artworkId,
+          });
+        });
+      }
+
+      // Sort so #1 comes first, then by rank
+      winners.sort((a, b) => a.rank - b.rank);
+      this.renderWinnersCarousel(winners);
+    } catch (error) {
+      console.error("Error loading winners:", error);
+      // Fallback: render empty placeholders
+      const placeholders = Array.from({ length: 10 }, (_, i) => ({
+        id: `placeholder-${i}`,
+        rank: i + 1,
+        name: `Winner ${i + 1}`,
+        imageUrl: null,
+        artworkId: null,
+      }));
       this.renderWinnersCarousel(placeholders);
     }
   }
@@ -1397,53 +987,86 @@ class CommunityHub {
     const container = document.getElementById("winners-carousel");
     if (!container) return;
 
+    const count = winners.length;
+    const anglePerCard = 360 / count;
+
     container.innerHTML = winners
-      .map(
-        (winner, index) => `
-      <div class="winner-item" style="--position: ${index + 1}">
-        <div class="winner-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${winner.artworkId || "#"}'">
-          ${
-            winner.imageUrl
-              ? `<img src="${winner.imageUrl}" alt="${winner.name}">`
-              : `<div class="winner-placeholder">
-              <div class="placeholder-icon">🏆</div>
-              <div class="placeholder-rank">#${winner.rank}</div>
-              <div class="placeholder-text">${winner.name}</div>
-            </div>`
-          }
-          <div class="winner-overlay">
-            <div class="winner-rank">#${winner.rank} Winner</div>
-            <div class="winner-name">${this.escapeHtml(winner.name)}</div>
+      .map((w, i) => {
+        const isFirst = w.rank === 1;
+        const position = i + 1; // 1-based for CSS
+
+        return `
+          <div class="winner-item ${isFirst ? "first-place" : ""}" style="--position: ${position}; --angle: ${anglePerCard}deg;">
+            ${isFirst ? '<div class="winner-crown">👑</div>' : ""}
+            <div class="winner-card" onclick="window.location.href='/pages/community/artwork-detail.html?id=${w.artworkId || "#"}'">
+              ${
+                w.imageUrl
+                  ? `<img src="${w.imageUrl}" alt="${this.escapeHtml(w.name)}">`
+                  : `<div class="winner-placeholder">
+                    <div class="placeholder-icon">${isFirst ? "🏆" : "🏅"}</div>
+                    <div class="placeholder-rank">#${w.rank}</div>
+                    <div class="placeholder-text">${this.escapeHtml(w.name)}</div>
+                  </div>`
+              }
+              <div class="winner-overlay">
+                <div class="winner-rank">#${w.rank} Winner</div>
+                <div class="winner-name">${this.escapeHtml(w.name)}</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    `,
-      )
+        `;
+      })
       .join("");
+
+    // Fixed banner below carousel showing #1 details
+    const first = winners.find((w) => w.rank === 1) || winners[0];
+    if (first) {
+      let banner = document.getElementById("winners-featured-banner");
+      if (!banner) {
+        banner = document.createElement("div");
+        banner.id = "winners-featured-banner";
+        banner.className = "winners-featured-banner";
+        const hallSection = container.closest(".zone-hall") || container.parentElement;
+        hallSection.appendChild(banner);
+
+      }
+      banner.innerHTML = `
+        <div class="featured-crown">👑</div>
+        <div class="featured-info">
+          <div class="featured-label">Reigning Champion</div>
+          <div class="featured-name">${this.escapeHtml(first.name)}</div>
+          <a href="/pages/community/artwork-detail.html?id=${first.artworkId || "#"}" class="featured-link">
+            Click to view winning piece →
+          </a>
+        </div>
+      `;
+    }
   }
 
-  // ============================================ */
-  // BULLETIN BOARD - WITH EXPAND                 */
-  // ============================================ */
+  // ============================================
+  // BULLETIN SLIDER
+  // ============================================
   async loadBulletinPosts() {
-    const grid = document.getElementById("bulletin-grid");
-    if (!grid) return;
+    const slider = document.getElementById("bulletin-slider");
+    const dotsContainer = document.getElementById("bulletinDots");
+    if (!slider) return;
 
     try {
-      const snapshot = await firebase
-        .firestore()
+      const snapshot = await this.db
         .collection("bulletinPosts")
         .orderBy("createdAt", "desc")
-        .limit(6)
+        .limit(8)
         .get();
 
       if (snapshot.empty) {
-        grid.innerHTML = `
-        <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
-          <i class="fas fa-newspaper" style="font-size:2rem;display:block;margin-bottom:0.5rem;opacity:0.3;"></i>
-          <p>No announcements yet. Check back soon!</p>
-        </div>
-      `;
+        slider.innerHTML = `
+          <div class="bulletin-slide-empty">
+            <i class="fas fa-newspaper"></i>
+            <p>No announcements yet — check back soon!</p>
+          </div>
+        `;
+        if (dotsContainer) dotsContainer.innerHTML = "";
+        this.attachBulletinSliderHandlers(0);
         return;
       }
 
@@ -1455,476 +1078,669 @@ class CommunityHub {
           title: data.title || "Untitled",
           content: data.content || "",
           link: data.link || "",
+          imageUrl: data.imageUrl || "",
           createdAt: data.createdAt,
-          author: data.author || "Admin",
         });
       });
 
-      grid.innerHTML = posts
-        .map((post, index) => {
-          const isLong = post.content.length > 150;
-          const shortContent = post.content.substring(0, 150);
-          const expandId = `expand-${post.id}-${index}`;
-
-          return `
-        <div class="bulletin-post" id="post-${post.id}">
-          <div class="post-date">${this.formatTimeAgo(post.createdAt)}</div>
-          <div class="post-title">${this.escapeHtml(post.title)}</div>
-          <div class="post-content-wrapper">
-            <div class="post-excerpt" id="${expandId}-short">
-              ${this.escapeHtml(shortContent)}${isLong ? "..." : ""}
-            </div>
-            ${
-              isLong
-                ? `
-              <div class="post-excerpt-full" id="${expandId}-full" style="display:none;">
-                ${this.escapeHtml(post.content)}
-              </div>
-              <button class="post-expand-btn" data-target="${expandId}">
-                <span class="btn-text">Read More</span>
-                <i class="fas fa-chevron-down"></i>
-              </button>
-            `
-                : ""
-            }
-          </div>
-          ${post.link ? `<a href="${post.link}" class="post-link" target="_blank">Visit Link <i class="fas fa-external-link-alt"></i></a>` : ""}
-        </div>
-      `;
-        })
+      slider.innerHTML = posts
+        .map((post, i) => this.buildBulletinSlide(post, i))
         .join("");
 
-      // Add event listeners for all expand buttons
-      document.querySelectorAll(".post-expand-btn").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const targetId = btn.dataset.target;
-          const shortEl = document.getElementById(`${targetId}-short`);
-          const fullEl = document.getElementById(`${targetId}-full`);
-          const btnText = btn.querySelector(".btn-text");
-          const icon = btn.querySelector("i");
+      if (dotsContainer) {
+        dotsContainer.innerHTML = posts
+          .map(
+            (_, i) =>
+              `<button class="dot ${i === 0 ? "active" : ""}" data-index="${i}" aria-label="Go to slide ${i + 1}"></button>`,
+          )
+          .join("");
+      }
 
-          if (shortEl && fullEl) {
-            const isExpanded = fullEl.style.display === "block";
-
-            if (isExpanded) {
-              // Collapse
-              fullEl.style.display = "none";
-              shortEl.style.display = "block";
-              btnText.textContent = "Read More";
-              icon.className = "fas fa-chevron-down";
-              btn.classList.remove("expanded");
-            } else {
-              // Expand
-              fullEl.style.display = "block";
-              shortEl.style.display = "none";
-              btnText.textContent = "Show Less";
-              icon.className = "fas fa-chevron-up";
-              btn.classList.add("expanded");
-            }
-          }
-        });
-      });
+      this.attachBulletinSliderHandlers(posts.length);
     } catch (error) {
       console.error("Error loading bulletin posts:", error);
-      grid.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted);">
-        <p>Error loading announcements. Please refresh.</p>
-      </div>
-    `;
+      slider.innerHTML = `
+        <div class="bulletin-slide-empty">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Could not load announcements right now.</p>
+        </div>
+      `;
+      if (dotsContainer) dotsContainer.innerHTML = "";
     }
   }
-  // ============================================ */
-  // SUGGESTION BOX                              */
-  // ============================================ */
+
+  buildBulletinSlide(post, index) {
+    const excerpt =
+      post.content.length > 260
+        ? post.content.substring(0, 260) + "…"
+        : post.content;
+
+    const imageBlock = post.imageUrl
+      ? `<img src="${post.imageUrl}" alt="" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\\'bulletin-image-placeholder\\'><i class=\\'fas fa-newspaper\\'></i><span>Announcement</span></div>'">`
+      : `<div class="bulletin-image-placeholder">
+           <i class="fas fa-newspaper"></i>
+           <span>Announcement</span>
+         </div>`;
+
+    return `
+      <div class="bulletin-slide" data-index="${index}">
+        <div class="bulletin-slide-image">
+          ${imageBlock}
+        </div>
+        <div class="bulletin-slide-content">
+          <span class="bulletin-tag">✦ ${this.formatTimeAgo(post.createdAt)}</span>
+          <h3>${this.escapeHtml(post.title)}</h3>
+          <p>${this.escapeHtml(excerpt)}</p>
+          ${
+            post.link
+              ? `<a href="${post.link}" target="_blank" rel="noopener" class="bulletin-slide-link">
+                   Read More <i class="fas fa-arrow-right"></i>
+                 </a>`
+              : ""
+          }
+        </div>
+      </div>
+    `;
+  }
+
+  attachBulletinSliderHandlers(totalSlides) {
+    const slider = document.getElementById("bulletin-slider");
+    const dots = document.querySelectorAll("#bulletinDots .dot");
+    const prevBtn = document.getElementById("bulletinPrevBtn");
+    const nextBtn = document.getElementById("bulletinNextBtn");
+    const container = document.getElementById("bulletin-slider-container");
+
+    if (!slider || totalSlides === 0) return;
+
+    // Clear any previous interval
+    if (this.bulletinInterval) {
+      clearInterval(this.bulletinInterval);
+      this.bulletinInterval = null;
+    }
+
+    const goTo = (index) => {
+      if (index < 0) index = totalSlides - 1;
+      if (index >= totalSlides) index = 0;
+      this.bulletinCurrentSlide = index;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle("active", i === index));
+    };
+
+    this.bulletinCurrentSlide = 0;
+
+    // Replace buttons to kill old listeners
+    if (prevBtn) {
+      const newPrev = prevBtn.cloneNode(true);
+      prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+      newPrev.addEventListener("click", () =>
+        goTo(this.bulletinCurrentSlide - 1),
+      );
+    }
+    if (nextBtn) {
+      const newNext = nextBtn.cloneNode(true);
+      nextBtn.parentNode.replaceChild(newNext, nextBtn);
+      newNext.addEventListener("click", () =>
+        goTo(this.bulletinCurrentSlide + 1),
+      );
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () =>
+        goTo(parseInt(dot.dataset.index, 10)),
+      );
+    });
+
+    // Auto-advance
+    if (totalSlides > 1) {
+      this.bulletinInterval = setInterval(() => {
+        goTo(this.bulletinCurrentSlide + 1);
+      }, 8000);
+    }
+
+    // Pause on hover
+    if (container) {
+      container.addEventListener("mouseenter", () => {
+        if (this.bulletinInterval) {
+          clearInterval(this.bulletinInterval);
+          this.bulletinInterval = null;
+        }
+      });
+      container.addEventListener("mouseleave", () => {
+        if (this.bulletinInterval) clearInterval(this.bulletinInterval);
+        if (totalSlides > 1) {
+          this.bulletinInterval = setInterval(() => {
+            goTo(this.bulletinCurrentSlide + 1);
+          }, 8000);
+        }
+      });
+    }
+  }
+
+   // ============================================
+  // BULLETIN ADMIN — with image upload
+  // ============================================
+  setupBulletinToggle() {
+    const area = document.querySelector(".bulletin-admin-area");
+    const toggleBtn = document.getElementById("bulletinToggle");
+    const adminPanel = document.getElementById("bulletinAdmin");
+    const submitBtn = document.getElementById("submit-bulletin-post");
+
+    if (!area || !toggleBtn || !adminPanel) return;
+
+    // Show/hide the admin area based on admin status
+    if (this.isAdmin) {
+      area.classList.add("admin-visible");
+    } else {
+      area.classList.remove("admin-visible");
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      if (!this.isAdmin) {
+        this.showToast("Admins only.", "error");
+        return;
+      }
+      const visible = adminPanel.classList.contains("visible");
+      if (visible) {
+        adminPanel.classList.remove("visible");
+        toggleBtn.textContent = "📝 Add Announcement";
+      } else {
+        adminPanel.classList.add("visible");
+        toggleBtn.textContent = "✖ Close";
+      }
+    });
+
+    if (submitBtn) {
+      submitBtn.addEventListener("click", () => this.submitBulletinPost());
+    }
+
+    // Wire up image picker
+    this.setupBulletinImageUpload();
+  }
+
+  setupBulletinImageUpload() {
+    const drop = document.getElementById("bulletinImageDrop");
+    const fileInput = document.getElementById("bulletin-image-input");
+    const emptyState = document.getElementById("bulletinImageEmpty");
+    const preview = document.getElementById("bulletinImagePreview");
+    const thumb = document.getElementById("bulletinImageThumb");
+    const removeBtn = document.getElementById("bulletinImageRemove");
+
+    if (!drop || !fileInput) return;
+
+    // Reset state on load
+    this.bulletinImageFile = null;
+
+    const clearImage = () => {
+      this.bulletinImageFile = null;
+      fileInput.value = "";
+      if (thumb) thumb.src = "";
+      if (preview) preview.style.display = "none";
+      if (emptyState) emptyState.style.display = "flex";
+      drop.classList.remove("dragover");
+    };
+
+    const acceptFile = (file) => {
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        this.setBulletinStatus("Please select an image file.", "error");
+        return;
+      }
+      if (file.size > 15 * 1024 * 1024) {
+        this.setBulletinStatus("Image must be under 15MB.", "error");
+        return;
+      }
+      this.bulletinImageFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (thumb) thumb.src = e.target.result;
+        if (preview) preview.style.display = "flex";
+        if (emptyState) emptyState.style.display = "none";
+        this.setBulletinStatus("");
+      };
+      reader.readAsDataURL(file);
+    };
+
+    // Click to open file picker
+    drop.addEventListener("click", (e) => {
+      // Don't trigger picker if clicking remove button
+      if (e.target.closest("#bulletinImageRemove")) return;
+      fileInput.click();
+    });
+
+    // File input change
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files[0]) {
+        acceptFile(e.target.files[0]);
+      }
+    });
+
+    // Drag and drop
+    drop.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      drop.classList.add("dragover");
+    });
+    drop.addEventListener("dragleave", () => {
+      drop.classList.remove("dragover");
+    });
+    drop.addEventListener("drop", (e) => {
+      e.preventDefault();
+      drop.classList.remove("dragover");
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        acceptFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    // Remove button
+    if (removeBtn) {
+      removeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        clearImage();
+      });
+    }
+
+    // Expose clearer for post-submit reset
+    this.clearBulletinImage = clearImage;
+  }
+
+  setBulletinStatus(msg, type = "") {
+    const el = document.getElementById("bulletinAdminStatus");
+    if (!el) return;
+    el.textContent = msg;
+    el.className = "bulletin-admin-status" + (type ? " " + type : "");
+  }
+
+  async submitBulletinPost() {
+    if (!this.isAdmin) {
+      this.showToast("Admins only.", "error");
+      return;
+    }
+
+    const titleEl = document.getElementById("bulletin-title");
+    const contentEl = document.getElementById("bulletin-content");
+    const linkEl = document.getElementById("bulletin-link");
+    const submitBtn = document.getElementById("submit-bulletin-post");
+
+    const title = titleEl?.value.trim();
+    const content = contentEl?.value.trim();
+    const link = linkEl?.value.trim();
+
+    if (!title || !content) {
+      this.setBulletinStatus("Title and content are required.", "error");
+      return;
+    }
+
+    const originalLabel = submitBtn ? submitBtn.innerHTML : "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing…';
+    }
+
+    try {
+      let imageUrl = "";
+
+      // 1. Upload image if present
+      if (this.bulletinImageFile) {
+        this.setBulletinStatus("Uploading image…");
+        const storage = firebase.storage();
+        const safeName = this.bulletinImageFile.name.replace(
+          /[^a-zA-Z0-9._-]/g,
+          "_",
+        );
+        const path = `bulletin/${Date.now()}_${safeName}`;
+        const snap = await storage.ref(path).put(this.bulletinImageFile);
+        imageUrl = await snap.ref.getDownloadURL();
+        this.setBulletinStatus("Image uploaded. Saving post…");
+      }
+
+      // 2. Write Firestore doc
+      await this.db.collection("bulletinPosts").add({
+        title,
+        content,
+        link: link || "",
+        imageUrl: imageUrl || "",
+        author:
+          this.currentUser?.displayName ||
+          this.currentUser?.email ||
+          "Admin",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // 3. Reset form
+      if (titleEl) titleEl.value = "";
+      if (contentEl) contentEl.value = "";
+      if (linkEl) linkEl.value = "";
+      if (typeof this.clearBulletinImage === "function") {
+        this.clearBulletinImage();
+      }
+
+      this.setBulletinStatus("✅ Post published!", "success");
+      setTimeout(() => this.setBulletinStatus(""), 2500);
+
+      // 4. Refresh slider
+      this.loadBulletinPosts();
+    } catch (error) {
+      console.error("Error publishing post:", error);
+      let msg = "Error publishing post.";
+      if (error.code === "storage/unauthorized") {
+        msg = "Storage permission denied — check Storage Rules.";
+      } else if (error.code === "storage/canceled") {
+        msg = "Upload canceled.";
+      } else if (error.message) {
+        msg = error.message;
+      }
+      this.setBulletinStatus(msg, "error");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel;
+      }
+    }
+  }
+
+  // ============================================
+  // ADMIN CHECK
+  // ============================================
+  async checkAdminStatus() {
+    try {
+      const doc = await this.db
+        .collection("users")
+        .doc(this.currentUser.uid)
+        .get();
+      if (doc.exists) {
+        const data = doc.data();
+        this.isAdmin =
+          data.role === "admin" ||
+          data.role === "moderator" ||
+          data.isAdmin === true;
+
+        const toggle = document.querySelector(".bulletin-admin-toggle");
+        const panel = document.querySelector(".bulletin-admin");
+        const heroControls = document.querySelector(".hero-controls");
+
+        if (this.isAdmin) {
+          if (toggle) {
+            toggle.classList.add("visible");
+            toggle.style.display = "block";
+          }
+          if (panel) {
+            panel.classList.add("visible");
+            panel.style.display = "block";
+          }
+          if (heroControls) {
+            heroControls.classList.add("visible");
+            heroControls.style.display = "flex";
+          }
+          console.log("✅ Admin mode activated!");
+        } else {
+          if (toggle) toggle.style.display = "none";
+          if (panel) panel.style.display = "none";
+          if (heroControls) heroControls.style.display = "none";
+          console.log("👤 User mode (not admin)");
+        }
+      }
+    } catch (error) {
+      console.error("Error checking admin status:", error);
+    }
+  }
+
+  // ============================================
+  // THEME TOGGLE
+  // ============================================
+  setupThemeToggle() {
+    const toggleBtn = document.getElementById("themeToggle");
+    if (!toggleBtn) return;
+
+    const saved = localStorage.getItem("theme") || "dark";
+    this.applyTheme(saved);
+
+    toggleBtn.addEventListener("click", () => {
+      const current = document.body.classList.contains("light-mode")
+        ? "light"
+        : "dark";
+      const next = current === "light" ? "dark" : "light";
+      this.applyTheme(next);
+      localStorage.setItem("theme", next);
+    });
+  }
+
+  applyTheme(theme) {
+    const body = document.body;
+    if (theme === "light") {
+      body.classList.remove("dark-mode");
+      body.classList.add("light-mode");
+    } else {
+      body.classList.remove("light-mode");
+      body.classList.add("dark-mode");
+    }
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+
+  // ============================================
+  // HERO CONTROLS (prep for later — wired but not styled yet)
+  // ============================================
+  setupHeroControls() {
+    const layer1Upload = document.getElementById("layer1Upload");
+    const layer2Upload = document.getElementById("layer2Upload");
+
+    if (layer1Upload) {
+      layer1Upload.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) this.uploadHeroLayer(file, "layer1");
+      });
+    }
+    if (layer2Upload) {
+      layer2Upload.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) this.uploadHeroLayer(file, "layer2");
+      });
+    }
+  }
+
+  async uploadHeroLayer(file, layer) {
+    if (!this.isAdmin) {
+      this.showToast("You do not have permission.", "error");
+      return;
+    }
+
+    try {
+      const storageRef = firebase.storage().ref();
+      const filePath = `hub-hero/${layer}/${Date.now()}_${file.name}`;
+      const snapshot = await storageRef.child(filePath).put(file);
+      const url = await snapshot.ref.getDownloadURL();
+
+      await this.db
+        .collection("settings")
+        .doc("hubHero")
+        .set(
+          {
+            [`${layer}Url`]: url,
+            [`${layer}Type`]: file.type.startsWith("video/") ? "video" : "image",
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedBy: this.currentUser.uid,
+          },
+          { merge: true },
+        );
+
+      this.showToast("Hero updated successfully! ✅");
+    } catch (error) {
+      console.error("Error uploading hero layer:", error);
+      this.showToast("Error uploading. Try again.", "error");
+    }
+  }
+
+    // ============================================
+  // SUGGESTION MODAL
+  // ============================================
   setupSuggestionBox() {
+    const overlay = document.getElementById("suggestionModalOverlay");
+    const openBtn = document.getElementById("open-suggestion-modal");
+    const closeBtn = document.getElementById("suggestionModalClose");
     const form = document.getElementById("suggestion-form");
-    if (!form) return;
+    const submitBtn = document.getElementById("suggestionSubmitBtn");
+
+    if (!overlay || !form) return;
+
+    const openModal = () => {
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeModal = () => {
+      overlay.classList.remove("active");
+      document.body.style.overflow = "";
+    };
+
+    if (openBtn) openBtn.addEventListener("click", openModal);
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.classList.contains("active")) {
+        closeModal();
+      }
+    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const idea = document.getElementById("suggestion-idea").value.trim();
+      const idea = document.getElementById("suggestion-idea")?.value.trim();
       const name =
-        document.getElementById("suggestion-name").value.trim() || "Anonymous";
+        document.getElementById("suggestion-name")?.value.trim() || "Anonymous";
 
       if (!idea) {
-        this.showToast("Please share your idea! 💭", "error");
+        this.showToast("Please share your idea!", "error");
         return;
       }
 
+      const originalHTML = submitBtn ? submitBtn.innerHTML : "";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+      }
+
       try {
-        await firebase
-          .firestore()
-          .collection("suggestions")
-          .add({
-            idea: idea,
-            name: name,
-            userId: this.currentUser?.uid || null,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            status: "pending",
-          });
+        await this.db.collection("suggestions").add({
+          idea,
+          name,
+          userId: this.currentUser?.uid || null,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          status: "pending",
+        });
 
         this.showToast("Thank you for your suggestion! 🌟");
         form.reset();
+        closeModal();
       } catch (error) {
         console.error("Error submitting suggestion:", error);
-        this.showToast(
-          "Error submitting suggestion. Please try again.",
-          "error",
-        );
+        this.showToast("Error submitting. Try again.", "error");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
+        }
       }
     });
   }
 
-  // ============================================ */
-  // CHALLENGE ACTIONS                           */
-  // ============================================ */
-  handleStartChallenge(challengeType = "daily") {
+
+  // ============================================
+  // EVENT LISTENERS
+  // ============================================
+  setupEventListeners() {
+    const bind = (id, handler) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("click", handler);
+    };
+
+    bind("start-challenge-btn", () => this.handleStartChallenge("daily"));
+    bind("share-challenge-btn", () => this.shareChallenge("daily"));
+    bind("view-submissions-btn", () =>
+      this.viewSubmissions("daily"),
+    );
+    bind("daily-challenges-btn", () => {
+      window.location.href = "/pages/community/challenges.html";
+    });
+
+    bind("weekly-start-btn", () => this.handleStartChallenge("weekly"));
+    bind("weekly-share-btn", () => this.shareChallenge("weekly"));
+    bind("weekly-view-btn", () => this.viewSubmissions("weekly"));
+
+    bind("monthly-start-btn", () => this.handleStartChallenge("monthly"));
+    bind("monthly-share-btn", () => this.shareChallenge("monthly"));
+    bind("monthly-view-btn", () => this.viewSubmissions("monthly"));
+
+    bind("yearly-start-btn", () => this.handleStartChallenge("yearly"));
+    bind("yearly-share-btn", () => this.shareChallenge("yearly"));
+    bind("yearly-view-btn", () => this.viewSubmissions("yearly"));
+
+    bind("submit-bulletin-post", () => this.submitBulletinPost());
+  }
+
+  handleStartChallenge(type) {
     if (!this.currentUser) {
       window.location.href =
         "/pages/auth/login.html?redirect=" +
         encodeURIComponent(window.location.pathname);
       return;
     }
-
-    this.showChallengeModal(challengeType);
-  }
-
-  showChallengeModal(challengeType) {
-    const existingModal = document.getElementById("challengeModal");
-    if (existingModal) {
-      existingModal.remove();
-    }
-
-    const promptMap = {
-      daily:
-        document.getElementById("daily-prompt-title")?.textContent ||
-        "Create something amazing!",
-      weekly: this.getCurrentWeekTheme().title || "Weekly Challenge",
-      monthly: this.getCurrentMonthTheme().title || "Monthly Challenge",
-      yearly: '"Metamorphosis: The Year of Transformation"',
-    };
-
-    const promptText = promptMap[challengeType] || "Create something amazing!";
-
-    const modalHTML = `
-      <div class="modal-overlay active" id="challengeModal">
-        <div class="modal-container">
-          <div class="modal-header">
-            <h3><i class="fas fa-paint-brush"></i> Start Creating</h3>
-            <button class="modal-close" id="closeChallengeModal">&times;</button>
-          </div>
-          <div class="modal-body">
-            <div class="challenge-prompt">
-              <h4>${challengeType.charAt(0).toUpperCase() + challengeType.slice(1)} Challenge:</h4>
-              <p>"${promptText}"</p>
-            </div>
-            <div class="create-options">
-              <button class="create-option" id="upload-existing">
-                <i class="fas fa-upload"></i>
-                <span>Upload Existing Artwork</span>
-                <small>Submit an artwork you've already created</small>
-              </button>
-              <button class="create-option" id="create-new">
-                <i class="fas fa-plus"></i>
-                <span>Create New Artwork</span>
-                <small>Use our tools to create something fresh</small>
-              </button>
-              <button class="create-option" id="get-inspiration">
-                <i class="fas fa-lightbulb"></i>
-                <span>Get Inspiration</span>
-                <small>Browse the gallery for ideas</small>
-              </button>
-            </div>
-            <div class="modal-tips">
-              <h5>💡 Quick Tips:</h5>
-              <ul>
-                <li>Use our <a href="/pages/tools/color-palette-generator.html" target="_blank">color tools</a></li>
-                <li>Check <a href="/pages/tutorials/tutorials.html" target="_blank">tutorials</a> for guidance</li>
-                <li>Share your process in the community</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
-    this.setupModalInteractions(challengeType);
-  }
-
-  setupModalInteractions(challengeType) {
-    const modal = document.getElementById("challengeModal");
-    const closeBtn = document.getElementById("closeChallengeModal");
-    const uploadBtn = document.getElementById("upload-existing");
-    const createBtn = document.getElementById("create-new");
-    const inspirationBtn = document.getElementById("get-inspiration");
-
-    const closeModal = () => {
-      if (modal) modal.remove();
-    };
-
-    if (closeBtn) {
-      closeBtn.addEventListener("click", closeModal);
-    }
-
-    if (modal) {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModal();
-      });
-    }
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && document.getElementById("challengeModal")) {
-        closeModal();
-      }
-    });
-
-    if (uploadBtn) {
-      uploadBtn.addEventListener("click", () => {
-        closeModal();
-        window.location.href = `/pages/community/upload.html?challenge=${challengeType}`;
-      });
-    }
-
-    if (createBtn) {
-      createBtn.addEventListener("click", () => {
-        closeModal();
-        window.location.href = "/pages/tools/tools.html";
-      });
-    }
-
-    if (inspirationBtn) {
-      inspirationBtn.addEventListener("click", () => {
-        closeModal();
-        window.location.href = "/pages/community/gallery.html";
-      });
+    const challenge = this.activeChallenges[type];
+    if (challenge) {
+      window.location.href = `/pages/community/upload.html?challenge=${challenge.id}`;
     }
   }
 
-  viewSubmissions(challengeType) {
-    window.location.href = `/pages/community/gallery.html?filter=${challengeType}`;
+  viewSubmissions(type) {
+    window.location.href = `/pages/community/gallery.html?filter=${type}`;
   }
 
-  shareChallenge() {
-    const prompt =
-      document.getElementById("daily-prompt-title")?.textContent ||
-      "Today's challenge";
-    const shareText = `🎨 Join me in today's Art Mecca challenge: "${prompt}"!\n\nCreate your interpretation and share it with our creative community.`;
-
+  shareChallenge(type) {
+    const c = this.activeChallenges[type];
+    if (!c) return;
+    const text = `🎨 Join me in the ${type} Art Mecca challenge: "${c.title}"!`;
     if (navigator.share) {
-      navigator
-        .share({
-          title: "Art Mecca Daily Challenge",
-          text: shareText,
-          url: window.location.href,
-        })
-        .catch(() => {});
+      navigator.share({ title: "Art Mecca Challenge", text, url: window.location.href }).catch(() => {});
     } else {
       navigator.clipboard
-        .writeText(`${shareText}\n${window.location.href}`)
-        .then(() => this.showToast("Link copied to clipboard! 📋"))
-        .catch(() => this.showToast("Failed to copy link", "error"));
+        .writeText(`${text}\n${window.location.href}`)
+        .then(() => this.showToast("Link copied! 📋"))
+        .catch(() => this.showToast("Failed to copy", "error"));
     }
   }
 
-  // ============================================ */
-  // EVENT LISTENERS                             */
-  // ============================================ */
-  setupEventListeners() {
-    document
-      .getElementById("start-challenge-btn")
-      ?.addEventListener("click", () => {
-        this.handleStartChallenge("daily");
-      });
-    document
-      .getElementById("share-challenge-btn")
-      ?.addEventListener("click", () => {
-        this.shareChallenge();
-      });
-    document
-      .getElementById("view-submissions-btn")
-      ?.addEventListener("click", () => {
-        this.viewSubmissions("daily");
-      });
-    document
-      .getElementById("daily-challenges-btn")
-      ?.addEventListener("click", () => {
-        window.location.href = "/pages/community/challenges.html";
-      });
-
-    document
-      .getElementById("weekly-start-btn")
-      ?.addEventListener("click", () => {
-        this.handleStartChallenge("weekly");
-      });
-    document
-      .getElementById("weekly-share-btn")
-      ?.addEventListener("click", () => {
-        this.shareChallenge();
-      });
-    document
-      .getElementById("weekly-view-btn")
-      ?.addEventListener("click", () => {
-        this.viewSubmissions("weekly");
-      });
-
-    document
-      .getElementById("monthly-start-btn")
-      ?.addEventListener("click", () => {
-        this.handleStartChallenge("monthly");
-      });
-    document
-      .getElementById("monthly-share-btn")
-      ?.addEventListener("click", () => {
-        this.shareChallenge();
-      });
-    document
-      .getElementById("monthly-view-btn")
-      ?.addEventListener("click", () => {
-        this.viewSubmissions("monthly");
-      });
-
-    document
-      .getElementById("yearly-start-btn")
-      ?.addEventListener("click", () => {
-        this.handleStartChallenge("yearly");
-      });
-    document
-      .getElementById("yearly-share-btn")
-      ?.addEventListener("click", () => {
-        this.shareChallenge();
-      });
-    document
-      .getElementById("yearly-view-btn")
-      ?.addEventListener("click", () => {
-        this.viewSubmissions("yearly");
-      });
-
-    document.querySelectorAll(".feature-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        const href = card.dataset.href;
-        if (href) {
-          window.location.href = href;
-        } else if (card.dataset.soon) {
-          this.showToast("Coming soon! 🚀");
-        }
-      });
-    });
-
-    document
-      .getElementById("submit-bulletin-post")
-      ?.addEventListener("click", () => {
-        this.submitBulletinPost();
-      });
+  // ============================================
+  // UTILITIES
+  // ============================================
+  emptyState(iconClass, message) {
+    return `
+      <div style="grid-column:1/-1;text-align:center;padding:2.5rem 1rem;color:var(--text-muted);">
+        <i class="${iconClass}" style="font-size:2rem;display:block;margin-bottom:0.75rem;opacity:0.3;"></i>
+        <p style="font-family:var(--font-condensed);font-size:0.9rem;">${message}</p>
+      </div>
+    `;
   }
 
-  // ============================================ */
-  // BULLETIN ADMIN                              */
-  // ============================================ */
-  async submitBulletinPost() {
-    // Double-check admin status
-    if (!this.isAdmin) {
-      this.showToast(
-        "You do not have permission to post announcements.",
-        "error",
-      );
-      return;
-    }
-
-    const title = document.getElementById("bulletin-title").value.trim();
-    const content = document.getElementById("bulletin-content").value.trim();
-    const link = document.getElementById("bulletin-link").value.trim();
-
-    if (!title || !content) {
-      this.showToast("Please fill in both title and content", "error");
-      return;
-    }
-
-    try {
-      await firebase
-        .firestore()
-        .collection("bulletinPosts")
-        .add({
-          title: title,
-          content: content,
-          link: link || "",
-          author:
-            this.currentUser?.displayName || this.currentUser?.email || "Admin",
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-
-      document.getElementById("bulletin-title").value = "";
-      document.getElementById("bulletin-content").value = "";
-      document.getElementById("bulletin-link").value = "";
-
-      this.showToast("Post published successfully! ✅");
-      this.loadBulletinPosts();
-    } catch (error) {
-      console.error("Error publishing post:", error);
-      this.showToast("Error publishing post. Please try again.", "error");
-    }
-  }
-  setupBulletinToggle() {
-    const toggleBtn = document.getElementById("bulletinToggle");
-    const adminPanel = document.getElementById("bulletinAdmin");
-
-    if (toggleBtn && adminPanel) {
-      toggleBtn.addEventListener("click", () => {
-        // Only toggle if admin
-        if (!this.isAdmin) {
-          this.showToast(
-            "You must be an admin to post announcements.",
-            "error",
-          );
-          return;
-        }
-
-        const isVisible = adminPanel.classList.contains("visible");
-        if (isVisible) {
-          adminPanel.classList.remove("visible");
-          adminPanel.style.display = "none";
-          toggleBtn.textContent = "📝 Add Announcement";
-        } else {
-          adminPanel.classList.add("visible");
-          adminPanel.style.display = "block";
-          toggleBtn.textContent = "✖ Close";
-        }
-      });
-    }
-  }
-
-  // ============================================ */
-  // UTILITY FUNCTIONS                           */
-  // ============================================ */
   formatTimeAgo(timestamp) {
     if (!timestamp) return "Just now";
 
     let date;
-    if (timestamp.toDate) {
-      date = timestamp.toDate();
-    } else if (timestamp.seconds) {
-      date = new Date(timestamp.seconds * 1000);
-    } else if (timestamp instanceof Date) {
-      date = timestamp;
-    } else {
-      date = new Date(timestamp);
-    }
+    if (timestamp.toDate) date = timestamp.toDate();
+    else if (timestamp.seconds) date = new Date(timestamp.seconds * 1000);
+    else if (timestamp instanceof Date) date = timestamp;
+    else date = new Date(timestamp);
 
     if (isNaN(date.getTime())) return "Just now";
 
     const seconds = Math.floor((new Date() - date) / 1000);
     if (seconds < 60) return "Just now";
-
     const minutes = Math.floor(seconds / 60);
     if (minutes < 60) return `${minutes}m ago`;
-
     const hours = Math.floor(minutes / 60);
     if (hours < 24) return `${hours}h ago`;
-
     const days = Math.floor(hours / 24);
     if (days < 7) return `${days}d ago`;
-
     return date.toLocaleDateString();
   }
 
@@ -1941,24 +1757,13 @@ class CommunityHub {
       toast = document.createElement("div");
       toast.id = "customToast";
       toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(26, 26, 46, 0.95);
-        backdrop-filter: blur(12px);
-        color: white;
-        padding: 12px 24px;
-        border-radius: 12px;
-        z-index: 9999;
-        font-weight: 500;
-        border: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        transition: all 0.3s ease;
-        opacity: 0;
-        transform: translateX(-50%) translateY(20px);
-        pointer-events: none;
-        max-width: 90%;
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: rgba(26, 26, 46, 0.95); backdrop-filter: blur(12px);
+        color: white; padding: 12px 24px; border-radius: 12px; z-index: 9999;
+        font-weight: 500; border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3); transition: all 0.3s ease;
+        opacity: 0; transform: translateX(-50%) translateY(20px);
+        pointer-events: none; max-width: 90%;
       `;
       document.body.appendChild(toast);
     }
@@ -1967,13 +1772,12 @@ class CommunityHub {
     toast.style.opacity = "1";
     toast.style.transform = "translateX(-50%) translateY(0)";
 
-    if (type === "error") {
-      toast.style.borderColor = "rgba(239,68,68,0.3)";
-      toast.style.boxShadow = "0 8px 32px rgba(239,68,68,0.2)";
-    } else {
-      toast.style.borderColor = "rgba(16,185,129,0.3)";
-      toast.style.boxShadow = "0 8px 32px rgba(16,185,129,0.2)";
-    }
+    const colors = {
+      success: "rgba(16,185,129,0.3)",
+      error: "rgba(239,68,68,0.3)",
+      info: "rgba(59,130,246,0.3)",
+    };
+    toast.style.borderColor = colors[type] || colors.success;
 
     setTimeout(() => {
       toast.style.opacity = "0";
@@ -1982,32 +1786,24 @@ class CommunityHub {
   }
 }
 
-// ============================================ */
-// INITIALIZE                                    */
-// ============================================ */
-// ============================================ */
-// EXPOSE COMMUNITY HUB INSTANCE GLOBALLY      */
-// ============================================ */
-
-// Store the instance for other scripts to access
+// ============================================
+// INITIALIZE
+// ============================================
 let communityHubInstance = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (typeof firebase !== "undefined" && firebase.auth) {
-    communityHubInstance = new CommunityHub();
-    window.communityHubInstance = communityHubInstance;
-  } else {
-    console.warn("Firebase not ready, retrying...");
-    setTimeout(() => {
-      if (typeof firebase !== "undefined" && firebase.auth) {
-        communityHubInstance = new CommunityHub();
-        window.communityHubInstance = communityHubInstance;
-      }
-    }, 2000);
-  }
-
+  const start = () => {
+    if (typeof firebase !== "undefined" && firebase.auth) {
+      communityHubInstance = new CommunityHub();
+      window.communityHubInstance = communityHubInstance;
+      console.log("✅ CommunityHub initialized");
+    } else {
+      console.warn("Firebase not ready, retrying...");
+      setTimeout(start, 500);
+    }
+  };
+  start();
 });
 
-// Also export for direct use
 window.CommunityHub = CommunityHub;
 window.getCommunityHubInstance = () => communityHubInstance;

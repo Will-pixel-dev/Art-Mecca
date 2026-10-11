@@ -8,8 +8,9 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/page-hero.css" />
     <link rel="stylesheet" href="/css/community-hub.css" />
-    <link rel="stylesheet" href="/css/community-rainbow.css" />
+    <link rel="stylesheet" href="/css/hub-zones.css" />
     <link rel="stylesheet" href="/css/components/header.css" />
     <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
@@ -373,1642 +374,7 @@
         }
       }
 
-      /* ============================================================
-         GLASS CARD
-         ============================================================ */
-      .glass-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        transition: all var(--transition);
-      }
 
-      .glass-card:hover {
-        background: var(--bg-card-hover);
-        border-color: rgba(139, 92, 246, 0.25);
-        box-shadow: var(--shadow-card-hover), var(--glow-purple-dark);
-      }
-
-      /* ============================================================
-         SECTION HEADERS
-         ============================================================ */
-      .section-header {
-        text-align: center;
-        margin-bottom: 3rem;
-        position: relative;
-        z-index: 2;
-        padding-top: 1rem;
-      }
-
-      .section-badge {
-        display: inline-block;
-        font-family: var(--font-mono);
-        font-size: 0.6rem;
-        font-weight: 600;
-        letter-spacing: 3px;
-        text-transform: uppercase;
-        padding: 4px 14px;
-        border: 1px solid rgba(139, 92, 246, 0.15);
-        border-radius: 2px;
-        background: rgba(139, 92, 246, 0.03);
-        margin-bottom: 12px;
-        position: relative;
-        transition: all var(--transition);
-        animation: badgePulse 3s ease-in-out infinite;
-        color: var(--color-purple-light);
-        border-color: rgba(139, 92, 246, 0.15);
-      }
-
-      @keyframes badgePulse {
-        0%,
-        100% {
-          border-color: rgba(139, 92, 246, 0.15);
-          box-shadow: 0 0 0px rgba(139, 92, 246, 0);
-        }
-        50% {
-          border-color: rgba(139, 92, 246, 0.3);
-          box-shadow: 0 0 20px rgba(139, 92, 246, 0.05);
-        }
-      }
-
-      /* ============================================================
-         HERO SECTION — FULL VIEWPORT PURPLE
-         ============================================================ */
-      .hub-hero {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        background: var(--bg-body);
-        z-index: 2;
-        padding: 6rem 2rem;
-      }
-
-      .hub-hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        background:
-          radial-gradient(
-            ellipse at 50% 100%,
-            rgba(139, 92, 246, 0.12) 0%,
-            transparent 60%
-          ),
-          radial-gradient(
-            ellipse at 30% 0%,
-            rgba(123, 58, 237, 0.08) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            ellipse at 70% 50%,
-            rgba(139, 92, 246, 0.06) 0%,
-            transparent 40%
-          );
-        pointer-events: none;
-      }
-
-      .hub-hero::after {
-        content: "✦ GO MECCA STAR ✦";
-        position: absolute;
-        bottom: 40px;
-        right: 60px;
-        font-family: var(--font-tag);
-        font-size: 3.5rem;
-        color: var(--color-purple);
-        opacity: 0.04;
-        pointer-events: none;
-        z-index: 0;
-        letter-spacing: 6px;
-        transform: rotate(-6deg);
-      }
-
-      .hero-layer-3 {
-        position: relative;
-        z-index: 2;
-        max-width: 900px;
-        margin: 0 auto;
-      }
-
-      .hero-graffiti-title {
-        font-family: var(--font-tag);
-        font-size: clamp(4rem, 10vw, 8rem);
-        font-weight: 400;
-        letter-spacing: 8px;
-        background: var(--gradient-purple);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: none;
-        filter: drop-shadow(0 0 80px rgba(139, 92, 246, 0.15));
-        line-height: 1;
-        margin-bottom: 0.5rem;
-        animation: shimmerPurple 4s ease-in-out infinite;
-        background-size: 200% 200%;
-      }
-
-      @keyframes shimmerPurple {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-      }
-
-      .hero-graffiti-sub {
-        font-family: var(--font-condensed);
-        font-size: clamp(1.2rem, 2vw, 1.8rem);
-        color: var(--text-secondary);
-        letter-spacing: 6px;
-        text-transform: uppercase;
-        opacity: 0.7;
-      }
-
-      /* Scroll indicator */
-      .scroll-indicator {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 3;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        opacity: 0.4;
-        animation: bounceDown 2s ease-in-out infinite;
-      }
-
-      .scroll-indicator .scroll-text {
-        font-family: var(--font-mono);
-        font-size: 0.5rem;
-        color: var(--text-muted);
-        letter-spacing: 2px;
-        text-transform: uppercase;
-      }
-
-      .scroll-indicator .scroll-line {
-        width: 1px;
-        height: 40px;
-        background: linear-gradient(180deg, var(--text-muted), transparent);
-      }
-
-      @keyframes bounceDown {
-        0%,
-        100% {
-          transform: translateX(-50%) translateY(0);
-        }
-        50% {
-          transform: translateX(-50%) translateY(6px);
-        }
-      }
-
-      /* ============================================================
-         CHEERS EXPLANATION
-         ============================================================ */
-      .cheers-explanation {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 2.5rem;
-        text-align: center;
-        margin: 3rem 0;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .cheers-explanation::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: var(--gradient-purple);
-        opacity: 0.4;
-      }
-
-      .cheers-icon {
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .cheers-explanation h3 {
-        font-family: var(--font-display);
-        font-size: 1.3rem;
-        color: var(--text-primary);
-        letter-spacing: 1px;
-        margin-bottom: 0.5rem;
-      }
-
-      .cheers-explanation p {
-        font-family: var(--font-condensed);
-        color: var(--text-secondary);
-        line-height: 1.8;
-        max-width: 600px;
-        margin: 0 auto;
-      }
-
-      .cheers-explanation .prize-link {
-        color: var(--color-purple-light);
-        text-decoration: none;
-        transition: all var(--transition);
-      }
-
-      .cheers-explanation .prize-link:hover {
-        color: var(--text-primary);
-        text-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-      }
-
-      /* ============================================================
-         DAILY CHALLENGE — PINK
-         ============================================================ */
-      .daily-challenge-section .section-badge {
-        color: var(--color-pink);
-        border-color: rgba(254, 103, 234, 0.15);
-      }
-
-      .daily-challenge-section .section-badge i {
-        color: var(--color-pink);
-      }
-
-      .daily-challenge-section .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #fe67ea, #e237ce);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(254, 103, 234, 0.2);
-      }
-
-      .daily-challenge-section .challenge-card {
-        border-color: rgba(254, 103, 234, 0.15);
-        animation: glowPulsePink 4s ease-in-out infinite;
-      }
-
-      @keyframes glowPulsePink {
-        0%,
-        100% {
-          box-shadow: 0 0 20px rgba(254, 103, 234, 0.05);
-        }
-        50% {
-          box-shadow: 0 0 40px rgba(254, 103, 234, 0.15);
-        }
-      }
-
-      .daily-challenge-section .challenge-card .challenge-badge {
-        color: var(--color-pink);
-        background: rgba(254, 103, 234, 0.08);
-        border-color: rgba(254, 103, 234, 0.1);
-      }
-
-      .daily-challenge-section .challenge-card .challenge-tag {
-        color: var(--color-pink);
-        border-color: rgba(254, 103, 234, 0.06);
-      }
-
-      .daily-challenge-section .challenge-card .btn-challenge-primary {
-        background: linear-gradient(135deg, #fe67ea, #e237ce);
-        box-shadow: 0 4px 24px rgba(254, 103, 234, 0.3);
-      }
-
-      .daily-challenge-section .challenge-card .btn-challenge-primary:hover {
-        box-shadow: 0 8px 32px rgba(254, 103, 234, 0.45);
-      }
-
-      /* ============================================================
-         WEEKLY CHALLENGE — ORANGE
-         ============================================================ */
-      .weekly-challenge-section .section-badge {
-        color: var(--color-orange);
-        border-color: rgba(255, 107, 0, 0.15);
-      }
-
-      .weekly-challenge-section .section-badge i {
-        color: var(--color-orange);
-      }
-
-      .weekly-challenge-section .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #ff6b00, #e55a00);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(255, 107, 0, 0.2);
-      }
-
-      .weekly-challenge-section .challenge-card {
-        border-color: rgba(255, 107, 0, 0.15);
-        animation: glowPulseOrange 4s ease-in-out infinite;
-      }
-
-      @keyframes glowPulseOrange {
-        0%,
-        100% {
-          box-shadow: 0 0 20px rgba(255, 107, 0, 0.05);
-        }
-        50% {
-          box-shadow: 0 0 40px rgba(255, 107, 0, 0.15);
-        }
-      }
-
-      .weekly-challenge-section .challenge-card .challenge-badge {
-        color: var(--color-orange);
-        background: rgba(255, 107, 0, 0.08);
-        border-color: rgba(255, 107, 0, 0.1);
-      }
-
-      .weekly-challenge-section .challenge-card .challenge-tag {
-        color: var(--color-orange);
-        border-color: rgba(255, 107, 0, 0.06);
-      }
-
-      .weekly-challenge-section .challenge-card .btn-challenge-primary {
-        background: linear-gradient(135deg, #ff6b00, #e55a00);
-        box-shadow: 0 4px 24px rgba(255, 107, 0, 0.3);
-      }
-
-      .weekly-challenge-section .challenge-card .btn-challenge-primary:hover {
-        box-shadow: 0 8px 32px rgba(255, 107, 0, 0.45);
-      }
-
-      /* ============================================================
-         MONTHLY CHALLENGE — GOLD
-         ============================================================ */
-      .monthly-challenge-section .section-badge {
-        color: var(--color-gold);
-        border-color: rgba(255, 199, 46, 0.15);
-      }
-
-      .monthly-challenge-section .section-badge i {
-        color: var(--color-gold);
-      }
-
-      .monthly-challenge-section .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #ffc72e, #d4a000);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(255, 199, 46, 0.2);
-      }
-
-      .monthly-challenge-section .challenge-card {
-        border-color: rgba(255, 199, 46, 0.15);
-        animation: glowPulseGold 4s ease-in-out infinite;
-      }
-
-      @keyframes glowPulseGold {
-        0%,
-        100% {
-          box-shadow: 0 0 20px rgba(255, 199, 46, 0.05);
-        }
-        50% {
-          box-shadow: 0 0 40px rgba(255, 199, 46, 0.15);
-        }
-      }
-
-      .monthly-challenge-section .challenge-card .challenge-badge {
-        color: var(--color-gold);
-        background: rgba(255, 199, 46, 0.08);
-        border-color: rgba(255, 199, 46, 0.1);
-      }
-
-      .monthly-challenge-section .challenge-card .challenge-tag {
-        color: var(--color-gold);
-        border-color: rgba(255, 199, 46, 0.06);
-      }
-
-      .monthly-challenge-section .challenge-card .btn-challenge-primary {
-        background: linear-gradient(135deg, #ffc72e, #d4a000);
-        box-shadow: 0 4px 24px rgba(255, 199, 46, 0.3);
-      }
-
-      .monthly-challenge-section .challenge-card .btn-challenge-primary:hover {
-        box-shadow: 0 8px 32px rgba(255, 199, 46, 0.45);
-      }
-
-      /* ============================================================
-         YEARLY CHALLENGE — GREEN
-         ============================================================ */
-      .yearly-challenge-section .section-badge {
-        color: var(--color-green);
-        border-color: rgba(67, 234, 162, 0.15);
-      }
-
-      .yearly-challenge-section .section-badge i {
-        color: var(--color-green);
-      }
-
-      .yearly-challenge-section .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #43eaa2, #2ecc71);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(67, 234, 162, 0.2);
-      }
-
-      .yearly-challenge-section .challenge-card {
-        border-color: rgba(67, 234, 162, 0.15);
-        animation: glowPulseGreen 4s ease-in-out infinite;
-      }
-
-      @keyframes glowPulseGreen {
-        0%,
-        100% {
-          box-shadow: 0 0 20px rgba(67, 234, 162, 0.05);
-        }
-        50% {
-          box-shadow: 0 0 40px rgba(67, 234, 162, 0.15);
-        }
-      }
-
-      .yearly-challenge-section .challenge-card .challenge-badge {
-        color: var(--color-green);
-        background: rgba(67, 234, 162, 0.08);
-        border-color: rgba(67, 234, 162, 0.1);
-      }
-
-      .yearly-challenge-section .challenge-card .challenge-tag {
-        color: var(--color-green);
-        border-color: rgba(67, 234, 162, 0.06);
-      }
-
-      .yearly-challenge-section .challenge-card .btn-challenge-primary {
-        background: linear-gradient(135deg, #43eaa2, #2ecc71);
-        box-shadow: 0 4px 24px rgba(67, 234, 162, 0.3);
-      }
-
-      .yearly-challenge-section .challenge-card .btn-challenge-primary:hover {
-        box-shadow: 0 8px 32px rgba(67, 234, 162, 0.45);
-      }
-
-      /* ============================================================
-         CHALLENGE CARD — EYE-CATCHING
-         ============================================================ */
-      .challenge-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: var(--shadow-card);
-        transition: all var(--transition-slow);
-        position: relative;
-      }
-
-      .challenge-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: 16px;
-        padding: 1px;
-        background: var(--gradient-cyber);
-        -webkit-mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        opacity: 0.3;
-        pointer-events: none;
-      }
-
-      .challenge-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(139, 92, 246, 0.25);
-        box-shadow: var(--shadow-card-hover), var(--glow-purple-dark);
-      }
-
-      .challenge-card .challenge-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        border-bottom: 1px solid var(--border-color);
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
-      .challenge-card .challenge-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-family: var(--font-mono);
-        font-size: 0.6rem;
-        font-weight: 600;
-        padding: 4px 12px;
-        border-radius: 20px;
-        background: rgba(139, 92, 246, 0.08);
-        color: var(--color-purple-light);
-        border: 1px solid rgba(139, 92, 246, 0.1);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .challenge-card .challenge-countdown,
-      .challenge-card .challenge-days-left {
-        font-family: var(--font-mono);
-        font-size: 0.6rem;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-      }
-
-      .challenge-card .challenge-card-body {
-        padding: 1.5rem;
-      }
-
-      .challenge-card .challenge-card-body h3 {
-        font-family: var(--font-display);
-        font-size: 1.4rem;
-        color: var(--text-primary);
-        letter-spacing: 0.5px;
-        margin-bottom: 0.5rem;
-      }
-
-      .challenge-card .challenge-card-body > p {
-        font-family: var(--font-condensed);
-        color: var(--text-secondary);
-        line-height: 1.7;
-        margin-bottom: 1rem;
-      }
-
-      .challenge-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-        margin-bottom: 1rem;
-      }
-
-      .challenge-tag {
-        padding: 0.15rem 0.6rem;
-        border-radius: 20px;
-        font-size: 0.55rem;
-        font-family: var(--font-mono);
-        background: rgba(139, 92, 246, 0.06);
-        color: var(--color-purple-light);
-        border: 1px solid rgba(139, 92, 246, 0.06);
-        text-transform: lowercase;
-      }
-
-      .challenge-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .btn-challenge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 700;
-        font-size: 0.7rem;
-        font-family: var(--font-condensed);
-        border: none;
-        cursor: pointer;
-        transition: all var(--transition);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        text-decoration: none;
-      }
-
-      .btn-challenge-primary {
-        color: var(--text-inverse);
-      }
-
-      .btn-challenge-primary:hover {
-        transform: translateY(-3px) scale(1.02);
-      }
-
-      .btn-challenge-outline {
-        background: var(--bg-elevated);
-        color: var(--text-secondary);
-        border: 1px solid var(--border-color);
-      }
-
-      .btn-challenge-outline:hover {
-        border-color: var(--color-purple-light);
-        color: var(--text-primary);
-        transform: translateY(-2px);
-        box-shadow: var(--glow-purple);
-      }
-
-      .challenge-stats {
-        display: flex;
-        gap: 2rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border-color);
-        flex-wrap: wrap;
-      }
-
-      .challenge-stat {
-        text-align: center;
-      }
-
-      .challenge-stat .stat-number {
-        display: block;
-        font-family: var(--font-display);
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: var(--text-primary);
-      }
-
-      .challenge-stat .stat-label {
-        font-family: var(--font-mono);
-        font-size: 0.55rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .challenge-prize {
-        padding: 0.75rem 1rem;
-        background: rgba(139, 92, 246, 0.04);
-        border-radius: 8px;
-        font-family: var(--font-condensed);
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-        border: 1px solid var(--border-color);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .challenge-prize i {
-        color: var(--color-gold);
-      }
-
-      .purpose-paragraph {
-        background: var(--bg-elevated);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
-        border: 1px solid var(--border-color);
-        border-left-width: 4px;
-      }
-
-      .purpose-paragraph i {
-        color: var(--color-purple-light);
-        font-size: 1.2rem;
-        opacity: 0.5;
-        flex-shrink: 0;
-        margin-top: 0.1rem;
-      }
-
-      .purpose-paragraph p {
-        font-family: var(--font-condensed);
-        color: var(--text-secondary);
-        line-height: 1.7;
-        margin: 0;
-        font-size: 0.95rem;
-      }
-
-      /* ============================================================
-         COMMUNITY FEATURES — PURPLE MAIN
-         ============================================================ */
-      .community-features {
-        margin: 4rem 0;
-      }
-
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .feature-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        transition: all var(--transition-slow);
-        text-decoration: none;
-        color: inherit;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .feature-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: var(--gradient-purple);
-        opacity: 0;
-        transition: opacity var(--transition);
-      }
-
-      .feature-card:hover::before {
-        opacity: 0.6;
-      }
-
-      .feature-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(139, 92, 246, 0.25);
-        box-shadow: var(--shadow-card-hover), var(--glow-purple-dark);
-      }
-
-      .feature-card .feature-icon {
-        font-size: 2.5rem;
-        margin-bottom: 0.75rem;
-        color: var(--color-purple-light);
-        display: block;
-      }
-
-      .feature-card h3 {
-        font-family: var(--font-display);
-        font-size: 1.1rem;
-        color: var(--text-primary);
-        letter-spacing: 0.5px;
-        margin-bottom: 0.3rem;
-      }
-
-      .feature-card p {
-        font-family: var(--font-condensed);
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        line-height: 1.6;
-        margin-bottom: 0.75rem;
-      }
-
-      .feature-badge {
-        display: inline-block;
-        padding: 0.15rem 0.6rem;
-        border-radius: 20px;
-        font-size: 0.55rem;
-        font-family: var(--font-mono);
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .feature-badge.active {
-        background: rgba(79, 243, 166, 0.12);
-        color: var(--color-neon-green);
-        border: 1px solid rgba(79, 243, 166, 0.1);
-      }
-
-      .feature-badge.count {
-        background: rgba(139, 92, 246, 0.08);
-        color: var(--color-purple-light);
-        border: 1px solid rgba(139, 92, 246, 0.1);
-      }
-
-      .feature-badge.soon {
-        background: rgba(255, 199, 46, 0.08);
-        color: var(--color-gold);
-        border: 1px solid rgba(255, 199, 46, 0.1);
-      }
-
-      .feature-badge.new {
-        background: rgba(88, 235, 254, 0.08);
-        color: var(--color-neon-cyan);
-        border: 1px solid rgba(88, 235, 254, 0.1);
-      }
-
-      /* ============================================================
-         BULLETIN BOARD — BLUE
-         ============================================================ */
-      .bulletin-board .section-badge {
-        color: var(--color-blue);
-        border-color: rgba(59, 130, 246, 0.15);
-      }
-
-      .bulletin-board .section-badge i {
-        color: var(--color-blue);
-      }
-
-      .bulletin-board .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
-      }
-
-      .bulletin-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .bulletin-post {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        transition: all var(--transition-slow);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .bulletin-post::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        opacity: 0.6;
-      }
-
-      .bulletin-post:hover {
-        transform: translateY(-4px);
-        border-color: rgba(59, 130, 246, 0.25);
-        box-shadow: var(--shadow-card-hover), var(--glow-purple-dark);
-      }
-
-      .bulletin-post .post-date {
-        font-family: var(--font-mono);
-        font-size: 0.5rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .bulletin-post .post-title {
-        font-family: var(--font-display);
-        font-size: 1.1rem;
-        color: var(--text-primary);
-        letter-spacing: 0.5px;
-        margin: 0.3rem 0;
-      }
-
-      .bulletin-post .post-excerpt {
-        font-family: var(--font-condensed);
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        line-height: 1.6;
-      }
-
-      .bulletin-post .post-link {
-        display: inline-block;
-        margin-top: 0.5rem;
-        color: var(--color-blue);
-        text-decoration: none;
-        font-family: var(--font-condensed);
-        font-weight: 600;
-        font-size: 0.8rem;
-        transition: all var(--transition);
-      }
-
-      .bulletin-post .post-link:hover {
-        color: var(--color-blue-light);
-        text-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
-      }
-
-      /* ============================================================
-         RECENT ACTIVITY — GREEN
-         ============================================================ */
-      .recent-activity .section-badge {
-        color: var(--color-green);
-        border-color: rgba(67, 234, 162, 0.15);
-      }
-
-      .recent-activity .section-badge i {
-        color: var(--color-green);
-      }
-
-      .recent-activity .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #43eaa2, #2ecc71);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(67, 234, 162, 0.2);
-      }
-
-      .activity-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-      }
-
-      .activity-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 0.75rem 1.2rem;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        transition: all var(--transition);
-      }
-
-      .activity-item:hover {
-        border-color: rgba(67, 234, 162, 0.2);
-        transform: translateX(4px);
-      }
-
-      .activity-item .activity-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(67, 234, 162, 0.08);
-        color: var(--color-green);
-        font-size: 0.9rem;
-        flex-shrink: 0;
-      }
-
-      .activity-item .activity-content {
-        flex: 1;
-      }
-
-      .activity-item .activity-content .activity-text {
-        font-family: var(--font-condensed);
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-      }
-
-      .activity-item .activity-content .activity-text strong {
-        color: var(--text-primary);
-      }
-
-      .activity-item .activity-content .activity-time {
-        font-family: var(--font-mono);
-        font-size: 0.5rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      /* ============================================================
-         FEATURED ARTWORKS — PINK
-         ============================================================ */
-      .featured-artworks .section-badge {
-        color: var(--color-pink);
-        border-color: rgba(254, 103, 234, 0.15);
-      }
-
-      .featured-artworks .section-badge i {
-        color: var(--color-pink);
-      }
-
-      .featured-artworks .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #fe67ea, #e237ce);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(254, 103, 234, 0.2);
-      }
-
-      .artworks-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .artwork-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        transition: all var(--transition-slow);
-        cursor: pointer;
-      }
-
-      .artwork-card:hover {
-        transform: translateY(-6px);
-        border-color: rgba(254, 103, 234, 0.2);
-        box-shadow: var(--shadow-card-hover), var(--glow-purple-dark);
-      }
-
-      .artwork-card .artwork-image {
-        width: 100%;
-        height: 180px;
-        background: var(--gradient-purple);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: white;
-        opacity: 0.6;
-      }
-
-      .artwork-card .artwork-info {
-        padding: 1rem;
-      }
-
-      .artwork-card .artwork-info h4 {
-        font-family: var(--font-display);
-        font-size: 0.95rem;
-        color: var(--text-primary);
-        letter-spacing: 0.5px;
-        margin-bottom: 0.2rem;
-      }
-
-      .artwork-card .artwork-info p {
-        font-family: var(--font-condensed);
-        color: var(--text-muted);
-        font-size: 0.75rem;
-      }
-
-      .artwork-card .artwork-info .artwork-meta {
-        display: flex;
-        gap: 0.75rem;
-        margin-top: 0.5rem;
-        font-family: var(--font-mono);
-        font-size: 0.55rem;
-        color: var(--text-muted);
-      }
-
-      /* ============================================================
-         FEATURED ARTISTS — GOLD
-         ============================================================ */
-      .featured-artists-section .section-badge {
-        color: var(--color-gold);
-        border-color: rgba(255, 199, 46, 0.15);
-      }
-
-      .featured-artists-section .section-badge i {
-        color: var(--color-gold);
-      }
-
-      .featured-artists-section .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #ffc72e, #d4a000);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(255, 199, 46, 0.2);
-      }
-
-      .artists-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .artist-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1.5rem;
-        text-align: center;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        transition: all var(--transition-slow);
-      }
-
-      .artist-card:hover {
-        transform: translateY(-6px);
-        border-color: rgba(255, 199, 46, 0.2);
-        box-shadow: var(--shadow-card-hover), var(--glow-purple-dark);
-      }
-
-      .artist-card .artist-avatar {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: var(--gradient-purple);
-        margin: 0 auto 0.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: white;
-        font-weight: 700;
-        font-family: var(--font-display);
-      }
-
-      .artist-card h4 {
-        font-family: var(--font-display);
-        font-size: 0.95rem;
-        color: var(--text-primary);
-        letter-spacing: 0.5px;
-      }
-
-      .artist-card p {
-        font-family: var(--font-condensed);
-        color: var(--text-muted);
-        font-size: 0.75rem;
-      }
-
-      .artist-card .artist-stats {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 0.5rem;
-        font-family: var(--font-mono);
-        font-size: 0.55rem;
-        color: var(--text-muted);
-      }
-
-      /* ============================================================
-         WINNERS SECTION — PURPLE
-         ============================================================ */
-      .winners-section .section-badge {
-        color: var(--color-purple-light);
-        border-color: rgba(139, 92, 246, 0.15);
-      }
-
-      .winners-section .section-badge i {
-        color: var(--color-purple-light);
-      }
-
-      .winners-section .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: var(--gradient-purple);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-      }
-
-      .winners-carousel-container {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        overflow: hidden;
-      }
-
-      .winners-carousel {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .winner-item {
-        background: var(--bg-elevated);
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid var(--border-color);
-        transition: all var(--transition);
-      }
-
-      .winner-item:hover {
-        border-color: rgba(139, 92, 246, 0.2);
-        transform: translateY(-4px);
-        box-shadow: var(--glow-purple);
-      }
-
-      .winner-placeholder {
-        padding: 2rem;
-        text-align: center;
-      }
-
-      .winner-placeholder .placeholder-icon {
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .winner-placeholder .placeholder-rank {
-        font-family: var(--font-display);
-        font-size: 0.8rem;
-        color: var(--color-gold);
-        letter-spacing: 1px;
-      }
-
-      .winner-placeholder .placeholder-text {
-        font-family: var(--font-condensed);
-        color: var(--text-muted);
-        font-size: 0.85rem;
-      }
-
-      /* ============================================================
-         TOP CREATORS — ORANGE
-         ============================================================ */
-      .top-creators-section .section-badge {
-        color: var(--color-orange);
-        border-color: rgba(255, 107, 0, 0.15);
-      }
-
-      .top-creators-section .section-badge i {
-        color: var(--color-orange);
-      }
-
-      .top-creators-section .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(135deg, #ff6b00, #e55a00);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(255, 107, 0, 0.2);
-      }
-
-      .creators-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .creator-card {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1rem 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        transition: all var(--transition-slow);
-        cursor: pointer;
-      }
-
-      .creator-card:hover {
-        transform: translateX(6px);
-        border-color: rgba(255, 107, 0, 0.2);
-        box-shadow: var(--shadow-card-hover), var(--glow-purple-dark);
-      }
-
-      .creator-card .creator-rank {
-        font-family: var(--font-display);
-        font-size: 1.2rem;
-        font-weight: 700;
-        width: 36px;
-        text-align: center;
-        flex-shrink: 0;
-      }
-
-      .creator-card .creator-rank.gold {
-        color: var(--color-gold);
-      }
-      .creator-card .creator-rank.silver {
-        color: #c0c0c0;
-      }
-      .creator-card .creator-rank.bronze {
-        color: #cd7f32;
-      }
-
-      .creator-card .creator-avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: var(--gradient-purple);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        color: white;
-        font-weight: 700;
-        font-family: var(--font-display);
-        flex-shrink: 0;
-      }
-
-      .creator-card .creator-info {
-        flex: 1;
-        min-width: 0;
-      }
-
-      .creator-card .creator-info .creator-name {
-        font-family: var(--font-display);
-        font-size: 0.9rem;
-        color: var(--text-primary);
-        letter-spacing: 0.5px;
-      }
-
-      .creator-card .creator-info .creator-stats {
-        font-family: var(--font-mono);
-        font-size: 0.55rem;
-        color: var(--text-muted);
-        display: flex;
-        gap: 0.75rem;
-      }
-
-      .creator-card .creator-points {
-        font-family: var(--font-display);
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--color-orange);
-        flex-shrink: 0;
-      }
-
-      /* ============================================================
-         SUGGESTION BOX — PURPLE
-         ============================================================ */
-      .suggestion-box {
-        margin: 4rem 0;
-      }
-
-      .suggestion-box .section-badge {
-        color: var(--color-purple-light);
-        border-color: rgba(139, 92, 246, 0.15);
-      }
-
-      .suggestion-box .section-badge i {
-        color: var(--color-purple-light);
-      }
-
-      .suggestion-box .section-header h2::after {
-        content: "";
-        display: block;
-        width: 60px;
-        height: 4px;
-        background: var(--gradient-purple);
-        margin: 12px auto 0;
-        border-radius: 2px;
-        box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-      }
-
-      .suggestion-form {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 2rem;
-        box-shadow: var(--shadow-card), var(--glow-purple);
-        max-width: 700px;
-        margin: 0 auto;
-      }
-
-      .suggestion-form textarea {
-        width: 100%;
-        padding: 0.8rem 1rem;
-        background: var(--bg-elevated);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        color: var(--text-primary);
-        font-family: var(--font-condensed);
-        font-size: 0.9rem;
-        resize: vertical;
-        outline: none;
-        transition: all var(--transition);
-        margin-bottom: 0.75rem;
-      }
-
-      .suggestion-form textarea:focus {
-        border-color: var(--color-purple-light);
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.05);
-      }
-
-      .suggestion-form textarea::placeholder {
-        color: var(--text-muted);
-      }
-
-      .suggestion-form input {
-        width: 100%;
-        padding: 0.6rem 1rem;
-        background: var(--bg-elevated);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        color: var(--text-primary);
-        font-family: var(--font-condensed);
-        font-size: 0.85rem;
-        outline: none;
-        transition: all var(--transition);
-        margin-bottom: 0.75rem;
-      }
-
-      .suggestion-form input:focus {
-        border-color: var(--color-purple-light);
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.05);
-      }
-
-      .suggestion-form input::placeholder {
-        color: var(--text-muted);
-      }
-
-      .btn-submit-suggestion {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.6rem 2rem;
-        background: var(--gradient-purple);
-        color: var(--text-inverse);
-        border: none;
-        border-radius: 4px;
-        font-family: var(--font-condensed);
-        font-weight: 700;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all var(--transition);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        box-shadow: var(--glow-purple);
-      }
-
-      .btn-submit-suggestion:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow:
-          var(--glow-purple-dark),
-          0 8px 40px rgba(139, 92, 246, 0.2);
-      }
-
-      /* ============================================================
-         CTA SECTION — GRADIENT PURPLE
-         ============================================================ */
-      .hub-cta {
-        background: var(--gradient-purple);
-        border-radius: 16px;
-        padding: 4rem;
-        text-align: center;
-        margin: 4rem 0;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 60px rgba(139, 92, 246, 0.2);
-        z-index: 2;
-      }
-
-      .hub-cta::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(255, 255, 255, 0.03) 2px,
-          rgba(255, 255, 255, 0.03) 4px
-        );
-        pointer-events: none;
-        animation: ctaScan 3s linear infinite;
-      }
-
-      @keyframes ctaScan {
-        0% {
-          transform: translateY(-100%);
-        }
-        100% {
-          transform: translateY(100%);
-        }
-      }
-
-      .hub-cta::after {
-        content: "✦ GO MECCA STAR ✦";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-6deg);
-        font-family: var(--font-tag);
-        font-size: 8rem;
-        color: rgba(255, 255, 255, 0.03);
-        pointer-events: none;
-        letter-spacing: 10px;
-      }
-
-      .hub-cta .cta-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .hub-cta h2 {
-        font-family: var(--font-display);
-        font-size: clamp(2rem, 3.5vw, 2.8rem);
-        font-weight: 800;
-        color: white;
-        letter-spacing: 2px;
-        margin-bottom: 0.75rem;
-      }
-
-      .hub-cta p {
-        color: rgba(255, 255, 255, 0.9);
-        font-family: var(--font-condensed);
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .cta-stats {
-        display: flex;
-        justify-content: center;
-        gap: 3rem;
-        flex-wrap: wrap;
-        margin-bottom: 2rem;
-      }
-
-      .cta-stat .stat-number {
-        display: block;
-        font-family: var(--font-display);
-        font-size: 2.5rem;
-        font-weight: 900;
-        color: white;
-        text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-      }
-
-      .cta-stat .stat-label {
-        font-family: var(--font-mono);
-        font-size: 0.6rem;
-        color: rgba(255, 255, 255, 0.6);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
-
-      .cta-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 2rem;
-      }
-
-      .cta-buttons .btn-challenge-primary {
-        background: white;
-        color: #1a102a;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      }
-
-      .cta-buttons .btn-challenge-primary:hover {
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      }
-
-      .cta-buttons .btn-challenge-outline {
-        background: transparent;
-        color: white;
-        border-color: rgba(255, 255, 255, 0.2);
-      }
-
-      .cta-buttons .btn-challenge-outline:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: white;
-        color: white;
-      }
-
-      .cta-testimonial {
-        padding-top: 1.5rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        max-width: 500px;
-        margin: 0 auto;
-      }
-
-      .cta-testimonial p {
-        font-style: italic;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 1rem;
-        margin-bottom: 0.3rem;
-      }
-
-      .cta-testimonial .testimonial-author {
-        font-family: var(--font-mono);
-        font-size: 0.6rem;
-        color: rgba(255, 255, 255, 0.4);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
 
       /* ============================================================
          THEME TOGGLE
@@ -2056,156 +422,7 @@
         font-weight: 600;
       }
 
-      /* ============================================================
-         RESPONSIVE
-         ============================================================ */
-      @media (max-width: 768px) {
-        .container {
-          padding: 0 1rem;
-        }
 
-        .hub-hero {
-          padding: 4rem 1.5rem;
-          min-height: 80vh;
-        }
-
-        .hero-graffiti-title {
-          font-size: 3rem;
-        }
-
-        .hero-graffiti-sub {
-          font-size: 1rem;
-        }
-
-        .cta-stats {
-          gap: 1.5rem;
-        }
-
-        .cta-stat .stat-number {
-          font-size: 2rem;
-        }
-
-        .features-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .artworks-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .artists-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .creators-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .bulletin-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .winners-carousel {
-          grid-template-columns: 1fr;
-        }
-
-        .challenge-actions {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .challenge-actions .btn-challenge {
-          justify-content: center;
-        }
-
-        .challenge-stats {
-          gap: 1rem;
-        }
-
-        .hub-cta {
-          padding: 2.5rem 1.5rem;
-        }
-
-        .hub-cta h2 {
-          font-size: 1.5rem;
-        }
-
-        .hub-cta::after {
-          font-size: 4rem;
-        }
-
-        .theme-toggle-wrapper {
-          bottom: 16px;
-          right: 16px;
-        }
-
-        .hub-hero::after {
-          font-size: 2rem;
-          right: 20px;
-          bottom: 20px;
-        }
-
-        .scroll-indicator {
-          display: none;
-        }
-
-        .cta-buttons {
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .cta-buttons .btn-challenge {
-          width: 100%;
-          justify-content: center;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .hero-graffiti-title {
-          font-size: 2.2rem;
-          letter-spacing: 4px;
-        }
-
-        .section-header h2 {
-          font-size: 1.6rem;
-        }
-
-        .artists-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .creators-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .hub-cta h2 {
-          font-size: 1.3rem;
-        }
-
-        .cta-stats {
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .challenge-card .challenge-card-body h3 {
-          font-size: 1.1rem;
-        }
-
-        .feature-card {
-          padding: 1.5rem 1rem;
-        }
-
-        .hub-cta::after {
-          font-size: 2.5rem;
-        }
-
-        .hub-hero::after {
-          font-size: 1.5rem;
-          right: 10px;
-          bottom: 10px;
-          opacity: 0.02;
-        }
-      }
     </style>
   </head>
   <body>
@@ -2478,599 +695,260 @@
 
     <!-- ====== MAIN ====== -->
     <main class="hub-main">
-      <div class="container">
-        <!-- ====== HERO — RED ====== -->
-        <section class="hub-hero section-theme-red" id="hubHero">
-          <div class="hero-layer-3">
+      <!-- ====== HERO — RED ====== -->
+      <section class="page-hero" id="hubHero" data-hero-key="hub">
+        <div class="hero-layer hero-layer-1" id="heroLayer1">
+          <!-- Layer 1 injected by HeroController -->
+        </div>
+        <div
+          class="hero-layer hero-layer-2"
+          id="heroLayer2"
+          data-enabled="false"
+        >
+          <!-- Layer 2 injected by HeroController -->
+        </div>
+        <div class="hero-layer hero-layer-3">
+          <div class="hero-content">
             <h1 class="hero-graffiti-title">MECCA HUB</h1>
             <p class="hero-graffiti-sub">Where Art &amp; Community Collide</p>
-          </div>
-          <div class="scroll-indicator">
-            <span class="scroll-text">▼ Scroll</span>
-            <div class="scroll-line"></div>
-          </div>
-        </section>
 
-        <!-- ====== CHEERS — ORANGE ====== -->
-        <section class="cheers-explanation section-theme-orange">
-          <div class="cheers-icon">🍻</div>
-          <h3>How Challenge Winners Are Chosen</h3>
-          <p>
-            Every challenge submission can receive <strong>Cheers</strong> from
-            the community. The artwork with the most <strong>Cheers</strong> at
-            the end of each challenge wins!
-          </p>
-          <p>
-            🏆 <strong>Intuit Challenges</strong> (Daily, Weekly, Monthly,
-            Yearly) have special prizes and recognition.
-            <a href="/pages/community/points.html" class="prize-link"
-              >View all prizes →</a
-            >
-          </p>
-          <div
-            style="
-              margin-top: 0.75rem;
-              display: flex;
-              gap: 0.5rem;
-              justify-content: center;
-              flex-wrap: wrap;
-            "
-          >
-            <span class="challenge-badge">
-              <i class="fas fa-bolt"></i> Intuit
-              <span class="intuit-badge">Official</span>
-            </span>
-          </div>
-        </section>
-
-        <!-- ====== DAILY CHALLENGE — PINK ====== -->
-        <section
-          class="daily-challenge-section section-theme-pink"
-          id="daily-challenge"
-        >
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-bolt"></i> Daily Challenge
-            </div>
-            <h2>
-              <span
-                class="glitch-header"
-                data-text="Today's Creative Challenge"
-              >
-                Today's Creative Challenge
-              </span>
-            </h2>
-            <p>Join artists worldwide in today's creative prompt</p>
-            <div class="challenge-timer">
-              <span
-                >New challenge in:
-                <strong id="countdown">24:00:00</strong></span
-              >
+            <div class="hero-live-stats">
+              <div class="hero-stat">
+                <span class="hero-stat-num" id="heroStatArtists">—</span>
+                <span class="hero-stat-label">Artists</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hero-stat-num" id="heroStatArtworks">—</span>
+                <span class="hero-stat-label">Artworks</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hero-stat-num" id="heroStatChallenges">—</span>
+                <span class="hero-stat-label">Active Challenges</span>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div class="challenge-card">
-            <div class="challenge-card-header">
-              <div class="challenge-badge">
-                <i class="fas fa-bolt"></i>
-                Daily Challenge
+        <div class="hero-scroll-indicator">
+          <span class="text">▼ Scroll</span>
+          <div class="line"></div>
+        </div>
+      </section>
+
+      <div class="container">
+        <!-- ==================== ZONE 1: RIGHT NOW ==================== -->
+
+        <!-- ====== TODAY'S CHALLENGE — LOUDEST SECTION ====== -->
+        <section class="zone-today-challenge" id="daily-challenge">
+          <div class="today-challenge-panel">
+            <div class="today-challenge-header">
+              <div class="today-badge">
+                <i class="fas fa-bolt"></i> Daily Challenge
+              </div>
+              <div class="today-countdown-wrap">
+                <span class="today-countdown-label">Resets in</span>
+                <span class="today-countdown" id="countdown">24:00:00</span>
+              </div>
+            </div>
+
+            <div class="today-challenge-body">
+              <div class="today-challenge-meta">
+                <span class="today-date" id="challenge-date">Loading...</span>
                 <span class="intuit-badge">Intuit</span>
               </div>
-              <div class="challenge-countdown">
-                <i class="far fa-calendar-alt"></i>
-                <span id="challenge-date">Loading...</span>
-              </div>
-            </div>
-            <div class="challenge-card-body">
-              <h3 id="daily-prompt-title">"Golden Hour Glow"</h3>
-              <p id="daily-prompt-description">
-                Capture the magic of the golden hour — that brief moment when
-                the sun casts a warm, golden light over everything. Create a
-                piece that celebrates this beautiful transition.
+              <h1 class="today-challenge-title" id="daily-prompt-title">
+                "Loading..."
+              </h1>
+              <p
+                class="today-challenge-description"
+                id="daily-prompt-description"
+              >
+                Loading today's prompt...
               </p>
-
               <div class="challenge-tags" id="daily-tags">
-                <span class="challenge-tag">#goldenhour</span>
-                <span class="challenge-tag">#warmth</span>
-                <span class="challenge-tag">#light</span>
-                <span class="challenge-tag">#atmosphere</span>
+                <span class="challenge-tag">#loading</span>
               </div>
+            </div>
 
-              <div class="challenge-actions">
-                <button
-                  class="btn-challenge btn-challenge-primary"
-                  id="start-challenge-btn"
-                >
-                  <i class="fas fa-paint-brush"></i> Start Creating
-                </button>
-                <button
-                  class="btn-challenge btn-challenge-outline"
-                  id="share-challenge-btn"
-                >
-                  <i class="fas fa-share"></i> Share
-                </button>
-                <button
-                  class="btn-challenge btn-challenge-outline"
-                  id="view-submissions-btn"
-                >
-                  <i class="fas fa-eye"></i> View Submissions
-                </button>
-                <button
-                  class="btn-challenge btn-challenge-daily"
-                  id="daily-challenges-btn"
-                >
-                  <i class="fas fa-calendar-alt"></i> Daily Challenges
-                </button>
-                <a
-                  href="/pages/community/points.html"
-                  class="btn-challenge btn-challenge-gold"
-                >
-                  <i class="fas fa-coins"></i> View Prizes
-                </a>
+            <div class="today-challenge-actions">
+              <button
+                class="btn-challenge btn-challenge-primary btn-challenge-big"
+                id="start-challenge-btn"
+              >
+                <i class="fas fa-paint-brush"></i> Start Creating
+              </button>
+              <button
+                class="btn-challenge btn-challenge-outline"
+                id="share-challenge-btn"
+              >
+                <i class="fas fa-share"></i> Share
+              </button>
+              <button
+                class="btn-challenge btn-challenge-outline"
+                id="view-submissions-btn"
+              >
+                <i class="fas fa-eye"></i> View Submissions
+              </button>
+              <a
+                href="/pages/community/points.html"
+                class="btn-challenge btn-challenge-outline"
+              >
+                <i class="fas fa-coins"></i> View Prizes
+              </a>
+            </div>
+
+            <div class="today-challenge-stats">
+              <div class="today-stat">
+                <span class="today-stat-value" id="daily-participants">0</span>
+                <span class="today-stat-label">Participants Today</span>
               </div>
-
-              <div class="challenge-stats">
-                <div class="challenge-stat">
-                  <span class="stat-number" id="daily-participants">0</span>
-                  <span class="stat-label">Participants Today</span>
-                </div>
-                <div class="challenge-stat">
-                  <span class="stat-number" id="daily-submissions">0</span>
-                  <span class="stat-label">Submissions</span>
-                </div>
+              <div class="today-stat">
+                <span class="today-stat-value" id="daily-submissions">0</span>
+                <span class="today-stat-label">Submissions</span>
+              </div>
+              <div class="today-stat-note">
+                <i class="fas fa-info-circle"></i>
+                Winners are chosen by community cheers.
+                <a href="/pages/community/points.html">How it works →</a>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- ====== COMMUNITY FEATURES — GREEN ====== -->
-        <section class="community-features section-theme-green">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-rocket"></i> Explore
-            </div>
+        <!-- ====== CHALLENGE LADDER — WEEKLY / MONTHLY / YEARLY ====== -->
+        <section class="zone-challenge-ladder" id="challenge-ladder">
+          <div class="ladder-header">
+            <div class="section-badge">✦ The Ladder ✦</div>
             <h2>
-              <span class="glitch-header" data-text="Community Features">
-                Community Features
-              </span>
+              <span class="glitch-header" data-text="Beyond Today"
+                >Beyond Today</span
+              >
             </h2>
-            <p>Everything our community has to offer</p>
-          </div>
-
-          <div class="features-grid">
-            <a href="/pages/community/challenges.html" class="feature-card">
-              <span class="feature-icon"><i class="fas fa-trophy"></i></span>
-              <h3>Challenges</h3>
-              <p>Join themed art challenges with prizes and recognition</p>
-              <span class="feature-badge active">Active Now</span>
-            </a>
-
-            <a href="/pages/community/gallery.html" class="feature-card">
-              <span class="feature-icon"><i class="fas fa-images"></i></span>
-              <h3>Community Gallery</h3>
-              <p>Browse and showcase artwork from our talented members</p>
-              <span class="feature-badge count" id="total-artworks"
-                >0 Artworks</span
-              >
-            </a>
-
-            <a href="/pages/community/search-users.html" class="feature-card">
-              <span class="feature-icon"><i class="fas fa-users"></i></span>
-              <h3>Artist Profiles</h3>
-              <p>Connect with fellow artists and build your network</p>
-              <span class="feature-badge count" id="total-members"
-                >0 Members</span
-              >
-            </a>
-
-            <div class="feature-card" data-soon="true">
-              <span class="feature-icon"><i class="fas fa-comments"></i></span>
-              <h3>Live Chat &amp; Forums</h3>
-              <p>Discuss techniques, get feedback, and make friends</p>
-              <span class="feature-badge soon">Coming Soon</span>
-            </div>
-
-            <div class="feature-card" data-soon="true">
-              <span class="feature-icon"
-                ><i class="fas fa-hands-helping"></i
-              ></span>
-              <h3>Collaboration Hub</h3>
-              <p>Find partners for collaborative projects and art trades</p>
-              <span class="feature-badge soon">Coming Soon</span>
-            </div>
-
-            <a href="/pages/community/analytics.html" class="feature-card">
-              <span class="feature-icon"
-                ><i class="fas fa-chart-line"></i
-              ></span>
-              <h3>Progress Tracking</h3>
-              <p>Track your artistic journey and skill development</p>
-              <span class="feature-badge new">New</span>
-            </a>
-          </div>
-        </section>
-
-        <!-- ====== WEEKLY CHALLENGE — CYAN ====== -->
-        <section
-          class="weekly-challenge-section section-theme-cyan"
-          id="weekly-challenge"
-        >
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-calendar-week"></i> Weekly Challenge
-            </div>
-            <h2>
-              <span
-                class="glitch-header"
-                data-text="Build Consistency One Week at a Time"
-              >
-                Build Consistency, One Week at a Time
-              </span>
-            </h2>
-            <p>Develop your skills with a new theme every Monday</p>
-          </div>
-
-          <div
-            class="purpose-paragraph"
-            style="border-color: var(--color-orange)"
-          >
-            <i class="fas fa-quote-left" style="color: var(--color-orange)"></i>
             <p>
-              Weekly challenges help you build a sustainable creative habit.
-              With a new theme every Monday, you'll have just enough time to
-              explore an idea deeply while maintaining momentum.
+              Weekly, monthly, and yearly challenges — climb as high as you dare
             </p>
           </div>
 
-          <div class="challenge-card weekly">
-            <div class="challenge-card-header">
-              <div class="challenge-badge">
-                <i class="fas fa-calendar-week"></i>
-                <span id="weekly-date-range">Week 14 · March 31 - April 6</span>
-                <span class="intuit-badge">Intuit</span>
+          <div class="ladder-grid">
+            <!-- WEEKLY -->
+            <div class="ladder-card ladder-weekly" id="weekly-challenge">
+              <div class="ladder-card-top">
+                <span class="ladder-tier">Weekly</span>
+                <span class="ladder-countdown" id="weekly-days-left">…</span>
               </div>
-              <div class="challenge-days-left">
-                <i class="fas fa-hourglass-half"></i>
-                <span id="weekly-days-left">6 days left</span>
+              <div class="ladder-card-body">
+                <div class="ladder-meta" id="weekly-date-range">Loading…</div>
+                <h3 id="weekly-title">"Loading..."</h3>
+                <p id="weekly-description">Loading weekly challenge...</p>
+                <div class="challenge-tags" id="weekly-tags">
+                  <span class="challenge-tag">#loading</span>
+                </div>
+                <div class="ladder-prize" id="weekly-prize">
+                  <i class="fas fa-gem"></i> Loading prize…
+                </div>
               </div>
-            </div>
-            <div class="challenge-card-body">
-              <h3 id="weekly-title">"Urban Jungle"</h3>
-              <p id="weekly-description">
-                Create artwork that blends city architecture with natural
-                elements. Think vines growing on skyscrapers, tree roots
-                breaking through pavement, or wildlife adapting to urban
-                environments.
-              </p>
-
-              <div class="challenge-tags" id="weekly-tags">
-                <span class="challenge-tag">#cityscape</span>
-                <span class="challenge-tag">#nature</span>
-                <span class="challenge-tag">#surreal</span>
-                <span class="challenge-tag">#contrast</span>
-              </div>
-
-              <div class="challenge-actions">
+              <div class="ladder-card-actions">
                 <button
                   class="btn-challenge btn-challenge-primary"
                   id="weekly-start-btn"
                 >
-                  <i class="fas fa-paint-brush"></i> Join Weekly Challenge
-                </button>
-                <button
-                  class="btn-challenge btn-challenge-outline"
-                  id="weekly-share-btn"
-                >
-                  <i class="fas fa-share"></i> Share
+                  <i class="fas fa-plus-circle"></i> Join
                 </button>
                 <button
                   class="btn-challenge btn-challenge-outline"
                   id="weekly-view-btn"
                 >
-                  <i class="fas fa-eye"></i> View Submissions
+                  <i class="fas fa-eye"></i> View
                 </button>
               </div>
-
-              <div class="challenge-prize" id="weekly-prize">
-                <i class="fas fa-gem"></i> Prize: Featured artist spot + 500
-                community points
-              </div>
             </div>
-          </div>
-        </section>
 
-        <!-- ====== MONTHLY CHALLENGE — BLUE ====== -->
-        <section
-          class="monthly-challenge-section section-theme-blue"
-          id="monthly-challenge"
-        >
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-calendar-alt"></i> Monthly Challenge
-            </div>
-            <h2>
-              <span
-                class="glitch-header"
-                data-text="Immerse Yourself in a Theme"
-              >
-                Immerse Yourself in a Theme
-              </span>
-            </h2>
-            <p>Create your masterpiece over four weeks</p>
-          </div>
-
-          <div
-            class="purpose-paragraph"
-            style="border-color: var(--color-gold)"
-          >
-            <i class="fas fa-quote-left" style="color: var(--color-gold)"></i>
-            <p>
-              Monthly challenges are designed for deeper exploration and
-              storytelling. With four weeks to develop your concept, you'll have
-              the time to create portfolio-worthy pieces and receive meaningful
-              feedback.
-            </p>
-          </div>
-
-          <div class="challenge-card monthly">
-            <div class="challenge-card-header">
-              <div class="challenge-badge">
-                <i class="fas fa-calendar-alt"></i>
-                <span id="monthly-date">April 2024 · Mythical Realms</span>
-                <span class="intuit-badge">Intuit</span>
+            <!-- MONTHLY -->
+            <div class="ladder-card ladder-monthly" id="monthly-challenge">
+              <div class="ladder-card-top">
+                <span class="ladder-tier">Monthly</span>
+                <span class="ladder-countdown" id="monthly-days-left">…</span>
               </div>
-              <div class="challenge-days-left">
-                <i class="fas fa-hourglass-half"></i>
-                <span id="monthly-days-left">24 days left</span>
+              <div class="ladder-card-body">
+                <div class="ladder-meta" id="monthly-date">Loading…</div>
+                <h3 id="monthly-title">"Loading..."</h3>
+                <p id="monthly-description">Loading monthly challenge...</p>
+                <div class="challenge-tags" id="monthly-tags">
+                  <span class="challenge-tag">#loading</span>
+                </div>
+                <div class="ladder-prize" id="monthly-prize">
+                  <i class="fas fa-trophy"></i> Loading prize…
+                </div>
               </div>
-            </div>
-            <div class="challenge-card-body">
-              <h3 id="monthly-title">"Mythical Realms Reimagined"</h3>
-              <p id="monthly-description">
-                Take a classic mythical creature or legend and give it a fresh,
-                unexpected twist. What would a phoenix look like in a cyberpunk
-                world? How does a dragon adapt to climate change?
-              </p>
-
-              <div class="challenge-tags" id="monthly-tags">
-                <span class="challenge-tag">#mythology</span>
-                <span class="challenge-tag">#fantasy</span>
-                <span class="challenge-tag">#reimagine</span>
-                <span class="challenge-tag">#worldbuilding</span>
-              </div>
-
-              <div class="challenge-actions">
+              <div class="ladder-card-actions">
                 <button
                   class="btn-challenge btn-challenge-primary"
                   id="monthly-start-btn"
                 >
-                  <i class="fas fa-paint-brush"></i> Join Monthly Challenge
-                </button>
-                <button
-                  class="btn-challenge btn-challenge-outline"
-                  id="monthly-share-btn"
-                >
-                  <i class="fas fa-share"></i> Share
+                  <i class="fas fa-plus-circle"></i> Join
                 </button>
                 <button
                   class="btn-challenge btn-challenge-outline"
                   id="monthly-view-btn"
                 >
-                  <i class="fas fa-eye"></i> View Submissions
+                  <i class="fas fa-eye"></i> View
                 </button>
               </div>
+            </div>
 
-              <div class="challenge-prize" id="monthly-prize">
-                <i class="fas fa-trophy"></i> Prize: $100 gift card + 1-year
-                premium membership + Featured exhibition
+            <!-- YEARLY — SPECIAL -->
+            <div class="ladder-card ladder-yearly" id="yearly-challenge">
+              <div class="ladder-crown"><i class="fas fa-crown"></i></div>
+              <div class="ladder-card-top">
+                <span class="ladder-tier">Yearly · Grand Prize</span>
+                <span class="ladder-countdown" id="yearly-days-left">…</span>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ====== YEARLY CHALLENGE — PURPLE ====== -->
-        <section
-          class="yearly-challenge-section section-theme-purple"
-          id="yearly-challenge"
-        >
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-calendar-check"></i> Yearly Challenge
-            </div>
-            <h2>
-              <span
-                class="glitch-header"
-                data-text="The Ultimate Test of Dedication"
-              >
-                The Ultimate Test of Dedication
-              </span>
-            </h2>
-            <p>12 months of artistic transformation</p>
-          </div>
-
-          <div
-            class="purpose-paragraph"
-            style="border-color: var(--color-green)"
-          >
-            <i class="fas fa-quote-left" style="color: var(--color-green)"></i>
-            <p>
-              The yearly challenge is our most ambitious program - a 12-month
-              artistic journey with quarterly milestones, mentorship
-              opportunities, and a final showcase. Transform your practice and
-              compete for the title of Artisan of the Year.
-            </p>
-          </div>
-
-          <div class="challenge-card yearly">
-            <div class="challenge-card-header">
-              <div class="challenge-badge">
-                <i class="fas fa-calendar-check"></i>
-                <span id="yearly-date"
-                  >2024 Grand Challenge · "Metamorphosis"</span
+              <div class="ladder-card-body">
+                <div class="ladder-meta" id="yearly-date">Loading…</div>
+                <h3 id="yearly-title">"Loading..."</h3>
+                <p id="yearly-description">Loading yearly challenge...</p>
+                <div class="challenge-tags" id="yearly-tags">
+                  <span class="challenge-tag">#loading</span>
+                </div>
+                <div class="ladder-soul-badge">
+                  <span class="soul-badge-icon">👑</span>
+                  <div>
+                    <div class="soul-badge-label">Grand Prize</div>
+                    <div class="soul-badge-name">Soul Chaser Badge</div>
+                  </div>
+                </div>
+                <div
+                  class="ladder-prize"
+                  id="yearly-prize"
+                  style="margin-top: 0.75rem"
                 >
-                <span class="intuit-badge">Intuit</span>
+                  <i class="fas fa-crown"></i> Loading prize…
+                </div>
               </div>
-              <div class="challenge-days-left">
-                <i class="fas fa-hourglass-half"></i>
-                <span id="yearly-days-left">275 days left</span>
-              </div>
-            </div>
-            <div class="challenge-card-body">
-              <h3 id="yearly-title">
-                "Metamorphosis: The Year of Transformation"
-              </h3>
-              <p id="yearly-description">
-                Document transformation through 12 themed chapters - one for
-                each month. From personal growth to environmental change, from
-                character evolution to artistic style development.
-              </p>
-
-              <div class="challenge-tags" id="yearly-tags">
-                <span class="challenge-tag">#transformation</span>
-                <span class="challenge-tag">#growth</span>
-                <span class="challenge-tag">#evolution</span>
-                <span class="challenge-tag">#series</span>
-              </div>
-
-              <div class="challenge-actions">
+              <div class="ladder-card-actions">
                 <button
                   class="btn-challenge btn-challenge-primary"
                   id="yearly-start-btn"
                 >
-                  <i class="fas fa-paint-brush"></i> Join Yearly Challenge
-                </button>
-                <button
-                  class="btn-challenge btn-challenge-outline"
-                  id="yearly-share-btn"
-                >
-                  <i class="fas fa-share"></i> Share
+                  <i class="fas fa-plus-circle"></i> Join
                 </button>
                 <button
                   class="btn-challenge btn-challenge-outline"
                   id="yearly-view-btn"
                 >
-                  <i class="fas fa-eye"></i> View Submissions
+                  <i class="fas fa-eye"></i> View
                 </button>
               </div>
-
-              <div class="challenge-prize" id="yearly-prize">
-                <i class="fas fa-crown"></i> Grand Prize: $5,000 + Solo
-                exhibition + Mentorship program + "Artisan of the Year" title +
-                <strong>Soul Chaser Badge</strong>
-              </div>
             </div>
           </div>
         </section>
 
-        <!-- ====== BULLETIN BOARD — GOLD ====== -->
-        <section class="bulletin-board section-theme-gold">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-newspaper"></i> Announcements
-            </div>
-            <h2>
-              <span class="glitch-header" data-text="Community Center">
-                Community Center
-              </span>
-            </h2>
-            <p>Stay updated with the latest news and announcements</p>
-          </div>
+        <!-- ==================== ZONE 2: THE ROOM ==================== -->
 
-          <div class="bulletin-grid" id="bulletin-grid">
-            <div class="bulletin-post">
-              <div class="post-date">April 1, 2024</div>
-              <div class="post-title">🎉 Welcome to the New Community Hub!</div>
-              <div class="post-excerpt">
-                We're thrilled to launch our redesigned community space. Explore
-                challenges, connect with artists, and share your work!
-              </div>
-              <a href="#" class="post-link">Read More →</a>
-            </div>
-            <div class="bulletin-post">
-              <div class="post-date">March 28, 2024</div>
-              <div class="post-title">
-                🏆 Monthly Challenge Winners Announced
-              </div>
-              <div class="post-excerpt">
-                Congratulations to our March challenge winners! Check out the
-                incredible artwork that took the top spots.
-              </div>
-              <a href="#" class="post-link">View Winners →</a>
-            </div>
-            <div class="bulletin-post">
-              <div class="post-date">March 25, 2024</div>
-              <div class="post-title">🚀 New Feature: Activity Feed</div>
-              <div class="post-excerpt">
-                Stay up to date with everything happening in the community with
-                our new real-time activity feed.
-              </div>
-              <a href="#" class="post-link">Learn More →</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- ====== RECENT ACTIVITY — GREEN ====== -->
-        <section class="recent-activity section-theme-green">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-clock"></i> Live Feed
-            </div>
-            <h2>
-              <span class="glitch-header" data-text="Recent Community Activity">
-                Recent Community Activity
-              </span>
-            </h2>
-            <p>See what our community has been creating</p>
-          </div>
-
-          <div class="activity-grid" id="activity-grid">
-            <div class="activity-item">
-              <div class="activity-icon"><i class="fas fa-upload"></i></div>
-              <div class="activity-content">
-                <div class="activity-text">
-                  <strong>Sarah J.</strong> uploaded a new artwork "Dreamscape"
-                </div>
-                <div class="activity-time">2 hours ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon"><i class="fas fa-heart"></i></div>
-              <div class="activity-content">
-                <div class="activity-text">
-                  <strong>Alex R.</strong> cheered for "Cyber Garden" by
-                  <strong>Mira C.</strong>
-                </div>
-                <div class="activity-time">4 hours ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon"><i class="fas fa-trophy"></i></div>
-              <div class="activity-content">
-                <div class="activity-text">
-                  <strong>Jordan L.</strong> won the Daily Challenge with
-                  "Golden Hour Glow"
-                </div>
-                <div class="activity-time">6 hours ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon"><i class="fas fa-user-plus"></i></div>
-              <div class="activity-content">
-                <div class="activity-text">
-                  <strong>Taylor K.</strong> joined the community
-                </div>
-                <div class="activity-time">8 hours ago</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ====== FEATURED ARTWORKS — PINK ====== -->
-        <section class="featured-artworks section-theme-pink">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-fire"></i> Trending
-            </div>
+        <!-- ====== FEATURED ARTWORKS — 3 LARGE ====== -->
+        <section class="zone-showcase zone-artworks">
+          <div class="zone-header">
+            <div class="section-badge">✦ Trending</div>
             <h2>
               <span class="glitch-header" data-text="Featured Artworks">
                 Featured Artworks
@@ -3079,49 +957,40 @@
             <p>Most engaging creations from the community</p>
           </div>
 
-          <div class="artworks-grid" id="featured-artworks-grid">
-            <div class="artwork-card">
-              <div class="artwork-image"><i class="fas fa-palette"></i></div>
-              <div class="artwork-info">
-                <h4>Cyber Garden</h4>
-                <p>by Mira Chen</p>
-                <div class="artwork-meta">
-                  <span><i class="fas fa-heart"></i> 234</span>
-                  <span><i class="fas fa-eye"></i> 1.2K</span>
-                </div>
-              </div>
-            </div>
-            <div class="artwork-card">
-              <div class="artwork-image"><i class="fas fa-mountain"></i></div>
-              <div class="artwork-info">
-                <h4>Dreamscape</h4>
-                <p>by Sarah Johnson</p>
-                <div class="artwork-meta">
-                  <span><i class="fas fa-heart"></i> 189</span>
-                  <span><i class="fas fa-eye"></i> 956</span>
-                </div>
-              </div>
-            </div>
-            <div class="artwork-card">
-              <div class="artwork-image"><i class="fas fa-city"></i></div>
-              <div class="artwork-info">
-                <h4>Urban Jungle</h4>
-                <p>by Alex Rivera</p>
-                <div class="artwork-meta">
-                  <span><i class="fas fa-heart"></i> 156</span>
-                  <span><i class="fas fa-eye"></i> 789</span>
-                </div>
-              </div>
-            </div>
+          <div class="showcase-artworks" id="featured-artworks-grid">
+            <!-- Loaded by community-hub.js -->
           </div>
+
+          <a href="/pages/community/gallery.html" class="zone-view-all">
+            Browse Full Gallery <i class="fas fa-arrow-right"></i>
+          </a>
         </section>
 
-        <!-- ====== FEATURED ARTISTS — GOLD ====== -->
-        <section class="featured-artists-section section-theme-gold">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-star"></i> Top Creators
-            </div>
+        <!-- ====== FEATURED TUTORIALS — NEW ====== -->
+        <section class="zone-showcase zone-tutorials">
+          <div class="zone-header">
+            <div class="section-badge">✦ Learn</div>
+            <h2>
+              <span class="glitch-header" data-text="Featured Tutorials">
+                Featured Tutorials
+              </span>
+            </h2>
+            <p>Hand-picked guides to level up your practice</p>
+          </div>
+
+          <div class="showcase-tutorials" id="featured-tutorials-grid">
+            <!-- Loaded by community-hub.js -->
+          </div>
+
+          <a href="/pages/tutorials/tutorials.html" class="zone-view-all">
+            Browse All Tutorials <i class="fas fa-arrow-right"></i>
+          </a>
+        </section>
+
+        <!-- ====== FEATURED ARTISTS — HORIZONTAL SCROLL + LEADERBOARD ====== -->
+        <section class="zone-showcase zone-artists">
+          <div class="zone-header">
+            <div class="section-badge">✦ Spotlight</div>
             <h2>
               <span class="glitch-header" data-text="Featured Artists">
                 Featured Artists
@@ -3130,55 +999,26 @@
             <p>Our most active community members</p>
           </div>
 
-          <div class="artists-grid" id="featured-artists-grid">
-            <div class="artist-card">
-              <div class="artist-avatar">MC</div>
-              <h4>Mira Chen</h4>
-              <p>Digital Illustrator</p>
-              <div class="artist-stats">
-                <span>🏆 12 wins</span>
-                <span>❤️ 2.3K</span>
-              </div>
-            </div>
-            <div class="artist-card">
-              <div class="artist-avatar">AR</div>
-              <h4>Alex Rivera</h4>
-              <p>Concept Artist</p>
-              <div class="artist-stats">
-                <span>🏆 8 wins</span>
-                <span>❤️ 1.8K</span>
-              </div>
-            </div>
-            <div class="artist-card">
-              <div class="artist-avatar">SJ</div>
-              <h4>Sarah Johnson</h4>
-              <p>Portrait Artist</p>
-              <div class="artist-stats">
-                <span>🏆 10 wins</span>
-                <span>❤️ 2.1K</span>
-              </div>
-            </div>
-            <div class="artist-card">
-              <div class="artist-avatar">JL</div>
-              <h4>Jordan Lee</h4>
-              <p>Environmental Artist</p>
-              <div class="artist-stats">
-                <span>🏆 6 wins</span>
-                <span>❤️ 1.4K</span>
-              </div>
+          <div class="showcase-artists" id="featured-artists-grid">
+            <!-- Loaded by community-hub.js -->
+          </div>
+
+          <!-- Weekly Leaderboard strip -->
+          <div class="zone-leaderboard">
+            <div class="leaderboard-label">✦ Weekly Leaderboard ✦</div>
+            <div class="leaderboard-track" id="creators-grid">
+              <!-- Loaded by community-hub.js -->
             </div>
           </div>
         </section>
 
-        <!-- ====== WINNERS — PURPLE ====== -->
-        <section class="winners-section section-theme-purple">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-trophy"></i> Hall of Fame
-            </div>
+        <!-- ====== HALL OF FAME — FULL WIDTH ====== -->
+        <section class="zone-hall">
+          <div class="zone-header">
+            <div class="section-badge">✦ Hall of Fame</div>
             <h2>
-              <span class="glitch-header" data-text="Monthly Challenge Winners">
-                Monthly Challenge Winners
+              <span class="glitch-header" data-text="Monthly Winners">
+                Monthly Winners
               </span>
             </h2>
             <p>Celebrating our top artists</p>
@@ -3186,194 +1026,246 @@
 
           <div class="winners-carousel-container">
             <div class="winners-carousel" id="winners-carousel">
-              <div class="winner-item">
-                <div class="winner-placeholder">
-                  <div class="placeholder-icon">🏆</div>
-                  <div class="placeholder-rank">#1 Winner</div>
-                  <div class="placeholder-text">Mira Chen</div>
-                </div>
-              </div>
-              <div class="winner-item">
-                <div class="winner-placeholder">
-                  <div class="placeholder-icon">🥈</div>
-                  <div class="placeholder-rank">#2 Winner</div>
-                  <div class="placeholder-text">Alex Rivera</div>
-                </div>
-              </div>
-              <div class="winner-item">
-                <div class="winner-placeholder">
-                  <div class="placeholder-icon">🥉</div>
-                  <div class="placeholder-rank">#3 Winner</div>
-                  <div class="placeholder-text">Sarah Johnson</div>
-                </div>
-              </div>
+              <!-- Loaded by community-hub.js -->
             </div>
-          </div>
-
-          <div style="text-align: center; margin-top: 1.5rem">
-            <a
-              href="#"
-              class="btn-challenge btn-challenge-outline"
-              style="display: inline-flex; align-items: center; gap: 0.5rem"
-            >
-              View All Winners <i class="fas fa-arrow-right"></i>
-            </a>
           </div>
         </section>
 
-        <!-- ====== TOP CREATORS — ORANGE ====== -->
-        <section class="top-creators-section section-theme-orange">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-crown"></i> Leaderboard
-            </div>
+        <!-- ====== COMMUNITY CENTER — NEWS SLIDER ====== -->
+        <section class="zone-bulletin">
+          <div class="zone-header">
+            <div class="section-badge">✦ Community Center</div>
             <h2>
-              <span class="glitch-header" data-text="Weekly Top Creators">
-                Weekly Top Creators
+              <span class="glitch-header" data-text="Latest from the Cyber Den">
+                Latest from the Cyber Den
               </span>
             </h2>
-            <p>Most active and inspiring artists this week</p>
+            <p>Announcements, news, and community highlights</p>
           </div>
 
-          <div style="text-align: center; margin-top: 0; margin-bottom: 1.5rem">
-            <a
-              href="/pages/community/points.html"
-              class="btn-challenge btn-challenge-outline"
-              style="
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem;
-                border-color: rgba(255, 107, 0, 0.2);
-                color: var(--color-orange);
-              "
-            >
-              <i class="fas fa-coins"></i> View Points &amp; Prizes
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-
-          <div class="creators-grid" id="creators-grid">
-            <div class="creator-card">
-              <div class="creator-rank gold">#1</div>
-              <div class="creator-avatar">MC</div>
-              <div class="creator-info">
-                <div class="creator-name">Mira Chen</div>
-                <div class="creator-stats">
-                  <span>🔥 14 submissions</span>
-                  <span>❤️ 342 cheers</span>
-                </div>
-              </div>
-              <div class="creator-points">1,247 pts</div>
-            </div>
-            <div class="creator-card">
-              <div class="creator-rank silver">#2</div>
-              <div class="creator-avatar">AR</div>
-              <div class="creator-info">
-                <div class="creator-name">Alex Rivera</div>
-                <div class="creator-stats">
-                  <span>🔥 11 submissions</span>
-                  <span>❤️ 278 cheers</span>
-                </div>
-              </div>
-              <div class="creator-points">1,012 pts</div>
-            </div>
-            <div class="creator-card">
-              <div class="creator-rank bronze">#3</div>
-              <div class="creator-avatar">SJ</div>
-              <div class="creator-info">
-                <div class="creator-name">Sarah Johnson</div>
-                <div class="creator-stats">
-                  <span>🔥 9 submissions</span>
-                  <span>❤️ 219 cheers</span>
-                </div>
-              </div>
-              <div class="creator-points">876 pts</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ====== SUGGESTION BOX — PURPLE ====== -->
-        <section class="suggestion-box section-theme-purple">
-          <div class="section-header">
-            <div class="section-badge">
-              <i class="fas fa-lightbulb"></i> Share Your Voice
-            </div>
-            <h2>
-              <span class="glitch-header" data-text="Suggestion Box">
-                Suggestion Box
-              </span>
-            </h2>
-            <p>Help us make Art Mecca better for everyone</p>
-          </div>
-
-          <div class="suggestion-form" id="suggestion-form">
-            <textarea
-              id="suggestion-idea"
-              placeholder="What would you like to see on Art Mecca? Feature ideas, improvements, or anything else..."
-              rows="4"
-            ></textarea>
-            <input
-              type="text"
-              id="suggestion-name"
-              placeholder="Your name (optional)"
-            />
-            <button type="submit" class="btn-submit-suggestion">
-              <i class="fas fa-paper-plane"></i> Submit Suggestion
-            </button>
-          </div>
-        </section>
-
-        <!-- ====== CTA — PINK (final section) ====== -->
-        <section class="hub-cta section-theme-pink">
-          <div class="cta-content">
-            <h2>Ready to Join Our Creative Community?</h2>
-            <p>
-              Connect with thousands of artists, share your work, get feedback,
-              and grow together.
-            </p>
-
-            <div class="cta-stats">
-              <div class="cta-stat">
-                <span class="stat-number" id="cta-members">12.4K</span>
-                <span class="stat-label">Active Members</span>
-              </div>
-              <div class="cta-stat">
-                <span class="stat-number" id="cta-artworks">8.7K</span>
-                <span class="stat-label">Artworks Shared</span>
-              </div>
-              <div class="cta-stat">
-                <span class="stat-number" id="cta-submissions">342</span>
-                <span class="stat-label">Daily Challenge Submissions</span>
-              </div>
+          <div class="bulletin-slider-container" id="bulletin-slider-container">
+            <div class="bulletin-slider" id="bulletin-slider">
+              <!-- Slides injected by community-hub.js -->
             </div>
 
-            <div class="cta-buttons">
-              <a
-                href="/pages/auth/register.html"
-                class="btn-challenge btn-challenge-primary"
-                style="padding: 0.8rem 2.5rem; font-size: 1rem"
+            <div class="bulletin-slider-controls">
+              <button
+                class="bulletin-slider-btn prev-btn"
+                id="bulletinPrevBtn"
+                aria-label="Previous announcement"
               >
-                <i class="fas fa-user-plus"></i> Join Art Mecca — It's Free
-              </a>
-              <a
-                href="/pages/auth/login.html"
-                class="btn-challenge btn-challenge-outline"
-                style="padding: 0.8rem 2.5rem; font-size: 1rem"
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <div class="bulletin-slider-dots" id="bulletinDots">
+                <!-- Dots injected by community-hub.js -->
+              </div>
+              <button
+                class="bulletin-slider-btn next-btn"
+                id="bulletinNextBtn"
+                aria-label="Next announcement"
               >
-                <i class="fas fa-sign-in-alt"></i> Sign In
-              </a>
+                <i class="fas fa-chevron-right"></i>
+              </button>
             </div>
+          </div>
 
-            <div class="cta-testimonial">
-              <p>
-                "This community transformed my art practice. I've grown more in
-                6 months than in 3 years alone!"
-              </p>
-              <div class="testimonial-author">— Sarah, Digital Artist</div>
+          <!-- Admin area — separate from the slider -->
+          <div class="bulletin-admin-area">
+            <div class="bulletin-admin-toggle" id="bulletinToggle">
+              📝 Add Announcement
+            </div>
+            <div class="bulletin-admin" id="bulletinAdmin">
+  <input type="text" id="bulletin-title" placeholder="Title" />
+
+  <textarea
+    id="bulletin-content"
+    placeholder="Content..."
+    rows="4"
+  ></textarea>
+
+  <input
+    type="url"
+    id="bulletin-link"
+    placeholder="External link (optional)"
+  />
+
+  <!-- Image upload -->
+  <div class="bulletin-image-upload" id="bulletinImageDrop">
+    <input
+      type="file"
+      id="bulletin-image-input"
+      accept="image/*"
+      style="display: none"
+    />
+    <div class="bulletin-image-upload-empty" id="bulletinImageEmpty">
+      <i class="fas fa-image"></i>
+      <span>Click or drag an image here</span>
+      <small>PNG, JPG, WEBP • Max 15MB</small>
+    </div>
+    <div class="bulletin-image-upload-preview" id="bulletinImagePreview" style="display: none">
+      <img id="bulletinImageThumb" alt="Preview" />
+      <button type="button" class="bulletin-image-remove" id="bulletinImageRemove" aria-label="Remove image">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="bulletin-admin-status" id="bulletinAdminStatus"></div>
+
+  <button type="button" class="btn-submit-post" id="submit-bulletin-post">
+    <i class="fas fa-paper-plane"></i> Publish
+  </button>
+</div>
             </div>
           </div>
         </section>
+        <!-- ====== RECENT ACTIVITY — COMPACT TIMELINE ====== -->
+        <section class="zone-activity">
+          <div class="zone-header zone-header-compact">
+            <div class="section-badge">✦ Live Feed</div>
+            <h2 class="zone-title-small">Recent Community Activity</h2>
+          </div>
+
+          <div class="activity-timeline" id="activity-grid">
+            <!-- Loaded by community-hub.js -->
+          </div>
+        </section>
+
+        <!-- ==================== ZONE 3: HOW IT WORKS + JOIN ==================== -->
+
+<!-- ====== HOW IT WORKS ====== -->
+<section class="zone-how-it-works">
+  <div class="how-card">
+    <div class="how-body">
+      <div class="zone-header" style="margin-bottom: 1.5rem;">
+        <div class="section-badge">✦ How It Works</div>
+        <h2>
+          <span class="glitch-header" data-text="Challenges, Cheers &amp; Prizes">
+            Challenges, Cheers &amp; Prizes
+          </span>
+        </h2>
       </div>
+
+      <p class="how-intro">
+        Every day we post a creative prompt. Submit your interpretation. The
+        community <span class="accent-cyan">cheers</span> for their favorites,
+        and the artwork with the most cheers at the end of each challenge wins.
+        <strong>The four Intuit challenges</strong> — Daily, Weekly, Monthly, and
+        Yearly — are the ones that qualify for the big prizes and badges.
+      </p>
+
+      <div class="how-tiers">
+        <div class="how-tier tier-daily">
+          <span class="how-tier-badge">Daily</span>
+          <div class="how-tier-reset">Resets every 24 hours</div>
+          <div class="how-tier-prize">
+            <strong>Daily Doodle Badge</strong> + featured in the daily spotlight
+          </div>
+        </div>
+
+        <div class="how-tier tier-weekly">
+          <span class="how-tier-badge">Weekly</span>
+          <div class="how-tier-reset">Resets every Monday</div>
+          <div class="how-tier-prize">
+            <strong>Weekly Winner Badge</strong> + social media feature
+          </div>
+        </div>
+
+        <div class="how-tier tier-monthly">
+          <span class="how-tier-badge">Monthly</span>
+          <div class="how-tier-reset">Resets on the 1st</div>
+          <div class="how-tier-prize">
+            <strong>Monthly Master Badge</strong> + 7-day homepage feature
+          </div>
+        </div>
+
+        <div class="how-tier tier-yearly">
+          <span class="how-tier-badge">Yearly · Grand Prize</span>
+          <div class="how-tier-reset">Full year commitment</div>
+          <div class="how-tier-prize">
+            <strong>Soul Chaser Badge</strong> + Featured Artist + Custom Challenge Theme
+          </div>
+        </div>
+      </div>
+
+      <div class="how-footer">
+        <span class="how-footer-text">Full breakdown of every prize and badge:</span>
+        <a href="/pages/community/points.html" class="how-footer-link">
+          <i class="fas fa-coins"></i> View All Prizes
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SUGGESTION + CTA COMBINED ====== -->
+<section class="zone-join">
+  <div class="join-card">
+    <!-- Left: Suggestion -->
+    <div class="join-suggestion">
+      <span class="join-suggestion-badge">✦ Shape the Future</span>
+      <h3>Got an idea?</h3>
+      <p>
+        Suggestions, feature requests, and improvements — we read every one.
+        Help us make Art Mecca better for the whole community.
+      </p>
+      <button type="button" class="join-suggestion-btn" id="open-suggestion-modal">
+        <i class="fas fa-lightbulb"></i> Share Your Idea
+      </button>
+    </div>
+
+    <!-- Right: CTA -->
+    <div class="join-cta">
+      <h2>Ready to join the creative community?</h2>
+      <p>
+        Connect with artists, share your work, join challenges, and grow
+        together in the cyber den.
+      </p>
+      <div class="join-cta-buttons">
+        <a href="/pages/auth/register.html" class="join-cta-btn primary">
+          <i class="fas fa-user-plus"></i> Join Art Mecca — It's Free
+        </a>
+        <a href="/pages/auth/login.html" class="join-cta-btn secondary">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SUGGESTION MODAL (hidden) ====== -->
+<div class="suggestion-modal-overlay" id="suggestionModalOverlay">
+  <div class="suggestion-modal">
+    <button
+      type="button"
+      class="suggestion-modal-close"
+      id="suggestionModalClose"
+      aria-label="Close"
+    >
+      <i class="fas fa-times"></i>
+    </button>
+    <h3>Share Your Idea</h3>
+    <p>Tell us what you'd like to see on Art Mecca. Feature ideas, improvements, anything.</p>
+    <form id="suggestion-form">
+      <textarea
+        id="suggestion-idea"
+        placeholder="What would you like to see..."
+        rows="5"
+        required
+      ></textarea>
+      <input
+        type="text"
+        id="suggestion-name"
+        placeholder="Your name (optional)"
+      />
+      <button type="submit" class="submit-suggestion" id="suggestionSubmitBtn">
+        <i class="fas fa-paper-plane"></i> Send Suggestion
+      </button>
+    </form>
+  </div>
+</div>
+
     </main>
 
     <!-- ====== THEME TOGGLE ====== -->
@@ -3456,8 +1348,15 @@
     <script src="/js/components/header.js"></script>
     <script src="/js/search.js"></script>
     <script src="/js/utils/seo.js"></script>
+    <script src="/js/components/hero-controller.js"></script>
+    <script src="/js/tutorials/tutorials-data.js"></script>
     <script src="/js/community/community-hub.js"></script>
-    ======
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        new HeroController("hub", { adminControlsEnabled: true });
+      });
+    </script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -3491,7 +1390,6 @@
 
         // ====== RAINBOW PARTICLES ======
         /* Particle system removed — now handled by particles-global.js */
-        }
 
         // ====== AUTH ======
         setTimeout(function () {
@@ -3501,6 +1399,6 @@
         }, 300);
       });
     </script>
-      <script src="/particles-global.js"></script>
-</body>
+    <script src="/particles-global.js"></script>
+  </body>
 </html>

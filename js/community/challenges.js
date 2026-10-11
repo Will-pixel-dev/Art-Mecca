@@ -594,12 +594,16 @@ class ChallengesSystem {
       }
     }
 
-    if (needsUpdate) {
-      this.generateChallenges();
-      localStorage.setItem("challenges_last_update", now.toISOString());
-      this.renderChallenges();
-      console.log("✅ Challenges updated successfully!");
-    }
+   if (needsUpdate) {
+  this.generateChallenges();
+  localStorage.setItem("challenges_last_update", now.toISOString());
+  this.renderChallenges();
+  // Persist to Firestore so all pages share the same challenges
+  this.saveChallengesToFirestore().catch(err =>
+    console.warn("Could not persist challenges:", err)
+  );
+  console.log("✅ Challenges updated and persisted to Firestore");
+}
   }
 
   // ============================================ */
@@ -670,8 +674,12 @@ class ChallengesSystem {
           });
         });
       } else {
-        this.generateChallenges();
-      }
+  this.generateChallenges();
+  // Empty Firestore — persist what we just generated
+  this.saveChallengesToFirestore().catch(err =>
+    console.warn("Could not seed challenges:", err)
+  );
+}
     } catch (error) {
       console.error("Error loading challenges:", error);
       this.generateChallenges();
