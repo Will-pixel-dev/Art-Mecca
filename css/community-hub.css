@@ -21,6 +21,28 @@
   --rainbow-6: #8c35e9;
   --rainbow-7: #ff38e4;
 
+  --gradient-neon: linear-gradient(135deg, #ff00ea, #ad03fc);
+  --gradient-pink: linear-gradient(135deg, #ff00ea, #fc03fc);
+  --gradient-cyber: linear-gradient(135deg, #ff00ea, #ad03fc, #58ebfe);
+  --gradient-spray: linear-gradient(135deg, #ff0040, #ff6b00, #ffcc00);
+  --gradient-holo: linear-gradient(
+    135deg,
+    #ff00ea,
+    #58ebfe,
+    #ffc72e,
+    #4ff3a6,
+    #ad03fc
+  );
+  --gradient-holo-graffiti: linear-gradient(
+    135deg,
+    #ff2d95,
+    #ff6b00,
+    #ffc72e,
+    #4ff3a6,
+    #ff00ea
+  );
+
+
   /* Glass & Base */
   --glass-bg: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.08);
@@ -131,6 +153,112 @@ body.light-mode .gradient-bg {
   opacity: 0.12;
 }
 
+/* Badge above the hero title */
+#hubHero .hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--neon-rainbow);
+  padding: 4px 14px;
+  border: 1px solid rgba(254, 193, 88, 0.25);
+  border-radius: 2px;
+  background: linear-gradient(
+    135deg,
+    #ff38e460,
+    #f3971656,
+    #e4ff1a4e,
+    #20fe8b56,
+    #4cd6eb60,
+    #8c35e954,
+    #ff38e440
+  );
+  animation: rainbowText 8s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+
+/* ============================================================
+   HERO STATS — ROW LAYOUT (overrides old .hero-stats rules)
+   ============================================================ */
+#hubHero .hero-live-stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: nowrap;
+  padding: 1.25rem 2rem;
+  margin: 1.5rem auto 0;
+  width: fit-content;
+  max-width: 100%;
+  background: rgba(255, 0, 234, 0.06);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card), var(--rainbow-3);
+  position: relative;
+}
+
+#hubHero .hero-stat {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  position: relative;
+}
+
+#hubHero .hero-stat:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 32px;
+  background: var(--border-color);
+  opacity: 0.3;
+}
+
+#hubHero .hero-stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  background: var(--gradient-holo-graffiti);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+  filter: drop-shadow(0 0 30px rgba(255, 221, 0, 0.252));
+}
+
+#hubHero .hero-stat-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  #hubHero .hero-live-stats {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  #hubHero .hero-stat {
+    flex: 1 1 40%;
+  }
+  #hubHero .hero-stat:not(:last-child)::after {
+    display: none;
+  }
+}
+
 /* ============================================ */
 /* PARTICLE OVERLAY - RAINBOW                  */
 /* ============================================ */
@@ -144,135 +272,6 @@ body.light-mode .gradient-bg {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-}
-
-.particle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  animation: floatParticle 25s infinite linear;
-  opacity: 0;
-}
-
-.particle:nth-child(1) {
-  left: 5%;
-  animation-delay: 0s;
-  animation-duration: 22s;
-  background: #ff38e4;
-}
-.particle:nth-child(2) {
-  left: 15%;
-  animation-delay: 2s;
-  animation-duration: 18s;
-  background: #f39716;
-}
-.particle:nth-child(3) {
-  left: 25%;
-  animation-delay: 4s;
-  animation-duration: 26s;
-  background: #e4ff1a;
-}
-.particle:nth-child(4) {
-  left: 35%;
-  animation-delay: 1s;
-  animation-duration: 20s;
-  background: #20fe8b;
-}
-.particle:nth-child(5) {
-  left: 45%;
-  animation-delay: 3s;
-  animation-duration: 24s;
-  background: #4cd6eb;
-}
-.particle:nth-child(6) {
-  left: 55%;
-  animation-delay: 5s;
-  animation-duration: 19s;
-  background: #8c35e9;
-}
-.particle:nth-child(7) {
-  left: 65%;
-  animation-delay: 2s;
-  animation-duration: 23s;
-  background: #ff38e4;
-}
-.particle:nth-child(8) {
-  left: 75%;
-  animation-delay: 4s;
-  animation-duration: 21s;
-  background: #f39716;
-}
-.particle:nth-child(9) {
-  left: 85%;
-  animation-delay: 1s;
-  animation-duration: 27s;
-  background: #e4ff1a;
-}
-.particle:nth-child(10) {
-  left: 10%;
-  animation-delay: 6s;
-  animation-duration: 20s;
-  background: #20fe8b;
-}
-.particle:nth-child(11) {
-  left: 40%;
-  animation-delay: 3s;
-  animation-duration: 25s;
-  background: #4cd6eb;
-}
-.particle:nth-child(12) {
-  left: 70%;
-  animation-delay: 5s;
-  animation-duration: 22s;
-  background: #8c35e9;
-}
-.particle:nth-child(13) {
-  left: 20%;
-  animation-delay: 7s;
-  animation-duration: 28s;
-  background: #ff38e4;
-}
-.particle:nth-child(14) {
-  left: 50%;
-  animation-delay: 4s;
-  animation-duration: 19s;
-  background: #f39716;
-}
-.particle:nth-child(15) {
-  left: 80%;
-  animation-delay: 2s;
-  animation-duration: 24s;
-  background: #e4ff1a;
-}
-
-@keyframes floatParticle {
-  0% {
-    top: -10%;
-    opacity: 0;
-    transform: translateX(0) scale(0);
-  }
-  10% {
-    opacity: 0.7;
-    transform: translateX(20px) scale(1.2);
-  }
-  50% {
-    opacity: 0.9;
-    transform: translateX(-15px) scale(1);
-  }
-  90% {
-    opacity: 0.7;
-    transform: translateX(10px) scale(0.8);
-  }
-  100% {
-    top: 110%;
-    opacity: 0;
-    transform: translateX(0) scale(0);
-  }
-}
-
-body.light-mode .particle {
-  opacity: 0.2;
 }
 
 /* ============================================ */
@@ -1649,7 +1648,6 @@ body.light-mode .post-link:hover {
 /* ============================================ */
 /* WINNERS CAROUSEL - CLEAN 3D RING              */
 /* ============================================ */
-
 
 /* ============================================ */
 /* TOP CREATORS - LEADERBOARD STYLE            */

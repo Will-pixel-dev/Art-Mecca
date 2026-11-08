@@ -38,6 +38,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/page-hero.css" />
     <link rel="stylesheet" href="/css/components/header.css" />
     <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/search.css" />
@@ -179,6 +180,80 @@
       }
 
       /* ============================================================
+         HERO — GREEN IDENTITY OVERRIDE (page-hero system)
+         ============================================================ */
+      #toolsHero .hero-layer-1 {
+        background: radial-gradient(
+          ellipse at center,
+          #0d2019 0%,
+          #0a0508 100%
+        );
+      }
+
+      #toolsHero .hero-graffiti-title {
+        background: linear-gradient(
+          135deg,
+          #43eaa2,
+          #2ecc71,
+          #27ae60,
+          #00eaff,
+          #43eaa2
+        );
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: toolsTitleShimmer 8s ease-in-out infinite;
+        filter: drop-shadow(0 0 30px rgba(67, 234, 162, 0.35))
+          drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+        text-shadow: none;
+      }
+
+      /* Ghost layers get green/cyan ghosting instead of magenta */
+      #toolsHero .hero-graffiti-title::before {
+        color: #58ebfe;
+        -webkit-text-fill-color: #58ebfe;
+        background: none;
+        text-shadow: -2px 0 #43eaa2;
+      }
+
+      #toolsHero .hero-graffiti-title::after {
+        color: #43eaa2;
+        -webkit-text-fill-color: #43eaa2;
+        background: none;
+        text-shadow: 2px 0 #58ebfe;
+      }
+
+      @keyframes toolsTitleShimmer {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      /* Badge above the hero title */
+      #toolsHero .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--neon-cyan);
+        padding: 4px 14px;
+        border: 1px solid rgba(88, 235, 254, 0.25);
+        border-radius: 2px;
+        background: rgba(88, 235, 254, 0.05);
+        margin-bottom: 16px;
+      }
+
+      /* ============================================================
          GLOBAL EFFECTS
          ============================================================ */
       #particleCanvas {
@@ -267,7 +342,7 @@
       }
 
       /* ============================================================
-         GLITCH HEADER
+         GLITCH HEADER (used in section headers below the fold)
          ============================================================ */
       .glitch-header {
         position: relative;
@@ -389,154 +464,6 @@
       }
 
       /* ============================================================
-         HERO SECTION — FULL VIEWPORT GREEN
-         ============================================================ */
-      .tools-hero {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        background: var(--bg-body);
-        z-index: 2;
-        padding: 6rem 2rem;
-      }
-
-      .tools-hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        background:
-          radial-gradient(
-            ellipse at 50% 100%,
-            rgba(67, 234, 162, 0.08) 0%,
-            transparent 60%
-          ),
-          radial-gradient(
-            ellipse at 30% 0%,
-            rgba(46, 204, 113, 0.06) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            ellipse at 70% 50%,
-            rgba(67, 234, 162, 0.04) 0%,
-            transparent 40%
-          );
-        pointer-events: none;
-      }
-
-      .tools-hero::after {
-        content: "✦ GO MECCA STAR ✦";
-        position: absolute;
-        bottom: 40px;
-        right: 60px;
-        font-family: var(--font-tag);
-        font-size: 3.5rem;
-        color: var(--color-green);
-        opacity: 0.04;
-        pointer-events: none;
-        z-index: 0;
-        letter-spacing: 6px;
-        transform: rotate(-6deg);
-      }
-
-      .hero-content {
-        max-width: 900px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 1;
-      }
-
-      .hero-content h1 {
-        font-family: var(--font-display);
-        font-size: clamp(3rem, 8vw, 5.5rem);
-        font-weight: 900;
-        letter-spacing: 2px;
-        margin-bottom: 1.5rem;
-        position: relative;
-        z-index: 1;
-        color: var(--text-primary);
-        line-height: 1.1;
-      }
-
-      .hero-content h1 .highlight {
-        background: var(--gradient-green);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: shimmerGreen 4s ease-in-out infinite;
-        background-size: 200% 200%;
-      }
-
-      @keyframes shimmerGreen {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-      }
-
-      .hero-content .hero-subtitle {
-        font-size: 1.2rem;
-        color: var(--text-secondary);
-        max-width: 700px;
-        margin: 0 auto;
-        line-height: 1.8;
-        font-family: var(--font-condensed);
-        position: relative;
-        z-index: 1;
-      }
-
-      .hero-content .hero-subtitle .highlight {
-        color: var(--color-green);
-        font-weight: 700;
-      }
-
-      /* Scroll indicator */
-      .scroll-indicator {
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 3;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        opacity: 0.4;
-        animation: bounceDown 2s ease-in-out infinite;
-      }
-
-      .scroll-indicator .scroll-text {
-        font-family: var(--font-mono);
-        font-size: 0.5rem;
-        color: var(--text-muted);
-        letter-spacing: 2px;
-        text-transform: uppercase;
-      }
-
-      .scroll-indicator .scroll-line {
-        width: 1px;
-        height: 40px;
-        background: linear-gradient(180deg, var(--text-muted), transparent);
-      }
-
-      @keyframes bounceDown {
-        0%,
-        100% {
-          transform: translateX(-50%) translateY(0);
-        }
-        50% {
-          transform: translateX(-50%) translateY(6px);
-        }
-      }
-
-      /* ============================================================
          SECTION HEADERS
          ============================================================ */
       .section-header {
@@ -616,7 +543,6 @@
         min-height: 380px;
       }
 
-      /* Animated border glow */
       .feature-card::before {
         content: "";
         position: absolute;
@@ -990,25 +916,6 @@
          RESPONSIVE
          ============================================================ */
       @media (max-width: 768px) {
-        .tools-hero {
-          min-height: 100vh;
-          padding: 4rem 1.5rem;
-        }
-
-        .hero-content h1 {
-          font-size: clamp(2.5rem, 10vw, 3.5rem);
-        }
-
-        .tools-hero::after {
-          font-size: 2rem;
-          right: 20px;
-          bottom: 20px;
-        }
-
-        .hero-content .hero-subtitle {
-          font-size: 1rem;
-        }
-
         .features-grid {
           grid-template-columns: 1fr;
           gap: 1.5rem;
@@ -1047,21 +954,9 @@
           bottom: 16px;
           right: 16px;
         }
-
-        .scroll-indicator {
-          display: none;
-        }
       }
 
       @media (max-width: 480px) {
-        .hero-content h1 {
-          font-size: 2.2rem;
-        }
-
-        .hero-content .hero-subtitle {
-          font-size: 0.9rem;
-        }
-
         .feature-card {
           min-height: 280px;
           padding: 1.5rem 1rem;
@@ -1073,13 +968,6 @@
 
         .tools-cta::after {
           font-size: 2.5rem;
-        }
-
-        .tools-hero::after {
-          font-size: 1.5rem;
-          right: 10px;
-          bottom: 10px;
-          opacity: 0.02;
         }
 
         .featured-art-section {
@@ -1353,17 +1241,26 @@
       </div>
     </header>
 
-    <!-- ====== MAIN ====== -->
-    <main>
-      <!-- Hero Section - Full Viewport -->
-      <section class="tools-hero">
+    <!-- ====== HERO — DIRECT CHILD OF BODY ====== -->
+    <section class="page-hero" id="toolsHero" data-hero-key="tools">
+      <div class="hero-layer hero-layer-1" id="heroLayer1">
+        <!-- Layer 1 injected by HeroController -->
+      </div>
+      <div class="hero-layer hero-layer-2" id="heroLayer2" data-enabled="false">
+        <!-- Layer 2 injected by HeroController -->
+      </div>
+      <div class="hero-layer hero-layer-3">
         <div class="hero-content">
-          <h1>
-            Creative
-            <span class="glitch-header" data-text="Tools">Tools</span> for
-            Artists
+          <span class="hero-badge">
+            <i class="fas fa-wrench"></i> ESSENTIAL TOOLS
+          </span>
+          <h1
+            class="hero-graffiti-title"
+            data-text="Creative Tools for Artists"
+          >
+            Creative Tools for Artists
           </h1>
-          <p class="hero-subtitle">
+          <p class="hero-graffiti-sub">
             Explore our collection of essential tools designed to enhance your
             artistic workflow and inspire your creativity. From color palette
             generators to advanced color theory resources, our tools are curated
@@ -1371,14 +1268,16 @@
             artworks.
           </p>
         </div>
+      </div>
 
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-          <span class="scroll-text">▼ Scroll</span>
-          <div class="scroll-line"></div>
-        </div>
-      </section>
+      <div class="hero-scroll-indicator">
+        <span class="text">▼ Scroll</span>
+        <div class="line"></div>
+      </div>
+    </section>
 
+    <!-- ====== MAIN ====== -->
+    <main>
       <div class="container">
         <!-- Features Header -->
         <div class="section-header">
@@ -1566,6 +1465,13 @@
     <script src="/js/components/header.js"></script>
     <script src="/js/search.js"></script>
     <script src="/js/utils/seo.js"></script>
+    <script src="/js/components/hero-controller.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        new HeroController("tools", { adminControlsEnabled: true });
+      });
+    </script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {

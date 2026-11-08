@@ -40,6 +40,7 @@
     <!-- ===== CSS ===== -->
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="/css/components/page-hero.css" />
     <link rel="stylesheet" href="css/components/header.css" />
     <link rel="stylesheet" href="css/components/footer.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
@@ -319,18 +320,10 @@
   </div>
 </header>
 
-    <!-- ====== TOAST NOTIFICATION CONTAINER ====== -->
-
-    <!-- ====== KEYBOARD SHORTCUTS HINT ====== -->
-    <div class="keyboard-hint">
-      <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> —
-      navigate &nbsp;|&nbsp; <kbd>G</kbd> — glitch &nbsp;|&nbsp; <kbd>T</kbd> —
-      toast
-    </div>
-    <!-- ============================================================ -->
+ <!-- ============================================================ -->
     <!-- HERO SECTION - 3 LAYER SYSTEM                               -->
     <!-- ============================================================ -->
-    <section class="parallax-hero" id="homeHero">
+    <section class="page-hero" id="homeHero" data-hero-key="home">
       <!-- LAYER 1: BACKGROUND -->
       <div class="hero-layer-1" id="layer1Container">
         <div id="layer1Content">
@@ -439,6 +432,15 @@
         <div class="scroll-line"></div>
       </div>
     </section>
+
+    <!-- ====== TOAST NOTIFICATION CONTAINER ====== -->
+
+    <!-- ====== KEYBOARD SHORTCUTS HINT ====== -->
+    <div class="keyboard-hint">
+      <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> —
+      navigate &nbsp;|&nbsp; <kbd>G</kbd> — glitch &nbsp;|&nbsp; <kbd>T</kbd> —
+      toast
+    </div>
 
     <!-- ============================================================ -->
     <!-- HOME DASHBOARD CONTENT                                       -->
@@ -1104,7 +1106,12 @@
     <!-- 10. Home Page Features (THIS IS THE MAIN ONE) -->
     <script src="/js/home-page.js"></script>
 
-    ======
+    <script src="/js/components/hero-controller.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        new HeroController("home", { adminControlsEnabled: true });
+      });
+    </script>
 
     <script>
       // Update nav link based on auth

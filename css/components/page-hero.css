@@ -5,6 +5,20 @@
    Layer 3: Site content
    ============================================================ */
 
+body:has(> .page-hero) > .main-header {
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  right: 20px;
+  margin: 0;
+  z-index: 1000;
+}
+
+/* On pages where the header floats over the hero, reserve space for it */
+body:has(> .page-hero) > .page-hero .hero-layer-3 {
+  padding-top: 120px;   /* header height (66) + top offset (12) + breathing room (~12) */
+}
+
 .page-hero {
   position: relative;
   width: 100%;
@@ -59,14 +73,14 @@
 .page-hero .hero-layer-3 {
   z-index: 3;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  position: relative;
+  position: absolute;       /* ← was relative */
+  inset: 0;                 /* fill the hero */
   pointer-events: none;
-  padding: 3rem 3vw;         /* was 10vw — smaller padding lets content reach the edges */
+  padding: 90px 3vw 8vh;    /* top: clears floating header; bottom: content sits above scroll indicator */
   text-align: center;
 }
-
 
 /* ---------- Content card — dark backdrop hugs the content ---------- */
 .page-hero .hero-content {
@@ -105,12 +119,16 @@
 
 .page-hero[data-anchor="right"] .hero-layer-3 {
   justify-content: flex-end;
+   align-items: flex-end;      /* push content to the bottom */
   text-align: right;
+  padding-right: 3vw;
+  padding-bottom: 6vh;        /* offset from the very bottom */
 }
 
 .page-hero[data-anchor="right"] .hero-content {
   margin-left: auto;
   margin-right: 0;
+  margin-bottom: 0;
 }
 
 .page-hero[data-anchor="center"] .hero-layer-3 {
@@ -563,5 +581,185 @@
 
   .page-hero .hero-graffiti-title {
     font-size: clamp(2rem, 9vw, 3.5rem);
+  }
+}
+
+/* ============================================================ */
+/* HERO TITLE GLITCH EFFECT                                      */
+/* ============================================================ */
+
+.page-hero .hero-graffiti-title {
+  position: relative;
+  display: inline-block;
+  /* constant subtle flicker, runs regardless of hover */
+  animation: heroTitleFlicker 4s ease-in-out infinite;
+}
+
+/* Two pseudo-layers behind the title = red/cyan offset ghosting */
+.page-hero .hero-graffiti-title::before,
+.page-hero .hero-graffiti-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.15;
+  background: transparent;
+  -webkit-text-fill-color: currentColor;
+  background-clip: initial;
+}
+
+.page-hero .hero-graffiti-title::before {
+  color: #58ebfe;
+  z-index: -1;
+  text-shadow: -2px 0 #ff00ea;
+  animation: heroTitleGlitchA 0.15s steps(2) infinite;
+}
+
+.page-hero .hero-graffiti-title::after {
+  color: #ff00ea;
+  z-index: -2;
+  text-shadow: 2px 0 #58ebfe;
+  animation: heroTitleGlitchB 0.2s steps(2) infinite;
+}
+
+/* Subtle constant flicker — barely noticeable but alive */
+@keyframes heroTitleFlicker {
+  0%, 89%, 91%, 95%, 100% {
+    transform: translate(0) skewX(0deg);
+  }
+  90% {
+    transform: translate(-1px, 1px) skewX(0.5deg);
+  }
+  92% {
+    transform: translate(1px, -1px) skewX(-0.5deg);
+  }
+  94% {
+    transform: translate(-0.5px, 0.5px) skewX(0.3deg);
+  }
+}
+
+@keyframes heroTitleGlitchA {
+  0%   { transform: translate(0); }
+  20%  { transform: translate(-1px, 1px); }
+  40%  { transform: translate(1px, -1px); }
+  60%  { transform: translate(-1px, 1px); }
+  80%  { transform: translate(1px, -1px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes heroTitleGlitchB {
+  0%   { transform: translate(0); }
+  20%  { transform: translate(1px, -1px); }
+  40%  { transform: translate(-1px, 1px); }
+  60%  { transform: translate(1px, -1px); }
+  80%  { transform: translate(-1px, 1px); }
+  100% { transform: translate(0); }
+}
+
+/* Intensified glitch on hover */
+.page-hero .hero-graffiti-title:hover {
+  animation: heroTitleHover 0.3s ease-in-out infinite;
+}
+
+.page-hero .hero-graffiti-title:hover::before,
+.page-hero .hero-graffiti-title:hover::after {
+  opacity: 0.35;
+}
+
+@keyframes heroTitleHover {
+  0%, 100% { transform: translate(0) skewX(0deg); }
+  20%      { transform: translate(-2px, 2px) skewX(1deg); }
+  40%      { transform: translate(2px, -2px) skewX(-1deg); }
+  60%      { transform: translate(-1px, 1px) skewX(0.5deg); }
+  80%      { transform: translate(1px, -1px) skewX(-0.5deg); }
+}
+
+/* ============================================================
+   UNIFIED HERO CONTENT CARDS (Excluding Home)
+   ============================================================ */
+
+/* Target all hero pages except the home page */
+.page-hero:not(#homeHero) .hero-content {
+  /* Width & Spacing */
+  max-width: 820px !important;
+  width: 100%;
+  padding: 3rem 3.5rem !important;
+
+  /* Glassy Look */
+  background: rgba(10, 5, 8, 0.65) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(255, 255, 255, 0.02) !important;
+
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Tighten the titles slightly so they fit on one line */
+.page-hero:not(#homeHero) .hero-graffiti-title {
+  font-size: clamp(2.5rem, 5vw, 3.8rem) !important;
+  margin-bottom: 1rem !important;
+  line-height: 1.1;
+}
+
+/* Constrain the subtitle width so it wraps nicely inside the card */
+.page-hero:not(#homeHero) .hero-graffiti-sub {
+  max-width: 650px;
+  margin: 0 auto 2rem !important;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Standardize the stat bars */
+.page-hero:not(#homeHero) .hero-live-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Ensure stat numbers stay readable but don't dominate */
+.page-hero:not(#homeHero) .hero-stat-num {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.page-hero:not(#homeHero) .hero-stat-label {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   MOBILE ADJUSTMENTS
+   ============================================================ */
+@media (max-width: 768px) {
+  .page-hero:not(#homeHero) .hero-content {
+    padding: 2rem 1.5rem !important;
+    border-radius: 12px !important;
+  }
+
+  .page-hero:not(#homeHero) .hero-graffiti-sub {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .page-hero:not(#homeHero) .hero-live-stats {
+    gap: 1.5rem;
+    flex-wrap: wrap;
   }
 }

@@ -75,6 +75,7 @@
     <!-- ===== CSS ===== -->
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/components/page-hero.css" />
     <link rel="stylesheet" href="/css/components/header.css" />
     <link rel="stylesheet" href="/css/components/footer.css" />
     <link rel="stylesheet" href="/css/avatar.css" />
@@ -98,7 +99,6 @@
     <!-- ====== SCANLINES ====== -->
     <div class="scanlines"></div>
 
-    <!-- ====== HEADER ====== -->
     <!-- ====== HEADER ====== -->
     <header class="main-header" id="main-header">
       <div class="container">
@@ -371,77 +371,54 @@
     </header>
 
     <!-- ============================================================ -->
-    <!-- EQUIP HERO — 3 LAYER SYSTEM                                   -->
+    <!-- HERO — DIRECT CHILD OF BODY (shared page-hero system)         -->
     <!-- ============================================================ -->
-    <section class="equip-hero">
-      <!-- LAYER 1: BACKGROUND -->
-      <div class="equip-hero-layer-1">
-        <img
-          src="#"
-          alt="Equip Hero Background"
-          class="hero-bg-image"
-          onload="this.classList.add('loaded')"
-          onerror="this.style.display = 'none'"
-        />
-        <div class="hero-bg-fallback"></div>
+    <section class="page-hero" id="equipHero" data-hero-key="equip">
+      <div class="hero-layer hero-layer-1" id="heroLayer1">
+        <!-- Layer 1 injected by HeroController -->
       </div>
-
-      <!-- LAYER 2: OVERLAY / AMBIENT EFFECTS -->
-      <div class="equip-hero-layer-2">
-        <div class="equip-neon-orb"></div>
-        <div class="equip-grid-overlay"></div>
-        <span class="equip-graffiti-tag tag-top-left">✧ ARMORY</span>
-        <span class="equip-graffiti-tag tag-bottom-right">★ EQUIP</span>
-        <div class="equip-scan-line"></div>
+      <div class="hero-layer hero-layer-2" id="heroLayer2" data-enabled="false">
+        <!-- Layer 2 injected by HeroController -->
       </div>
-
-      <!-- LAYER 3: GLASS UI CONTENT -->
-      <div class="equip-hero-layer-3">
-        <div class="equip-hero-content glass-panel">
+      <div class="hero-layer hero-layer-3">
+        <div class="hero-content equip-hero-content-compact">
           <span class="hero-badge">
             <i class="fas fa-briefcase"></i> EQUIP YOURSELF
           </span>
-          <h1>
-            <span class="glitch-header" data-text="Equip For Artists">
-              Equip For <span class="gradient-text">Artists</span>
-              <span class="glitch-layer" data-text="Equip For Artists"></span>
-              <span class="rgb-split" data-text="Equip For Artists"></span>
-              <span class="glitch-flash"></span>
-            </span>
+          <h1 class="hero-graffiti-title" data-text="Equip For Artists">
+            Equip For Artists
           </h1>
-          <p class="hero-subhead">
+          <p class="hero-graffiti-sub">
             Discover the essential tools and resources every artist needs to
             thrive in their creative journey. From high-quality templates for
             portfolios and job application CVs, to our tips, advice column, and
             blog interviews from the internet's favourite professional artists!
           </p>
 
-          <!-- Hero Stats -->
-          <div class="equip-hero-stats">
-            <div class="stat-item">
-              <span class="stat-value" id="resourceCount">8</span>
-              <span class="stat-label">Resources</span>
+          <div class="hero-live-stats">
+            <div class="hero-stat">
+              <span class="hero-stat-num" id="resourceCount">8</span>
+              <span class="hero-stat-label">Resources</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-value" id="articleCount">24</span>
-              <span class="stat-label">Articles</span>
+            <div class="hero-stat">
+              <span class="hero-stat-num" id="articleCount">24</span>
+              <span class="hero-stat-label">Articles</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-value" id="interviewCount">12</span>
-              <span class="stat-label">Interviews</span>
+            <div class="hero-stat">
+              <span class="hero-stat-num" id="interviewCount">12</span>
+              <span class="hero-stat-label">Interviews</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-value" id="templateCount">4</span>
-              <span class="stat-label">Templates</span>
+            <div class="hero-stat">
+              <span class="hero-stat-num" id="templateCount">4</span>
+              <span class="hero-stat-label">Templates</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Scroll Indicator -->
-      <div class="scroll-indicator">
-        <span class="scroll-text">▼ SCROLL</span>
-        <div class="scroll-line"></div>
+      <div class="hero-scroll-indicator">
+        <span class="text">▼ SCROLL</span>
+        <div class="line"></div>
       </div>
     </section>
 
@@ -611,6 +588,7 @@
         </div>
       </div>
     </section>
+
     <!-- ============================================================ -->
     <!-- INTERVIEW SPOTLIGHT                                           -->
     <!-- ============================================================ -->
@@ -681,7 +659,6 @@
             <span class="ql-arrow"><i class="fas fa-download"></i></span>
           </a>
 
-          <!-- Commission Price Calculator — Coming Soon -->
           <a
             href="#"
             class="quick-link glass-panel"
@@ -863,12 +840,20 @@
     <!-- 6. SEO -->
     <script src="/js/utils/seo.js"></script>
 
-    <!-- 7. Page Redirect -->
+    <!-- 7. Hero Controller -->
+    <script src="/js/components/hero-controller.js"></script>
+
+    <!-- 8. Page Redirect -->
     <script src="/js/auth/page-redirect.js"></script>
 
-    <!-- 8. Equip Page (stats counter animation) -->
+    <!-- 9. Equip Page (stats counter animation + init) -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // ============================================================
+        // HERO CONTROLLER
+        // ============================================================
+        new HeroController("equip", { adminControlsEnabled: true });
+
         // ============================================================
         // THEME TOGGLE
         // ============================================================
@@ -900,12 +885,6 @@
         }
 
         // ============================================================
-        // PARTICLE CANVAS
-        // ============================================================
-        /* Particle system removed — now handled by particles-global.js */
-        }
-
-        // ============================================================
         // STATS COUNTER ANIMATION
         // ============================================================
         function animateCounter(element, target, duration = 1500) {
@@ -930,7 +909,6 @@
           requestAnimationFrame(update);
         }
 
-        // Animate stats on load
         const stats = {
           resourceCount: 8,
           articleCount: 24,
@@ -946,7 +924,7 @@
         });
 
         // ============================================================
-        // NOISE OVERLAY TOGGLE (for glitch effect)
+        // NOISE OVERLAY TOGGLE (glitch effect on "G")
         // ============================================================
         document.addEventListener("keydown", (e) => {
           if (e.key.toLowerCase() === "g") {
@@ -961,9 +939,9 @@
         console.log("⚡ Equip page initialized!");
       });
     </script>
-    ======
+
     <!-- Cookie Banner -->
     <script src="/js/components/cookie-banner.js"></script>
-      <script src="/particles-global.js"></script>
-</body>
+    <script src="/particles-global.js"></script>
+  </body>
 </html>

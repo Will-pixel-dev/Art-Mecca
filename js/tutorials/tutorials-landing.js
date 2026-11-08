@@ -10,145 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // PARTICLES SYSTEM (matching home page)
   // ============================================================
 
-  function initParticles() {
-    const canvas = document.createElement("canvas");
-    canvas.id = "particleCanvas";
-    canvas.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        pointer-events: none;
-    `;
-    document.body.prepend(canvas);
-
-    const ctx = canvas.getContext("2d");
-    let particles = [];
-    let mouseX = -1000;
-    let mouseY = -1000;
-    // Replace the particle count with this
-    const isMobile =
-      window.innerWidth < 768 ||
-      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const particleCount = isMobile ? 30 : 80; // 30 on mobile, 80 on desktop
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    window.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2.5 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.3;
-        this.speedY = (Math.random() - 0.5) * 0.3;
-        this.opacity = Math.random() * 0.3 + 0.05;
-        const colors = [
-          "#ff00ea",
-          "#ad03fc",
-          "#58ebfe",
-          "#4ff3a6",
-          "#ffc72e",
-          "#ff0040",
-          "#ff6b00",
-        ];
-        this.color = colors[Math.floor(Math.random() * colors.length)];
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 200) {
-          const force = ((200 - dist) / 200) * 0.015;
-          this.speedX += (dx / dist) * force;
-          this.speedY += (dy / dist) * force;
-        }
-        this.speedX *= 0.999;
-        this.speedY *= 0.999;
-        const maxSpeed = 1.2;
-        const speed = Math.sqrt(
-          this.speedX * this.speedX + this.speedY * this.speedY,
-        );
-        if (speed > maxSpeed) {
-          this.speedX = (this.speedX / speed) * maxSpeed;
-          this.speedY = (this.speedY / speed) * maxSpeed;
-        }
-        if (
-          this.x < 0 ||
-          this.x > canvas.width ||
-          this.y < 0 ||
-          this.y > canvas.height
-        )
-          this.reset();
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.opacity;
-        ctx.shadowColor = this.color;
-        ctx.shadowBlur = 12;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-
-    function drawConnections() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            const opacity = (1 - dist / 120) * 0.05;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = "#ff00ea";
-            ctx.globalAlpha = opacity;
-            ctx.lineWidth = 0.6;
-            ctx.shadowColor = "#ff00ea";
-            ctx.shadowBlur = 4;
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-            ctx.globalAlpha = 1;
-          }
-        }
-      }
-    }
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
-        p.update();
-        p.draw();
-      });
-      drawConnections();
-      requestAnimationFrame(animateParticles);
-    }
-
-    animateParticles();
-  }
 
   // ===========================================
   // GLOBAL VARIABLES
@@ -168,8 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function init() {
     console.log("Initializing tutorials page...");
 
-    // Initialize particles FIRST
-    initParticles();
 
     // Check if tutorialData exists
     if (typeof tutorialData === "undefined") {
@@ -194,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setupFilters();
     setupSearch();
     setupCategoryFilterFromUrl();
-    setupThemeToggle();
+
 
     // Update tutorial count in hero
     updateTutorialCount();
@@ -209,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 2. THEME TOGGLE
   // ============================================================
   const themeToggle = document.getElementById("themeToggle");
+  console.log("[theme] toggle found:", !!themeToggle);
   if (themeToggle) {
     const savedTheme = localStorage.getItem("theme") || "dark";
     document.documentElement.setAttribute("data-theme", savedTheme);
@@ -686,42 +546,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ===========================================
-  // THEME TOGGLE
-  // ===========================================
 
-  function setupThemeToggle() {
-    const darkBtn = document.getElementById("themeDark");
-    const lightBtn = document.getElementById("themeLight");
-
-    if (!darkBtn || !lightBtn) return;
-
-    const saved = localStorage.getItem("theme") || "dark";
-
-    if (saved === "light") {
-      document.body.classList.add("light-mode");
-      lightBtn.classList.add("active");
-      darkBtn.classList.remove("active");
-    } else {
-      document.body.classList.remove("light-mode");
-      darkBtn.classList.add("active");
-      lightBtn.classList.remove("active");
-    }
-
-    darkBtn.addEventListener("click", function () {
-      document.body.classList.remove("light-mode");
-      darkBtn.classList.add("active");
-      lightBtn.classList.remove("active");
-      localStorage.setItem("theme", "dark");
-    });
-
-    lightBtn.addEventListener("click", function () {
-      document.body.classList.add("light-mode");
-      lightBtn.classList.add("active");
-      darkBtn.classList.remove("active");
-      localStorage.setItem("theme", "light");
-    });
-  }
 
   // ===========================================
   // STATS
